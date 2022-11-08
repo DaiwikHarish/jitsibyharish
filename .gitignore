@@ -53,6 +53,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+dist/
+*.bz2
+
 # BUCK
 #
 buck-out/
