@@ -2,6 +2,12 @@ import ReducerRegistry from '../redux/ReducerRegistry';
 
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
 
+export default class UserType {
+    public static Admin = 'Admin';
+    public static Presenter = 'Presenter';
+    public static Viewer = 'Viewer';
+}
+
 export interface IUserInfo {
     userType?: string;
     userName?: string;

@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import UserType from '../../../base/app/reducer';
 
 import { translate } from '../../../base/i18n';
 import { IconCrown } from '../../../base/icons';
@@ -36,13 +37,14 @@ class GrantModeratorButton extends AbstractGrantModeratorButton {
      * @returns {ReactElement}
      */
     render() {
-        const { t, visible } = this.props;
+        const { t, visible, _userInfo } = this.props;
 
         if (!visible) {
             return null;
         }
 
         return (
+            _userInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.grantModerator') }
                 className = 'grantmoderatorlink'
@@ -55,5 +57,7 @@ class GrantModeratorButton extends AbstractGrantModeratorButton {
 
     _handleClick: () => void;
 }
+
+
 
 export default translate(connect(_mapStateToProps)(GrantModeratorButton));

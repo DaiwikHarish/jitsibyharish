@@ -24,7 +24,7 @@ export function appWillMount(app: Object) {
         typeof APP === 'object' && APP.API.init();
 
         let userInfo: IUserInfo = {
-            userType: "Viewer",
+            userType: "Admin",
             userName: "Alam",
             emailId: "alam@cs.com",
             meetingId: "12",
