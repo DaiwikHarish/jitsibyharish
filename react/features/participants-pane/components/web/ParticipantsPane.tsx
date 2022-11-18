@@ -159,7 +159,7 @@ const ParticipantsPane = () => {
                         searchString = { searchString }
                         setSearchString = { setSearchString } />
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
-                    {showAddRoomButton && <AddBreakoutRoomButton />}
+                    {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
                 {showFooter && (
                     <div className = { classes.footer }>

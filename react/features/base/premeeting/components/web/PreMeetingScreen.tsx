@@ -7,6 +7,7 @@ import { IReduxState } from '../../../../app/types';
 import DeviceStatus from '../../../../prejoin/components/web/preview/DeviceStatus';
 // @ts-ignore
 import { Toolbox } from '../../../../toolbox/components/web';
+import { IUserInfo } from '../../../app/reducer';
 import { getConferenceName } from '../../../conference/functions';
 import { PREMEETING_BUTTONS, THIRD_PARTY_PREJOIN_BUTTONS } from '../../../config/constants';
 import { getToolbarButtons, isToolbarButtonEnabled } from '../../../config/functions.web';
@@ -18,6 +19,8 @@ import ConnectionStatus from './ConnectionStatus';
 import Preview from './Preview';
 
 interface IProps {
+
+    _userInfo: IUserInfo;
 
     /**
      * The list of toolbar buttons to render.
@@ -110,7 +113,8 @@ const PreMeetingScreen = ({
     skipPrejoinButton,
     title,
     videoMuted,
-    videoTrack
+    videoTrack,
+    _userInfo
 }: IProps) => {
     const { classes } = useStyles();
     const containerClassName = `premeeting-screen ${className ? className : ''}`;
@@ -132,7 +136,7 @@ const PreMeetingScreen = ({
                         </h1>
                         {_roomName && (
                             <span className = { classes.subtitle }>
-                                {_roomName}
+                                {_userInfo.meetingName}
                             </span>
                         )}
                         {children}
@@ -176,7 +180,8 @@ function mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
             ? premeetingButtons
             : premeetingButtons.filter(b => isToolbarButtonEnabled(b, toolbarButtons)),
         _premeetingBackground: premeetingBackground,
-        _roomName: hideConferenceSubject ? undefined : getConferenceName(state)
+        _roomName: hideConferenceSubject ? undefined : getConferenceName(state),
+        _userInfo: state["features/base/app"].userInfo
     };
 }
 

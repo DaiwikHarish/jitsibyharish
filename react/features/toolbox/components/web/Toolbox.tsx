@@ -11,6 +11,7 @@ import { isSpeakerStatsDisabled } from '../../../../features/speaker-stats/funct
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
+import { IUserInfo } from '../../../base/app/reducer';
 import {
     getMultipleVideoSendingSupportFeatureFlag,
     getToolbarButtons,
@@ -149,6 +150,8 @@ import VideoSettingsButton from './VideoSettingsButton';
  * The type of the React {@code Component} props of {@link Toolbox}.
  */
 interface IProps extends WithTranslation {
+
+    _userInfo:IUserInfo;
 
     /**
      * String showing if the virtual background type is desktop-share.
@@ -720,7 +723,8 @@ class Toolbox extends Component<IProps> {
             _isSpeakerStatsDisabled,
             _multiStreamModeEnabled,
             _screenSharing,
-            _whiteboardEnabled
+            _whiteboardEnabled,
+            _userInfo
         } = this.props;
 
         const microphone = {
@@ -769,11 +773,11 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const invite = {
-            key: 'invite',
-            Content: InviteButton,
-            group: 2
-        };
+        // const invite = {
+        //     key: 'invite',
+        //     Content: InviteButton,
+        //     group: 2
+        // };
 
         const tileview = {
             key: 'tileview',
@@ -801,7 +805,7 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const security = {
+        const security = _userInfo.userType === "Admin" && {
             key: 'security',
             alias: 'info',
             Content: SecurityDialogButton,
@@ -814,7 +818,7 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const recording = {
+        const recording = _userInfo.userType === "Admin" && {
             key: 'recording',
             Content: RecordButton,
             group: 2
@@ -832,13 +836,15 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const shareVideo = {
+        const shareVideo = (_userInfo.userType === "Admin" ||
+        _userInfo.userType === "Presenter") && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = this._showAudioSharingButton() && {
+        const shareAudio = (_userInfo.userType === "Admin" ||
+        _userInfo.userType === "Presenter") && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -893,13 +899,13 @@ class Toolbox extends Component<IProps> {
             group: 4
         };
 
-        const shortcuts = !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _userInfo.userType === "Admin" && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
         };
 
-        const embed = this._isEmbedMeetingVisible() && {
+        const embed = _userInfo.userType === "Admin" && this._isEmbedMeetingVisible() && {
             key: 'embedmeeting',
             Content: EmbedMeetingButton,
             group: 4
@@ -931,7 +937,7 @@ class Toolbox extends Component<IProps> {
             chat,
             raisehand,
             participants,
-            invite,
+            // invite,
             tileview,
             toggleCamera,
             videoQuality,
@@ -1580,7 +1586,8 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
         _toolbarButtons: toolbarButtons,
         _virtualSource: state['features/virtual-background'].virtualSource,
         _visible: isToolboxVisible(state),
-        _whiteboardEnabled: isWhiteboardButtonVisible(state)
+        _whiteboardEnabled: isWhiteboardButtonVisible(state),
+        _userInfo: state["features/base/app"].userInfo
     };
 }
 

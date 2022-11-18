@@ -180,7 +180,7 @@ class Watermarks extends Component<Props, State> {
                     <a
                         aria-label = { t('jitsiHome', { logo: interfaceConfig.APP_NAME }) }
                         className = 'watermark leftwatermark'
-                        href = { _logoLink }
+                        // href = { _logoLink }
                         target = '_new'>
                         { reactElement }
                     </a>

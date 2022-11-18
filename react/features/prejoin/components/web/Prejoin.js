@@ -345,7 +345,8 @@ class Prejoin extends Component<Props, State> {
             showCameraPreview,
             showDialog,
             t,
-            videoTrack
+            videoTrack,
+            _userInfo
         } = this.props;
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
@@ -378,8 +379,8 @@ class Prejoin extends Component<Props, State> {
                         onChange = { _setName }
                         onSubmit = { joinConference }
                         placeHolder = { t('dialog.enterDisplayName') }
-                        readOnly = { readOnlyName }
-                        value = { name } />
+                        readOnly = { true }
+                        value = { _userInfo.userName } />
                     ) : (
                         <div className = 'prejoin-avatar-container'>
                             <Avatar
@@ -456,7 +457,8 @@ function mapStateToProps(state): Object {
         showCameraPreview: !isVideoMutedByUser(state),
         showDialog: isJoinByPhoneDialogVisible(state),
         showErrorOnJoin,
-        videoTrack: getLocalJitsiVideoTrack(state)
+        videoTrack: getLocalJitsiVideoTrack(state),
+        _userInfo: state["features/base/app"].userInfo
     };
 }
 

@@ -114,7 +114,7 @@ function MeetingParticipants({
                     ? `${currentRoom.name} (${participantsCount})`
                     : t('participantsPane.headings.participantsList', { count: participantsCount })}
             </div>
-            {showInviteButton && <InviteButton />}
+            {/* {showInviteButton && <InviteButton />} */}
             <Input
                 className = { styles.search }
                 clearable = { true }
