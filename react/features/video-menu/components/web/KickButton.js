@@ -10,6 +10,8 @@ import AbstractKickButton, {
     type Props
 } from '../AbstractKickButton';
 
+import UserType from "../../../base/app/reducer"
+
 /**
  * Implements a React {@link Component} which displays a button for kicking out
  * a participant from the conference.
@@ -39,9 +41,10 @@ class KickButton extends AbstractKickButton {
      * @returns {ReactElement}
      */
     render() {
-        const { participantID, t } = this.props;
+        const { participantID, t, _userInfo } = this.props;
 
         return (
+            _userInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('videothumbnail.kick') }
                 className = 'kicklink'
@@ -55,4 +58,18 @@ class KickButton extends AbstractKickButton {
 
     _handleClick: () => void;
 }
-export default translate(connect()(KickButton));
+
+/**
+ * Maps (parts of) the redux state to the React {@code Component} props of
+ * {@code ProfileTab}.
+ *
+ * @param {Object} state - The redux state.
+ * @protected
+ * @returns {Props}
+ */
+ export function _mapStateToProps(state: Object) {
+    return {
+        _userInfo: state["features/base/app"].userInfo
+    };
+}
+export default translate(connect(_mapStateToProps)(KickButton));
