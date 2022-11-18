@@ -11,7 +11,8 @@ import { isSpeakerStatsDisabled } from '../../../../features/speaker-stats/funct
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
-import { IUserInfo } from '../../../base/app/reducer';
+import { IUserInfo } from '../../../base/app/types';
+
 import {
     getMultipleVideoSendingSupportFeatureFlag,
     getToolbarButtons,

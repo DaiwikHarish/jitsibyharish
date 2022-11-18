@@ -1,15 +1,8 @@
 import ReducerRegistry from '../redux/ReducerRegistry';
 
-import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { APP_USER_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
 
-export interface IUserInfo {
-    userType?: string;
-    userName?: string;
-    emailId?: string;
-    meetingId?: string;
-    meetingName?: string;
-}
-
+import { IUserInfo } from './types';
 export interface IAppState {
     app?: any;
     userInfo?: IUserInfo;
@@ -20,13 +13,12 @@ ReducerRegistry.register<IAppState>(
     (state = {}, action): IAppState => {
         switch (action.type) {
             case APP_WILL_MOUNT: {
-                const { app, userInfo } = action;
+                const { app } = action;
 
                 if (state.app !== app) {
                     return {
                         ...state,
-                        app,
-                        userInfo,
+                        app
                     };
                 }
                 break;
@@ -41,6 +33,14 @@ ReducerRegistry.register<IAppState>(
                     };
                 }
                 break;
+
+            case APP_USER_INFO:
+                const { userInfo } = action;
+                return {
+                    ...state,
+                    userInfo
+                }
+                break;    
         }
 
         return state;

@@ -2,12 +2,14 @@
 
 import React, { Fragment } from 'react';
 
-import { BaseApp } from '../../base/app';
+import { APP_USER_INFO, BaseApp } from '../../base/app';
 import { toURLString } from '../../base/util';
 import { OverlayContainer } from '../../overlay';
 import { appNavigate } from '../actions';
 import { getDefaultURL } from '../functions';
+import { IUserInfo } from '../../base/app/types';
 
+import { parseURIString } from '../../base/util'; 
 /**
  * The type of React {@code Component} props of {@link AbstractApp}.
  */
@@ -111,6 +113,30 @@ export class AbstractApp extends BaseApp<Props, *> {
      * @returns {void}
      */
     _openURL(url) {
+
+        let urlObject = parseURIString(url);
+        console.log("JB this.props.location.search", urlObject);
+        const query = new URLSearchParams(urlObject.search);
+        const userType = query.get('userType');
+        const userName = query.get('userName');
+        const userId = query.get('userName');
+        const meetingId = query.get('meetingId');
+        const meetingName = query.get('meetingName');
+        const emailId = query.get('emailId');
+ 
+       let userInfo: IUserInfo = {
+            userId: userId,
+            userType: userType,
+            userName: userName,
+            emailId: emailId,
+            meetingId:meetingId,
+            meetingName: meetingName,
+        };
+
         this.state.store.dispatch(appNavigate(toURLString(url)));
+        this.state.store.dispatch({
+            type: APP_USER_INFO,
+            userInfo
+        });
     }
 }

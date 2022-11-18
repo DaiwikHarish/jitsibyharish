@@ -7,7 +7,7 @@ import { IReduxState } from '../../../../app/types';
 import DeviceStatus from '../../../../prejoin/components/web/preview/DeviceStatus';
 // @ts-ignore
 import { Toolbox } from '../../../../toolbox/components/web';
-import { IUserInfo } from '../../../app/reducer';
+import { IUserInfo } from '../../../app/types';
 import { getConferenceName } from '../../../conference/functions';
 import { PREMEETING_BUTTONS, THIRD_PARTY_PREJOIN_BUTTONS } from '../../../config/constants';
 import { getToolbarButtons, isToolbarButtonEnabled } from '../../../config/functions.web';

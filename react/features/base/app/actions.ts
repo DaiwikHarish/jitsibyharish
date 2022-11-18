@@ -1,7 +1,6 @@
 import { IStore } from '../../app/types';
 
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
-import { IUserInfo } from './reducer';
 
 /**
  * Signals that a specific App will mount (in the terms of React).
@@ -23,18 +22,9 @@ export function appWillMount(app: Object) {
         // the future.
         typeof APP === 'object' && APP.API.init();
 
-        let userInfo: IUserInfo = {
-            userType: "Viewer",
-            userName: "Alam",
-            emailId: "alam@cs.com",
-            meetingId: "12",
-            meetingName: "camp",
-        };
-
         dispatch({
             type: APP_WILL_MOUNT,
-            app,
-            userInfo
+            app
         });
     };
 }
