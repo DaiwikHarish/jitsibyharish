@@ -16,7 +16,8 @@ import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
 // @ts-ignore
 import { openLogoutDialog } from '../../actions';
-import { IUserInfo } from '../../../base/app/reducer';
+import { IUserInfo } from '../../../base/app/types';
+import { IReduxState } from '../../../app/types';
 
 /**
  * The type of the React {@code Component} props of {@link ProfileTab}.
@@ -220,7 +221,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
  * @protected
  * @returns {Props}
  */
- export function _mapStateToProps(state: Object) {
+ export function _mapStateToProps(state: IReduxState) {
     return {
         _userInfo: state["features/base/app"].userInfo
     };
