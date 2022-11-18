@@ -11,7 +11,7 @@ import { isSpeakerStatsDisabled } from '../../../../features/speaker-stats/funct
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
-import { IUserInfo } from '../../../base/app/types';
+import UserType, { IUserInfo } from '../../../base/app/types';
 
 import {
     getMultipleVideoSendingSupportFeatureFlag,
@@ -806,7 +806,7 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const security = _userInfo.userType === "Admin" && {
+        const security = _userInfo.userType === UserType.Admin && {
             key: 'security',
             alias: 'info',
             Content: SecurityDialogButton,
@@ -819,13 +819,13 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const recording = _userInfo.userType === "Admin" && {
+        const recording = _userInfo.userType === UserType.Admin && {
             key: 'recording',
             Content: RecordButton,
             group: 2
         };
 
-        const livestreaming = {
+        const livestreaming = _userInfo.userType === UserType.Admin && {
             key: 'livestreaming',
             Content: LiveStreamButton,
             group: 2
@@ -837,15 +837,15 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const shareVideo = (_userInfo.userType === "Admin" ||
-        _userInfo.userType === "Presenter") && {
+        const shareVideo = (_userInfo.userType === UserType.Admin ||
+        _userInfo.userType === UserType.Presenter) && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = (_userInfo.userType === "Admin" ||
-        _userInfo.userType === "Presenter") && this._showAudioSharingButton() && {
+        const shareAudio = (_userInfo.userType === UserType.Admin ||
+        _userInfo.userType === UserType.Presenter) && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -858,7 +858,7 @@ class Toolbox extends Component<IProps> {
         };
 
 
-        const whiteboard = _whiteboardEnabled && {
+        const whiteboard = _userInfo.userType === UserType.Admin && _whiteboardEnabled && {
             key: 'whiteboard',
             Content: WhiteboardButton,
             group: 3
@@ -900,19 +900,19 @@ class Toolbox extends Component<IProps> {
             group: 4
         };
 
-        const shortcuts = _userInfo.userType === "Admin" && !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _userInfo.userType === UserType.Admin && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
         };
 
-        const embed = _userInfo.userType === "Admin" && this._isEmbedMeetingVisible() && {
+        const embed = _userInfo.userType === UserType.Admin && this._isEmbedMeetingVisible() && {
             key: 'embedmeeting',
             Content: EmbedMeetingButton,
             group: 4
         };
 
-        const feedback = _feedbackConfigured && {
+        const feedback = _userInfo.userType === UserType.Admin && _feedbackConfigured && {
             key: 'feedback',
             Content: FeedbackButton,
             group: 4

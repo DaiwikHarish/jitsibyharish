@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import UserType  from '../../../base/app/types'
 import participantsPaneTheme from '../../../base/components/themes/participantsPaneTheme.json';
 import { openDialog } from '../../../base/dialog/actions';
 import { IconClose, IconHorizontalPoints } from '../../../base/icons/svg';
@@ -105,6 +106,7 @@ const ParticipantsPane = () => {
     const showMoreActionsButton = useSelector(isMoreActionsVisible);
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const _userInfo = useSelector((state:IReduxState)=>state["features/base/app"].userInfo)
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
@@ -161,7 +163,7 @@ const ParticipantsPane = () => {
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                     {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
-                {showFooter && (
+                {_userInfo?.userType === UserType.Admin &&  showFooter && (
                     <div className = { classes.footer }>
                         {showMuteAllButton && (
                             <Button

@@ -2,11 +2,13 @@
 
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 import { approveParticipant } from '../../../av-moderation/actions';
 import { IconMicrophoneEmpty } from '../../../base/icons';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
+import { IReduxState } from '../../../app/types';
+import UserType from '../../../base/app/types';
 
 type Props = {
 
@@ -32,12 +34,15 @@ const AskToUnmuteButton = ({ isAudioForceMuted, isVideoForceMuted, participantID
     const _onClick = useCallback(() => {
         dispatch(approveParticipant(participantID));
     }, [ participantID ]);
+    const _userInfo = useSelector((state:IReduxState)=>state["features/base/app"].userInfo)
+
 
     const text = isAudioForceMuted || !isVideoForceMuted
         ? t('participantsPane.actions.askUnmute')
         : t('participantsPane.actions.allowVideo');
 
     return (
+        _userInfo.userType === UserType.Admin &&
         <ContextMenuItem
             accessibilityLabel = { text }
             icon = { IconMicrophoneEmpty }

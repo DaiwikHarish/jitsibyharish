@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import UserType from '../../../base/app/types';
 
 import { translate } from '../../../base/i18n';
 import { IconVideoOff } from '../../../base/icons';
@@ -40,13 +41,14 @@ class MuteVideoButton extends AbstractMuteVideoButton {
      * @returns {ReactElement}
      */
     render() {
-        const { _videoTrackMuted, t } = this.props;
+        const { _videoTrackMuted, t,_userInfo } = this.props;
 
         if (_videoTrackMuted) {
             return null;
         }
 
         return (
+            _userInfo.userType=== UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('participantsPane.actions.stopVideo') }
                 className = 'mutevideolink'

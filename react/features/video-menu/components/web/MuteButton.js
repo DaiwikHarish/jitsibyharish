@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import UserType from '../../../base/app/types';
 
 import { translate } from '../../../base/i18n';
 import { IconMicrophoneEmptySlash } from '../../../base/icons';
@@ -41,13 +42,14 @@ class MuteButton extends AbstractMuteButton {
      * @returns {ReactElement}
      */
     render() {
-        const { _audioTrackMuted, t } = this.props;
+        const { _audioTrackMuted, t, _userInfo } = this.props;
 
         if (_audioTrackMuted) {
             return null;
         }
 
         return (
+            _userInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('dialog.muteParticipantButton') }
                 className = 'mutelink'

@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import UserType from '../../../base/app/types';
 
 import { translate } from '../../../base/i18n';
 import { IconMuteVideoEveryoneElse } from '../../../base/icons';
@@ -34,9 +35,10 @@ class MuteEveryoneElsesVideoButton extends AbstractMuteEveryoneElsesVideoButton 
      * @returns {ReactElement}
      */
     render() {
-        const { t } = this.props;
+        const { t,_userInfo } = this.props;
 
         return (
+            _userInfo.userType=== UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.muteEveryoneElsesVideoStream') }
                 icon = { IconMuteVideoEveryoneElse }
@@ -49,4 +51,18 @@ class MuteEveryoneElsesVideoButton extends AbstractMuteEveryoneElsesVideoButton 
     _handleClick: () => void;
 }
 
-export default translate(connect()(MuteEveryoneElsesVideoButton));
+/**
+ * Maps (parts of) the redux state to the React {@code Component} props of
+ * {@code ProfileTab}.
+ *
+ * @param {Object} state - The redux state.
+ * @protected
+ * @returns {Props}
+ */
+ export function _mapStateToProps(state: Object) {
+    return {
+        _userInfo: state["features/base/app"].userInfo
+    };
+}
+
+export default translate(connect(_mapStateToProps)(MuteEveryoneElsesVideoButton));

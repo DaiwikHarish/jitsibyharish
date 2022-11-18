@@ -6,6 +6,7 @@ import { WithTranslation } from 'react-i18next';
 import UIEvents from '../../../../../service/UI/UIEvents';
 import { createProfilePanelButtonEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
+import { connect } from '../../../base/redux/functions';
 // @ts-ignore
 import { AbstractDialogTab } from '../../../base/dialog';
 // @ts-ignore
@@ -15,11 +16,14 @@ import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
 // @ts-ignore
 import { openLogoutDialog } from '../../actions';
+import { IUserInfo } from '../../../base/app/reducer';
 
 /**
  * The type of the React {@code Component} props of {@link ProfileTab}.
  */
 export type Props = AbstractDialogTabProps & WithTranslation & {
+
+    _userInfo:IUserInfo;
 
     /**
      * Whether or not server-side authentication is available.
@@ -118,7 +122,9 @@ class ProfileTab extends AbstractDialogTab<Props> {
             email,
             hideEmailInSettings,
             readOnlyName,
-            t // @ts-ignore
+            t ,
+            _userInfo
+            // @ts-ignore,
         } = this.props;
 
         return (
@@ -126,24 +132,25 @@ class ProfileTab extends AbstractDialogTab<Props> {
                 <div className = 'profile-edit'>
                     <div className = 'profile-edit-field'>
                         <Input
-                            disabled = { readOnlyName }
+                            readOnly={true}
                             id = 'setDisplayName'
                             label = { t('profile.setDisplayNameLabel') }
                             name = 'name'
                             onChange = { this._onDisplayNameChange }
                             placeholder = { t('settings.name') }
                             type = 'text'
-                            value = { displayName } />
+                            value = { _userInfo.userName } />
                     </div>
                     {!hideEmailInSettings && <div className = 'profile-edit-field'>
                         <Input
+                            readOnly={true}
                             id = 'setEmail'
                             label = { t('profile.setEmailLabel') }
                             name = 'email'
                             onChange = { this._onEmailChange }
                             placeholder = { t('profile.setEmailInput') }
                             type = 'text'
-                            value = { email } />
+                            value = { _userInfo.emailId } />
                     </div>}
                 </div>
                 { authEnabled && this._renderAuth() }
@@ -205,5 +212,21 @@ class ProfileTab extends AbstractDialogTab<Props> {
     }
 }
 
+/**
+ * Maps (parts of) the redux state to the React {@code Component} props of
+ * {@code ProfileTab}.
+ *
+ * @param {Object} state - The redux state.
+ * @protected
+ * @returns {Props}
+ */
+ export function _mapStateToProps(state: Object) {
+    return {
+        _userInfo: state["features/base/app"].userInfo
+    };
+}
+
+
 // @ts-ignore
-export default translate(ProfileTab);
+// export default translate(ProfileTab);
+export default translate(connect(_mapStateToProps)(ProfileTab));
