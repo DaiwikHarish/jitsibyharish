@@ -248,6 +248,7 @@ export default class BaseApp extends Component<*, State> {
         }
 
         if (route.href) {
+            console.log("JB _navigate", route.href);
             // This navigation requires loading a new URL in the browser.
             window.location.href = route.href;
 
