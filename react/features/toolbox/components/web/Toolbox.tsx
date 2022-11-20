@@ -11,6 +11,7 @@ import { isSpeakerStatsDisabled } from '../../../../features/speaker-stats/funct
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
+import { OptionType } from '../../../base/app/reducer';
 import UserType, { IUserInfo } from '../../../base/app/types';
 
 import {
@@ -151,6 +152,8 @@ import VideoSettingsButton from './VideoSettingsButton';
  * The type of the React {@code Component} props of {@link Toolbox}.
  */
 interface IProps extends WithTranslation {
+
+    _clientType:string;
 
     _userInfo:IUserInfo;
 
@@ -725,16 +728,17 @@ class Toolbox extends Component<IProps> {
             _multiStreamModeEnabled,
             _screenSharing,
             _whiteboardEnabled,
-            _userInfo
+            _userInfo,
+            _clientType
         } = this.props;
 
-        const microphone = {
+        const microphone = _clientType === OptionType.ENABLE_ALL && {
             key: 'microphone',
             Content: AudioSettingsButton,
             group: 0
         };
 
-        const camera = {
+        const camera = _clientType === OptionType.ENABLE_ALL &&{
             key: 'camera',
             Content: VideoSettingsButton,
             group: 0
@@ -870,7 +874,7 @@ class Toolbox extends Component<IProps> {
             group: 3
         };
 
-        const virtualBackground = (_multiStreamModeEnabled || !_screenSharing) && {
+        const virtualBackground = _clientType === OptionType.ENABLE_ALL && (_multiStreamModeEnabled || !_screenSharing) && {
             key: 'select-background',
             Content: VideoBackgroundButton,
             group: 3
@@ -894,7 +898,7 @@ class Toolbox extends Component<IProps> {
             group: 3
         };
 
-        const settings = {
+        const settings = _clientType === OptionType.ENABLE_ALL && {
             key: 'settings',
             Content: SettingsButton,
             group: 4
@@ -1420,9 +1424,11 @@ class Toolbox extends Component<IProps> {
             _reactionsEnabled,
             _toolbarButtons,
             classes,
-            t
+            t,
+            _clientType
         } = this.props;
 
+        console.log("_clientType:",_clientType)
         const toolbarAccLabel = 'toolbar.accessibilityLabel.moreActionsMenu';
         const containerClassName = `toolbox-content${_isMobile ? ' toolbox-content-mobile' : ''}`;
 
@@ -1588,7 +1594,8 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
         _virtualSource: state['features/virtual-background'].virtualSource,
         _visible: isToolboxVisible(state),
         _whiteboardEnabled: isWhiteboardButtonVisible(state),
-        _userInfo: state["features/base/app"].userInfo
+        _userInfo: state["features/base/app"].userInfo,
+        _clientType: state["features/base/app"].clientType
     };
 }
 
