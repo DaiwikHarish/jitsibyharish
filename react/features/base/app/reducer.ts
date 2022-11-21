@@ -1,11 +1,17 @@
 import ReducerRegistry from '../redux/ReducerRegistry';
 
-import { APP_USER_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { APP_CLIENT_TYPE, APP_USER_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
 
 import { IUserInfo } from './types';
 export interface IAppState {
     app?: any;
     userInfo?: IUserInfo;
+    clientType?:string
+}
+
+export class OptionType{
+    public static ENABLE_ALL = "Enable all feature";
+    public static ENABLE_CHAT_POLL = "Enable only chat and poll"
 }
 
 ReducerRegistry.register<IAppState>(
@@ -40,7 +46,15 @@ ReducerRegistry.register<IAppState>(
                     ...state,
                     userInfo
                 }
-                break;    
+                break; 
+                
+            case APP_CLIENT_TYPE:
+                const { clientType } = action;
+                return {
+                    ...state,
+                    clientType
+                }
+                break; 
         }
 
         return state;
