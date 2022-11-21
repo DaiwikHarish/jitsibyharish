@@ -40,11 +40,14 @@ export default class PrejoinApp extends BaseApp<Props> {
      * @returns {void}
      */
     async componentDidMount() {
+
         await super.componentDidMount();
 
         const { store } = this.state;
         const { dispatch } = store;
         const { styleType } = this.props;
+
+        console.log("JB Prejoin component => ", window.location.href);
 
         super._navigate({
             component: PrejoinThirdParty,
