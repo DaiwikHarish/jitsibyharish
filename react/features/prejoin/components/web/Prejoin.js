@@ -346,7 +346,8 @@ class Prejoin extends Component<Props, State> {
             showDialog,
             t,
             videoTrack,
-            _userInfo
+            _userInfo,
+            // _clientType
         } = this.props;
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
@@ -365,6 +366,8 @@ class Prejoin extends Component<Props, State> {
         }
         const hasExtraJoinButtons = Boolean(extraButtonsToRender.length);
         const { showJoinByPhoneButtons, showError } = this.state;
+
+        // console.log("alam _clientType", _clientType)
 
         return (
             <PreMeetingScreen
@@ -462,7 +465,8 @@ function mapStateToProps(state): Object {
         showDialog: isJoinByPhoneDialogVisible(state),
         showErrorOnJoin,
         videoTrack: getLocalJitsiVideoTrack(state),
-        _userInfo: state["features/base/app"].userInfo
+        _userInfo: state["features/base/app"].userInfo,
+        // _clientType: state["features/base/app"].clientType
     };
 }
 

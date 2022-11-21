@@ -1,6 +1,6 @@
 import { IStore } from '../../app/types';
 
-import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { APP_CLIENT_TYPE, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
 
 /**
  * Signals that a specific App will mount (in the terms of React).
@@ -42,5 +42,13 @@ export function appWillUnmount(app: Object) {
     return {
         type: APP_WILL_UNMOUNT,
         app
+    };
+}
+
+
+export function appClientType(clientType: string) {
+    return {
+        type: APP_CLIENT_TYPE,
+        clientType
     };
 }

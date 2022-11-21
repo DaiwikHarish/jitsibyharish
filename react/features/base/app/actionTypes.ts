@@ -21,3 +21,5 @@ export const APP_WILL_MOUNT = 'APP_WILL_MOUNT';
 export const APP_WILL_UNMOUNT = 'APP_WILL_UNMOUNT';
 
 export const APP_USER_INFO = 'APP_USER_INFO';
+
+export const APP_CLIENT_TYPE = 'APP_CLIENT_TYPE';
