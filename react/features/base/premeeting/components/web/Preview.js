@@ -13,6 +13,8 @@ declare var APP: Object;
 
 export type Props = {
 
+    clickStartBtn:Boolean;
+
     /**
      * Local participant id.
      */
@@ -46,7 +48,7 @@ export type Props = {
  * @returns {ReactElement}
  */
 function Preview(props: Props) {
-    const { _participantId, flipVideo, name, videoMuted, videoTrack } = props;
+    const { _participantId, flipVideo, name, videoMuted, videoTrack,clickStartBtn } = props;
     const className = flipVideo ? 'flipVideoX' : '';
 
     useEffect(() => {
@@ -63,6 +65,7 @@ function Preview(props: Props) {
         <div id = 'preview'>
             {!videoMuted && videoTrack
                 ? (
+                    clickStartBtn &&
                     <Video
                         className = { className }
                         id = 'prejoinVideo'

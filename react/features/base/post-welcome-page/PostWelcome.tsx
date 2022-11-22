@@ -46,22 +46,23 @@ export class PostWelcome extends Component<{}, *>{
     }
 
     render() {
-        const { onJoin } = this.props;
+        const { onStart } = this.props;
         console.log("alam props",this.props)
         return (
             <div
                 style={{
                     flex: 1,
-                    backgroundColor: "#292929",
-                    alignContent: "center",
+                    backgroundColor: '#292929',
+                    alignContent: "flex-start",
                     alignItems: "center",
                     paddingTop: "15%",
+                    marginBottom:"20px",
                 }}
             >
                 <div
                     role={"button"}
                     style={{
-                        width: "40%",
+                        width: "100%",
                         // backgroundColor: "#292929",
                         padding: "10px",
                         margin: "auto",
@@ -78,12 +79,10 @@ export class PostWelcome extends Component<{}, *>{
                         style={{ width: "30px", height: "30px" }}
                         type="radio"
                         value={OptionType.ENABLE_ALL}
-                        // value={"Male"}
                         checked={this.props?._clientType === OptionType.ENABLE_ALL
                         }
                         onChange={this.onValueChange}
-                        // checked={this.state.selectedOption === "Male"}
-                        // onChange={this.onValueChange}
+                        
                     />
                     <div
                         style={{
@@ -101,7 +100,7 @@ export class PostWelcome extends Component<{}, *>{
                             boxSizing: "border-box",
                         }}
                     >
-                        Chat + Poll + Mic + Video
+                        Chat, Poll, Mic and Camera
                     </div>
                 </div>
 
@@ -109,7 +108,7 @@ export class PostWelcome extends Component<{}, *>{
                     role={"button"}
 
                     style={{
-                        width: "40%",
+                        width: "100%",
                         // backgroundColor: "white",
                         padding: "10px",
                         margin: "auto",
@@ -126,12 +125,9 @@ export class PostWelcome extends Component<{}, *>{
                         style={{ width: "30px", height: "30px" }}
                         type="radio"
                         value={OptionType.ENABLE_CHAT_POLL}
-                        // value={"Female"}
                         checked={this.props?._clientType === OptionType.ENABLE_CHAT_POLL
                         }
                         onChange={this.onValueChange}
-                        // checked={this.state.selectedOption === "Female"}
-                        // onChange={this.onValueChange}
                     />
                     <div
                         style={{
@@ -149,14 +145,14 @@ export class PostWelcome extends Component<{}, *>{
                             boxSizing: "border-box",
                         }}
                     >
-                        Chat + Poll
+                        Chat and Poll
                     </div>
                 </div>
                 <button
-                    onClick={onJoin}
+                    onClick={onStart}
                     role={"button"}
                     style={{
-                        width: "15%",
+                        width: "50%",
                         backgroundColor: "#A865C9",
                         padding: "10",
                         borderColor: "slateblue",
@@ -167,6 +163,7 @@ export class PostWelcome extends Component<{}, *>{
                         textAlign: "center",
                         borderRadius: "10px",
                         marginTop: "50px",
+                        // marginLeft:"5px",
                         boxSizing: "border-box",
                     }}
                 >

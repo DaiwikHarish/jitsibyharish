@@ -20,6 +20,8 @@ import Preview from './Preview';
 
 interface IProps {
 
+    clickStartBtn:boolean;
+
     _userInfo: IUserInfo;
 
     /**
@@ -114,7 +116,8 @@ const PreMeetingScreen = ({
     title,
     videoMuted,
     videoTrack,
-    _userInfo
+    _userInfo,
+    clickStartBtn
 }: IProps) => {
     const { classes } = useStyles();
     const containerClassName = `premeeting-screen ${className ? className : ''}`;
@@ -128,11 +131,11 @@ const PreMeetingScreen = ({
         <div className = { containerClassName }>
             <div style = { style }>
                 <div className = 'content'>
-                    <ConnectionStatus />
+                    { clickStartBtn && <ConnectionStatus />}
 
                     <div className = 'content-controls'>
                         <h1 className = 'title'>
-                            {title}
+                            { clickStartBtn == false ?"Choose An Option" :title}
                         </h1>
                         {_roomName && (
                             <span className = { classes.subtitle }>
@@ -140,15 +143,17 @@ const PreMeetingScreen = ({
                             </span>
                         )}
                         {children}
-                        {_buttons.length && <Toolbox toolbarButtons = { _buttons } />}
+                        { clickStartBtn && _buttons.length && <Toolbox toolbarButtons = { _buttons } />}
                         {skipPrejoinButton}
-                        {showDeviceStatus && <DeviceStatus />}
+                        { clickStartBtn && showDeviceStatus && <DeviceStatus />}
                     </div>
                 </div>
             </div>
-            <Preview
+         <Preview
                 videoMuted = { videoMuted }
-                videoTrack = { videoTrack } />
+                videoTrack = { videoTrack }
+                clickStartBtn={clickStartBtn}
+                 />
         </div>
     );
 };
