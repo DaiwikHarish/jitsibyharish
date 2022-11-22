@@ -37,7 +37,7 @@ export class PostWelcome extends Component<Props>{
         this.onValueChange = this.onValueChange.bind(this);
     }
 
-    onValueChange(event) {
+    onValueChange(event:any) {
         console.log("alam onValueChange called",event.target.value)
         //@ts-ignore
         this.props.updateClientType(event.target.value);
