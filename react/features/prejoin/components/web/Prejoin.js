@@ -28,6 +28,8 @@ import {
 
 import DropdownButton from './DropdownButton';
 import JoinByPhoneDialog from './dialogs/JoinByPhoneDialog';
+import PostWelcome from '../../../base/post-welcome-page/PostWelcome';
+import { OptionType } from '../../../base/app/reducer';
 
 type Props = {
 
@@ -139,7 +141,8 @@ class Prejoin extends Component<Props, State> {
 
         this.state = {
             showError: false,
-            showJoinByPhoneButtons: false
+            showJoinByPhoneButtons: false,
+            clickStartBtn : false
         };
 
         this._closeDialog = this._closeDialog.bind(this);
@@ -152,11 +155,15 @@ class Prejoin extends Component<Props, State> {
         this._showDialogKeyPress = this._showDialogKeyPress.bind(this);
         this._onJoinKeyPress = this._onJoinKeyPress.bind(this);
         this._getExtraJoinButtons = this._getExtraJoinButtons.bind(this);
+        this.clickHandler = this.clickHandler.bind(this);
 
         this.showDisplayNameField = props.canEditDisplayName || props.showErrorOnJoin;
     }
     _onJoinButtonClick: () => void;
 
+    clickHandler() {
+        this.setState({clickStartBtn:true });
+    };
     /**
      * Handler for the join button.
      *
@@ -347,7 +354,7 @@ class Prejoin extends Component<Props, State> {
             t,
             videoTrack,
             _userInfo,
-            // _clientType
+            _clientType
         } = this.props;
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
@@ -367,18 +374,25 @@ class Prejoin extends Component<Props, State> {
         const hasExtraJoinButtons = Boolean(extraButtonsToRender.length);
         const { showJoinByPhoneButtons, showError } = this.state;
 
-        // console.log("alam _clientType", _clientType)
 
         return (
             <PreMeetingScreen
                 showDeviceStatus = { deviceStatusVisible }
                 title = { t('prejoin.joinMeeting') }
-                videoMuted = { !showCameraPreview }
-                videoTrack = { videoTrack }>
-                <div
-                    className = 'prejoin-input-area'
-                    data-testid = 'prejoin.screen'>
-                    {this.showDisplayNameField ? (<InputField
+                videoMuted = { _clientType === OptionType.ENABLE_ALL? false : true }
+                videoTrack = { _clientType === OptionType.ENABLE_ALL? videoTrack : {} }
+                clickStartBtn={this.state.clickStartBtn}
+                >
+                
+                
+
+                {this.state.clickStartBtn == false ? (
+                    <PostWelcome onStart={this.clickHandler}/> 
+                    ) : (  
+                    <div
+                        className = 'prejoin-input-area'
+                        data-testid = 'prejoin.screen'>
+                        {this.showDisplayNameField ? (<InputField
                         autoComplete = { 'name' }
                         autoFocus = { true }
                         className = { showError ? 'error' : '' }
@@ -431,7 +445,7 @@ class Prejoin extends Component<Props, State> {
                             </ActionButton>
                         </InlineDialog>
                     </div>
-                </div>
+                </div>)}
                 { showDialog && (
                     <JoinByPhoneDialog
                         joinConferenceWithoutAudio = { joinConferenceWithoutAudio }
@@ -466,7 +480,7 @@ function mapStateToProps(state): Object {
         showErrorOnJoin,
         videoTrack: getLocalJitsiVideoTrack(state),
         _userInfo: state["features/base/app"].userInfo,
-        // _clientType: state["features/base/app"].clientType
+        _clientType: state["features/base/app"].clientType
     };
 }
 
