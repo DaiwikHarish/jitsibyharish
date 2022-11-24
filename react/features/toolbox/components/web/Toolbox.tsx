@@ -744,7 +744,7 @@ class Toolbox extends Component<IProps> {
             group: 0
         };
 
-        const profile = this._isProfileVisible() && {
+        const profile = _clientType === OptionType.ENABLE_ALL && this._isProfileVisible() && {
             key: 'profile',
             Content: ProfileButton,
             group: 1
@@ -803,7 +803,8 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const fullscreen = !_isIosMobile && {
+        const fullscreen = (_userInfo.userType === UserType.Admin ||
+        _userInfo.userType === UserType.Presenter) && !_isIosMobile && {
             key: 'fullscreen',
             Content: FullscreenButton,
             handleClick: this._onToolbarToggleFullScreen,
