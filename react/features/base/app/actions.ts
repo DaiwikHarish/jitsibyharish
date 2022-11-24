@@ -46,6 +46,11 @@ export function appWillUnmount(app: Object) {
 }
 
 
+ /**
+ * This action is responsible to choos whether you want all features or only chat and poll in the conference
+ * @param clientType - where Choose option is defined
+ * @returns 
+ */
 export function appClientType(clientType: string) {
     return {
         type: APP_CLIENT_TYPE,

@@ -31,9 +31,9 @@ export function notifyKickedOut(participant: Object, _: ?Function) { // eslint-d
         dispatch(showNotification({
             appearance: NOTIFICATION_TYPE.ERROR,
             hideErrorSupportLink: true,
-            descriptionKey: 'dialog.kickMessage',
+            descriptionKey: 'Sorry, you have been removed from conference',
             descriptionArguments: args,
-            titleKey: 'dialog.kickTitle',
+            titleKey: 'Removed by Admin',
             titleArguments: args
         }, NOTIFICATION_TIMEOUT_TYPE.STICKY));
     };

@@ -76,10 +76,10 @@ const COMPONENTS = [
         Component: TranscribingLabel,
         id: 'transcribing'
     },
-    {
-        Component: VideoQualityLabel,
-        id: 'video-quality'
-    },
+    // {
+    //     Component: VideoQualityLabel,
+    //     id: 'video-quality'
+    // },
     {
         Component: InsecureRoomNameLabel,
         id: 'insecure-room'
