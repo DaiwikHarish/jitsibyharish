@@ -54,6 +54,8 @@ function _connectionEstablished(store, next, action) {
     // determined by when no one needs them anymore.
     const { history, location } = window;
 
+    return;
+
     if (inIframe()) {
         return;
     }

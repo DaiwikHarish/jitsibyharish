@@ -45,8 +45,17 @@ export * from './actions.any';
  */
 export function appNavigate(uri?: string) {
     return async (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        
+        if(uri == undefined){
+            uri = window.location.href;
+            console.log("JB uri is null , so window.location.href", uri)
+        }
+
         let location = parseURIString(uri);
 
+        console.log("JB In side appNavigate uri", uri)
+
+        console.log("JB In side appNavigate location", location);
         // If the specified location (URI) does not identify a host, use the app's
         // default.
         if (!location || !location.host) {
@@ -127,6 +136,7 @@ export function appNavigate(uri?: string) {
             return;
         }
 
+        console.log("JB locationURL", locationURL)
         dispatch(setLocationURL(locationURL));
         dispatch(setConfig(config));
         dispatch(setRoom(room));

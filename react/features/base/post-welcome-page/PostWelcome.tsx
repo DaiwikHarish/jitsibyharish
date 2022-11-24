@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { WithTranslation } from 'react-i18next';
 import { IReduxState } from "../../app/types";
-import { connect } from "../../base/redux";
 import { appClientType } from "../app/actions";
 import { OptionType } from "../app/reducer";
+import { connect } from "../redux/functions";
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch:any) => {
     return {
         updateClientType: (clientType: string) =>
         {
@@ -21,17 +21,23 @@ const mapStateToProps = (state: IReduxState) => {
     };
 };
 
+type Props = {
+
+    onStart?:any;
+    _clientType:string;
+}
+
 // interface IProps extends WithTranslation {
 //     _clientType:string
 // }
 
-export class PostWelcome extends Component<{}, *>{
+export class PostWelcome extends Component<Props>{
     constructor(props: any) {
         super(props);
         this.onValueChange = this.onValueChange.bind(this);
     }
 
-    onValueChange(event) {
+    onValueChange(event:any) {
         console.log("alam onValueChange called",event.target.value)
         //@ts-ignore
         this.props.updateClientType(event.target.value);

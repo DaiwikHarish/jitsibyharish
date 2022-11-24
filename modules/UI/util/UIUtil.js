@@ -40,6 +40,7 @@ const UIUtil = {
      * used instead of this method in order to preserve current URL params.
      */
     redirect(url) {
+        console.log("JB redirect url ", url);
         window.location.href = url;
     },
 

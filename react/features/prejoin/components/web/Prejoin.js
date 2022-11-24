@@ -359,6 +359,10 @@ class Prejoin extends Component<Props, State> {
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
 
+          this.props.updateSettings({
+            displayName:_userInfo?.userName
+        });    
+
         const extraJoinButtons = this._getExtraJoinButtons();
         let extraButtonsToRender = Object.values(extraJoinButtons).filter((val: Object) =>
             !(prejoinConfig?.hideExtraJoinButtons || []).includes(val.key)

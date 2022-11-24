@@ -243,11 +243,15 @@ export default class BaseApp extends Component<*, State> {
      * @returns {Promise}
      */
     _navigate(route): Promise<*> {
+        console.log("JB _navigate1", route);
+        console.log("JB _navigate1", this.state.route);
+
         if (_.isEqual(route, this.state.route)) {
             return Promise.resolve();
         }
 
         if (route.href) {
+            console.log("JB _navigate2", route.href);
             // This navigation requires loading a new URL in the browser.
             window.location.href = route.href;
 
