@@ -1426,7 +1426,8 @@ class Toolbox extends Component<IProps> {
             _toolbarButtons,
             classes,
             t,
-            _clientType
+            _clientType,
+            _userInfo
         } = this.props;
 
         console.log("_clientType:",_clientType)
@@ -1497,7 +1498,7 @@ class Toolbox extends Component<IProps> {
                             </OverflowMenuButton>
                         )}
 
-                        { isToolbarButtonEnabled('hangup', _toolbarButtons) && (
+                        { _userInfo.userType === UserType.Admin && isToolbarButtonEnabled('hangup', _toolbarButtons) && (
                             _endConferenceSupported
                                 ? <HangupMenuButton
                                     ariaControls = 'hangup-menu'

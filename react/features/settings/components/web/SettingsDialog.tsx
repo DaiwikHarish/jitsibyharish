@@ -40,6 +40,7 @@ import ModeratorTab from './ModeratorTab';
 import MoreTab from './MoreTab';
 import ProfileTab from './ProfileTab';
 import SoundsTab from './SoundsTab';
+import UserType from '../../../base/app/types'
 
 /**
  * The type of the React {@code Component} props of
@@ -310,6 +311,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const showSoundsSettings = configuredTabs.includes('sounds');
     const tabs = [];
 
+    const _userInfo = state["features/base/app"].userInfo
+
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.DEVICES,
@@ -347,7 +350,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    if (showModeratorSettings) {
+    if (_userInfo?.userType === UserType.Admin && showModeratorSettings) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
             component: ModeratorTab,
