@@ -5,10 +5,16 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { approveParticipant } from '../../../av-moderation/actions';
+import UserType, { IUserInfo } from '../../../base/app/types';
 import Button from '../../../base/ui/components/web/Button';
 import { QUICK_ACTION_BUTTON } from '../../constants';
 
 interface IProps {
+
+    /**
+     * An object of user information type.
+     */
+    _userInfo:IUserInfo;
 
     /**
      * The translated ask unmute aria label.
@@ -56,6 +62,7 @@ const useStyles = makeStyles()((theme: Theme) => {
 
 const ParticipantQuickAction = ({
     askUnmuteText,
+    _userInfo,
     buttonType,
     muteAudio,
     muteParticipantButtonText,
@@ -84,6 +91,7 @@ const ParticipantQuickAction = ({
     }
     case QUICK_ACTION_BUTTON.ASK_TO_UNMUTE: {
         return (
+            _userInfo.userType === UserType.Admin &&
             <Button
                 accessibilityLabel = { `${t('participantsPane.actions.askUnmute')} ${participantName}` }
                 className = { styles.button }

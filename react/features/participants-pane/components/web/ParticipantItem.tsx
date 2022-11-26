@@ -2,6 +2,7 @@ import { Theme } from '@mui/material';
 import React, { ReactElement, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
+import UserType, { IUserInfo } from '../../../base/app/types';
 
 // @ts-ignore
 import { Avatar } from '../../../base/avatar';
@@ -20,6 +21,12 @@ import {
 import { RaisedHandIndicator } from './RaisedHandIndicator';
 
 interface IProps extends WithTranslation {
+
+
+    /**
+     * Type of User information.
+     */
+    _userInfo:IUserInfo;
 
     /**
      * Type of trigger for the participant actions.
@@ -140,7 +147,8 @@ function ParticipantItem({
     raisedHand,
     t,
     videoMediaState = MEDIA_STATE.NONE,
-    youText
+    youText,
+    _userInfo
 }: IProps) {
     const onClick = useCallback(
         () => openDrawerForParticipant?.({
@@ -166,7 +174,12 @@ function ParticipantItem({
                 </div>
                 {local ? <span>&nbsp;({youText})</span> : null}
             </div>
-            {isModerator && !disableModeratorIndicator && <div className = { styles.moderatorLabel }>
+            {
+                _userInfo.userType === UserType.Admin
+                &&
+            isModerator && !disableModeratorIndicator
+                && 
+                <div className = { styles.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}
         </>
