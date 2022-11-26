@@ -80,6 +80,7 @@ const ParticipantQuickAction = ({
     switch (buttonType) {
     case QUICK_ACTION_BUTTON.MUTE: {
         return (
+            _userInfo.userType === UserType.Admin &&
             <Button
                 accessibilityLabel = { `${t('participantsPane.actions.mute')} ${participantName}` }
                 className = { styles.button }

@@ -1498,7 +1498,7 @@ class Toolbox extends Component<IProps> {
                             </OverflowMenuButton>
                         )}
 
-                        { _userInfo.userType === UserType.Admin && isToolbarButtonEnabled('hangup', _toolbarButtons) && (
+                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && (
                             _endConferenceSupported
                                 ? <HangupMenuButton
                                     ariaControls = 'hangup-menu'
@@ -1511,7 +1511,7 @@ class Toolbox extends Component<IProps> {
                                         hidden = { false }
                                         inDrawer = { _overflowDrawer }
                                         onKeyDown = { this._onEscKey }>
-                                        <EndConferenceButton />
+                                        {_userInfo.userType === UserType.Admin && <EndConferenceButton />}
                                         <LeaveConferenceButton />
                                     </ContextMenu>
                                 </HangupMenuButton>
