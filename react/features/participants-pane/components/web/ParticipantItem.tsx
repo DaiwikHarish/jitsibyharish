@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material';
 import React, { ReactElement, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import UserType, { IUserInfo } from '../../../base/app/types';
 
@@ -20,13 +21,15 @@ import {
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';
 
+import { IReduxState } from '../../../app/types';
+
 interface IProps extends WithTranslation {
 
 
     /**
      * Type of User information.
      */
-    _userInfo:IUserInfo;
+    // _userInfo?:IUserInfo;
 
     /**
      * Type of trigger for the participant actions.
@@ -148,8 +151,10 @@ function ParticipantItem({
     t,
     videoMediaState = MEDIA_STATE.NONE,
     youText,
-    _userInfo
+    // _userInfo
 }: IProps) {
+
+    const info : IUserInfo | undefined = useSelector((state: IReduxState )=> state['features/base/app'].userInfo)
     const onClick = useCallback(
         () => openDrawerForParticipant?.({
             participantID,
@@ -175,7 +180,7 @@ function ParticipantItem({
                 {local ? <span>&nbsp;({youText})</span> : null}
             </div>
             {
-                _userInfo.userType === UserType.Admin
+                info?.userType === UserType.Admin
                 &&
             isModerator && !disableModeratorIndicator
                 && 
