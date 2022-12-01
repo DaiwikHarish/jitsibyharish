@@ -35,11 +35,11 @@ class MuteEveryoneElseButton extends AbstractMuteEveryoneElseButton {
      * @returns {ReactElement}
      */
     render() {
-        const { t,_userInfo } = this.props;
+        const { t,_attendeeInfo } = this.props;
 
         return (
 
-            _userInfo.userType=== UserType.Admin &&
+            _attendeeInfo.userType=== UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.muteEveryoneElse') }
                 icon = { IconMuteEveryoneElse }
@@ -62,7 +62,7 @@ class MuteEveryoneElseButton extends AbstractMuteEveryoneElseButton {
  */
  export function _mapStateToProps(state: Object) {
     return {
-        _userInfo: state["features/base/app"].userInfo
+        _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }
 

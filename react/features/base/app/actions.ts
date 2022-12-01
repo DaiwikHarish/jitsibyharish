@@ -1,6 +1,7 @@
 import { IStore } from '../../app/types';
 
-import { APP_CLIENT_TYPE, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { APP_ATTENDEE_INFO, APP_CLIENT_TYPE, APP_MEETING_INFO, APP_URL_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { IAttendeeInfo, IMeetingInfo, IUrlInfo } from './types';
 
 /**
  * Signals that a specific App will mount (in the terms of React).
@@ -55,5 +56,41 @@ export function appClientType(clientType: string) {
     return {
         type: APP_CLIENT_TYPE,
         clientType
+    };
+}
+
+/**
+ * This action is responsible for url params
+ * @param urlInfo - where meetingId and userId are defined
+ * @returns 
+ */
+export function appUrlInfo(urlInfo: IUrlInfo) {
+    return {
+        type: APP_URL_INFO,
+        urlInfo
+    };
+}
+
+/**
+ * This action meeting information we are fetching from AwesomeReview API
+ * @param urlInfo - where meeting details are defined
+ * @returns 
+ */
+export function appMeetingInfo(meetingInfo: IMeetingInfo) {
+    return {
+        type: APP_MEETING_INFO,
+        meetingInfo
+    };
+}
+
+/**
+ * This action attendee information we are fetching from AwesomeReview API
+ * @param urlInfo - where attendee details are defined
+ * @returns 
+ */
+export function appAttendeeInfo(attendeeInfo: IAttendeeInfo) {
+    return {
+        type: APP_ATTENDEE_INFO,
+        attendeeInfo
     };
 }

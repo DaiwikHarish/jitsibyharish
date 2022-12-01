@@ -2,12 +2,12 @@
 
 import React, { Fragment } from 'react';
 
-import { APP_USER_INFO, BaseApp } from '../../base/app';
+import { APP_URL_INFO, BaseApp } from '../../base/app';
 import { toURLString } from '../../base/util';
 import { OverlayContainer } from '../../overlay';
 import { appNavigate } from '../actions';
 import { getDefaultURL } from '../functions';
-import { IUserInfo } from '../../base/app/types';
+import { IUrlInfo } from '../../base/app/types';
 
 import { parseURIString } from '../../base/util'; 
 /**
@@ -114,29 +114,24 @@ export class AbstractApp extends BaseApp<Props, *> {
      */
     _openURL(url) {
 
+        /**
+         * Taking userId and meetingId from Url
+         */
         let urlObject = parseURIString(url);
         console.log("JB this.props.location.search", urlObject);
         const query = new URLSearchParams(urlObject.search);
-        const userType = query.get('userType');
-        const userName = query.get('userName');
-        const userId = query.get('userName');
+        const userId = query.get('userId');
         const meetingId = query.get('meetingId');
-        const meetingName = query.get('meetingName');
-        const emailId = query.get('emailId');
- 
-       let userInfo: IUserInfo = {
+
+       let urlInfo: IUrlInfo = {
             userId: userId,
-            userType: userType,
-            userName: userName,
-            emailId: emailId,
-            meetingId:meetingId,
-            meetingName: meetingName,
+            meetingId:meetingId
         };
 
         this.state.store.dispatch(appNavigate(toURLString(url)));
         this.state.store.dispatch({
-            type: APP_USER_INFO,
-            userInfo
+            type: APP_URL_INFO,
+            urlInfo
         });
     }
 }

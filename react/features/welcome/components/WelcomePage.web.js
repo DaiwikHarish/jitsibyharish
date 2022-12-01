@@ -344,7 +344,7 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement}
      */
     _renderFooter() {
-        const { t } = this.props;
+        const { t} = this.props;
         const {
             MOBILE_DOWNLOAD_LINK_ANDROID,
             MOBILE_DOWNLOAD_LINK_F_DROID,

@@ -37,14 +37,14 @@ class GrantModeratorButton extends AbstractGrantModeratorButton {
      * @returns {ReactElement}
      */
     render() {
-        const { t, visible, _userInfo } = this.props;
+        const { t, visible, _attendeeInfo } = this.props;
 
         if (!visible) {
             return null;
         }
 
         return (
-            _userInfo.userType === UserType.Admin &&
+            _attendeeInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.grantModerator') }
                 className = 'grantmoderatorlink'

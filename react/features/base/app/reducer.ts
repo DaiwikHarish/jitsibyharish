@@ -1,11 +1,13 @@
 import ReducerRegistry from '../redux/ReducerRegistry';
 
-import { APP_CLIENT_TYPE, APP_USER_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
+import { APP_ATTENDEE_INFO, APP_CLIENT_TYPE, APP_MEETING_INFO, APP_URL_INFO, APP_WILL_MOUNT, APP_WILL_UNMOUNT } from './actionTypes';
 
-import { IUserInfo } from './types';
+import { IAttendeeInfo, IMeetingInfo, IUrlInfo } from './types';
 export interface IAppState {
     app?: any;
-    userInfo?: IUserInfo;
+    urlInfo?:IUrlInfo;
+    meetingInfo?:IMeetingInfo;
+    attendeeInfo?: IAttendeeInfo;
     clientType?:string
 }
 
@@ -35,17 +37,33 @@ ReducerRegistry.register<IAppState>(
                     return {
                         ...state,
                         app: undefined,
-                        userInfo: undefined,
+                        attendeeInfo: undefined,
                     };
                 }
                 break;
 
-            case APP_USER_INFO:
-                const { userInfo } = action;
+            case APP_URL_INFO:
+                const { urlInfo } = action;
                 return {
                     ...state,
-                    userInfo
+                    urlInfo
                 }
+                break; 
+
+            case APP_ATTENDEE_INFO:
+                    const { attendeeInfo } = action;
+                    return {
+                        ...state,
+                        attendeeInfo
+                    }
+                break;
+                    
+            case APP_MEETING_INFO:
+                    const { meetingInfo } = action;
+                    return {
+                        ...state,
+                        meetingInfo
+                    }
                 break; 
                 
             case APP_CLIENT_TYPE:

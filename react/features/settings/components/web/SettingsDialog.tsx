@@ -311,7 +311,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const showSoundsSettings = configuredTabs.includes('sounds');
     const tabs = [];
 
-    const _userInfo = state["features/base/app"].userInfo
+    const _attendeeInfo = state["features/base/app"].attendeeInfo
 
     if (showDeviceSettings) {
         tabs.push({
@@ -350,7 +350,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    if (_userInfo?.userType === UserType.Admin && showModeratorSettings) {
+    if (_attendeeInfo?.userType === UserType.Admin && showModeratorSettings) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
             component: ModeratorTab,

@@ -99,6 +99,6 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
     return {
         _videoTrackMuted: isRemoteTrackMuted(
             tracks, MEDIA_TYPE.VIDEO, ownProps.participantID),
-            _userInfo: state["features/base/app"].userInfo
+            _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }

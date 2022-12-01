@@ -70,6 +70,6 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
     return {
         visible: Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR)
           && !isParticipantModerator(targetParticipant),
-          _userInfo: state["features/base/app"].userInfo
+          _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }

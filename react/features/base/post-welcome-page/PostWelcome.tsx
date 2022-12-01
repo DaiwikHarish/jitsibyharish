@@ -1,59 +1,53 @@
+import { Alert } from '@mui/material';
 import React, { Component } from "react";
-import { WithTranslation } from 'react-i18next';
 import { IReduxState } from "../../app/types";
-import { appClientType } from "../app/actions";
+import {appClientType} from "../app/actions";
 import { OptionType } from "../app/reducer";
+import { IAttendeeInfo, IMeetingInfo, IUrlInfo} from "../app/types";
 import { connect } from "../redux/functions";
-
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-        updateClientType: (clientType: string) =>
-        {
-            console.log("alam updateClientType",clientType)
-            dispatch(appClientType(clientType))
+        updateClientType: (clientType: string) => {
+            dispatch(appClientType(clientType));
         }
     };
 };
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-        _clientType: state['features/base/app'].clientType,
+        _clientType: state["features/base/app"].clientType,
+        _urlInfo: state["features/base/app"].urlInfo,
+        _storeMeetingInfo: state["features/base/app"].meetingInfo,
+        _storeAttendeeInfo: state["features/base/app"].attendeeInfo
     };
 };
 
 type Props = {
+    onStart?: any;
+    _clientType: string;
+    _urlInfo: IUrlInfo;
+    _storeMeetingInfo: IMeetingInfo,
+    _storeAttendeeInfo: IAttendeeInfo
+};
 
-    onStart?:any;
-    _clientType:string;
-}
-
-// interface IProps extends WithTranslation {
-//     _clientType:string
-// }
-
-export class PostWelcome extends Component<Props>{
+export class PostWelcome extends Component<Props> {
     constructor(props: any) {
         super(props);
         this.onValueChange = this.onValueChange.bind(this);
     }
 
-    onValueChange(event:any) {
-        console.log("alam onValueChange called",event.target.value)
+    onValueChange(event: any) {
         //@ts-ignore
         this.props.updateClientType(event.target.value);
-        
     }
 
     componentDidMount() {
-        console.log("alam componentDidMount called")
         //@ts-ignore
-        this.props.updateClientType(OptionType.ENABLE_ALL);
-
+        this.props.updateClientType(OptionType.ENABLE_ALL);  
     }
 
     render() {
         const { onStart } = this.props;
-        console.log("alam props",this.props)
         return (
             <div
                 style={{
@@ -85,10 +79,10 @@ export class PostWelcome extends Component<Props>{
                         style={{ width: "30px", height: "30px" }}
                         type="radio"
                         value={OptionType.ENABLE_ALL}
-                        checked={this.props?._clientType === OptionType.ENABLE_ALL
+                        checked={
+                            this.props?._clientType === OptionType.ENABLE_ALL
                         }
                         onChange={this.onValueChange}
-                        
                     />
                     <div
                         style={{
@@ -112,7 +106,6 @@ export class PostWelcome extends Component<Props>{
 
                 <div
                     role={"button"}
-
                     style={{
                         width: "100%",
                         // backgroundColor: "white",
@@ -131,7 +124,9 @@ export class PostWelcome extends Component<Props>{
                         style={{ width: "30px", height: "30px" }}
                         type="radio"
                         value={OptionType.ENABLE_CHAT_POLL}
-                        checked={this.props?._clientType === OptionType.ENABLE_CHAT_POLL
+                        checked={
+                            this.props?._clientType ===
+                            OptionType.ENABLE_CHAT_POLL
                         }
                         onChange={this.onValueChange}
                     />

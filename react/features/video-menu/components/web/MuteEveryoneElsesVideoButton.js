@@ -35,10 +35,10 @@ class MuteEveryoneElsesVideoButton extends AbstractMuteEveryoneElsesVideoButton 
      * @returns {ReactElement}
      */
     render() {
-        const { t,_userInfo } = this.props;
+        const { t,_attendeeInfo } = this.props;
 
         return (
-            _userInfo.userType=== UserType.Admin &&
+            _attendeeInfo.userType=== UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.muteEveryoneElsesVideoStream') }
                 icon = { IconMuteVideoEveryoneElse }
@@ -61,7 +61,7 @@ class MuteEveryoneElsesVideoButton extends AbstractMuteEveryoneElsesVideoButton 
  */
  export function _mapStateToProps(state: Object) {
     return {
-        _userInfo: state["features/base/app"].userInfo
+        _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }
 

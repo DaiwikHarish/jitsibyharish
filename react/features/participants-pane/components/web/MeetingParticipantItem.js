@@ -204,7 +204,7 @@ function MeetingParticipantItem({
     participantActionEllipsisLabel,
     t,
     youText,
-    _userInfo
+    _attendeeInfo
 }: Props) {
 
     const [ hasAudioLevels, setHasAudioLevel ] = useState(false);
@@ -262,7 +262,7 @@ function MeetingParticipantItem({
             displayName = { _displayName }
             isHighlighted = { isHighlighted }
             isModerator = { isParticipantModerator(_participant) }
-            _userInfo = {_userInfo}
+            _attendeeInfo = {_attendeeInfo}
             local = { _local }
             onLeave = { onLeave }
             openDrawerForParticipant = { openDrawerForParticipant }
@@ -276,7 +276,7 @@ function MeetingParticipantItem({
                     {!isInBreakoutRoom && (
                         <ParticipantQuickAction
                             askUnmuteText = { askToUnmuteText }
-                            _userInfo = {_userInfo}
+                            _attendeeInfo = {_attendeeInfo}
                             buttonType = { _quickActionButtonType }
                             muteAudio = { muteAudio }
                             muteParticipantButtonText = { muteParticipantButtonText }
@@ -342,7 +342,7 @@ function _mapStateToProps(state, ownProps): Object {
         _quickActionButtonType,
         _raisedHand: hasRaisedHand(participant),
         _videoMediaState,
-        _userInfo: state["features/base/app"].userInfo,
+        _attendeeInfo: state["features/base/app"].attendeeInfo,
     };
 }
 

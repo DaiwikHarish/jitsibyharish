@@ -30,8 +30,20 @@ import DropdownButton from './DropdownButton';
 import JoinByPhoneDialog from './dialogs/JoinByPhoneDialog';
 import PostWelcome from '../../../base/post-welcome-page/PostWelcome';
 import { OptionType } from '../../../base/app/reducer';
+import {IAttendeeInfo,IUrlInfo,IMeetingInfo} from '../../../base/app/types'
+import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app/actions';
 
 type Props = {
+
+    /**
+     * Type of url params.
+     */
+    _urlInfo:IUrlInfo,
+
+    /**
+     * Type of Attendee details.
+     */
+    _attendeeInfo:IAttendeeInfo,
 
     /**
      * Indicates whether the display  name is editable.
@@ -126,7 +138,6 @@ type State = {
      */
     showJoinByPhoneButtons: boolean
 }
-
 /**
  * This component is displayed before joining a meeting.
  */
@@ -142,7 +153,8 @@ class Prejoin extends Component<Props, State> {
         this.state = {
             showError: false,
             showJoinByPhoneButtons: false,
-            clickStartBtn : false
+            clickStartBtn : false,
+            loading: true
         };
 
         this._closeDialog = this._closeDialog.bind(this);
@@ -334,6 +346,84 @@ class Prejoin extends Component<Props, State> {
     }
 
     /**
+     * Fetching attendee API.
+     */
+    _fetchAttendees = async (meetingId, userId) => {
+        
+        if (
+            meetingId === null ||
+            meetingId === undefined ||
+            meetingId === '' ||
+            meetingId === '' ||
+            userId === null ||
+            userId === undefined ||
+            userId === '' ||
+            userId === ''
+        ) {
+            return;
+        }
+
+        this.setState({loading:true});
+    
+        fetch(
+            'https://dev.awesomereviewstream.com/svr/api' + '/' +`attendee?meetingId=${meetingId}&userId=${userId}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const attendee: IAttendeeInfo = data[0];
+                this.props.storeAttendeeInfo(attendee)
+                this.setState({loading:false});
+            })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        };
+    
+    /**
+     * Fetching meeting API.
+     */
+    _fetchMeetings = async  (meetingId) =>{
+
+        if(
+            meetingId === null || 
+            meetingId === undefined || 
+            meetingId === "" || 
+            meetingId === ''){
+                return;
+            }
+
+        this.setState({loading:true});
+            fetch(
+                'https://dev.awesomereviewstream.com/svr/api' + '/' +`meeting?meetingId=${meetingId}&includeAttendee=false`
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    const meeting: IMeetingInfo =data[0];
+                    this.props.storeMeetingInfo(meeting)
+                    this.setState({loading:false});
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+            };
+
+    /**
+     * Calling attendee and meeting api on first rendering of this component.
+     */
+    componentDidMount() {
+        const meetingId = this.props._urlInfo.meetingId;
+        const userId = this.props._urlInfo.userId;
+
+        if(this.props._storeAttendeeInfo === undefined ){
+            this._fetchAttendees(meetingId, userId);
+        }
+
+        if(this.props._storeAttendeeInfo === undefined ){
+            this._fetchMeetings(meetingId)
+        }
+    }
+
+    /**
      * Implements React's {@link Component#render()}.
      *
      * @inheritdoc
@@ -353,16 +443,11 @@ class Prejoin extends Component<Props, State> {
             showDialog,
             t,
             videoTrack,
-            _userInfo,
+            _attendeeInfo,
             _clientType
         } = this.props;
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
-
-          this.props.updateSettings({
-            displayName:_userInfo?.userName
-        });    
-
         const extraJoinButtons = this._getExtraJoinButtons();
         let extraButtonsToRender = Object.values(extraJoinButtons).filter((val: Object) =>
             !(prejoinConfig?.hideExtraJoinButtons || []).includes(val.key)
@@ -382,10 +467,8 @@ class Prejoin extends Component<Props, State> {
                 videoMuted = { _clientType === OptionType.ENABLE_ALL? false : true }
                 videoTrack = { _clientType === OptionType.ENABLE_ALL? videoTrack : {} }
                 clickStartBtn={this.state.clickStartBtn}
+                loading={this.state.loading}
                 >
-                
-                
-
                 {this.state.clickStartBtn == false ? (
                     <PostWelcome onStart={this.clickHandler}/> 
                     ) : (  
@@ -401,7 +484,7 @@ class Prejoin extends Component<Props, State> {
                         onSubmit = { joinConference }
                         placeHolder = { t('dialog.enterDisplayName') }
                         readOnly = { true }
-                        value = { _userInfo.userName } />
+                        value = { _attendeeInfo.userName } />
                     ) : (
                         <div className = 'prejoin-avatar-container'>
                             <Avatar
@@ -479,16 +562,25 @@ function mapStateToProps(state): Object {
         showDialog: isJoinByPhoneDialogVisible(state),
         showErrorOnJoin,
         videoTrack: getLocalJitsiVideoTrack(state),
-        _userInfo: state["features/base/app"].userInfo,
-        _clientType: state["features/base/app"].clientType
+        _attendeeInfo: state["features/base/app"].attendeeInfo,
+        _urlInfo: state["features/base/app"].urlInfo,
+        _clientType: state["features/base/app"].clientType,
     };
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps =(dispatch)=> {
+    return{
     joinConferenceWithoutAudio: joinConferenceWithoutAudioAction,
     joinConference: joinConferenceAction,
     setJoinByPhoneDialogVisiblity: setJoinByPhoneDialogVisiblityAction,
-    updateSettings
+    updateSettings,
+    storeMeetingInfo : (meetingInfo : IMeetingInfo) =>{
+        dispatch(appMeetingInfo(meetingInfo))
+    },
+    storeAttendeeInfo : (attendeeInfo : IAttendeeInfo) =>{
+            dispatch(appAttendeeInfo(attendeeInfo))
+        }
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate(Prejoin));

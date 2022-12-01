@@ -42,14 +42,14 @@ class MuteButton extends AbstractMuteButton {
      * @returns {ReactElement}
      */
     render() {
-        const { _audioTrackMuted, t, _userInfo } = this.props;
+        const { _audioTrackMuted, t, _attendeeInfo } = this.props;
 
         if (_audioTrackMuted) {
             return null;
         }
 
         return (
-            _userInfo.userType === UserType.Admin &&
+            _attendeeInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('dialog.muteParticipantButton') }
                 className = 'mutelink'

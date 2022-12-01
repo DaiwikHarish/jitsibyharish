@@ -16,7 +16,7 @@ import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
 // @ts-ignore
 import { openLogoutDialog } from '../../actions';
-import { IUserInfo } from '../../../base/app/types';
+import { IAttendeeInfo} from '../../../base/app/types';
 import { IReduxState } from '../../../app/types';
 
 /**
@@ -24,7 +24,7 @@ import { IReduxState } from '../../../app/types';
  */
 export type Props = AbstractDialogTabProps & WithTranslation & {
 
-    _userInfo:IUserInfo;
+    _attendeeInfo:IAttendeeInfo;
 
     /**
      * Whether or not server-side authentication is available.
@@ -124,7 +124,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
             hideEmailInSettings,
             readOnlyName,
             t ,
-            _userInfo
+            _attendeeInfo
             // @ts-ignore,
         } = this.props;
 
@@ -140,7 +140,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                             onChange = { this._onDisplayNameChange }
                             placeholder = { t('settings.name') }
                             type = 'text'
-                            value = { _userInfo.userName } />
+                            value = { _attendeeInfo.userName } />
                     </div>
                     {!hideEmailInSettings && <div className = 'profile-edit-field'>
                         <Input
@@ -151,7 +151,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                             onChange = { this._onEmailChange }
                             placeholder = { t('profile.setEmailInput') }
                             type = 'text'
-                            value = { _userInfo.emailId } />
+                            value = { _attendeeInfo.emailId } />
                     </div>}
                 </div>
                 { authEnabled && this._renderAuth() }
@@ -223,7 +223,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
  */
  export function _mapStateToProps(state: IReduxState) {
     return {
-        _userInfo: state["features/base/app"].userInfo
+        _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }
 

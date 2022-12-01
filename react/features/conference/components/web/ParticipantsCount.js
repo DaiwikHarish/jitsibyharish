@@ -11,7 +11,7 @@ import { getParticipantCount } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { SpeakerStats } from '../../../speaker-stats';
 import { isSpeakerStatsDisabled } from '../../../speaker-stats/functions';
-import UserType, { IUserInfo } from '../../../base/app/types';
+import UserType, { IAttendeeInfo } from '../../../base/app/types';
 
 
 /**
@@ -19,7 +19,7 @@ import UserType, { IUserInfo } from '../../../base/app/types';
  */
 type Props = {
 
-    _userInfo: IUserInfo;
+    _attendeeInfo:IAttendeeInfo,
 
     /**
      * Number of the conference participants.
@@ -82,14 +82,14 @@ class ParticipantsCount extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { count, _userInfo } = this.props;
+        const { count, _attendeeInfo } = this.props;
 
         if (count <= 2) {
             return null;
         }
 
         return (
-            _userInfo.userType === UserType.Admin
+            _attendeeInfo.userType === UserType.Admin
                              &&
             <Label
                 color = { COLORS.white }
@@ -115,7 +115,7 @@ function mapStateToProps(state) {
         conference: state['features/base/conference'].conference,
         count: getParticipantCount(state),
         _isSpeakerStatsDisabled: isSpeakerStatsDisabled(state),
-        _userInfo: state["features/base/app"].userInfo
+        _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }
 

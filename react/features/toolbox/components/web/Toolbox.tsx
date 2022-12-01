@@ -12,7 +12,7 @@ import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } fr
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
 import { OptionType } from '../../../base/app/reducer';
-import UserType, { IUserInfo } from '../../../base/app/types';
+import UserType, { IAttendeeInfo} from '../../../base/app/types';
 
 import {
     getMultipleVideoSendingSupportFeatureFlag,
@@ -155,7 +155,10 @@ interface IProps extends WithTranslation {
 
     _clientType:string;
 
-    _userInfo:IUserInfo;
+    /**
+     * Type of attendee details
+     */
+    _attendeeInfo:IAttendeeInfo;
 
     /**
      * String showing if the virtual background type is desktop-share.
@@ -728,7 +731,7 @@ class Toolbox extends Component<IProps> {
             _multiStreamModeEnabled,
             _screenSharing,
             _whiteboardEnabled,
-            _userInfo,
+            _attendeeInfo,
             _clientType
         } = this.props;
 
@@ -803,15 +806,15 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const fullscreen = (_userInfo.userType === UserType.Admin ||
-        _userInfo.userType === UserType.Presenter) && !_isIosMobile && {
+        const fullscreen = (_attendeeInfo.userType === UserType.Admin ||
+            _attendeeInfo.userType === UserType.Presenter) && !_isIosMobile && {
             key: 'fullscreen',
             Content: FullscreenButton,
             handleClick: this._onToolbarToggleFullScreen,
             group: 2
         };
 
-        const security = _userInfo.userType === UserType.Admin && {
+        const security = _attendeeInfo.userType === UserType.Admin && {
             key: 'security',
             alias: 'info',
             Content: SecurityDialogButton,
@@ -824,13 +827,13 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const recording = _userInfo.userType === UserType.Admin && {
+        const recording = _attendeeInfo.userType === UserType.Admin && {
             key: 'recording',
             Content: RecordButton,
             group: 2
         };
 
-        const livestreaming = _userInfo.userType === UserType.Admin && {
+        const livestreaming = _attendeeInfo.userType === UserType.Admin && {
             key: 'livestreaming',
             Content: LiveStreamButton,
             group: 2
@@ -842,15 +845,15 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const shareVideo = (_userInfo.userType === UserType.Admin ||
-        _userInfo.userType === UserType.Presenter) && {
+        const shareVideo = (_attendeeInfo.userType === UserType.Admin ||
+            _attendeeInfo.userType === UserType.Presenter) && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = (_userInfo.userType === UserType.Admin ||
-        _userInfo.userType === UserType.Presenter) && this._showAudioSharingButton() && {
+        const shareAudio = (_attendeeInfo.userType === UserType.Admin ||
+            _attendeeInfo.userType === UserType.Presenter) && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -863,7 +866,7 @@ class Toolbox extends Component<IProps> {
         };
 
 
-        const whiteboard = _userInfo.userType === UserType.Admin && _whiteboardEnabled && {
+        const whiteboard = _attendeeInfo.userType === UserType.Admin && _whiteboardEnabled && {
             key: 'whiteboard',
             Content: WhiteboardButton,
             group: 3
@@ -905,19 +908,19 @@ class Toolbox extends Component<IProps> {
             group: 4
         };
 
-        const shortcuts = _userInfo.userType === UserType.Admin && !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _attendeeInfo.userType === UserType.Admin && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
         };
 
-        const embed = _userInfo.userType === UserType.Admin && this._isEmbedMeetingVisible() && {
+        const embed = _attendeeInfo.userType === UserType.Admin && this._isEmbedMeetingVisible() && {
             key: 'embedmeeting',
             Content: EmbedMeetingButton,
             group: 4
         };
 
-        const feedback = _userInfo.userType === UserType.Admin && _feedbackConfigured && {
+        const feedback = _attendeeInfo.userType === UserType.Admin && _feedbackConfigured && {
             key: 'feedback',
             Content: FeedbackButton,
             group: 4
@@ -1427,7 +1430,7 @@ class Toolbox extends Component<IProps> {
             classes,
             t,
             _clientType,
-            _userInfo
+            _attendeeInfo
         } = this.props;
 
         console.log("_clientType:",_clientType)
@@ -1511,7 +1514,7 @@ class Toolbox extends Component<IProps> {
                                         hidden = { false }
                                         inDrawer = { _overflowDrawer }
                                         onKeyDown = { this._onEscKey }>
-                                        {_userInfo.userType === UserType.Admin && <EndConferenceButton />}
+                                        {_attendeeInfo.userType === UserType.Admin && <EndConferenceButton />}
                                         <LeaveConferenceButton />
                                     </ContextMenu>
                                 </HangupMenuButton>
@@ -1596,7 +1599,7 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
         _virtualSource: state['features/virtual-background'].virtualSource,
         _visible: isToolboxVisible(state),
         _whiteboardEnabled: isWhiteboardButtonVisible(state),
-        _userInfo: state["features/base/app"].userInfo,
+        _attendeeInfo: state["features/base/app"].attendeeInfo,
         _clientType: state["features/base/app"].clientType
     };
 }

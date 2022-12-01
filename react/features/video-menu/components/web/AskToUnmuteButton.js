@@ -34,7 +34,7 @@ const AskToUnmuteButton = ({ isAudioForceMuted, isVideoForceMuted, participantID
     const _onClick = useCallback(() => {
         dispatch(approveParticipant(participantID));
     }, [ participantID ]);
-    const _userInfo = useSelector((state:IReduxState)=>state["features/base/app"].userInfo)
+    const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
 
 
     const text = isAudioForceMuted || !isVideoForceMuted
@@ -42,7 +42,7 @@ const AskToUnmuteButton = ({ isAudioForceMuted, isVideoForceMuted, participantID
         : t('participantsPane.actions.allowVideo');
 
     return (
-        _userInfo.userType === UserType.Admin &&
+        _attendeeInfo.userType === UserType.Admin &&
         <ContextMenuItem
             accessibilityLabel = { text }
             icon = { IconMicrophoneEmpty }

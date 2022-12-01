@@ -106,7 +106,7 @@ const ParticipantsPane = () => {
     const showMoreActionsButton = useSelector(isMoreActionsVisible);
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const _userInfo = useSelector((state:IReduxState)=>state["features/base/app"].userInfo)
+    const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
@@ -163,7 +163,7 @@ const ParticipantsPane = () => {
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                     {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
-                {_userInfo?.userType === UserType.Admin &&  showFooter && (
+                {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
                     <div className = { classes.footer }>
                         {showMuteAllButton && (
                             <Button

@@ -41,10 +41,10 @@ class KickButton extends AbstractKickButton {
      * @returns {ReactElement}
      */
     render() {
-        const { participantID, t, _userInfo } = this.props;
+        const { participantID, t, _attendeeInfo } = this.props;
 
         return (
-            _userInfo.userType === UserType.Admin &&
+            _attendeeInfo.userType === UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('videothumbnail.kick') }
                 className = 'kicklink'
@@ -69,7 +69,7 @@ class KickButton extends AbstractKickButton {
  */
  export function _mapStateToProps(state: Object) {
     return {
-        _userInfo: state["features/base/app"].userInfo
+        _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }
 export default translate(connect(_mapStateToProps)(KickButton));

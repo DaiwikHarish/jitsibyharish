@@ -28,6 +28,8 @@ var config = {
     // Connection
     //
 
+    apiBaseUrl : 'https://dev.awesomereviewstream.com/svr/api',
+
     hosts: {
         // XMPP domain.
         domain: 'jitsi-meet.example.com',

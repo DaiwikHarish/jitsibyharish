@@ -41,14 +41,14 @@ class MuteVideoButton extends AbstractMuteVideoButton {
      * @returns {ReactElement}
      */
     render() {
-        const { _videoTrackMuted, t,_userInfo } = this.props;
+        const { _videoTrackMuted, t,_attendeeInfo } = this.props;
 
         if (_videoTrackMuted) {
             return null;
         }
 
         return (
-            _userInfo.userType=== UserType.Admin &&
+            _attendeeInfo.userType=== UserType.Admin &&
             <ContextMenuItem
                 accessibilityLabel = { t('participantsPane.actions.stopVideo') }
                 className = 'mutevideolink'

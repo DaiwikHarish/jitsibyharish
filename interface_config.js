@@ -13,6 +13,8 @@ var interfaceConfig = {
     AUDIO_LEVEL_PRIMARY_COLOR: 'rgba(255,255,255,0.4)',
     AUDIO_LEVEL_SECONDARY_COLOR: 'rgba(255,255,255,0.2)',
 
+    AWESOME_REVIEW_BASE_URL = 'https://dev.awesomereviewstream.com/svr/api'
+
     /**
      * A UX mode where the last screen share participant is automatically
      * pinned. Valid values are the string "remote-only" so remote participants
