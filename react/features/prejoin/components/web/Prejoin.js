@@ -33,6 +33,21 @@ import { OptionType } from '../../../base/app/reducer';
 import {IAttendeeInfo,IUrlInfo,IMeetingInfo} from '../../../base/app/types'
 import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app/actions';
 
+
+function storeMeetingInfo(meeting:IMeetingInfo){
+    console.log("alam 2 storeMeetingInfo",meeting)
+    return(dispatch)=>{
+        dispatch(appMeetingInfo(meeting))
+    }
+}
+
+function storeAttendeeInfo(attendee:IAttendeeInfo){
+    console.log("alam 2 storeAttendeeInfo",attendee)
+    return(dispatch)=>{
+        dispatch(appAttendeeInfo(attendee))
+    }
+}
+
 type Props = {
 
     /**
@@ -568,19 +583,13 @@ function mapStateToProps(state): Object {
     };
 }
 
-const mapDispatchToProps =(dispatch)=> {
-    return{
+const mapDispatchToProps = {
     joinConferenceWithoutAudio: joinConferenceWithoutAudioAction,
     joinConference: joinConferenceAction,
     setJoinByPhoneDialogVisiblity: setJoinByPhoneDialogVisiblityAction,
     updateSettings,
-    storeMeetingInfo : (meetingInfo : IMeetingInfo) =>{
-        dispatch(appMeetingInfo(meetingInfo))
-    },
-    storeAttendeeInfo : (attendeeInfo : IAttendeeInfo) =>{
-            dispatch(appAttendeeInfo(attendeeInfo))
-        }
-    }
+    storeAttendeeInfo,
+    storeMeetingInfo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate(Prejoin));

@@ -135,7 +135,7 @@ class MoreTab extends AbstractDialogTab<Props, {}> {
         const content = [];
 
         content.push(this._renderSettingsLeft());
-        content.push(this._renderSettingsRight());
+        // content.push(this._renderSettingsRight());
 
         return (
             <div
@@ -479,9 +479,9 @@ class MoreTab extends AbstractDialogTab<Props, {}> {
             <div
                 className = 'settings-sub-pane left'
                 key = 'settings-sub-pane-left'>
-                { showPrejoinSettings && this._renderPrejoinScreenSettings() }
-                { showNotificationsSettings && this._renderNotificationsSettings() }
-                { this._renderKeyboardShortcutCheckbox() }
+                {/* { showPrejoinSettings && this._renderPrejoinScreenSettings() } */}
+                {/* { showNotificationsSettings && this._renderNotificationsSettings() } */}
+                {/* { this._renderKeyboardShortcutCheckbox() } */}
                 { !disableHideSelfView && this._renderSelfViewCheckbox() }
             </div>
         );

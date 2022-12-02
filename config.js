@@ -25,11 +25,13 @@ if (subdomain.startsWith('<!--')) {
 var enableJaaS = false;
 
 var config = {
+
+    //AwesomeReview baseUrl
+    baseUrl:{
+        url:'https://dev.awesomereviewstream.com/svr/api'
+    },
     // Connection
     //
-
-    apiBaseUrl : 'https://dev.awesomereviewstream.com/svr/api',
-
     hosts: {
         // XMPP domain.
         domain: 'jitsi-meet.example.com',

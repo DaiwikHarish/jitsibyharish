@@ -1,10 +1,9 @@
 import React from "react";
 import { RingLoader } from "react-spinners";
 
-const MeetingValidation = (props: any) => {
+const UrlValidation = (props: any) => {
     return (
         <div className={props.class}>
-            {props.loading === true ? (
                 <div
                     style={{
                         margin: "auto",
@@ -20,27 +19,6 @@ const MeetingValidation = (props: any) => {
                         outline: 0,
                         minHeight: "inherit",
                         maxHeight: "inherit",
-                    }}
-                >
-                    <RingLoader
-                        cssOverride={{
-                            margin: "auto",
-                            width: "25%",
-                            height: "30%",
-                        }}
-                        color={"white"}
-                        loading={props.loading}
-                    />
-                </div>
-            ) : (
-                <div
-                    style={{
-                        margin: "auto",
-                        width: "25%",
-                        height: "25%",
-                        backgroundColor: "white",
-                        borderRadius: "5px",
-                        alignItems: "center",
                     }}
                 >
                     <h2
@@ -62,7 +40,7 @@ const MeetingValidation = (props: any) => {
                             textAlign: "center",
                             marginTop: "25px",
                             fontFamily:"sans-serif",
-                            fontWeight:"normal"
+                            fontWeight:"lighter"
                         }}
                     >
                         {props.message}
@@ -94,9 +72,8 @@ const MeetingValidation = (props: any) => {
                         </div> */}
                     
                 </div>
-            )}
         </div>
     );
 };
 
-export default MeetingValidation;
+export default UrlValidation;
