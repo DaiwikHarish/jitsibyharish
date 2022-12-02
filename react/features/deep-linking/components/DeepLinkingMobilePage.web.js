@@ -83,6 +83,7 @@ class DeepLinkingMobilePage extends Component<Props> {
      * @inheritdoc
      */
     componentDidMount() {
+        this._onLaunchWeb()
         sendAnalytics(
             createDeepLinkingPageEvent(
                 'displayed', 'DeepLinkingMobile', { isMobileBrowser: true }));

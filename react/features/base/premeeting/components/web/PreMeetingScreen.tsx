@@ -16,6 +16,7 @@ import {
     isToolbarButtonEnabled
 } from '../../../config/functions.web';
 import MeetingValidation from '../../../post-welcome-page/meeting-validation';
+import UrlValidation from '../../../post-welcome-page/url-validation';
 import { connect } from '../../../redux/functions';
 import { withPixelLineHeight } from '../../../styles/functions.web';
 
@@ -145,11 +146,10 @@ const PreMeetingScreen = ({
             || _urlInfo.meetingId === "" || _urlInfo.meetingId === ''
             || _urlInfo.userId === null ||_urlInfo.userId === undefined 
             || _urlInfo.userId === "" || _urlInfo.userId === '' ? (
-        <MeetingValidation
+        <UrlValidation
             class={containerClassName}
             title={"Empty Inputs"}
-            message={"Please enter the meeting id and user id"}
-            loading={loading}
+            message={"Please enter meeting id and user id. Then try."}
             />
     ) : _meetingInfo === undefined && _attendeeInfo === undefined ? 
         <MeetingValidation
@@ -162,14 +162,14 @@ const PreMeetingScreen = ({
         <MeetingValidation
             class={containerClassName}
             title={"Invalid Meeting"}
-            message={"Please Enter a valid meeting id"}
+            message={"Please Enter a valid meeting id. Then try."}
             loading={loading}
         />
     ) : _meetingInfo !== undefined && _attendeeInfo === undefined ? (
         <MeetingValidation
             class={containerClassName}
             title={"Invalid User"}
-            message={"Please Enter a valid user id"}
+            message={"Please Enter a valid user id. Then try."}
             loading={loading}
         />
     ) : _attendeeInfo !== undefined && _attendeeInfo.isAllowed == false ?

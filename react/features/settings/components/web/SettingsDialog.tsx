@@ -392,29 +392,29 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    // if (showMoreTab) {
-    //     tabs.push({
-    //         name: SETTINGS_TABS.MORE,
-    //         component: MoreTab,
-    //         label: 'settings.more',
-    //         props: moreTabProps,
-    //         propsUpdateFunction: (tabState: any, newProps: any) => {
-    //             // Updates tab props, keeping users selection
+    if (showMoreTab) {
+        tabs.push({
+            name: SETTINGS_TABS.MORE,
+            component: MoreTab,
+            label: 'settings.more',
+            props: moreTabProps,
+            propsUpdateFunction: (tabState: any, newProps: any) => {
+                // Updates tab props, keeping users selection
 
-    //             return {
-    //                 ...newProps,
-    //                 currentFramerate: tabState?.currentFramerate,
-    //                 currentLanguage: tabState?.currentLanguage,
-    //                 hideSelfView: tabState?.hideSelfView,
-    //                 showPrejoinPage: tabState?.showPrejoinPage,
-    //                 enabledNotifications: tabState?.enabledNotifications || {},
-    //                 maxStageParticipants: tabState?.maxStageParticipants
-    //             };
-    //         },
-    //         styles: `settings-pane ${classes.settingsDialog} more-pane`,
-    //         submit: submitMoreTab
-    //     });
-    // }
+                return {
+                    ...newProps,
+                    currentFramerate: tabState?.currentFramerate,
+                    currentLanguage: tabState?.currentLanguage,
+                    hideSelfView: tabState?.hideSelfView,
+                    showPrejoinPage: tabState?.showPrejoinPage,
+                    enabledNotifications: tabState?.enabledNotifications || {},
+                    maxStageParticipants: tabState?.maxStageParticipants
+                };
+            },
+            styles: `settings-pane ${classes.settingsDialog} more-pane`,
+            submit: submitMoreTab
+        });
+    }
 
     return { _tabs: tabs };
 }
