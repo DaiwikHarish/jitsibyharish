@@ -159,7 +159,7 @@ function ParticipantItem({
     const icon = (
         <Avatar
             className = 'participant-avatar'
-            displayName = { displayName }
+            displayName = { _attendeeInfo?.userName }
             participantId = { participantID }
             size = { 32 } />
     );
@@ -168,7 +168,7 @@ function ParticipantItem({
         <>
             <div className = { styles.nameContainer }>
                 <div className = { styles.name }>
-                    {displayName}
+                    {_attendeeInfo?.userName}
                 </div>
                 {local ? <span>&nbsp;({youText})</span> : null}
             </div>

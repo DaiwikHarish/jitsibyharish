@@ -1433,7 +1433,7 @@ class Toolbox extends Component<IProps> {
             _attendeeInfo
         } = this.props;
 
-        console.log("_clientType:",_clientType)
+        // console.log("_clientType:",_clientType)
         const toolbarAccLabel = 'toolbar.accessibilityLabel.moreActionsMenu';
         const containerClassName = `toolbox-content${_isMobile ? ' toolbox-content-mobile' : ''}`;
 
