@@ -2,15 +2,14 @@ import React from "react";
 import { RingLoader } from "react-spinners";
 
 const MeetingValidation = (props: any) => {
-    return (
-        <div className={props.class}>
-            {props.loading === true ? (
+    return props.loading === true ? (
+                <div className={props.class}>
                 <div
                     style={{
                         margin: "auto",
                         width: "25%",
                         height: "25%",
-                        backgroundColor: "white",
+                        backgroundColor: "#292929",
                         borderRadius: "5px",
                         alignItems: "center",
                         display: "block",
@@ -32,7 +31,9 @@ const MeetingValidation = (props: any) => {
                         loading={props.loading}
                     />
                 </div>
+                </div>
             ) : (
+                <div className={props.class}>
                 <div
                     style={{
                         margin: "auto",
@@ -94,9 +95,9 @@ const MeetingValidation = (props: any) => {
                         </div> */}
                     
                 </div>
+                </div>
             )}
-        </div>
-    );
-};
+
+        
 
 export default MeetingValidation;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { IAttendeeInfo } from '../../../base/app/types';
 import {
     getParticipantById,
     getParticipantDisplayName
@@ -83,6 +84,7 @@ const DisplayName = ({
     const configuredDisplayName = useSelector((state: IReduxState) =>
         getParticipantById(state, participantID))?.name ?? '';
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, participantID));
+    const _attendeeInfo : IAttendeeInfo | undefined = useSelector((state:IReduxState)=> state['features/base/app'].attendeeInfo)
     const [ editDisplayNameValue, setEditDisplayNameValue ] = useState('');
     const [ isEditing, setIsEditing ] = useState(false);
     const dispatch = useDispatch();
@@ -147,13 +149,13 @@ const DisplayName = ({
 
     return (
         <Tooltip
-            content = { appendSuffix(nameToDisplay, displayNameSuffix) }
+            content = { appendSuffix(_attendeeInfo?.userName, displayNameSuffix) }
             position = { getIndicatorsTooltipPosition(thumbnailType) }>
             <span
                 className = { `displayname ${classes.displayName}` }
                 id = { elementID }
                 onClick = { onStartEditing }>
-                {appendSuffix(nameToDisplay, displayNameSuffix)}
+                {appendSuffix(_attendeeInfo?.userName, displayNameSuffix)}
             </span>
         </Tooltip>
     );

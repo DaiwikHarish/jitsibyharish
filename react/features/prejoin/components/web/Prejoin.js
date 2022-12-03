@@ -35,14 +35,12 @@ import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app
 
 
 function storeMeetingInfo(meeting:IMeetingInfo){
-    console.log("alam 2 storeMeetingInfo",meeting)
     return(dispatch)=>{
         dispatch(appMeetingInfo(meeting))
     }
 }
 
 function storeAttendeeInfo(attendee:IAttendeeInfo){
-    console.log("alam 2 storeAttendeeInfo",attendee)
     return(dispatch)=>{
         dispatch(appAttendeeInfo(attendee))
     }
