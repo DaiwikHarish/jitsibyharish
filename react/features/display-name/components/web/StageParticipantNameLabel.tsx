@@ -77,7 +77,7 @@ const StageParticipantNameLabel = () => {
                     classes.badgeContainer,
                     toolboxVisible && classes.containerElevated
                 ) }>
-                <DisplayNameBadge name = { _attendeeInfo?.userName } />
+                <DisplayNameBadge name = { _attendeeInfo?.userName! } />
             </div>
         );
     }
