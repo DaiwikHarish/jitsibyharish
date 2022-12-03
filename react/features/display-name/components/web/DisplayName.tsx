@@ -149,13 +149,13 @@ const DisplayName = ({
 
     return (
         <Tooltip
-            content = { appendSuffix(_attendeeInfo?.userName, displayNameSuffix) }
+            content = { appendSuffix(_attendeeInfo?.userName!, displayNameSuffix) }
             position = { getIndicatorsTooltipPosition(thumbnailType) }>
             <span
                 className = { `displayname ${classes.displayName}` }
                 id = { elementID }
                 onClick = { onStartEditing }>
-                {appendSuffix(_attendeeInfo?.userName, displayNameSuffix)}
+                {appendSuffix(_attendeeInfo?.userName!, displayNameSuffix)}
             </span>
         </Tooltip>
     );
