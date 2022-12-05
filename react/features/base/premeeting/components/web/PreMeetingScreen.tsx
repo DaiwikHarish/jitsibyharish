@@ -150,21 +150,21 @@ const PreMeetingScreen = ({
     return _urlInfo.meetingId === null ||
         _urlInfo.meetingId === undefined ||
         _urlInfo.meetingId === "" ||
-        _urlInfo.meetingId === "" ||
+        _urlInfo.meetingId === '' ||
         _urlInfo.userId === null ||
         _urlInfo.userId === undefined ||
         _urlInfo.userId === "" ||
-        _urlInfo.userId === "" ? (
+        _urlInfo.userId === '' ? (
         <UrlValidation
             class={containerClassName}
             title={"Empty Inputs"}
             message={"Please enter meeting id and user id. Then try."}
         />
-    ) : _meetingInfo === undefined ? (
+    ) :  _meetingInfo !== undefined && _attendeeInfo === undefined ? (
         <MeetingValidation
             class={containerClassName}
-            title={"Invalid Meeting"}
-            message={"Please enter a valid meeting id. Then try."}
+            title={"Invalid User"}
+            message={"Please enter a valid user id. Then try."}
             loading={loading}
         />
     ) : _meetingInfo === undefined && _attendeeInfo === undefined ? (
@@ -172,13 +172,6 @@ const PreMeetingScreen = ({
             class={containerClassName}
             title={"Not Found"}
             message={"Meeting and user does not exist"}
-            loading={loading}
-        />
-    ) : _meetingInfo !== undefined && _attendeeInfo === undefined ? (
-        <MeetingValidation
-            class={containerClassName}
-            title={"Invalid User"}
-            message={"Please enter a valid user id. Then try."}
             loading={loading}
         />
     ) : _attendeeInfo !== undefined && _attendeeInfo.isAllowed == false ? (
