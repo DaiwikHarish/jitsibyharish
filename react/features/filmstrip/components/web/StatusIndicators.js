@@ -19,6 +19,7 @@ import { getIndicatorsTooltipPosition } from '../../functions.web';
 import AudioMutedIndicator from './AudioMutedIndicator';
 import ModeratorIndicator from './ModeratorIndicator';
 import ScreenShareIndicator from './ScreenShareIndicator';
+import UserType, {IAttendeeInfo} from '../../../base/app/types'
 
 declare var interfaceConfig: Object;
 
@@ -26,6 +27,8 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link StatusIndicators}.
  */
 type Props = {
+
+    _attendeeInfo:IAttendeeInfo,
 
     /**
      * Indicates if the audio muted indicator should be visible or not.
@@ -70,14 +73,15 @@ class StatusIndicators extends Component<Props> {
             _showAudioMutedIndicator,
             _showModeratorIndicator,
             _showScreenShareIndicator,
-            thumbnailType
+            thumbnailType,
+            _attendeeInfo
         } = this.props;
         const tooltipPosition = getIndicatorsTooltipPosition(thumbnailType);
 
         return (
             <>
                 { _showAudioMutedIndicator && <AudioMutedIndicator tooltipPosition = { tooltipPosition } /> }
-                { _showModeratorIndicator && <ModeratorIndicator tooltipPosition = { tooltipPosition } />}
+                { _showModeratorIndicator && _attendeeInfo.userType === UserType.Admin && <ModeratorIndicator tooltipPosition = { tooltipPosition } />}
                 { _showScreenShareIndicator && <ScreenShareIndicator tooltipPosition = { tooltipPosition } /> }
             </>
         );
@@ -122,7 +126,8 @@ function _mapStateToProps(state, ownProps) {
         _showAudioMutedIndicator: isAudioMuted && audio,
         _showModeratorIndicator:
             !disableModeratorIndicator && participant && participant.role === PARTICIPANT_ROLE.MODERATOR && moderator,
-        _showScreenShareIndicator: isScreenSharing && screenshare
+        _showScreenShareIndicator: isScreenSharing && screenshare,
+        _attendeeInfo : state['features/base/app'].attendeeInfo
     };
 }
 

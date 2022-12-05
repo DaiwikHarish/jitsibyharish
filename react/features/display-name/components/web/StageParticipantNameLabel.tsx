@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { IAttendeeInfo } from '../../../base/app/types';
 import { isDisplayNameVisible } from '../../../base/config/functions.any';
 import {
     getLocalParticipant,
@@ -54,6 +55,7 @@ const StageParticipantNameLabel = () => {
     const largeVideoParticipant: IParticipant = useSelector(getLargeVideoParticipant);
     const selectedId = largeVideoParticipant?.id;
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, selectedId));
+    
 
     const localParticipant = useSelector(getLocalParticipant);
     const localId = localParticipant?.id;

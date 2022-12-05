@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
+import { IAttendeeInfo } from '../../../base/app/types';
 import {
     getParticipantById,
     getParticipantDisplayName

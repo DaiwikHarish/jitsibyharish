@@ -35,14 +35,12 @@ import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app
 
 
 function storeMeetingInfo(meeting:IMeetingInfo){
-    console.log("alam 2 storeMeetingInfo",meeting)
     return(dispatch)=>{
         dispatch(appMeetingInfo(meeting))
     }
 }
 
 function storeAttendeeInfo(attendee:IAttendeeInfo){
-    console.log("alam 2 storeAttendeeInfo",attendee)
     return(dispatch)=>{
         dispatch(appAttendeeInfo(attendee))
     }
@@ -436,6 +434,7 @@ class Prejoin extends Component<Props, State> {
         if(this.props._storeAttendeeInfo === undefined ){
             this._fetchMeetings(meetingId)
         }
+        this._setName()
     }
 
     /**
@@ -495,11 +494,11 @@ class Prejoin extends Component<Props, State> {
                         autoFocus = { true }
                         className = { showError ? 'error' : '' }
                         hasError = { showError }
-                        onChange = { _setName }
+                        onChange = { _setName(_attendeeInfo.userName) }
                         onSubmit = { joinConference }
                         placeHolder = { t('dialog.enterDisplayName') }
                         readOnly = { true }
-                        value = { _attendeeInfo.userName } />
+                        value = { name } />
                     ) : (
                         <div className = 'prejoin-avatar-container'>
                             <Avatar
