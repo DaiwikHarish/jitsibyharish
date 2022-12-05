@@ -84,7 +84,6 @@ const DisplayName = ({
     const configuredDisplayName = useSelector((state: IReduxState) =>
         getParticipantById(state, participantID))?.name ?? '';
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, participantID));
-    const _attendeeInfo : IAttendeeInfo | undefined = useSelector((state:IReduxState)=> state['features/base/app'].attendeeInfo)
     const [ editDisplayNameValue, setEditDisplayNameValue ] = useState('');
     const [ isEditing, setIsEditing ] = useState(false);
     const dispatch = useDispatch();
@@ -149,13 +148,13 @@ const DisplayName = ({
 
     return (
         <Tooltip
-            content = { appendSuffix(_attendeeInfo?.userName!, displayNameSuffix) }
+            content = { appendSuffix(nameToDisplay, displayNameSuffix) }
             position = { getIndicatorsTooltipPosition(thumbnailType) }>
             <span
                 className = { `displayname ${classes.displayName}` }
                 id = { elementID }
                 onClick = { onStartEditing }>
-                {appendSuffix(_attendeeInfo?.userName!, displayNameSuffix)}
+                {appendSuffix(nameToDisplay, displayNameSuffix)}
             </span>
         </Tooltip>
     );

@@ -434,6 +434,7 @@ class Prejoin extends Component<Props, State> {
         if(this.props._storeAttendeeInfo === undefined ){
             this._fetchMeetings(meetingId)
         }
+        this._setName()
     }
 
     /**
@@ -493,11 +494,11 @@ class Prejoin extends Component<Props, State> {
                         autoFocus = { true }
                         className = { showError ? 'error' : '' }
                         hasError = { showError }
-                        onChange = { _setName }
+                        onChange = { _setName(_attendeeInfo.userName) }
                         onSubmit = { joinConference }
                         placeHolder = { t('dialog.enterDisplayName') }
                         readOnly = { true }
-                        value = { _attendeeInfo.userName } />
+                        value = { name } />
                     ) : (
                         <div className = 'prejoin-avatar-container'>
                             <Avatar
