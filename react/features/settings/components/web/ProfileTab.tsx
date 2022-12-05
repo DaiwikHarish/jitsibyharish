@@ -140,7 +140,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                             onChange = { this._onDisplayNameChange }
                             placeholder = { t('settings.name') }
                             type = 'text'
-                            value = { _attendeeInfo.userName } />
+                            value = { displayName } />
                     </div>
                     {!hideEmailInSettings && <div className = 'profile-edit-field'>
                         <Input

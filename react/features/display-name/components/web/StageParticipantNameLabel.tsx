@@ -54,8 +54,8 @@ const StageParticipantNameLabel = () => {
     const { classes, cx } = useStyles();
     const largeVideoParticipant: IParticipant = useSelector(getLargeVideoParticipant);
     const selectedId = largeVideoParticipant?.id;
-    // const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, selectedId));
-    const _attendeeInfo : IAttendeeInfo | undefined = useSelector((state:IReduxState)=> state['features/base/app'].attendeeInfo )
+    const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, selectedId));
+    
 
     const localParticipant = useSelector(getLocalParticipant);
     const localId = localParticipant?.id;
@@ -65,7 +65,7 @@ const StageParticipantNameLabel = () => {
     const showDisplayName = useSelector(isDisplayNameVisible);
 
     if (showDisplayName
-        // && nameToDisplay
+        && nameToDisplay
         && selectedId !== localId
         && !isTileView
         && !isWhiteboardParticipant(largeVideoParticipant)
@@ -77,7 +77,7 @@ const StageParticipantNameLabel = () => {
                     classes.badgeContainer,
                     toolboxVisible && classes.containerElevated
                 ) }>
-                <DisplayNameBadge name = { _attendeeInfo?.userName! } />
+                <DisplayNameBadge name = { nameToDisplay } />
             </div>
         );
     }
