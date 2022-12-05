@@ -1,28 +1,31 @@
 /* eslint-disable lines-around-comment */
-import { Theme } from '@mui/material';
-import React, { useEffect } from 'react';
-import { ReactNode } from 'react';
-import { makeStyles } from 'tss-react/mui';
+import { Theme } from "@mui/material";
+import React, { useEffect } from "react";
+import { ReactNode } from "react";
+import { makeStyles } from "tss-react/mui";
 
-import { IReduxState } from '../../../../app/types';
-import DeviceStatus from '../../../../prejoin/components/web/preview/DeviceStatus';
+import { IReduxState } from "../../../../app/types";
+import DeviceStatus from "../../../../prejoin/components/web/preview/DeviceStatus";
 // @ts-ignore
-import { Toolbox } from '../../../../toolbox/components/web';
-import { IAttendeeInfo, IMeetingInfo, IUrlInfo } from '../../../app/types';
-import { getConferenceName } from '../../../conference/functions';
-import {PREMEETING_BUTTONS,THIRD_PARTY_PREJOIN_BUTTONS} from '../../../config/constants';
+import { Toolbox } from "../../../../toolbox/components/web";
+import { IAttendeeInfo, IMeetingInfo, IUrlInfo } from "../../../app/types";
+import { getConferenceName } from "../../../conference/functions";
+import {
+    PREMEETING_BUTTONS,
+    THIRD_PARTY_PREJOIN_BUTTONS,
+} from "../../../config/constants";
 import {
     getToolbarButtons,
-    isToolbarButtonEnabled
-} from '../../../config/functions.web';
-import MeetingValidation from '../../../post-welcome-page/meeting-validation';
-import UrlValidation from '../../../post-welcome-page/url-validation';
-import { connect } from '../../../redux/functions';
-import { withPixelLineHeight } from '../../../styles/functions.web';
+    isToolbarButtonEnabled,
+} from "../../../config/functions.web";
+import MeetingValidation from "../../../post-welcome-page/meeting-validation";
+import UrlValidation from "../../../post-welcome-page/url-validation";
+import { connect } from "../../../redux/functions";
+import { withPixelLineHeight } from "../../../styles/functions.web";
 
-import ConnectionStatus from './ConnectionStatus';
+import ConnectionStatus from "./ConnectionStatus";
 // @ts-ignore
-import Preview from './Preview';
+import Preview from "./Preview";
 
 interface IProps {
     loading: boolean;
@@ -106,12 +109,12 @@ const useStyles = makeStyles()((theme: Theme) => {
             ...withPixelLineHeight(theme.typography.heading5),
             color: theme.palette.text01,
             marginBottom: theme.spacing(4),
-            overflow: 'hidden',
-            textAlign: 'center',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            width: '100%'
-        }
+            overflow: "hidden",
+            textAlign: "center",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            width: "100%",
+        },
     };
 });
 
@@ -134,58 +137,65 @@ const PreMeetingScreen = ({
 }: IProps) => {
     const { classes } = useStyles();
     const containerClassName = `premeeting-screen ${
-        className ? className : ''
+        className ? className : ""
     }`;
     const style = _premeetingBackground
         ? {
               background: _premeetingBackground,
-              backgroundPosition: 'center',
-        backgroundSize: 'cover'    }: {};
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+          }
+        : {};
 
-    return _urlInfo.meetingId === null || _urlInfo.meetingId === undefined 
-            || _urlInfo.meetingId === "" || _urlInfo.meetingId === ''
-            || _urlInfo.userId === null ||_urlInfo.userId === undefined 
-            || _urlInfo.userId === "" || _urlInfo.userId === '' ? (
+    return _urlInfo.meetingId === null ||
+        _urlInfo.meetingId === undefined ||
+        _urlInfo.meetingId === "" ||
+        _urlInfo.meetingId === "" ||
+        _urlInfo.userId === null ||
+        _urlInfo.userId === undefined ||
+        _urlInfo.userId === "" ||
+        _urlInfo.userId === "" ? (
         <UrlValidation
             class={containerClassName}
             title={"Empty Inputs"}
             message={"Please enter meeting id and user id. Then try."}
-            />
-    ) : _meetingInfo === undefined && _attendeeInfo === undefined ? 
+        />
+    ) : _meetingInfo === undefined ? (
+        <MeetingValidation
+            class={containerClassName}
+            title={"Invalid Meeting"}
+            message={"Please enter a valid meeting id. Then try."}
+            loading={loading}
+        />
+    ) : _meetingInfo === undefined && _attendeeInfo === undefined ? (
         <MeetingValidation
             class={containerClassName}
             title={"Not Found"}
             message={"Meeting and user does not exist"}
             loading={loading}
         />
-      : _meetingInfo === undefined ? (
-        <MeetingValidation
-            class={containerClassName}
-            title={"Invalid Meeting"}
-            message={"Please Enter a valid meeting id. Then try."}
-            loading={loading}
-        />
     ) : _meetingInfo !== undefined && _attendeeInfo === undefined ? (
         <MeetingValidation
             class={containerClassName}
             title={"Invalid User"}
-            message={"Please Enter a valid user id. Then try."}
+            message={"Please enter a valid user id. Then try."}
             loading={loading}
         />
-    ) : _attendeeInfo !== undefined && _attendeeInfo.isAllowed == false ?
+    ) : _attendeeInfo !== undefined && _attendeeInfo.isAllowed == false ? (
         <MeetingValidation
             class={containerClassName}
             title={"Not Allowed"}
             message={"User is not allowed to join the conference"}
             loading={loading}
-        />  : (
+        />
+    ) : (
         <div className={containerClassName}>
             <div style={style}>
                 <div className="content">
                     {clickStartBtn && <ConnectionStatus />}
 
-                    <div className='content-controls'>
-                        <h1 className='title'>
+                    <div className="content-controls">
+                        <h1 className="title">
                             {clickStartBtn == false
                                 ? "Choose An Option"
                                 : title}
