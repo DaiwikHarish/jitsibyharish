@@ -154,12 +154,13 @@ function ParticipantItem({
             displayName
         }), []);
 
+    const [userName, userType] = displayName!.split('|');
     const { classes: styles } = useStyles();
 
     const icon = (
         <Avatar
             className = 'participant-avatar'
-            displayName = { displayName }
+            displayName = { userName }
             participantId = { participantID }
             size = { 32 } />
     );
@@ -168,15 +169,16 @@ function ParticipantItem({
         <>
             <div className = { styles.nameContainer }>
                 <div className = { styles.name }>
-                    {displayName}
+                    {userName}
                 </div>
                 {local ? <span>&nbsp;({youText})</span> : null}
             </div>
             {
-                _attendeeInfo?.userType === UserType.Admin
-                &&
-            isModerator && !disableModeratorIndicator
-                && 
+            //     _attendeeInfo?.userType === UserType.Admin
+            //     &&
+            // isModerator && !disableModeratorIndicator
+            //     && 
+            userType === UserType.Admin &&
                 <div className = { styles.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}

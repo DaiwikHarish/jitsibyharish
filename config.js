@@ -26,10 +26,9 @@ var enableJaaS = false;
 
 var config = {
 
-    //AwesomeReview baseUrl
-    baseUrl:{
-        url:'https://dev.awesomereviewstream.com/svr/api'
-    },
+    //awesomeReviewBaseUrl
+    baseUrl:'https://dev.awesomereviewstream.com/svr/api',
+
     // Connection
     //
     hosts: {
