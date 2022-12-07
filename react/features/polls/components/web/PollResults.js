@@ -4,8 +4,6 @@ import React from 'react';
 
 import AbstractPollResults from '../AbstractPollResults';
 import type { AbstractProps } from '../AbstractPollResults';
-
-
 /**
  * Component that renders the poll results.
  *
@@ -21,9 +19,10 @@ const PollResults = (props: AbstractProps) => {
         showDetails,
         question,
         t,
-        toggleIsDetailed
+        toggleIsDetailed,
     } = props;
 
+    const [userName, userType] = creatorName.split('|');
     return (
         <div className = 'poll-results'>
             <div className = 'poll-header'>
@@ -31,50 +30,75 @@ const PollResults = (props: AbstractProps) => {
                     <strong>{ question }</strong>
                 </div>
                 <div className = 'poll-creator'>
-                    { t('polls.by', { name: creatorName }) }
+                    {t('polls.by', { name: userName })}
                 </div>
             </div>
-            <ol className = 'poll-result-list'>
-                {answers.map(({ name, percentage, voters, voterCount }, index) =>
-                    (<li key = { index }>
-                        <div className = 'poll-answer-header'>
-                            <span className = 'poll-answer-vote-name' >{name}</span>
-                        </div>
-                        <div className = 'poll-answer-short-results'>
-                            <span className = 'poll-bar-container'>
-                                <div
-                                    className = 'poll-bar'
-                                    style = {{ width: `${percentage}%` }} />
-                            </span>
-                            <div className = 'poll-answer-vote-count-container'>
-                                <span className = 'poll-answer-vote-count'>({voterCount}) {percentage}%</span>
-                            </div>
-                        </div>
-                        { showDetails && voters && voterCount > 0
-                            && <ul className = 'poll-answer-voters'>
-                                {voters.map(voter =>
-                                    <li key = { voter.id }>{voter.name}</li>
-                                )}
-                            </ul>}
-                    </li>)
+            <ol className="poll-result-list">
+                {answers.map(
+                    ({ name, percentage, voters, voterCount }, index) => (
+                        <VoterContainer
+                            name={name}
+                            percentage={percentage}
+                            voters={voters}
+                            voterCount={voterCount}
+                            showDetails={showDetails}
+                            index={index}
+                        />
+                    )
                 )}
             </ol>
-            <div className = { 'poll-result-links' }>
-                <a
-                    className = { 'poll-detail-link' }
-                    onClick = { toggleIsDetailed }>
-                    {showDetails ? t('polls.results.hideDetailedResults') : t('polls.results.showDetailedResults')}
+            <div className={'poll-result-links'}>
+                <a className={'poll-detail-link'} onClick={toggleIsDetailed}>
+                    {showDetails
+                        ? t('polls.results.hideDetailedResults')
+                        : t('polls.results.showDetailedResults')}
                 </a>
-                <a
-                    className = { 'poll-change-vote-link' }
-                    onClick = { changeVote }>
-                    {haveVoted ? t('polls.results.changeVote') : t('polls.results.vote')}
+                <a className={'poll-change-vote-link'} onClick={changeVote}>
+                    {haveVoted
+                        ? t('polls.results.changeVote')
+                        : t('polls.results.vote')}
                 </a>
             </div>
         </div>
     );
-
 };
+
+function VoterContainer(props) {
+    console.log("alam props",props)
+    const [userName, userType] = props.name.split('|');
+    return (
+        <li key={props.index}>
+            <div className="poll-answer-header">
+                <span className="poll-answer-vote-name">{userName}</span>
+            </div>
+            <div className="poll-answer-short-results">
+                <span className="poll-bar-container">
+                    <div
+                        className="poll-bar"
+                        style={{ width: `${props.percentage}%` }}
+                    />
+                </span>
+                <div className="poll-answer-vote-count-container">
+                    <span className="poll-answer-vote-count">
+                        ({props.voterCount}) {props.percentage}%
+                    </span>
+                </div>
+            </div>
+            {props.showDetails && props.voters && props.voterCount > 0 && (
+                <ul className="poll-answer-voters">
+                    {props.voters.map((voter) => (
+                        <VoterName voter={voter} />
+                    ))}
+                </ul>
+            )}
+        </li>
+    );
+}
+
+function VoterName(props) {
+    const [userName, userType] = props.voter.name.split('|');
+    return <li key={props.voter.id}>{userName}</li>;
+}
 
 /*
  * We apply AbstractPollResults to fill in the AbstractProps common

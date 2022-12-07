@@ -427,6 +427,7 @@ export function getParticipantDisplayName(stateful: IStateful, id: string): stri
         defaultLocalDisplayName,
         defaultRemoteDisplayName
     } = state['features/base/config'];
+    const [userName, userType] = defaultLocalDisplayName!.split('|');
 
     if (participant) {
         if (isScreenShareParticipant(participant)) {
@@ -438,7 +439,7 @@ export function getParticipantDisplayName(stateful: IStateful, id: string): stri
         }
 
         if (participant.local) {
-            return defaultLocalDisplayName ?? '';
+            return userName ?? '';
         }
     }
 

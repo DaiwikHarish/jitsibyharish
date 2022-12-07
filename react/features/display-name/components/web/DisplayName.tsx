@@ -84,6 +84,7 @@ const DisplayName = ({
     const configuredDisplayName = useSelector((state: IReduxState) =>
         getParticipantById(state, participantID))?.name ?? '';
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, participantID));
+    const [userName, userType] = nameToDisplay.split('|');
     const [ editDisplayNameValue, setEditDisplayNameValue ] = useState('');
     const [ isEditing, setIsEditing ] = useState(false);
     const dispatch = useDispatch();
@@ -131,6 +132,7 @@ const DisplayName = ({
     if (allowEditing && isEditing) {
         return (
             <input
+                readOnly={true}
                 autoFocus = { true }
                 className = { classes.editDisplayName }
                 id = 'editDisplayName'
@@ -142,19 +144,19 @@ const DisplayName = ({
                 ref = { nameInputRef }
                 spellCheck = { 'false' }
                 type = 'text'
-                value = { editDisplayNameValue } />
+                value = { userName } />
         );
     }
 
     return (
         <Tooltip
-            content = { appendSuffix(nameToDisplay, displayNameSuffix) }
+            content = { appendSuffix(userName, displayNameSuffix) }
             position = { getIndicatorsTooltipPosition(thumbnailType) }>
             <span
                 className = { `displayname ${classes.displayName}` }
                 id = { elementID }
                 onClick = { onStartEditing }>
-                {appendSuffix(nameToDisplay, displayNameSuffix)}
+                {appendSuffix(userName, displayNameSuffix)}
             </span>
         </Tooltip>
     );
