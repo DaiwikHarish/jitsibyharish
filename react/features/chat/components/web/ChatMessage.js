@@ -22,6 +22,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
      */
     render() {
         const { message, t, knocking } = this.props;
+        const [userName, userType] = message.displayName.split('|');
 
         return (
             <div
@@ -33,7 +34,14 @@ class ChatMessage extends AbstractChatMessage<Props> {
                         message.lobbyChat && !knocking ? 'lobbymessage' : ''}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
-                            { this.props.showDisplayName && this._renderDisplayName() }
+                        {this.props.showDisplayName && (
+                                <div
+                                    aria-hidden={true}
+                                    className="display-name"
+                                >
+                                    {userName}
+                                </div>
+                            )}
                             <div className = 'usermessage'>
                                 <span className = 'sr-only'>
                                     { this.props.message.displayName === this.props.message.recipient

@@ -9,6 +9,9 @@ import {
     showNotification
 } from '../notifications';
 
+import { IAttendeeInfo } from '../base/app/types'
+import { _onKickedOut } from './functions.web';
+
 /**
  * Notify that we've been kicked out of the conference.
  *
@@ -19,6 +22,7 @@ import {
  */
 export function notifyKickedOut(participant: Object, _: ?Function) { // eslint-disable-line no-unused-vars
     return (dispatch: Dispatch<any>, getState: Function) => {
+        const _attendeeInfo: IAttendeeInfo = getState()['features/base/app'].attendeeInfo
         if (!participant || (participant.isReplaced && participant.isReplaced())) {
             return;
         }
@@ -27,6 +31,8 @@ export function notifyKickedOut(participant: Object, _: ?Function) { // eslint-d
             participantDisplayName:
                 getParticipantDisplayName(getState, participant.getId())
         };
+
+        _onKickedOut(_attendeeInfo.id)
 
         dispatch(showNotification({
             appearance: NOTIFICATION_TYPE.ERROR,

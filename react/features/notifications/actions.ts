@@ -198,24 +198,28 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatc
     let notificationProps;
 
     if (joinedParticipantsCount >= 3) {
+        const [userName, userType] = joinedParticipantsNames[0].split('|');
         notificationProps = {
             titleArguments: {
-                name: joinedParticipantsNames[0]
+                name: userName
             },
             titleKey: 'notify.connectedThreePlusMembers'
         };
     } else if (joinedParticipantsCount === 2) {
+        const [userName1, userType1] = joinedParticipantsNames[0].split('|');
+        const [userName2, userType2] = joinedParticipantsNames[1].split('|');
         notificationProps = {
             titleArguments: {
-                first: joinedParticipantsNames[0],
-                second: joinedParticipantsNames[1]
+                first: userName1,
+                second: userName2
             },
             titleKey: 'notify.connectedTwoMembers'
         };
     } else if (joinedParticipantsCount) {
+        const [userName, userType] = joinedParticipantsNames[0].split('|');
         notificationProps = {
             titleArguments: {
-                name: joinedParticipantsNames[0]
+                name: userName
             },
             titleKey: 'notify.connectedOneMember'
         };
@@ -262,24 +266,28 @@ const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], 
     let notificationProps;
 
     if (leftParticipantsCount >= 3) {
+        const [userName, userType] = leftParticipantsNames[0].split('|');
         notificationProps = {
             titleArguments: {
-                name: leftParticipantsNames[0]
+                name: userName
             },
             titleKey: 'notify.leftThreePlusMembers'
         };
     } else if (leftParticipantsCount === 2) {
+        const [userName1, userType1] = leftParticipantsNames[0].split('|');
+        const [userName2, userType2] = leftParticipantsNames[1].split('|');
         notificationProps = {
             titleArguments: {
-                first: leftParticipantsNames[0],
-                second: leftParticipantsNames[1]
+                first: userName1,
+                second: userName2
             },
             titleKey: 'notify.leftTwoMembers'
         };
     } else if (leftParticipantsCount) {
+        const [userName, userType] = leftParticipantsNames[0].split('|');
         notificationProps = {
             titleArguments: {
-                name: leftParticipantsNames[0]
+                name: userName
             },
             titleKey: 'notify.leftOneMember'
         };
