@@ -128,6 +128,8 @@ class ProfileTab extends AbstractDialogTab<Props> {
             // @ts-ignore,
         } = this.props;
 
+        const [userName, userType] = displayName.split('|');
+
         return (
             <div>
                 <div className = 'profile-edit'>
@@ -140,7 +142,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                             onChange = { this._onDisplayNameChange }
                             placeholder = { t('settings.name') }
                             type = 'text'
-                            value = { displayName } />
+                            value = { userName } />
                     </div>
                     {!hideEmailInSettings && <div className = 'profile-edit-field'>
                         <Input

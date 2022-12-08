@@ -435,10 +435,11 @@ function _handleReceivedMessage({ dispatch, getState }: IStore,
         timestamp: millisecondsTimestamp,
         isReaction
     }));
+    const [userName, userType] = displayName!.split('|');
 
     if (shouldShowNotification) {
         dispatch(showMessageNotification({
-            title: displayName,
+            title: userName,
             description: message
         }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
     }
