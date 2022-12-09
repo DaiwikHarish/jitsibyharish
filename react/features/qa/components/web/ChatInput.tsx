@@ -19,12 +19,12 @@ import SmileysPanel from './SmileysPanel';
 interface IProps extends WithTranslation {
 
     /**
-     * Whether chat emoticons are disabled.
+     * Whether QA emoticons are disabled.
      */
     _areSmileysDisabled: boolean;
 
     /**
-     * Invoked to send chat messages.
+     * Invoked to send QA messagesQa.
      */
     dispatch: IStore['dispatch'];
 
@@ -54,7 +54,7 @@ interface IState {
 }
 
 /**
- * Implements a React Component for drafting and submitting a chat message.
+ * Implements a React Component for drafting and submitting a QA message.
  *
  * @augments Component
  */
@@ -92,7 +92,7 @@ class ChatInput extends Component<IProps, IState> {
      */
     componentDidMount() {
         if (isMobileBrowser()) {
-            // Ensure textarea is not focused when opening chat on mobile browser.
+            // Ensure textarea is not focused when opening QA on mobile browser.
             this._textArea?.current && this._textArea.current.blur();
         }
     }
@@ -119,18 +119,18 @@ class ChatInput extends Component<IProps, IState> {
                     )}
                     <Input
                         autoFocus = { true }
-                        className = 'chat-input'
+                        className = 'QA-input'
                         icon = { this.props._areSmileysDisabled ? undefined : IconSmile }
                         iconClick = { this._toggleSmileysPanel }
                         maxRows = { 5 }
                         onChange = { this._onMessageChange }
                         onKeyPress = { this._onDetectSubmit }
-                        placeholder = { this.props.t('chat.messagebox') }
+                        placeholder = { this.props.t('QA.messagebox') }
                         ref = { this._textArea }
                         textarea = { true }
                         value = { this.state.message } />
                     <Button
-                        accessibilityLabel = { this.props.t('chat.sendButton') }
+                        accessibilityLabel = { this.props.t('QA.sendButton') }
                         disabled = { !this.state.message.trim() }
                         icon = { IconPlane }
                         onClick = { this._onSubmitMessage }
@@ -151,7 +151,7 @@ class ChatInput extends Component<IProps, IState> {
     }
 
     /**
-     * Submits the message to the chat window.
+     * Submits the message to the QA window.
      *
      * @returns {void}
      */
@@ -164,11 +164,12 @@ class ChatInput extends Component<IProps, IState> {
             this.props.onSend(trimmed);
 
 //post message by API (Harish)
+ 
 
-let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
+
 const meetingId = this.props._urlInfo.meetingId;
 const userId = this.props._urlInfo.userId;
-
+let url = 'https://dev.awesomereviewstream.com/svr/api/question?meetingId='+meetingId+'&userId='+userId;
 fetch(url,{
     headers: {
       Accept: "application/json",
@@ -180,22 +181,22 @@ fetch(url,{
     body: JSON.stringify({
         "meetingId": meetingId,
         "fromUserId": userId,
-        "toUserId": userId,
-        "message": trimmed
+       "question": trimmed,
+     
     })
 })
 
 
             this.setState({ message: '' });
 
-            // Keep the textarea in focus when sending messages via submit button.
+            // Keep the textarea in focus when sending messagesQa via submit button.
             this._focus();
         }
 
     }
 
     /**
-     * Detects if enter has been pressed. If so, submit the message in the chat
+     * Detects if enter has been pressed. If so, submit the message in the QA
      * window.
      *
      * @param {string} event - Keyboard event.
@@ -237,10 +238,10 @@ fetch(url,{
     }
 
     /**
-     * Appends a selected smileys to the chat message draft.
+     * Appends a selected smileys to the QA message draft.
      *
      * @param {string} smileyText - The value of the smiley to append to the
-     * chat message.
+     * QA message.
      * @private
      * @returns {void}
      */

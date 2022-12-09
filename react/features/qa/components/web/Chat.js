@@ -16,15 +16,11 @@ import AbstractChat, {
 
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
-import ChatInputQA from '../../../qa/components/web/ChatInput';
 import DisplayNameForm from './DisplayNameForm';
 import KeyboardAvoider from './KeyboardAvoider';
 import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 
-import MessageContainerQA from '../../../qa/components/web/MessageContainer';
-import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
-import { al } from 'react-emoji-render/data/aliases';
 /**
  * React Component for holding the chat feature in a side panel that slides in
  * and out of view.
@@ -32,8 +28,8 @@ import { al } from 'react-emoji-render/data/aliases';
 class Chat extends AbstractChat<Props> {
 
     /**
-     * Reference to the React Component for displaying chat messages. Used for
-     * scrolling to the end of the chat messages.
+     * Reference to the React Component for displaying chat messagesQa. Used for
+     * scrolling to the end of the chat messagesQa.
      */
     _messageContainerRef: Object;
 
@@ -45,9 +41,7 @@ class Chat extends AbstractChat<Props> {
      */
     constructor(props: Props) {
         super(props);
-        this.state = {
-QAtab:false
-        }
+
         this._messageContainerRef = React.createRef();
 
         // Bind event handlers so they are only bound once for every instance.
@@ -66,18 +60,17 @@ QAtab:false
      */
     render() {
         const { _isOpen, _isPollsEnabled, _showNamePrompt } = this.props;
-       
-         
+
         return (
             _isOpen ? <div
                 className = 'sideToolbarContainer'
                 id = 'sideToolbarContainer'
                 onKeyDown = { this._onEscClick } >
-                <ChatHeader
+                {/* <ChatHeader
                     className = 'chat-header'
                     id = 'chat-header'
                     isPollsEnabled = { _isPollsEnabled }
-                    onCancel = { this._onToggleChat } />
+                    onCancel = { this._onToggleChat } /> */}
                 { _showNamePrompt
                     ? <DisplayNameForm isPollsEnabled = { _isPollsEnabled } />
                     : this._renderChat() }
@@ -134,14 +127,14 @@ QAtab:false
     }
 
     /**
-     * Returns a React Element for showing chat messages and a form to send new
-     * chat messages.
+     * Returns a React Element for showing chat messagesQa and a form to send new
+     * chat messagesQa.
      *
      * @private
      * @returns {ReactElement}
      */
     _renderChat() {
-        const { _isPollsEnabled, _isPollsTabFocused} = this.props;
+        const { _isPollsEnabled, _isPollsTabFocused } = this.props;
 
         if (_isPollsTabFocused) {
             return (
@@ -157,29 +150,6 @@ QAtab:false
                 </>
             );
         }
- 
-        if (this.state.QAtab) {
-            return (
-            <>
-                { _isPollsEnabled && this._renderTabs() }
-                <div
-                    aria-labelledby = { CHAT_TABS.QA }
-                    className = { clsx('chat-panel', !_isPollsEnabled && 'chat-panel-no-tabs') }
-                    id = 'QA-panel'
-                    role = 'tabpanel'>
-                    <MessageContainerQA
-                        messages = { this.props._messagesQa } />
-                    <MessageRecipientQA />
-                    <ChatInputQA
-                        onSend = { this._onSendMessage } />
-                </div>
-            </>
-            )
-        }else{
-
-
-        
-      
 
         return (
             <>
@@ -190,14 +160,13 @@ QAtab:false
                     id = 'chat-panel'
                     role = 'tabpanel'>
                     <MessageContainer
-                        messages = { this.props._messages } />
+                        messagesQa = { this.props._messages } />
                     <MessageRecipient />
                     <ChatInput
                         onSend = { this._onSendMessage } />
                 </div>
             </>
         );
-        }
     }
 
     /**
@@ -213,26 +182,24 @@ QAtab:false
             <Tabs
                 accessibilityLabel = { t(_isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }
                 onChange = { this._onChangeTab }
-                selected = { _isPollsTabFocused ? CHAT_TABS.POLLS : this.state.QAtab? CHAT_TABS.QA : CHAT_TABS.CHAT }
+                selected = { _isPollsTabFocused ? CHAT_TABS.POLLS : CHAT_TABS.CHAT }
                 tabs = { [ {
                     accessibilityLabel: t('chat.tabs.chat'),
-                    countBadge:  _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
+                    countBadge: _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
                     id: CHAT_TABS.CHAT,
                     label: t('chat.tabs.chat')
                 }, 
                 {
                     accessibilityLabel: t('chat.tabs.polls'),
-                    countBadge: !_isPollsTabFocused &&  _nbUnreadPolls > 0 ? _nbUnreadPolls : undefined,
+                    countBadge: !_isPollsTabFocused && _nbUnreadPolls > 0 ? _nbUnreadPolls : undefined,
                     id: CHAT_TABS.POLLS,
                     label: t('chat.tabs.polls')
                 },
                 {
                     accessibilityLabel: t('chat.tabs.QA'),
-                    countBadge: !_isPollsTabFocused  && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
-                    id: CHAT_TABS.QA,
+                    countBadge: _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
+                    id: CHAT_TABS.CHAT,
                     label: t('chat.tabs.QA')
-
-                    
                 }
                 
                 ] } />
@@ -249,13 +216,10 @@ QAtab:false
     * @returns {Function}
     */
     _onToggleChat() {
-        
         this.props.dispatch(toggleChat());
-       
     }
     _onTogglePollsTab: () => void;
     _onToggleChatTab: () => void;
-    _onToggleQATab: () => void;
     _onChangeTab: (string) => void;
 
     /**
@@ -265,21 +229,7 @@ QAtab:false
      * @returns {void}
      */
     _onChangeTab(id) {
-        //id === CHAT_TABS.CHAT ?  this._onToggleChatTab()  :  id === CHAT_TABS.POLLS ?  this._onTogglePollsTab() : this.setState({QAtab:true}); this._onToggleQATab();
-        
-        if(id === CHAT_TABS.CHAT)
-        {
-            this.setState({QAtab:false});
-            this._onToggleChatTab() 
-        }else   if(id === CHAT_TABS.POLLS)
-        {
-            this.setState({QAtab:false});
-            this._onTogglePollsTab() 
-        }else  
-        {
-            this.setState({QAtab:true});
-            this._onToggleQATab() 
-        }
+        id === CHAT_TABS.CHAT ? this._onToggleChatTab() : this._onTogglePollsTab();
     }
 }
 

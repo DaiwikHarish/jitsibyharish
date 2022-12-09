@@ -31,19 +31,19 @@ export type Props = {
      * Whether the poll tab is focused or not.
      */
     _isPollsTabFocused: boolean,
-
+    _isQaTabFocused:boolean,
     /**
-     * All the chat messages in the conference.
+     * All the chat messagesQa in the conference.
      */
     _messages: Array<Object>,
 
     /**
-     * Number of unread chat messages.
+     * Number of unread chat messagesQa.
      */
     _nbUnreadMessages: number,
 
     /**
-     * Number of unread poll messages.
+     * Number of unread poll messagesQa.
      */
     _nbUnreadPolls: number,
 
@@ -60,7 +60,7 @@ export type Props = {
      * @protected
      */
     _onToggleChatTab: Function,
-
+    _onToggleQATab: Function,
     /**
      * Function to display the polls tab.
      *
@@ -106,9 +106,9 @@ export default class AbstractChat<P: Props> extends Component<P> {
         // Bind event handlers so they are only bound once per instance.
         this._onSendMessage = this._onSendMessage.bind(this);
         this._onToggleChatTab = this._onToggleChatTab.bind(this);
-        this._onTogglePollsTab = this._onTogglePollsTab.bind(this);
+
         this._onToggleQATab = this._onToggleQATab.bind(this);
-        
+        this._onTogglePollsTab = this._onTogglePollsTab.bind(this);
     }
 
     _onSendMessage: (string) => void;
@@ -127,6 +127,8 @@ export default class AbstractChat<P: Props> extends Component<P> {
 
     _onToggleChatTab: () => void;
 
+
+    _onToggleQATab: () => void;
     /**
      * Display the Chat tab.
      *
@@ -135,12 +137,15 @@ export default class AbstractChat<P: Props> extends Component<P> {
      */
     _onToggleChatTab() {
         this.props.dispatch(setIsPollsTabFocused(false));
+        //this.props.dispatch(setIsQATabFocused(false));
+    }
+
+    _onToggleQATab() {
+        this.props.dispatch(setIsPollsTabFocused(false));
+       // this.props.dispatch(setIsQATabFocused(true));
     }
 
     _onTogglePollsTab: () => void;
-
-    _onToggleQATab: () => void;
-    
 
     /**
      * Display the Polls tab.
@@ -150,18 +155,39 @@ export default class AbstractChat<P: Props> extends Component<P> {
      */
     _onTogglePollsTab() {
         this.props.dispatch(setIsPollsTabFocused(true));
+      //  this.props.dispatch(setIsQATabFocused(false));
     }
-    _onToggleQATab() {
-        this.props.dispatch(setIsPollsTabFocused(false));
-    }
-
-    
 }
 
 /**
  * Maps (parts of) the redux state to {@link Chat} React {@code Component}
  * props.
  *
+ * displayName: "Presenter 1|Presenter"
+error: undefined
+id: "7874d6d8"
+isReaction: false
+lobbyChat: false
+message: "asdfsadf"
+messageId: "7f3e36cb-cc8e-4c5b-89bf-dd5f432e7e9e"
+messageType: "local" | "remote"
+privateMessage: false
+recipient: "Presenter 1|Presenter"
+timestamp: 1670432204381
+ * 
+ * 
+ * API -
+ * createdAt: "2022-08-22T13:34:56.924Z"
+fromUserId: "4"
+fromUserName: "Admin 4"
+fromUserType: "Admin"
+id: 1
+meetingId: 1
+message: "Hii"
+toUserId: "165"
+toUserName: "Viewer 165"
+toUserType: "Viewer"
+updatedAt: "2022-08-22T13:34:56.924Z"
  * @param {Object} state - The redux store/state.
  * @private
  * @returns {{
@@ -171,19 +197,27 @@ export default class AbstractChat<P: Props> extends Component<P> {
  * }}
  */
 export function _mapStateToProps(state: Object) {
-    const { isOpen, isPollsTabFocused, messages, nbUnreadMessages } = state['features/chat'];
+    const { isOpen, isPollsTabFocused,isQaTabFocused, messagesQa, nbUnreadMessages } = state['features/chat'];
     const { nbUnreadPolls } = state['features/polls'];
     const _localParticipant = getLocalParticipant(state);
     const { disablePolls } = state['features/base/config'];
 
-    return {
-        _isModal: window.innerWidth <= SMALL_WIDTH_THRESHOLD,
-        _isOpen: isOpen,
-        _isPollsEnabled: !disablePolls,
-        _isPollsTabFocused: isPollsTabFocused,
-        _messages: messages,
-        _nbUnreadMessages: nbUnreadMessages,
-        _nbUnreadPolls: nbUnreadPolls,
-        _showNamePrompt: !_localParticipant?.name
-    };
+
+return {
+    _isModal: window.innerWidth <= SMALL_WIDTH_THRESHOLD,
+    _isOpen: isOpen,
+    _isPollsEnabled: !disablePolls,
+    _isPollsTabFocused: isPollsTabFocused,
+    _isQaTabFocused: false,
+    
+    _messages: messagesQa,
+    _nbUnreadMessages: nbUnreadMessages,
+    _nbUnreadPolls: nbUnreadPolls,
+    _showNamePrompt: !_localParticipant?.name
+};
+
+
+
+
+
 }

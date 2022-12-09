@@ -14,17 +14,17 @@ export const CHAT_SIZE = 315;
 export const INCOMING_MSG_SOUND_ID = 'INCOMING_MSG_SOUND';
 
 /**
- * The {@code messageType} of error (system) messages.
+ * The {@code messageType} of error (system) messagesQa.
  */
 export const MESSAGE_TYPE_ERROR = 'error';
 
 /**
- * The {@code messageType} of local messages.
+ * The {@code messageType} of local messagesQa.
  */
 export const MESSAGE_TYPE_LOCAL = 'local';
 
 /**
- * The {@code messageType} of remote messages.
+ * The {@code messageType} of remote messagesQa.
  */
 export const MESSAGE_TYPE_REMOTE = 'remote';
 
@@ -38,6 +38,5 @@ export const LOBBY_CHAT_MESSAGE = 'LOBBY_CHAT_MESSAGE';
 
 export const CHAT_TABS = {
     POLLS: 'polls-tab',
-    CHAT: 'chat-tab',
-    QA: 'qa-tab'
+    CHAT: 'chat-tab'
 };

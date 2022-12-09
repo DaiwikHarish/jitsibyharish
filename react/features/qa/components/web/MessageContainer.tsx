@@ -12,10 +12,10 @@ import NewMessagesButton from './NewMessagesButton';
 interface IState {
 
     /**
-     * Whether or not message container has received new messages.
+     * Whether or not message container has received new messagesQa.
      */
     hasNewMessages: boolean;
-
+    allQa:Array<Object>,
     /**
      * Whether or not scroll position is at the bottom of container.
      */
@@ -25,12 +25,10 @@ interface IState {
      * The id of the last read message.
      */
     lastReadMessageId: string;
-
-    allMes:Array<Object>,
 }
 
 /**
- * Displays all received chat messages, grouped by sender.
+ * Displays all received QA messagesQa, grouped by sender.
  *
  * @augments AbstractMessageContainer
  */
@@ -43,13 +41,11 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
         hasNewMessages: false,
         isScrolledToBottom: true,
         lastReadMessageId: ''
-      
     };
-    
-    
+
     /**
-     * Reference to the HTML element at the end of the list of displayed chat
-     * messages. Used for scrolling to the end of the chat messages.
+     * Reference to the HTML element at the end of the list of displayed QA
+     * messagesQa. Used for scrolling to the end of the QA messagesQa.
      */
     _messagesListEndRef: RefObject<HTMLDivElement>;
 
@@ -60,7 +56,7 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
     _messageListRef: RefObject<HTMLDivElement>;
 
     /**
-     * Intersection observer used to detect intersections of messages with the bottom of the message container.
+     * Intersection observer used to detect intersections of messagesQa with the bottom of the message container.
      */
     _bottomListObserver: IntersectionObserver;
 
@@ -90,34 +86,29 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     render() {
-        Object.assign(this.props.messages, this.state.allMes )
-
-
-       // alert(JSON.stringify(this.props.messages))
+        Object.assign(this.props.messagesQa, this.state.allQa )
         const groupedMessages = this._getMessagesGroupedBySender();
-
-        
-        const messages = groupedMessages.map((group, index) => {
+        const messagesQa = groupedMessages.map((group, index) => {
             const messageType = group[0]?.messageType;
 
             return (
                 <ChatMessageGroup
                     className = { messageType || MESSAGE_TYPE_REMOTE }
                     key = { index }
-                    messages = { group } />
+                    messagesQa = { group } />
             );
         });
 
         return (
             <div id = 'chat-conversation-container'>
                 <div
-                    aria-labelledby = 'chat-header'
+                    aria-labelledby = 'QA-header'
                     id = 'chatconversation'
                     onScroll = { this._onChatScroll }
                     ref = { this._messageListRef }
                     role = 'log'
                     tabIndex = { 0 }>
-                    { messages}
+                    { messagesQa }
 
                     { !this.state.isScrolledToBottom && this.state.hasNewMessages
                         && <NewMessagesButton
@@ -139,7 +130,6 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     componentDidMount() {
-        
         const queryString = window.location.search;
       
 
@@ -149,40 +139,44 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
         const userId = urlParams.get('userId')
 
        
-        let url = 'https://dev.awesomereviewstream.com/svr/api/chat?meetingId='+meetingId+'&userId='+userId;
         
+        let url = 'https://dev.awesomereviewstream.com/svr/api/question?meetingId='+meetingId+'&userId='+userId;
+
         fetch(
             url
         )
             .then((response) => response.json())
             .then((data) => {
-               
-               var allMes = data.map((mesAPI) =>  
+            //console.log(data)
+               var allQa = data.map((mesAPI) =>  
         {
-let usertype='local'
-            if(mesAPI.fromUserName!=mesAPI.toUserName)
-            {
-                usertype='remote'
-            }
-        return({
-        "displayName":mesAPI.fromUserName,
-      
-        "id":mesAPI.id,
-        "isReaction":"false",
-        "lobbyChat":"false",
-        "message":mesAPI.message,
-        "messageId":mesAPI.id,
-        "messageType":usertype,
-        "recipient":mesAPI.toUserName,
-        "timestamp":new Date( mesAPI.updatedAt).getTime()})
-        
-        })
-        this.setState({allMes:allMes})
-      
+          let awr=mesAPI.answers[0]!=undefined?mesAPI.answers[0].answer:"";
+            return({
+    "displayName":mesAPI.fromUserName,
+    
+    "id":mesAPI.id,
+    "isReaction":"false",
+    "lobbyChat":"false",
+    "message":mesAPI.question,
+    "amessage":awr,
+    "messageId":mesAPI.meetingId,
+    "messageType":"local",
+    "recipient":mesAPI.toUserName,
+    "timestamp":new Date( mesAPI.updatedAt).getTime()
+    
+    })
+  
 
-      this.scrollToElement(false, null);
-      this._createBottomListObserver();
-            })
+       
+
+        })
+      
+       this.setState({allQa:allQa})
+        this.scrollToElement(false, null);
+        this._createBottomListObserver();
+
+    })
+        
     }
 
     /**
@@ -194,7 +188,7 @@ let usertype='local'
      * @returns {void}
      */
     componentDidUpdate(prevProps: IProps) {
-        const hasNewMessages = this.props.messages.length !== prevProps.messages.length;
+        const hasNewMessages = this.props.messagesQa.length !== prevProps.messagesQa.length;
 
         if (hasNewMessages) {
             if (this.state.isScrolledToBottom) {
@@ -219,7 +213,7 @@ let usertype='local'
     }
 
     /**
-     * Automatically scrolls the displayed chat messages to bottom or to a specific element if it is provided.
+     * Automatically scrolls the displayed QA messagesQa to bottom or to a specific element if it is provided.
      *
      * @param {boolean} withAnimation - Whether or not to show a scrolling.
      * @param {TMLElement} element - Where to scroll.
@@ -298,9 +292,9 @@ let usertype='local'
     */
     _handleIntersectBottomList(entries: IntersectionObserverEntry[]) {
         entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.isIntersecting && this.props.messages.length) {
-                const lastMessageIndex = this.props.messages.length - 1;
-                const lastMessage = this.props.messages[lastMessageIndex];
+            if (entry.isIntersecting && this.props.messagesQa.length) {
+                const lastMessageIndex = this.props.messagesQa.length - 1;
+                const lastMessage = this.props.messagesQa[lastMessageIndex];
                 const lastReadMessageId = lastMessage.messageId;
 
                 this.setState(
@@ -364,5 +358,4 @@ let usertype='local'
 
         return false;
     }
-    
 }
