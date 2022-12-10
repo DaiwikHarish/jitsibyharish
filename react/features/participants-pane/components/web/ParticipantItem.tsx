@@ -182,6 +182,16 @@ function ParticipantItem({
                 <div className = { styles.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}
+            { 
+            userType === UserType.Presenter &&
+                <div className = { styles.moderatorLabel }>
+                Host
+            </div>}
+            { 
+            userType === UserType.Viewer &&
+                <div className = { styles.moderatorLabel }>
+                Participant
+            </div>}
         </>
     );
 
