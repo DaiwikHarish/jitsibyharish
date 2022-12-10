@@ -74,7 +74,7 @@ const SpeakerStatsItem = (props: Props) => {
         props.showFaceExpressions ? ' name-time_expressions-on' : ''
     }`;
     const timeClass = `${props.styles.time} ${props.isDominantSpeaker ? props.styles.dominant : ''}`;
-
+    const [userName, userType] = props.displayName.split('|');
 
     const FaceExpressions = () => FACE_EXPRESSIONS.map(
             expression => (
@@ -102,7 +102,7 @@ const SpeakerStatsItem = (props: Props) => {
                             className = 'userAvatar'
                             color = { BaseTheme.palette.ui04 }
                             id = 'avatar'
-                            initials = { getInitials(props.displayName) } />
+                            initials = { getInitials(userName) } />
                     ) : (
                         <Avatar
                             className = 'userAvatar'
@@ -114,7 +114,7 @@ const SpeakerStatsItem = (props: Props) => {
                 <div
                     aria-label = { props.t('speakerStats.speakerStats') }
                     className = { props.styles.displayName }>
-                    { props.displayName }
+                    { userName }
                 </div>
                 <div
                     aria-label = { props.t('speakerStats.speakerTime') }

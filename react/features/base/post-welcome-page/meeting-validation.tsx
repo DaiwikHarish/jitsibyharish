@@ -14,11 +14,11 @@ const MeetingValidation = (props: any) => {
                         alignItems: "center",
                         display: "block",
                         padding: '20px',
-                        boxSizing: "border-box",
+                        // boxSizing: "border-box",
                         overflow: "auto",
                         outline: 0,
-                        minHeight: "inherit",
-                        maxHeight: "inherit",
+                        // minHeight: "inherit",
+                        // maxHeight: "inherit",
                     }}
                 >
                     <RingLoader
