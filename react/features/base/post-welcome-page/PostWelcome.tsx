@@ -55,7 +55,7 @@ export class PostWelcome extends Component<Props> {
                     backgroundColor: '#292929',
                     alignContent: "flex-start",
                     alignItems: "center",
-                    paddingTop: "15%",
+                    paddingTop: "2%",
                     marginBottom:"20px",
                 }}
             >

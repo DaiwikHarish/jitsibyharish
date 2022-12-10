@@ -55,7 +55,8 @@ class ProfileButton extends AbstractButton<Props, *> {
         let displayName;
 
         if (_localParticipant?.name) {
-            displayName = _localParticipant.name;
+            const [userName, userType] = _localParticipant?.name.split('|');
+            displayName = userName;
         } else {
             displayName = _defaultLocalDisplayName;
         }

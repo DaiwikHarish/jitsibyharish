@@ -435,7 +435,35 @@ export function getParticipantDisplayName(stateful: IStateful, id: string): stri
         }
 
         if (participant.name) {
-            return participant.name;
+            const [userName, userType] = participant.name!.split('|');
+            return userName ;
+        }
+
+        if (participant.local) {
+            return userName ?? '';
+        }
+    }
+
+    return defaultRemoteDisplayName ?? '';
+}
+
+export function getParticipantItemDisplayName(stateful: IStateful, id: string): string {
+    const state = toState(stateful);
+    const participant = getParticipantById(state, id);
+    const {
+        defaultLocalDisplayName,
+        defaultRemoteDisplayName
+    } = state['features/base/config'];
+    const [userName, userType] = defaultLocalDisplayName!.split('|');
+
+    if (participant) {
+        if (isScreenShareParticipant(participant)) {
+            return getScreenshareParticipantDisplayName(state, id);
+        }
+
+        if (participant.name) {
+            const [userName, userType] = participant.name!.split('|');
+            return userName +'|'+userType;
         }
 
         if (participant.local) {
