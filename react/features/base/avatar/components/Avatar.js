@@ -198,6 +198,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
         // an avatar URL anyhow.
         const useReduxLoadableAvatarURL = avatarFailed || !url;
         const effectiveURL = useReduxLoadableAvatarURL ? _loadableAvatarUrl : url;
+        const [userName, userType] = _initialsBase.split('|');
 
         if (effectiveURL) {
             avatarProps.onAvatarLoadError = this._onAvatarLoadError;
@@ -208,7 +209,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             avatarProps.url = effectiveURL;
         }
 
-        const initials = getInitials(_initialsBase);
+        const initials = getInitials(userName);
 
         if (initials) {
             if (dynamicColor) {

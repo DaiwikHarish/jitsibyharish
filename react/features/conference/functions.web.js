@@ -29,3 +29,30 @@ export function maybeShowSuboptimalExperienceNotification(dispatch, t) {
         );
     }
 }
+
+export function _onKickedOut(id){
+    let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
+    console.log("alam updateId",id)
+
+    fetch(url,{
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "PATCH",     
+      
+        // Fields that to be updated are passed
+        body: JSON.stringify({
+          isAllowed: false,
+          id: id
+        })
+    })
+    .then((response) => {console.log("alam response",response); response.json()})
+            .then((data) => {
+               console.log("alam Successfully updated")
+            })
+            .catch((err) => {
+                console.log("alam kickout error",err.message);
+            })
+
+};

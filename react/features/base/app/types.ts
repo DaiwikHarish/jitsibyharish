@@ -2,6 +2,8 @@ import { IReduxState, IStore } from '../../app/types';
 
 export type IStateful = Function | IStore | IReduxState;
 
+export const AppName = "Awesome Review"
+
 export default class UserType {
     public static Admin = 'Admin';
     public static Presenter = 'Presenter';

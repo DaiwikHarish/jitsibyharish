@@ -30,6 +30,8 @@ const PollAnswer = ({
     const { changingVote } = poll;
     const { classes: styles } = useStyles();
 
+    const [userName, userType] = creatorName.split('|');
+
     return (
         <div className = 'poll-answer'>
             <div className = 'poll-header'>
@@ -37,7 +39,7 @@ const PollAnswer = ({
                     <span>{ poll.question }</span>
                 </div>
                 <div className = 'poll-creator'>
-                    { t('polls.by', { name: creatorName }) }
+                    { t('polls.by', { name: userName }) }
                 </div>
             </div>
             <ol className = 'poll-answer-list'>

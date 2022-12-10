@@ -262,6 +262,7 @@ class Prejoin extends Component<Props, State> {
      * @returns {void}
      */
     _setName(displayName) {
+        console.log("alam _setName",displayName)
         this.props.updateSettings({
             displayName
         });
@@ -385,7 +386,7 @@ class Prejoin extends Component<Props, State> {
             .then((data) => {
                 const attendee: IAttendeeInfo = data[0];
                 this.props.storeAttendeeInfo(attendee)
-                this._setName(attendee.userName)
+                this._setName(attendee.userName +'|'+ attendee.userType)
                 this.setState({loading:false});
             })
             .catch((err) => {
@@ -421,34 +422,6 @@ class Prejoin extends Component<Props, State> {
                 })
             };
 
-
-        _onKickedOut(){
-                let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
-                console.log("alam url",url)
-        
-                fetch(url,{
-                    headers: {
-                      Accept: "application/json",
-                      "Content-Type": "application/json"
-                    },
-                    method: "PATCH",     
-                  
-                    // Fields that to be updated are passed
-                    body: JSON.stringify({
-                      isAllowed: false,
-                      id: "214"
-                    })
-                })
-                .then((response) => {console.log("alam response",response); response.json()})
-                        .then((data) => {
-                           console.log("alam update",data)
-                        })
-                        .catch((err) => {
-                            console.log("alam kickout error",err.message);
-                        })
-        
-            }
-
     /**
      * Calling attendee and meeting api on first rendering of this component.
      */
@@ -464,7 +437,6 @@ class Prejoin extends Component<Props, State> {
             this._fetchMeetings(meetingId)
         }
 
-        this._onKickedOut()
     }
 
     /**
@@ -492,6 +464,7 @@ class Prejoin extends Component<Props, State> {
         } = this.props;
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
+            const [userName, userType] = name.split('|');
         const extraJoinButtons = this._getExtraJoinButtons();
         let extraButtonsToRender = Object.values(extraJoinButtons).filter((val: Object) =>
             !(prejoinConfig?.hideExtraJoinButtons || []).includes(val.key)
@@ -528,15 +501,15 @@ class Prejoin extends Component<Props, State> {
                         onSubmit = { joinConference }
                         placeHolder = { t('dialog.enterDisplayName') }
                         readOnly = { true }
-                        value = { name } />
+                        value = { userName } />
                     ) : (
                         <div className = 'prejoin-avatar-container'>
                             <Avatar
                                 className = 'prejoin-avatar'
-                                displayName = { name }
+                                displayName = { userName }
                                 participantId = { participantId }
                                 size = { 72 } />
-                            <div className = 'prejoin-avatar-name'>{name}</div>
+                            <div className = 'prejoin-avatar-name'>{userName}</div>
                         </div>
                     )}
 

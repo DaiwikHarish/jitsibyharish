@@ -50,6 +50,7 @@ export type Props = {
 function Preview(props: Props) {
     const { _participantId, flipVideo, name, videoMuted, videoTrack,clickStartBtn } = props;
     const className = flipVideo ? 'flipVideoX' : '';
+    const [userName, userType] = name.split('|');
 
     useEffect(() => {
         APP.API.notifyPrejoinVideoVisibilityChanged(Boolean(!videoMuted && videoTrack));
@@ -74,7 +75,7 @@ function Preview(props: Props) {
                 : (
                     <Avatar
                         className = 'premeeting-screen-avatar'
-                        displayName = { name }
+                        displayName = { userName }
                         participantId = { _participantId }
                         size = { 200 } />
                 )}
