@@ -234,12 +234,12 @@ const ParticipantContextMenu = ({
             participantID = { _getCurrentParticipantId() } />);
     }
 
-    if (!disablePrivateChat) {
-        buttons2.push(<PrivateMessageMenuButton
-            key = 'privateMessage'
-            participantID = { _getCurrentParticipantId() } />
-        );
-    }
+    // if (!disablePrivateChat) {
+    //     buttons2.push(<PrivateMessageMenuButton
+    //         key = 'privateMessage'
+    //         participantID = { _getCurrentParticipantId() } />
+    //     );
+    // }
 
     if (thumbnailMenu && isMobileBrowser()) {
         buttons2.push(
