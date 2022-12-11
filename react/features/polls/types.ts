@@ -27,7 +27,7 @@ export interface IPoll {
      * An array of answers:
      * the name of the answer name and a map of ids and names of voters voting for this option.
      */
-    answers: Array<{ name: string; voters: Array<string>; }>;
+    answers: Array<{ name: string; id: string; voters: Array<string>; }>;
 
     /**
      * Whether the poll vote is being edited/changed.
@@ -54,6 +54,9 @@ export interface IPoll {
      * Whether the results should be shown instead of the answer form.
      */
     showResults: boolean;
+
+    quetionId: string;
+
 }
 
 export interface IPollData extends IPoll {

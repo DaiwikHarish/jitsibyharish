@@ -90,7 +90,8 @@ ReducerRegistry.register<IPollsState>('features/polls', (state = INITIAL_STATE, 
 
                 return {
                     name: _answer.name,
-                    voters: answerVoters
+                    voters: answerVoters,
+                    id:_answer.id
                 };
             });
 

@@ -163,7 +163,7 @@ class Chat extends AbstractChat<Props> {
                         messagesQa = { this.props._messages } />
                     <MessageRecipient />
                     <ChatInput
-                        onSend = { this._onSendMessage } />
+                        onSend = { this._onSendMessageQa } />
                 </div>
             </>
         );
@@ -206,7 +206,7 @@ class Chat extends AbstractChat<Props> {
         );
     }
 
-    _onSendMessage: (string) => void;
+    _onSendMessageQa: (string) => void;
 
     _onToggleChat: () => void;
 

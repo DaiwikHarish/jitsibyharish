@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-
+import { COMMAND_NEW_POLL } from '../../constants';
 
 import { Icon, IconChatUnread } from '../../../base/icons';
 import { browser } from '../../../base/lib-jitsi-meet';
@@ -13,9 +13,15 @@ import PollItem from './PollItem';
 const PollsList = () => {
     const { t } = useTranslation();
 
-    const polls = useSelector(state => state['features/polls'].polls);
+   const polls = useSelector(state => state['features/polls'].polls);
+   const conference = useSelector(state => state['features/base/conference'].conference);
+//    Object.assign(polls, pollsAPI)
+   
     const pollListEndRef = useRef(null);
 
+
+
+    
     const scrollToBottom = useCallback(() => {
         if (pollListEndRef.current) {
             // Safari does not support options
@@ -28,13 +34,28 @@ const PollsList = () => {
 
             pollListEndRef.current.scrollIntoView(param);
         }
+
+
+
+
+
     }, [ pollListEndRef.current ]);
+    const listPolls = Object.keys(polls);
 
     useEffect(() => {
-        scrollToBottom();
+
+       
+
+
+ //Object.assign(polls, pollsAPI)
+
+                        
+
+
+scrollToBottom();
+
     }, [ polls ]);
 
-    const listPolls = Object.keys(polls);
 
     return (
         <>
@@ -46,6 +67,8 @@ const PollsList = () => {
                     <span className = 'empty-pane-message'>{t('polls.results.empty')}</span>
                 </div>
                 : listPolls.map((id, index) => (
+
+
                     <PollItem
                         key = { id }
                         pollId = { id }

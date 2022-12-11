@@ -42,8 +42,8 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
     state: IState = {
         hasNewMessages: false,
         isScrolledToBottom: true,
-        lastReadMessageId: ''
-      
+        lastReadMessageId: '',
+        allMes:[]
     };
     
     
@@ -157,7 +157,7 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
             .then((response) => response.json())
             .then((data) => {
                
-               var allMes = data.map((mesAPI) =>  
+               var allMes = data.map((mesAPI: { fromUserName: any; toUserName: any; id: any; message: any; updatedAt: string | number | Date; }) =>  
         {
 let usertype='local'
             if(mesAPI.fromUserName!=mesAPI.toUserName)

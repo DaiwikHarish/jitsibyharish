@@ -29,9 +29,9 @@ const PollResults = (props: AbstractProps) => {
                 <div className = 'poll-question'>
                     <strong>{ question }</strong>
                 </div>
-                <div className = 'poll-creator'>
+                {/* <div className = 'poll-creator'>
                     {t('polls.by', { name: userName })}
-                </div>
+                </div> */}
             </div>
             <ol className="poll-result-list">
                 {answers.map(
@@ -47,7 +47,7 @@ const PollResults = (props: AbstractProps) => {
                     )
                 )}
             </ol>
-            <div className={'poll-result-links'}>
+            {/* <div className={'poll-result-links'}>
                 <a className={'poll-detail-link'} onClick={toggleIsDetailed}>
                     {showDetails
                         ? t('polls.results.hideDetailedResults')
@@ -58,13 +58,13 @@ const PollResults = (props: AbstractProps) => {
                         ? t('polls.results.changeVote')
                         : t('polls.results.vote')}
                 </a>
-            </div>
+            </div> */}
         </div>
     );
 };
 
 function VoterContainer(props) {
-    console.log("alam props",props)
+  //  alert(JSON.stringify(props))
     const [userName, userType] = props.name.split('|');
     return (
         <li key={props.index}>

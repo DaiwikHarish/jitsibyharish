@@ -13,7 +13,7 @@ import AbstractChat, {
     type Props,
     _mapStateToProps
 } from '../AbstractChat';
-
+import { IReduxState } from '../../../app/types';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import ChatInputQA from '../../../qa/components/web/ChatInput';
@@ -21,7 +21,7 @@ import DisplayNameForm from './DisplayNameForm';
 import KeyboardAvoider from './KeyboardAvoider';
 import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
-
+import { useSelector } from 'react-redux';
 import MessageContainerQA from '../../../qa/components/web/MessageContainer';
 import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
 import { al } from 'react-emoji-render/data/aliases';
@@ -171,7 +171,7 @@ QAtab:false
                         messages = { this.props._messagesQa } />
                     <MessageRecipientQA />
                     <ChatInputQA
-                        onSend = { this._onSendMessage } />
+                         onSend = { this._onSendMessageQa } />
                 </div>
             </>
             )
@@ -193,7 +193,7 @@ QAtab:false
                         messages = { this.props._messages } />
                     <MessageRecipient />
                     <ChatInput
-                        onSend = { this._onSendMessage } />
+                        onSend = { this._onSendMessage} />
                 </div>
             </>
         );
@@ -241,6 +241,9 @@ QAtab:false
 
     _onSendMessage: (string) => void;
 
+
+    _onSendMessageQa: (string) => void;
+
     _onToggleChat: () => void;
 
     /**
@@ -273,6 +276,8 @@ QAtab:false
             this._onToggleChatTab() 
         }else   if(id === CHAT_TABS.POLLS)
         {
+           // state["features/base/app"].urlInfo
+          
             this.setState({QAtab:false});
             this._onTogglePollsTab() 
         }else  

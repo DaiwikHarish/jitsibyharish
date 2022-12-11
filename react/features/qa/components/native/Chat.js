@@ -48,7 +48,7 @@ class Chat extends AbstractChat<Props> {
      * @inheritdoc
      */
     render() {
-        const { _messages, route } = this.props;
+        const { _messagesQa, route } = this.props;
         const privateMessageRecipient = route.params?.privateMessageRecipient;
 
         return (
@@ -57,14 +57,14 @@ class Chat extends AbstractChat<Props> {
                 hasBottomTextInput = { true }
                 hasTabNavigator = { true }
                 style = { styles.chatContainer }>
-                <MessageContainer messagesQa = { _messages } />
+                <MessageContainer messagesQa = { _messagesQa } />
                 <MessageRecipient privateMessageRecipient = { privateMessageRecipient } />
-                <ChatInputBar onSend = { this._onSendMessage } />
+                <ChatInputBar onSend = { this._onSendMessageQa } />
             </JitsiScreen>
         );
     }
 
-    _onSendMessage: (string) => void;
+    _onSendMessageQa: (string) => void;
 }
 
 export default translate(connect(_mapStateToProps)(props => {

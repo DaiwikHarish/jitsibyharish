@@ -40,7 +40,8 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
     state: IState = {
         hasNewMessages: false,
         isScrolledToBottom: true,
-        lastReadMessageId: ''
+        lastReadMessageId: '',
+        allQa:[]
     };
 
     /**
@@ -130,13 +131,13 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     componentDidMount() {
-        const queryString = window.location.search;
+        let queryString = window.location.search;
       
 
-        const urlParams = new URLSearchParams(queryString);
+        let urlParams = new URLSearchParams(queryString);
 
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
+        let meetingId = urlParams.get('meetingId')
+        let userId = urlParams.get('userId')
 
        
         
@@ -148,7 +149,7 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
             .then((response) => response.json())
             .then((data) => {
             //console.log(data)
-               var allQa = data.map((mesAPI) =>  
+               let allQa = data.map((mesAPI: { answers: { answer: any; }[]; fromUserName: any; id: any; question: any; meetingId: any; toUserName: any; updatedAt: string | number | Date; }) =>  
         {
           let awr=mesAPI.answers[0]!=undefined?mesAPI.answers[0].answer:"";
             return({
@@ -188,14 +189,65 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @returns {void}
      */
     componentDidUpdate(prevProps: IProps) {
+
         const hasNewMessages = this.props.messagesQa.length !== prevProps.messagesQa.length;
 
+        Object.assign(this.props.messagesQa, this.state.allQa )
         if (hasNewMessages) {
+
+
+
+            let queryString = window.location.search;
+      
+
+            let urlParams = new URLSearchParams(queryString);
+    
+            let meetingId = urlParams.get('meetingId')
+            let userId = urlParams.get('userId')
+    
+           
+            
+            let url = 'https://dev.awesomereviewstream.com/svr/api/question?meetingId='+meetingId+'&userId='+userId;
+    
+            fetch(
+                url
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                //console.log(data)
+                   let allQa = data.map((mesAPI: { answers: { answer: any; }[]; fromUserName: any; id: any; question: any; meetingId: any; toUserName: any; updatedAt: string | number | Date; }) =>  
+            {
+              let awr=mesAPI.answers[0]!=undefined?mesAPI.answers[0].answer:"";
+                return({
+        "displayName":mesAPI.fromUserName,
+        
+        "id":mesAPI.id,
+        "isReaction":"false",
+        "lobbyChat":"false",
+        "message":mesAPI.question,
+        "amessage":awr,
+        "messageId":mesAPI.meetingId,
+        "messageType":"local",
+        "recipient":mesAPI.toUserName,
+        "timestamp":new Date( mesAPI.updatedAt).getTime()
+        
+        })
+      
+    
+           
+    
+            })
+          
+           this.setState({allQa:allQa})
+        })
             if (this.state.isScrolledToBottom) {
                 this.scrollToElement(false, null);
             } else {
-                // eslint-disable-next-line react/no-did-update-set-state
                 this.setState({ hasNewMessages: true });
+                // eslint-disable-next-line react/no-did-update-set-state
+
+                
+                
             }
         }
     }

@@ -11,7 +11,7 @@ interface IProps extends WithTranslation {
     /**
      * Prop to be invoked on sending the message.
      */
-    _onSendMessage: Function;
+    _onSendMessageQa: Function;
 
     /**
      * Prop to be invoked when the user wants to set a private recipient.
@@ -56,7 +56,7 @@ export class AbstractChatPrivacyDialog extends PureComponent<IProps> {
      * @returns {boolean}
      */
     _onSendGroupMessage() {
-        this.props._onSendMessage(this.props.message);
+        this.props._onSendMessageQa(this.props.message);
 
         return true;
     }
@@ -67,10 +67,10 @@ export class AbstractChatPrivacyDialog extends PureComponent<IProps> {
      * @returns {void}
      */
     _onSendPrivateMessage() {
-        const { message, _onSendMessage, _onSetMessageRecipient, _participant } = this.props;
+        const { message, _onSendMessageQa, _onSetMessageRecipient, _participant } = this.props;
 
         _onSetMessageRecipient(_participant);
-        _onSendMessage(message);
+        _onSendMessageQa(message);
 
         return true;
     }
@@ -84,7 +84,7 @@ export class AbstractChatPrivacyDialog extends PureComponent<IProps> {
  */
 export function _mapDispatchToProps(dispatch: IStore['dispatch']) {
     return {
-        _onSendMessage: (message: string) => {
+        _onSendMessageQa: (message: string) => {
             dispatch(sendMessage(message, true));
         },
 

@@ -41,7 +41,7 @@ export interface IMessage {
     timestamp: number;
 }
 
-export interface IChatState {
+export interface IChatStateQA {
     isLobbyChatActive: boolean;
     isOpen: boolean;
     isPollsTabFocused: boolean;
@@ -55,7 +55,7 @@ export interface IChatState {
     privateMessageRecipient?: IParticipant;
 }
 
-ReducerRegistry.register<IChatState>('features/chat', (state = DEFAULT_STATE, action): IChatState => {
+ReducerRegistry.register<IChatStateQA>('features/qa', (state = DEFAULT_STATE, action): IChatStateQA => {
     switch (action.type) {
     case ADD_MESSAGE: {
         const newMessage: IMessage = {

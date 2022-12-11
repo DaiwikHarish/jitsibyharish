@@ -69,16 +69,66 @@ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: 
     const dispatch = useDispatch();
 
     const submitAnswer = useCallback(() => {
+
+const queryString = window.location.search;
+     
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const meetingId = urlParams.get('meetingId')
+        const userId = urlParams.get('userId')
+
+        let ansCount=0;
+   
+let convertAns=checkBoxStates.map((selected)=>
+    {
+     
+        if(selected==true)
+        { 
+            return        poll.answers[ansCount].id;
+            
+        }
+        ansCount++;
+    }
+)
+
+var convertAns_filter = convertAns.filter(function (el) {
+    return el != null;
+  });
+
+let url = 'https://dev.awesomereviewstream.com/svr/api/poll'
+
+const putMethod = {
+    method: 'PUT', // Method itself
+    headers: {
+     'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+    },
+    body: JSON.stringify({
+        "meetingId": meetingId,
+        "userId": userId,
+        "pollQuestionId": poll.senderId,
+        "pollAnswerOptionIds": convertAns_filter,
+       
+    })
+   }
+   
+   // make the HTTP put request using fetch api
+   fetch(url, putMethod)
+   .then(response => response.json())
+   .then(data => {console.log(data)}) // Manipulate the data retrieved back, if we want to do something with it
+   .catch(err => console.log(err)) // Do something with the error
+
+
         conference.sendMessage({
             type: COMMAND_ANSWER_POLL,
-            pollId,
+            pollId:poll.senderId,
             answers: checkBoxStates
         });
 
         sendAnalytics(createPollEvent('vote.sent'));
         dispatch(registerVote(pollId, checkBoxStates));
 
-        return false;
+        //return false;
     }, [ pollId, checkBoxStates, conference ]);
 
     const skipAnswer = useCallback(() => {

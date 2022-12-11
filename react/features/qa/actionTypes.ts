@@ -1,7 +1,7 @@
 // @flow
 
 /**
- * The type of the action which signals to add a new chat message.
+ * The type of the action which signals to add a new chat messageQa.
  *
  * {
  *     type: ADD_MESSAGE,
@@ -9,7 +9,7 @@
  *     hasRead: boolean,
  *     id: string,
  *     messageType: string,
- *     message: string,
+ *     messageQa: string,
  *     timestamp: string,
  * }
  */
@@ -34,11 +34,11 @@ export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
 
 /**
- * The type of the action which signals to edit chat message.
+ * The type of the action which signals to edit chat messageQa.
  *
  * {
  *     type: EDIT_MESSAGE,
- *     message: Object
+ *     messageQa: Object
  * }
  */
 export const EDIT_MESSAGE = 'EDIT_MESSAGE';
@@ -53,19 +53,19 @@ export const EDIT_MESSAGE = 'EDIT_MESSAGE';
 export const OPEN_CHAT = 'OPEN_CHAT';
 
 /**
- * The type of the action which signals a send a chat message to everyone in the
+ * The type of the action which signals a send a chat messageQa to everyone in the
  * conference.
  *
  * {
  *     type: SEND_MESSAGE,
  *     ignorePrivacy: boolean,
- *     message: string
+ *     messageQa: string
  * }
  */
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 
 /**
- * The type of action which signals the initiation of sending of as private message to the
+ * The type of action which signals the initiation of sending of as private messageQa to the
  * supplied recipient.
  *
  * {

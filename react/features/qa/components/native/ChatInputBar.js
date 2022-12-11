@@ -138,6 +138,7 @@ class ChatInputBar extends Component<Props, State> {
      * @returns {void}
      */
     _onSubmit() {
+        
         const message = this.state.message.trim();
 
         message && this.props.onSend(message);

@@ -4,7 +4,7 @@ import { WithTranslation } from 'react-i18next';
 import { IReduxState, IStore } from '../../../app/types';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
-import { IconPlane, IconSmile } from '../../../base/icons/svg';
+import { IconHelp, IconPlane, IconSmile } from '../../../base/icons/svg';
 import { connect } from '../../../base/redux/functions';
 import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
@@ -24,12 +24,12 @@ interface IProps extends WithTranslation {
     _areSmileysDisabled: boolean;
 
     /**
-     * Invoked to send QA messagesQa.
+     * Invoked to send QA messagesQasQa.
      */
     dispatch: IStore['dispatch'];
 
     /**
-     * Callback to invoke on message send.
+     * Callback to invoke on messagesQa send.
      */
     onSend: Function;
 
@@ -45,7 +45,7 @@ interface IState {
     /**
      * User provided nickname when the input text is provided in the view.
      */
-    message: string;
+    messagesQa: string;
 
     /**
      * Whether or not the smiley selector is visible.
@@ -54,7 +54,7 @@ interface IState {
 }
 
 /**
- * Implements a React Component for drafting and submitting a QA message.
+ * Implements a React Component for drafting and submitting a QA messagesQa.
  *
  * @augments Component
  */
@@ -62,7 +62,7 @@ class ChatInput extends Component<IProps, IState> {
     _textArea?: RefObject<HTMLTextAreaElement>;
 
     state = {
-        message: '',
+        messagesQa: '',
         showSmileysPanel: false
     };
 
@@ -79,9 +79,9 @@ class ChatInput extends Component<IProps, IState> {
 
         // Bind event handlers so they are only bound once for every instance.
         this._onDetectSubmit = this._onDetectSubmit.bind(this);
-        this._onMessageChange = this._onMessageChange.bind(this);
+        this._onmessagesQaChange = this._onmessagesQaChange.bind(this);
         this._onSmileySelect = this._onSmileySelect.bind(this);
-        this._onSubmitMessage = this._onSubmitMessage.bind(this);
+        this._onSubmitmessagesQa = this._onSubmitmessagesQa.bind(this);
         this._toggleSmileysPanel = this._toggleSmileysPanel.bind(this);
     }
 
@@ -105,7 +105,7 @@ class ChatInput extends Component<IProps, IState> {
      */
     render() {
         return (
-            <div className = { `chat-input-container${this.state.message.trim().length ? ' populated' : ''}` }>
+            <div className = { `chat-input-container${this.state.messagesQa.trim().length ? ' populated' : ''}` }>
                 <div id = 'chat-input' >
                     {!this.props._areSmileysDisabled && this.state.showSmileysPanel && (
                         <div
@@ -120,20 +120,20 @@ class ChatInput extends Component<IProps, IState> {
                     <Input
                         autoFocus = { true }
                         className = 'QA-input'
-                        icon = { this.props._areSmileysDisabled ? undefined : IconSmile }
+                        icon = { this.props._areSmileysDisabled ? undefined : IconHelp }
                         iconClick = { this._toggleSmileysPanel }
                         maxRows = { 5 }
-                        onChange = { this._onMessageChange }
+                        onChange = { this._onmessagesQaChange }
                         onKeyPress = { this._onDetectSubmit }
-                        placeholder = { this.props.t('QA.messagebox') }
+                        placeholder ="Your Question here"
                         ref = { this._textArea }
                         textarea = { true }
-                        value = { this.state.message } />
+                        value = { this.state.messagesQa } />
                     <Button
                         accessibilityLabel = { this.props.t('QA.sendButton') }
-                        disabled = { !this.state.message.trim() }
+                        disabled = { !this.state.messagesQa.trim() }
                         icon = { IconPlane }
-                        onClick = { this._onSubmitMessage }
+                        onClick = { this._onSubmitmessagesQa }
                         size = { isMobileBrowser() ? 'large' : 'medium' } />
                 </div>
             </div>
@@ -151,19 +151,19 @@ class ChatInput extends Component<IProps, IState> {
     }
 
     /**
-     * Submits the message to the QA window.
+     * Submits the messagesQa to the QA window.
      *
      * @returns {void}
      */
-    _onSubmitMessage() {
+    _onSubmitmessagesQa() {
         
-        const trimmed = this.state.message.trim();
+        const trimmed = this.state.messagesQa.trim();
 
         if (trimmed) {
             
-            this.props.onSend(trimmed);
+          //  this.props.onSend(trimmed);
 
-//post message by API (Harish)
+//post messagesQa by API (Harish)
  
 
 
@@ -187,16 +187,16 @@ fetch(url,{
 })
 
 
-            this.setState({ message: '' });
+            this.setState({ messagesQa: '' });
 
-            // Keep the textarea in focus when sending messagesQa via submit button.
+            // Keep the textarea in focus when sending messagesQasQa via submit button.
             this._focus();
         }
 
     }
 
     /**
-     * Detects if enter has been pressed. If so, submit the message in the QA
+     * Detects if enter has been pressed. If so, submit the messagesQa in the QA
      * window.
      *
      * @param {string} event - Keyboard event.
@@ -222,33 +222,33 @@ fetch(url,{
             event.preventDefault();
             event.stopPropagation();
 
-            this._onSubmitMessage();
+            this._onSubmitmessagesQa();
         }
     }
 
     /**
-     * Updates the known message the user is drafting.
+     * Updates the known messagesQa the user is drafting.
      *
      * @param {string} value - Keyboard event.
      * @private
      * @returns {void}
      */
-    _onMessageChange(value: string) {
-        this.setState({ message: value });
+    _onmessagesQaChange(value: string) {
+        this.setState({ messagesQa: value });
     }
 
     /**
-     * Appends a selected smileys to the QA message draft.
+     * Appends a selected smileys to the QA messagesQa draft.
      *
      * @param {string} smileyText - The value of the smiley to append to the
-     * QA message.
+     * QA messagesQa.
      * @private
      * @returns {void}
      */
     _onSmileySelect(smileyText: string) {
         if (smileyText) {
             this.setState({
-                message: `${this.state.message} ${smileyText}`,
+                messagesQa: `${this.state.messagesQa} ${smileyText}`,
                 showSmileysPanel: false
             });
         } else {

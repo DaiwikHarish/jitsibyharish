@@ -35,7 +35,7 @@ export type Props = {
     /**
      * All the chat messagesQa in the conference.
      */
-    _messages: Array<Object>,
+    _messagesQa: Array<Object>,
 
     /**
      * Number of unread chat messagesQa.
@@ -52,7 +52,7 @@ export type Props = {
      *
      * @protected
      */
-    _onSendMessage: Function,
+    _onSendMessageQa: Function,
 
     /**
      * Function to display the chat tab.
@@ -104,14 +104,14 @@ export default class AbstractChat<P: Props> extends Component<P> {
         super(props);
 
         // Bind event handlers so they are only bound once per instance.
-        this._onSendMessage = this._onSendMessage.bind(this);
+        this._onSendMessageQa = this._onSendMessageQa.bind(this);
         this._onToggleChatTab = this._onToggleChatTab.bind(this);
 
         this._onToggleQATab = this._onToggleQATab.bind(this);
         this._onTogglePollsTab = this._onTogglePollsTab.bind(this);
     }
 
-    _onSendMessage: (string) => void;
+    _onSendMessageQa: (string) => void;
 
     /**
     * Sends a text message.
@@ -121,7 +121,7 @@ export default class AbstractChat<P: Props> extends Component<P> {
     * @returns {void}
     * @type {Function}
     */
-    _onSendMessage(text: string) {
+    _onSendMessageQa(text: string) {
         this.props.dispatch(sendMessage(text));
     }
 
@@ -192,7 +192,7 @@ updatedAt: "2022-08-22T13:34:56.924Z"
  * @private
  * @returns {{
  *     _isOpen: boolean,
- *     _messages: Array<Object>,
+ *     _messagesQa: Array<Object>,
  *     _showNamePrompt: boolean
  * }}
  */
@@ -210,7 +210,7 @@ return {
     _isPollsTabFocused: isPollsTabFocused,
     _isQaTabFocused: false,
     
-    _messages: messagesQa,
+    _messagesQa: messagesQa,
     _nbUnreadMessages: nbUnreadMessages,
     _nbUnreadPolls: nbUnreadPolls,
     _showNamePrompt: !_localParticipant?.name

@@ -22,6 +22,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
      */
     render() {
         const { message, t, knocking } = this.props;
+        
         const [userName, userType] = message.displayName.split('|');
 
         return (
@@ -43,6 +44,9 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                 </div>
                             )}
                             <div className = 'usermessage'>
+                                <div style={{color:'#abc3e0', fontWeight:'normal'}}>Awesomereview stuff  to All 
+
+</div>
                                 <span className = 'sr-only'>
                                     { this.props.message.displayName === this.props.message.recipient
                                         ? t('chat.messageAccessibleTitleMe')

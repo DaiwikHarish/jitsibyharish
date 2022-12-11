@@ -161,7 +161,7 @@ class ChatInput extends Component<IProps, IState> {
 
         if (trimmed) {
             
-            this.props.onSend(trimmed);
+           this.props.onSend(trimmed);
 
 //post message by API (Harish)
 

@@ -87,7 +87,7 @@ export function replaceNonUnicodeEmojis(message: string) {
  * @returns {number} The number of unread messagesQa.
  */
 export function getUnreadCount(state: IReduxState) {
-    const { lastReadMessage, messagesQa } = state['features/chat'];
+    const { lastReadMessage, messagesQa } = state['features/qa'];
     const messagesCount = messagesQa.length;
 
     if (!messagesCount) {

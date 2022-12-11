@@ -38,9 +38,9 @@ const PollAnswer = ({
                 <div className = 'poll-question'>
                     <span>{ poll.question }</span>
                 </div>
-                <div className = 'poll-creator'>
-                    { t('polls.by', { name: userName }) }
-                </div>
+                {/* <div className = 'poll-creator'>
+                    { t('polls.by', poll.senderId ) }
+                </div> */}
             </div>
             <ol className = 'poll-answer-list'>
                 {
@@ -48,12 +48,25 @@ const PollAnswer = ({
                         <li
                             className = 'poll-answer-container'
                             key = { index }>
-                            <Checkbox
+                                {
+                           poll.changingVote? <Checkbox
                                 checked = { checkBoxStates[index] }
-                                key = { index }
+                                key = { answer.id }
+                                id = { answer.id }
+                                label = { answer.name }
+                                name= { poll.quetionId }
+                                type = 'radio' 
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = { ev => setCheckbox(index, ev.target.checked) } />:<Checkbox
+                                checked = { checkBoxStates[index] }
+                                key = { answer.id }
+                                id = { answer.id }
+                                type = 'checkbox' 
+                                name= { poll.quetionId }
                                 label = { answer.name }
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { ev => setCheckbox(index, ev.target.checked) } />
+}
                         </li>
                     ))
                 }
