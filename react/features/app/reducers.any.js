@@ -8,6 +8,8 @@ import '../base/audio-only/reducer';
 import '../base/conference/reducer';
 import '../base/config/reducer';
 import '../base/connection/reducer';
+import '../base/cs-socket/reducer';
+
 import '../base/dialog/reducer';
 import '../base/flags/reducer';
 import '../base/jwt/reducer';
