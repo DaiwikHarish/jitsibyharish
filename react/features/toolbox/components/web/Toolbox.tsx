@@ -753,14 +753,14 @@ class Toolbox extends Component<IProps> {
             group: 1
         };
 
-        const chat = {
+        const chat = _attendeeInfo.userType !== UserType.Admin && {
             key: 'chat',
             Content: ChatButton,
             handleClick: this._onToolbarToggleChat,
             group: 2
         };
 
-        const desktop = this._showDesktopSharingButton() && {
+        const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
             key: 'desktop',
             Content: ShareDesktopButton,
             handleClick: this._onToolbarToggleScreenshare,
@@ -914,11 +914,11 @@ class Toolbox extends Component<IProps> {
             group: 4
         };
 
-        const embed = _attendeeInfo.userType === UserType.Admin && this._isEmbedMeetingVisible() && {
-            key: 'embedmeeting',
-            Content: EmbedMeetingButton,
-            group: 4
-        };
+        // const embed = _attendeeInfo.userType === UserType.Admin && this._isEmbedMeetingVisible() && {
+        //     key: 'embedmeeting',
+        //     Content: EmbedMeetingButton,
+        //     group: 4
+        // };
 
         const feedback = _attendeeInfo.userType === UserType.Admin && _feedbackConfigured && {
             key: 'feedback',
@@ -967,7 +967,7 @@ class Toolbox extends Component<IProps> {
             speakerStats,
             settings,
             shortcuts,
-            embed,
+            // embed,
             feedback,
             download,
             help

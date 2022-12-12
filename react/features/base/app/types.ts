@@ -30,6 +30,8 @@ export interface IAttendeeInfo {
     userId: string;
     userName: string;
     userType: string;
+    isScreenShare: boolean,
+    isMute: boolean
 }
 
 export interface IMeetingInfo {

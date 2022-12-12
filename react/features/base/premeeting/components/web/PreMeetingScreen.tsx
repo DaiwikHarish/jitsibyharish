@@ -189,13 +189,13 @@ const PreMeetingScreen = ({
 
                     <div className="content-controls">
                         <h1 className="title">
-                            {clickStartBtn == false
-                                ? "Choose An Option"
-                                : title}
+                        {_meetingInfo?.name}
                         </h1>
 
                         <span className={classes.subtitle}>
-                            {_meetingInfo?.name}
+                            {clickStartBtn == false
+                                ? "Choose An Option"
+                                : title}
                         </span>
 
                         {children}
