@@ -38,7 +38,7 @@ class MuteEveryoneElsesVideoButton extends AbstractMuteEveryoneElsesVideoButton 
         const { t,_attendeeInfo } = this.props;
 
         return (
-            _attendeeInfo.userType=== UserType.Admin &&
+            _attendeeInfo.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.muteEveryoneElsesVideoStream') }
                 icon = { IconMuteVideoEveryoneElse }

@@ -55,8 +55,8 @@ export class PostWelcome extends Component<Props> {
                     backgroundColor: '#292929',
                     alignContent: "flex-start",
                     alignItems: "center",
-                    paddingTop: "2%",
-                    marginBottom:"20px",
+                    // paddingTop: "2%",
+                    marginBottom:"10px",
                 }}
             >
                 <div
@@ -66,7 +66,7 @@ export class PostWelcome extends Component<Props> {
                         // backgroundColor: "#292929",
                         padding: "10px",
                         margin: "auto",
-                        marginBottom: "15px",
+                        marginBottom: "5px",
                         display: "flex",
                         flexDirection: "row",
                         // justifyContent:"space-between",
@@ -100,7 +100,7 @@ export class PostWelcome extends Component<Props> {
                             boxSizing: "border-box",
                         }}
                     >
-                        Chat, Poll, Mic and Camera
+                        Join the Lecture
                     </div>
                 </div>
 
@@ -111,7 +111,7 @@ export class PostWelcome extends Component<Props> {
                         // backgroundColor: "white",
                         padding: "10px",
                         margin: "auto",
-                        marginBottom: "15px",
+                        marginBottom: "5px",
                         display: "flex",
                         flexDirection: "row",
                         // justifyContent:"space-between",
@@ -146,7 +146,7 @@ export class PostWelcome extends Component<Props> {
                             boxSizing: "border-box",
                         }}
                     >
-                        Chat and Poll
+                        Polling & Chat
                     </div>
                 </div>
                 <button
@@ -163,7 +163,7 @@ export class PostWelcome extends Component<Props> {
                         color: "white",
                         textAlign: "center",
                         borderRadius: "10px",
-                        marginTop: "50px",
+                        marginTop: "30px",
                         // marginLeft:"5px",
                         boxSizing: "border-box",
                     }}

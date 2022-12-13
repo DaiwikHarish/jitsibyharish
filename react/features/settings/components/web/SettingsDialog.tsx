@@ -350,7 +350,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         });
     }
 
-    if (_attendeeInfo?.userType === UserType.Admin && showModeratorSettings) {
+    if (_attendeeInfo?.userType !== UserType.Viewer && showModeratorSettings) {
         tabs.push({
             name: SETTINGS_TABS.MODERATOR,
             component: ModeratorTab,

@@ -163,7 +163,8 @@ const ParticipantsPane = () => {
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                     {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
-                {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
+                {_attendeeInfo?.userType !== UserType.Viewer &&
+                  showFooter && (
                     <div className = { classes.footer }>
                         {showMuteAllButton && (
                             <Button

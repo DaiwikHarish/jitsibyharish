@@ -753,7 +753,7 @@ class Toolbox extends Component<IProps> {
             group: 1
         };
 
-        const chat = _attendeeInfo.userType !== UserType.Admin && {
+        const chat = _attendeeInfo.userType === UserType.Viewer && {
             key: 'chat',
             Content: ChatButton,
             handleClick: this._onToolbarToggleChat,
@@ -806,15 +806,14 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const fullscreen = (_attendeeInfo.userType === UserType.Admin ||
-            _attendeeInfo.userType === UserType.Presenter) && !_isIosMobile && {
+        const fullscreen = _attendeeInfo.userType !== UserType.Viewer && !_isIosMobile && {
             key: 'fullscreen',
             Content: FullscreenButton,
             handleClick: this._onToolbarToggleFullScreen,
             group: 2
         };
 
-        const security = _attendeeInfo.userType === UserType.Admin && {
+        const security = _attendeeInfo.userType !== UserType.Viewer && {
             key: 'security',
             alias: 'info',
             Content: SecurityDialogButton,
@@ -827,13 +826,13 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const recording = _attendeeInfo.userType === UserType.Admin && {
+        const recording = _attendeeInfo.userType !== UserType.Viewer && {
             key: 'recording',
             Content: RecordButton,
             group: 2
         };
 
-        const livestreaming = _attendeeInfo.userType === UserType.Admin && {
+        const livestreaming = _attendeeInfo.userType !== UserType.Viewer && {
             key: 'livestreaming',
             Content: LiveStreamButton,
             group: 2
@@ -845,15 +844,13 @@ class Toolbox extends Component<IProps> {
             group: 2
         };
 
-        const shareVideo = (_attendeeInfo.userType === UserType.Admin ||
-            _attendeeInfo.userType === UserType.Presenter) && {
+        const shareVideo = _attendeeInfo.userType !== UserType.Viewer  && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = (_attendeeInfo.userType === UserType.Admin ||
-            _attendeeInfo.userType === UserType.Presenter) && this._showAudioSharingButton() && {
+        const shareAudio = _attendeeInfo.userType !== UserType.Viewer && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -866,7 +863,7 @@ class Toolbox extends Component<IProps> {
         };
 
 
-        const whiteboard = _attendeeInfo.userType === UserType.Admin && _whiteboardEnabled && {
+        const whiteboard = _attendeeInfo.userType !== UserType.Viewer && _whiteboardEnabled && {
             key: 'whiteboard',
             Content: WhiteboardButton,
             group: 3
@@ -908,7 +905,7 @@ class Toolbox extends Component<IProps> {
             group: 4
         };
 
-        const shortcuts = _attendeeInfo.userType === UserType.Admin && !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _attendeeInfo.userType !== UserType.Viewer  && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
@@ -920,7 +917,7 @@ class Toolbox extends Component<IProps> {
         //     group: 4
         // };
 
-        const feedback = _attendeeInfo.userType === UserType.Admin && _feedbackConfigured && {
+        const feedback = _attendeeInfo.userType !== UserType.Viewer && _feedbackConfigured && {
             key: 'feedback',
             Content: FeedbackButton,
             group: 4
@@ -1501,7 +1498,7 @@ class Toolbox extends Component<IProps> {
                             </OverflowMenuButton>
                         )}
 
-                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && (
+                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo.userType !== UserType.Viewer && (
                             _endConferenceSupported
                                 ? <HangupMenuButton
                                     ariaControls = 'hangup-menu'
@@ -1514,7 +1511,7 @@ class Toolbox extends Component<IProps> {
                                         hidden = { false }
                                         inDrawer = { _overflowDrawer }
                                         onKeyDown = { this._onEscKey }>
-                                        {_attendeeInfo.userType === UserType.Admin && <EndConferenceButton />}
+                                        {_attendeeInfo.userType !== UserType.Viewer  && <EndConferenceButton />}
                                         <LeaveConferenceButton />
                                     </ContextMenu>
                                 </HangupMenuButton>

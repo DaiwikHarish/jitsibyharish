@@ -34,6 +34,7 @@ import {
     RAISE_HAND_NOTIFICATION_ID
 } from './constants';
 import { areThereNotifications, joinLeaveNotificationsDisabled } from './functions';
+import UserType, { IAttendeeInfo } from '../base/app/types';
 
 /**
  * Map of timers.
@@ -168,6 +169,7 @@ MiddlewareRegistry.register(store => next => action => {
     }
     case PARTICIPANT_UPDATED: {
         const { disableModeratorIndicator } = state['features/base/config'];
+        const  _attendeeInfo : IAttendeeInfo | undefined = state['features/base/app'].attendeeInfo
 
         if (disableModeratorIndicator) {
             return next(action);
@@ -183,12 +185,20 @@ MiddlewareRegistry.register(store => next => action => {
         const oldParticipant = getParticipantById(state, id);
         const oldRole = oldParticipant?.role;
 
-        if (oldRole && oldRole !== role && role === PARTICIPANT_ROLE.MODERATOR) {
-
-            store.dispatch(showNotification({
-                titleKey: 'notify.moderator'
-            },
-            NOTIFICATION_TIMEOUT_TYPE.SHORT));
+        if (
+            oldRole &&
+            oldRole !== role &&
+            role === PARTICIPANT_ROLE.MODERATOR &&
+            _attendeeInfo?.userType !== UserType.Viewer
+        ) {
+            store.dispatch(
+                showNotification(
+                    {
+                        titleKey: 'notify.moderator',
+                    },
+                    NOTIFICATION_TIMEOUT_TYPE.SHORT
+                )
+            );
         }
 
         return next(action);
