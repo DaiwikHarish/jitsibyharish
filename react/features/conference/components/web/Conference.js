@@ -11,7 +11,11 @@ import { translate } from '../../../base/i18n';
 import { connect as reactReduxConnect } from '../../../base/redux';
 import { setColorAlpha } from '../../../base/util';
 import { Chat } from '../../../chat';
-import { MainFilmstrip, ScreenshareFilmstrip, StageFilmstrip } from '../../../filmstrip';
+import {
+    MainFilmstrip,
+    ScreenshareFilmstrip,
+    StageFilmstrip,
+} from '../../../filmstrip';
 import { CalleeInfoContainer } from '../../../invite';
 import { LargeVideo } from '../../../large-video';
 import { LobbyScreen } from '../../../lobby';
@@ -26,12 +30,14 @@ import { LAYOUT_CLASSNAMES, getCurrentLayout } from '../../../video-layout';
 import { maybeShowSuboptimalExperienceNotification } from '../../functions';
 import {
     AbstractConference,
-    abstractMapStateToProps
+    abstractMapStateToProps,
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import { io, Socket } from 'socket.io-client';
+import { socketConnect, socketDisconnect } from '../../../base/cs-socket/actions';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -46,14 +52,13 @@ declare var interfaceConfig: Object;
 const FULL_SCREEN_EVENTS = [
     'webkitfullscreenchange',
     'mozfullscreenchange',
-    'fullscreenchange'
+    'fullscreenchange',
 ];
 
 /**
  * The type of the React {@code Component} props of {@link Conference}.
  */
 type Props = AbstractProps & {
-
     /**
      * The alpha(opacity) of the background.
      */
@@ -91,8 +96,8 @@ type Props = AbstractProps & {
     _showPrejoin: boolean,
 
     dispatch: Function,
-    t: Function
-}
+    t: Function,
+};
 
 /**
  * The conference page of the Web application.
@@ -107,6 +112,8 @@ class Conference extends AbstractConference<Props, *> {
     _originalOnMouseMove: Function;
     _originalOnShowToolbar: Function;
     _setBackground: Function;
+
+    _socket: Socket = null;
 
     /**
      * Initializes a new Conference instance.
@@ -129,16 +136,18 @@ class Conference extends AbstractConference<Props, *> {
             100,
             {
                 leading: true,
-                trailing: false
-            });
+                trailing: false,
+            }
+        );
 
         this._onMouseMove = _.throttle(
-            event => this._originalOnMouseMove(event),
+            (event) => this._originalOnMouseMove(event),
             _mouseMoveCallbackInterval,
             {
                 leading: true,
-                trailing: false
-            });
+                trailing: false,
+            }
+        );
 
         // Bind event handler so it is only bound once for every instance.
         this._onFullScreenChange = this._onFullScreenChange.bind(this);
@@ -154,6 +163,8 @@ class Conference extends AbstractConference<Props, *> {
     componentDidMount() {
         document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
         this._start();
+
+        this.props.dispatch(socketConnect());
     }
 
     /**
@@ -163,8 +174,10 @@ class Conference extends AbstractConference<Props, *> {
      * returns {void}
      */
     componentDidUpdate(prevProps) {
-        if (this.props._shouldDisplayTileView
-            === prevProps._shouldDisplayTileView) {
+        if (
+            this.props._shouldDisplayTileView ===
+            prevProps._shouldDisplayTileView
+        ) {
             return;
         }
 
@@ -184,10 +197,13 @@ class Conference extends AbstractConference<Props, *> {
     componentWillUnmount() {
         APP.UI.unbindEvents();
 
-        FULL_SCREEN_EVENTS.forEach(name =>
-            document.removeEventListener(name, this._onFullScreenChange));
+        FULL_SCREEN_EVENTS.forEach((name) =>
+            document.removeEventListener(name, this._onFullScreenChange)
+        );
 
         APP.conference.isJoined() && this.props.dispatch(disconnect());
+
+        this.props.dispatch(socketDisconnect());
     }
 
     /**
@@ -202,49 +218,58 @@ class Conference extends AbstractConference<Props, *> {
             _notificationsVisible,
             _overflowDrawer,
             _showLobby,
-            _showPrejoin
+            _showPrejoin,
         } = this.props;
 
         return (
             <div
-                id = 'layout_wrapper'
-                onMouseEnter = { this._onMouseEnter }
-                onMouseLeave = { this._onMouseLeave }
-                onMouseMove = { this._onMouseMove }
-                ref = { this._setBackground }>
+                id="layout_wrapper"
+                onMouseEnter={this._onMouseEnter}
+                onMouseLeave={this._onMouseLeave}
+                onMouseMove={this._onMouseMove}
+                ref={this._setBackground}
+            >
                 <Chat />
                 <div
-                    className = { _layoutClassName }
-                    id = 'videoconference_page'
-                    onMouseMove = { isMobileBrowser() ? undefined : this._onShowToolbar }>
+                    className={_layoutClassName}
+                    id="videoconference_page"
+                    onMouseMove={
+                        isMobileBrowser() ? undefined : this._onShowToolbar
+                    }
+                >
                     <ConferenceInfo />
                     <Notice />
                     <div
-                        id = 'videospace'
-                        onTouchStart = { this._onVidespaceTouchStart }>
+                        id="videospace"
+                        onTouchStart={this._onVidespaceTouchStart}
+                    >
                         <LargeVideo />
-                        {
-                            _showPrejoin || _showLobby || (<>
+                        {_showPrejoin || _showLobby || (
+                            <>
                                 <StageFilmstrip />
                                 <ScreenshareFilmstrip />
                                 <MainFilmstrip />
-                            </>)
-                        }
+                            </>
+                        )}
                     </div>
 
-                    { _showPrejoin || _showLobby || <Toolbox /> }
+                    {_showPrejoin || _showLobby || <Toolbox />}
 
-                    {_notificationsVisible && (_overflowDrawer
-                        ? <JitsiPortal className = 'notification-portal'>
-                            {this.renderNotificationsContainer({ portal: true })}
-                        </JitsiPortal>
-                        : this.renderNotificationsContainer())
-                    }
+                    {_notificationsVisible &&
+                        (_overflowDrawer ? (
+                            <JitsiPortal className="notification-portal">
+                                {this.renderNotificationsContainer({
+                                    portal: true,
+                                })}
+                            </JitsiPortal>
+                        ) : (
+                            this.renderNotificationsContainer()
+                        ))}
 
                     <CalleeInfoContainer />
 
-                    { _showPrejoin && <Prejoin />}
-                    { _showLobby && <LobbyScreen />}
+                    {_showPrejoin && <Prejoin />}
+                    {_showLobby && <LobbyScreen />}
                 </div>
                 <ParticipantsPane />
             </div>
@@ -268,12 +293,18 @@ class Conference extends AbstractConference<Props, *> {
 
         if (this.props._backgroundAlpha !== undefined) {
             const elemColor = element.style.background;
-            const alphaElemColor = setColorAlpha(elemColor, this.props._backgroundAlpha);
+            const alphaElemColor = setColorAlpha(
+                elemColor,
+                this.props._backgroundAlpha
+            );
 
             element.style.background = alphaElemColor;
             if (element.parentElement) {
                 const parentColor = element.parentElement.style.background;
-                const alphaParentColor = setColorAlpha(parentColor, this.props._backgroundAlpha);
+                const alphaParentColor = setColorAlpha(
+                    parentColor,
+                    this.props._backgroundAlpha
+                );
 
                 element.parentElement.style.background = alphaParentColor;
             }
@@ -357,8 +388,9 @@ class Conference extends AbstractConference<Props, *> {
         APP.UI.registerListeners();
         APP.UI.bindEvents();
 
-        FULL_SCREEN_EVENTS.forEach(name =>
-            document.addEventListener(name, this._onFullScreenChange));
+        FULL_SCREEN_EVENTS.forEach((name) =>
+            document.addEventListener(name, this._onFullScreenChange)
+        );
 
         const { dispatch, t } = this.props;
 
@@ -377,7 +409,8 @@ class Conference extends AbstractConference<Props, *> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
-    const { backgroundAlpha, mouseMoveCallbackInterval } = state['features/base/config'];
+    const { backgroundAlpha, mouseMoveCallbackInterval } =
+        state['features/base/config'];
     const { overflowDrawer } = state['features/toolbox'];
 
     return {
@@ -388,7 +421,7 @@ function _mapStateToProps(state) {
         _overflowDrawer: overflowDrawer,
         _roomName: getConferenceNameForTitle(state),
         _showLobby: getIsLobbyVisible(state),
-        _showPrejoin: isPrejoinPageVisible(state)
+        _showPrejoin: isPrejoinPageVisible(state),
     };
 }
 

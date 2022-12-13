@@ -9,6 +9,7 @@ import { IAudioOnlyState } from '../base/audio-only/reducer';
 import { IConferenceState } from '../base/conference/reducer';
 import { IConfigState } from '../base/config/reducer';
 import { IConnectionState } from '../base/connection/reducer';
+import { ICSSocketState } from '../base/cs-socket/reducer';
 import { IDevicesState } from '../base/devices/types';
 import { IDialogState } from '../base/dialog/reducer';
 import { IFlagsState } from '../base/flags/reducer';
@@ -92,6 +93,7 @@ export interface IReduxState {
     'features/base/conference': IConferenceState;
     'features/base/config': IConfigState;
     'features/base/connection': IConnectionState;
+    'features/base/cs-socket': ICSSocketState;
     'features/base/devices': IDevicesState;
     'features/base/dialog': IDialogState;
     'features/base/flags': IFlagsState;
