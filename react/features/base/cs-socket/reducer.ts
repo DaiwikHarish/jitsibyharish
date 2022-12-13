@@ -7,6 +7,8 @@ import {
     APP_SOCKET_QA_MESSAGE,
     APP_SOCKET_SEND_COMMAND_MESSAGE,
     APP_SOCKET_RECEIVED_COMMAND_MESSAGE,
+    APP_SOCKET_POLL_START_MESSAGE,
+    APP_SOCKET_POLL_END_MESSAGE,
 } from './actionTypes';
 import {
     IJoinMeetingRoomResponse,
@@ -14,6 +16,7 @@ import {
     QANotificationDto,
     CommandMessageDto,
     SocketErrorMessage,
+    PollQuestionDto,
 } from './types';
 
 export interface ICSSocketState {
@@ -35,6 +38,9 @@ export interface ICSSocketState {
 
     // socket qa message
     socketQaMessage?: QANotificationDto | null;
+
+    socketPollStartMessage?: PollQuestionDto | null;
+    socketPollEndMessage?: PollQuestionDto | null;
 }
 
 const DEFAULT_STATE: ICSSocketState = {
@@ -47,6 +53,9 @@ const DEFAULT_STATE: ICSSocketState = {
 
     socketChatMessage: null,
     socketQaMessage: null,
+    
+    socketPollStartMessage: null,
+    socketPollEndMessage: null,
 };
 
 ReducerRegistry.register<ICSSocketState>(
@@ -84,7 +93,7 @@ ReducerRegistry.register<ICSSocketState>(
                     ...state,
                     socketReceivedCommandMessage,
                 };
-                break;                
+                break;
 
             case APP_SOCKET_CHAT_MESSAGE:
                 const { socketChatMessage } = action;
@@ -99,6 +108,21 @@ ReducerRegistry.register<ICSSocketState>(
                 return {
                     ...state,
                     socketQaMessage,
+                };
+                break;
+
+            case APP_SOCKET_POLL_START_MESSAGE:
+                const { socketPollStartMessage } = action;
+                return {
+                    ...state,
+                    socketPollStartMessage,
+                };
+                break;
+            case APP_SOCKET_POLL_END_MESSAGE:
+                const { socketPollEndMessage } = action;
+                return {
+                    ...state,
+                    socketPollEndMessage,
                 };
                 break;
             default:
