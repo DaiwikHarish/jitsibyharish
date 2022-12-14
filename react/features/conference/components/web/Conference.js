@@ -33,6 +33,7 @@ import {
     abstractMapStateToProps,
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
+import { OptionType } from "../../../base/app/reducer";
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
@@ -219,6 +220,7 @@ class Conference extends AbstractConference<Props, *> {
             _overflowDrawer,
             _showLobby,
             _showPrejoin,
+            _clientType,
         } = this.props;
 
         return (
@@ -245,10 +247,15 @@ class Conference extends AbstractConference<Props, *> {
                     >
                         <LargeVideo />
                         {_showPrejoin || _showLobby || (
+
                             <>
-                                <StageFilmstrip />
+                            {_clientType == OptionType.ENABLE_CHAT_POLL  || 
+                            (<>
+                                 <StageFilmstrip />
                                 <ScreenshareFilmstrip />
                                 <MainFilmstrip />
+                            </>)
+    }
                             </>
                         )}
                     </div>
@@ -422,6 +429,7 @@ function _mapStateToProps(state) {
         _roomName: getConferenceNameForTitle(state),
         _showLobby: getIsLobbyVisible(state),
         _showPrejoin: isPrejoinPageVisible(state),
+        _clientType: state["features/base/app"].clientType,
     };
 }
 
