@@ -34,9 +34,21 @@ interface ICheckboxProps {
      */
     name?: string;
 
+     /**
+     * check box or radio type of the input.
+     */
+    type?:string;
     /**
      * Change callback.
      */
+ /**
+     * Ans id.
+     */
+  id?:string;
+  /**
+   * Change callback.
+   */
+     
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -148,6 +160,8 @@ const Checkbox = ({
     disabled,
     label,
     name,
+    type,
+    id,
     onChange
 }: ICheckboxProps) => {
     const { classes: styles, cx, theme } = useStyles();
@@ -160,8 +174,9 @@ const Checkbox = ({
                     checked = { checked }
                     disabled = { disabled }
                     name = { name }
+                    id={id}
                     onChange = { onChange }
-                    type = 'checkbox' />
+                    type = {type} />
                 <Icon
                     className = 'checkmark'
                     color = { disabled ? theme.palette.icon03 : theme.palette.icon01 }

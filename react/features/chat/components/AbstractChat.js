@@ -16,7 +16,7 @@ export type Props = {
      * Whether the chat is opened in a modal or not (computed based on window width).
      */
     _isModal: boolean,
-
+    _message:string,
     /**
      * True if the chat window should be rendered.
      */
@@ -37,6 +37,10 @@ export type Props = {
      */
     _messages: Array<Object>,
 
+    _socketChatMessage: Array<Object>,
+    _socketPollEndMessage: Array<Object>,
+    _socketPollStartMessage: Array<Object>,
+    _socketQaMessage: Array<Object>,
     /**
      * Number of unread chat messages.
      */
@@ -107,6 +111,8 @@ export default class AbstractChat<P: Props> extends Component<P> {
         this._onSendMessage = this._onSendMessage.bind(this);
         this._onToggleChatTab = this._onToggleChatTab.bind(this);
         this._onTogglePollsTab = this._onTogglePollsTab.bind(this);
+        this._onToggleQATab = this._onToggleQATab.bind(this);
+        
     }
 
     _onSendMessage: (string) => void;
@@ -120,7 +126,9 @@ export default class AbstractChat<P: Props> extends Component<P> {
     * @type {Function}
     */
     _onSendMessage(text: string) {
+
         this.props.dispatch(sendMessage(text));
+    
     }
 
     _onToggleChatTab: () => void;
@@ -137,6 +145,9 @@ export default class AbstractChat<P: Props> extends Component<P> {
 
     _onTogglePollsTab: () => void;
 
+    _onToggleQATab: () => void;
+    
+
     /**
      * Display the Polls tab.
      *
@@ -146,6 +157,11 @@ export default class AbstractChat<P: Props> extends Component<P> {
     _onTogglePollsTab() {
         this.props.dispatch(setIsPollsTabFocused(true));
     }
+    _onToggleQATab() {
+        this.props.dispatch(setIsPollsTabFocused(false));
+    }
+
+    
 }
 
 /**
@@ -161,17 +177,24 @@ export default class AbstractChat<P: Props> extends Component<P> {
  * }}
  */
 export function _mapStateToProps(state: Object) {
-    const { isOpen, isPollsTabFocused, messages, nbUnreadMessages } = state['features/chat'];
+    const { isOpen,isPollsTabFocused, messages,message, nbUnreadMessages } = state['features/chat'];
     const { nbUnreadPolls } = state['features/polls'];
+    const { socketChatMessage,socketQaMessage,socketPollStartMessage,socketPollEndMessage } = state["features/base/cs-socket"];
+  
     const _localParticipant = getLocalParticipant(state);
     const { disablePolls } = state['features/base/config'];
 
     return {
         _isModal: window.innerWidth <= SMALL_WIDTH_THRESHOLD,
         _isOpen: isOpen,
+      _message:message,
         _isPollsEnabled: !disablePolls,
         _isPollsTabFocused: isPollsTabFocused,
         _messages: messages,
+        _socketQaMessage:socketQaMessage,
+        _socketPollStartMessage:socketPollStartMessage,
+        _socketPollEndMessage:socketPollEndMessage,
+        _socketChatMessage:socketChatMessage,
         _nbUnreadMessages: nbUnreadMessages,
         _nbUnreadPolls: nbUnreadPolls,
         _showNamePrompt: !_localParticipant?.name

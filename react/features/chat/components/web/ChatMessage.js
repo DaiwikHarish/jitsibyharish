@@ -34,22 +34,25 @@ class ChatMessage extends AbstractChatMessage<Props> {
                         message.lobbyChat && !knocking ? 'lobbymessage' : ''}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
-                        {this.props.showDisplayName && (
+                        {!this.props.showDisplayName && (
                                 <div
-                                    aria-hidden={true}
+                                    aria-hidden={false}
                                     className="display-name"
                                 >
                                     {userName}
                                 </div>
                             )}
+
+                            
                             <div className = 'usermessage'>
-                                <span className = 'sr-only'>
+                                <div className = 'sr-only'>
                                     { this.props.message.displayName === this.props.message.recipient
                                         ? t('chat.messageAccessibleTitleMe')
                                         : t('chat.messageAccessibleTitle',
                                         { user: this.props.message.displayName }) }
-                                </span>
-                                <Message text = { this._getMessageText() } />
+                                </div>
+                                <div style={{color:'#1ccddfeb'}}>{ this.props.message.displayName != this.props.message.recipient? this.props.message.displayName:null}</div>
+                              <div> <Message text = { this._getMessageText() } /></div> 
                             </div>
                             { (message.privateMessage || (message.lobbyChat && !knocking))
                                 && this._renderPrivateNotice() }
@@ -58,13 +61,14 @@ class ChatMessage extends AbstractChatMessage<Props> {
                             && message.messageType !== MESSAGE_TYPE_LOCAL
                             && (
                                 <div
-                                    className = { `messageactions ${
-                                        message.lobbyChat ? 'lobbychatmessageactions' : ''}` }>
-                                    <PrivateMessageButton
+                                    // className = { `messageactions ${
+                                    //     message.lobbyChat ? 'lobbychatmessageactions' : ''}` }
+                                    >
+                                    {/* <PrivateMessageButton
                                         isLobbyMessage = { message.lobbyChat }
                                         participantID = { message.id }
-                                        reply = { true }
-                                        showLabel = { false } />
+                                        reply = { false }
+                                        showLabel = { false } /> */}
                                 </div>
                             ) }
                     </div>
@@ -102,9 +106,10 @@ class ChatMessage extends AbstractChatMessage<Props> {
      */
     _renderPrivateNotice() {
         return (
-            <div className = 'privatemessagenotice'>
-                { this._getPrivateNoticeMessage() }
-            </div>
+            // <div className = 'privatemessagenotice'>
+            //     { this._getPrivateNoticeMessage() }
+            // </div>
+            <div></div>
         );
     }
 

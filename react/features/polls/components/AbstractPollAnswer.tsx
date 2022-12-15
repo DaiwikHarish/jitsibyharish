@@ -40,7 +40,7 @@ export type AbstractProps = {
  * @param {React.AbstractComponent} Component - The concrete component.
  * @returns {React.AbstractComponent}
  */
-const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
+const AbstractPollAnswer = (Component: ComponentType<AbstractProps>): React.AbstractComponent => (props: InputProps) => {
 
     const { pollId } = props;
 
@@ -69,16 +69,79 @@ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: 
     const dispatch = useDispatch();
 
     const submitAnswer = useCallback(() => {
-        conference.sendMessage({
-            type: COMMAND_ANSWER_POLL,
-            pollId,
-            answers: checkBoxStates
-        });
+       
+            const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+            pollidsdiv.style.display = "none";
+        
 
-        sendAnalytics(createPollEvent('vote.sent'));
-        dispatch(registerVote(pollId, checkBoxStates));
 
-        return false;
+const queryString = window.location.search;
+     
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const meetingId = urlParams.get('meetingId')
+        const userId = urlParams.get('userId')
+
+        let ansCount=0;
+   
+let convertAns=checkBoxStates.map((selected)=>
+    {
+     
+        if(selected==true)
+        { 
+            return        poll.answers[ansCount].id;
+            
+        }
+        ansCount++;
+    }
+)
+
+var convertAns_filter = convertAns.filter(function (el) {
+    return el != null;
+  });
+
+let url = 'https://dev.awesomereviewstream.com/svr/api/poll'
+
+const putMethod = {
+    method: 'PUT', // Method itself
+    headers: {
+     'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+    },
+    body: JSON.stringify({
+        "meetingId": meetingId,
+        "userId": userId,
+        "pollQuestionId": poll.senderId,
+        "pollAnswerOptionIds": convertAns_filter,
+       
+    })
+   }
+   
+   // make the HTTP put request using fetch api
+   fetch(url, putMethod)
+   .then(response => response.json())
+   .then(data => {
+    
+    console.log(data)
+   // pollids74
+console.log("sent poll")
+
+const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+pollidsdiv.style.display = "none";
+}) // Manipulate the data retrieved back, if we want to do something with it
+   .catch(err => console.log(err)) // Do something with the error
+
+
+        // conference.sendMessage({
+        //     type: COMMAND_ANSWER_POLL,
+        //     pollId:poll.senderId,
+        //     answers: checkBoxStates
+        // });
+
+        // sendAnalytics(createPollEvent('vote.sent'));
+        // dispatch(registerVote(pollId, checkBoxStates));
+
+        //return false;
     }, [ pollId, checkBoxStates, conference ]);
 
     const skipAnswer = useCallback(() => {

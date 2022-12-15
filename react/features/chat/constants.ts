@@ -38,5 +38,6 @@ export const LOBBY_CHAT_MESSAGE = 'LOBBY_CHAT_MESSAGE';
 
 export const CHAT_TABS = {
     POLLS: 'polls-tab',
-    CHAT: 'chat-tab'
+    CHAT: 'chat-tab',
+    QA: 'qa-tab'
 };

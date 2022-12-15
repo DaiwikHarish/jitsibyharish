@@ -25,6 +25,8 @@ interface IState {
      * The id of the last read message.
      */
     lastReadMessageId: string;
+
+    allMes:Array<Object>,
 }
 
 /**
@@ -40,9 +42,11 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
     state: IState = {
         hasNewMessages: false,
         isScrolledToBottom: true,
-        lastReadMessageId: ''
+        lastReadMessageId: '',
+        allMes:[]
     };
-
+    
+    
     /**
      * Reference to the HTML element at the end of the list of displayed chat
      * messages. Used for scrolling to the end of the chat messages.
@@ -86,7 +90,13 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     render() {
+        Object.assign(this.props.messages, this.state.allMes )
+
+
+       // alert(JSON.stringify(this.props.messages))
         const groupedMessages = this._getMessagesGroupedBySender();
+
+        
         const messages = groupedMessages.map((group, index) => {
             const messageType = group[0]?.messageType;
 
@@ -107,7 +117,7 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
                     ref = { this._messageListRef }
                     role = 'log'
                     tabIndex = { 0 }>
-                    { messages }
+                    { messages}
 
                     { !this.state.isScrolledToBottom && this.state.hasNewMessages
                         && <NewMessagesButton
@@ -129,8 +139,10 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     componentDidMount() {
-        this.scrollToElement(false, null);
-        this._createBottomListObserver();
+    
+      this.scrollToElement(false, null);
+      this._createBottomListObserver();
+           // })
     }
 
     /**
@@ -142,6 +154,12 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @returns {void}
      */
     componentDidUpdate(prevProps: IProps) {
+
+    
+//      if(this.props._socketChatMessage!=null && _socketChatMessage!=undefined)
+//    {console.log(_socketChatMessage.data)}
+
+
         const hasNewMessages = this.props.messages.length !== prevProps.messages.length;
 
         if (hasNewMessages) {
@@ -312,4 +330,5 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
 
         return false;
     }
+    
 }

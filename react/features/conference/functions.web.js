@@ -32,7 +32,7 @@ export function maybeShowSuboptimalExperienceNotification(dispatch, t) {
 
 export function _onKickedOut(id){
     let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
-    console.log("alam updateId",id)
+   // console.log("alam updateId",id)
 
     fetch(url,{
         headers: {
@@ -49,10 +49,10 @@ export function _onKickedOut(id){
     })
     .then((response) => {console.log("alam response",response); response.json()})
             .then((data) => {
-               console.log("alam Successfully updated")
+              // console.log("alam Successfully updated")
             })
             .catch((err) => {
-                console.log("alam kickout error",err.message);
+               // console.log("alam kickout error",err.message);
             })
 
 };
