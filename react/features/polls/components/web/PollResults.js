@@ -16,6 +16,7 @@ const PollResults = (props: AbstractProps) => {
         changeVote,
         creatorName,
         haveVoted,
+        pollPercentage,
         showDetails,
         question,
         t,
@@ -23,6 +24,7 @@ const PollResults = (props: AbstractProps) => {
     } = props;
 
     const [userName, userType] = creatorName.split('|');
+
     return (
         <div className = 'poll-results'>
             <div className = 'poll-header'>
@@ -35,12 +37,13 @@ const PollResults = (props: AbstractProps) => {
             </div>
             <ol className="poll-result-list">
                 {answers.map(
-                    ({ name, percentage, voters, voterCount }, index) => (
+                    ({ name, pollPercentage,pollStatistics, voters, voterCount }, index) => (
                         <VoterContainer
                             name={name}
-                            percentage={percentage}
+                            pollPercentage={pollPercentage}
+                            pollStatistics={pollStatistics}
                             voters={voters}
-                            voterCount={voterCount}
+                            voterCount={pollStatistics}
                             showDetails={showDetails}
                             index={index}
                         />
@@ -64,7 +67,8 @@ const PollResults = (props: AbstractProps) => {
 };
 
 function VoterContainer(props) {
-  //  alert(JSON.stringify(props))
+  
+    //alert(JSON.stringify(props))
     const [userName, userType] = props.name.split('|');
     return (
         <li key={props.index}>
@@ -75,12 +79,12 @@ function VoterContainer(props) {
                 <span className="poll-bar-container">
                     <div
                         className="poll-bar"
-                        style={{ width: `${props.percentage}%` }}
+                        style={{ width: `${ parseInt(props.pollPercentage)}%` }}
                     />
                 </span>
                 <div className="poll-answer-vote-count-container">
                     <span className="poll-answer-vote-count">
-                        ({props.voterCount}) {props.percentage}%
+                        ({props.voterCount}) {parseInt(props.pollPercentage)}%
                     </span>
                 </div>
             </div>

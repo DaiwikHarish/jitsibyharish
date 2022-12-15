@@ -12,34 +12,50 @@ import PollsList from './PollsList';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+
 const PollsPane = (props: AbstractProps) => {
    // const polls = useSelector(state => state['features/polls'].polls);
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);
+   
+     
     const { createMode, onCreate, setCreateMode, t } = props;
     const [loadApi, setLoadApi] = useState(0);
-
+    const [allPollsdata, setallPolls] = useState([]);
+    const [groupname, setGroupname] = useState("");
 
     useEffect(() => {
+        const queryString = window.location.search;
+      
 
+        const urlParams = new URLSearchParams(queryString);
+    
+        const meetingId = urlParams.get('meetingId')
 
-        let url = 'https://dev.awesomereviewstream.com/svr/api/poll?groupId=21';
+        let url = 'https://dev.awesomereviewstream.com/svr/api/poll-group/latest?meetingId='+meetingId;
         
         fetch(
             url
         )
             .then((response) => response.json())
             .then((data) => {
+
+
+                setGroupname(data.data[0].groupName)
+
+                
                let pollNo=0;
                
-               let allPolls = data.data.map((pollAPI: { answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
+               let allPolls = data.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
         {
             pollNo=pollNo++;
     
-            let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; id: any; }) =>  
+            let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
                     {
-                       
-                       return({"name": ans.answerLabel,
+           
+                        return({"name": ans.answerLabel+" : "+ans.answerOption,
                        "id":ans.id,
+                       'pollStatistics':ans.pollStatistics,
+            'pollPercentage':ans.pollPercentage,
                         "voters": []})
                     })
                
@@ -55,13 +71,13 @@ const PollsPane = (props: AbstractProps) => {
             
                 "changingVote": pollAPI.isAnswerTypeSingle,
                 "senderId": pollAPI.id,
-                "showResults": false,
+                "showResults": data.status=='Ended'?true:false,
                 "lastVote": lastVote,
                 "question": pollAPI.question,
                 "answers": ans,
-            "quetionId":pollAPI.id
-
-        
+            "quetionId":pollAPI.id,
+            'groupname':pollAPI.groupName,
+            
         }
         
         
@@ -70,113 +86,51 @@ const PollsPane = (props: AbstractProps) => {
         )
    })
 
-
-   Object.assign(polls, allPolls)
-
-   setLoadApi(1)             
+setallPolls(allPolls)
+Object.assign(polls, allPolls)
+setLoadApi(1)
+         
   
   })
-  })
+  },[])
 
+  useEffect(() => {
 
-//    // let polls = useSelector(state => state['features/polls'].polls);
-//     console.log(allPolls)
-//     Object.assign(polls, allPolls)
-    
-//     })
-
-
-
-
-// let pollsAPI={
-//     "1": {
-//         "changingVote": false,
-//         "senderId": "a155c9f5",
-//         "showResults": false,
-//         "lastVote": null,
-//         "question": "question",
-//         "answers": [
-//             {
-//                 "name": "answers Optn AP1",
-//                 "voters": []
-//             },
-//             {
-//                 "name": "answers Optn AP1",
-//                 "voters": []
-//             }
-//         ]
-//     },
-//     "2": {
-//         "changingVote": false,
-//         "senderId": "a155c9f5",
-//         "showResults": false,
-//         "lastVote": null,
-//         "question": "question",
-//         "answers": [
-//             {
-//                 "name": " Optn AP1 1",
-//                 "voters": []
-//             },
-//             {
-//                 "name": " Optn AP1 2",
-//                 "voters": []
-//             }
-//         ]
-//     },
-//     "3":  {
-//         "changingVote": false,
-//         "senderId": "1e7aa8e0",
-//         "showResults": true,
-//         "lastVote": [
-//             false,
-//             true,
-//             false
-//         ],
-//         "question": "tesApi Questions",
-//         "answers": [
-//             {
-//                 "name": "Optn1",
-//                 "voters": []
-//             },
-//             {
-//                 "name": "Optn2",
-//                 "voters": []
-//             },
-//             {
-//                 "name": "Optn3",
-//                 "voters": []
-//             }
-//         ]
-//     }
-// }
-
+    Object.assign(polls, allPollsdata)
+  },[loadApi])
 
     
-    return loadApi==1?
+    return(
     <div className = 'polls-pane-content'>
-            <div className = { 'poll-container' } >
-                <PollsList />
-            </div>
-         
-        </div>:
-    
+    <div style={{textAlign:'center', fontWeight:'bold', fontSize:18, textTransform:'uppercase', padding:3,}}>
+<span id='groupname'>{groupname}</span>
+</div>
+  <div className = { 'poll-container' } >
+      <PollsList />
+  </div>
+
+</div>
+)
 
     //  createMode
     //     ? <PollCreate setCreateMode = { setCreateMode } />
     //     : 
-    <div className = 'polls-pane-content'>
-            <div className = { 'poll-container' } >
-                <PollsList />
-            </div>
-            {/* <div className = 'poll-footer poll-create-footer'>
-                <Button
-                    accessibilityLabel = { t('polls.create.create') }
-                    autoFocus = { true }
-                    fullWidth = { true }
-                    labelKey = { 'polls.create.create' }
-                    onClick = { onCreate } />
-            </div> */}
-        </div>;
+//     <div className = 'polls-pane-content'>
+//               <div style={{textAlign:'center', fontWeight:'bold', fontSize:18, textTransform:'uppercase', padding:3,}}>
+//     <span id='groupname'>{groupname}</span>
+//    </div>
+//             <div className = { 'poll-container' } >
+//                 <PollsList />
+//             </div>
+//             <div className = 'poll-footer poll-create-footer'>
+//                 <Button
+//                     accessibilityLabel = { t('polls.create.create') }
+//                     autoFocus = { true }
+//                     fullWidth = { true }
+//                     labelKey = { 'polls.create.create' }
+//                     onClick = { onCreate } />
+//             </div>
+//         </div>;
 
 
 

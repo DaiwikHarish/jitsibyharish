@@ -56,7 +56,9 @@ export interface IPoll {
     showResults: boolean;
 
     quetionId: string;
-
+    groupname:string,
+    pollStatistics:string,
+    pollPercentage:string,
 }
 
 export interface IPollData extends IPoll {

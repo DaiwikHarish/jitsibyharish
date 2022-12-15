@@ -107,7 +107,7 @@ const Tabs = ({
                     onClick = { handleChange }
                     role = 'tab'>
                     {tab.label}
-                    {tab.countBadge && <span className = { classes.badge }>{tab.countBadge}</span>}
+                    {<span className = { classes.badge }>{tab.countBadge!=0?tab.countBadge:null}</span>}
                 </button>
             ))}
         </div>

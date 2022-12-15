@@ -112,6 +112,7 @@ export interface IQuestionDto {
     question?: string;
     createdAt?: string;
     updatedAt?: string;
+    answers?:string;
 }
 
 export class QANotificationDto extends UserDto {

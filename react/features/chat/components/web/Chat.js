@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import React from 'react';
-
+import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 import Tabs from '../../../base/ui/components/web/Tabs';
@@ -13,7 +13,8 @@ import AbstractChat, {
     type Props,
     _mapStateToProps
 } from '../AbstractChat';
-import { IReduxState } from '../../../app/types';
+import Button from '../../../base/ui/components/web/Button';
+import { IconPlane, IconSmile } from '../../../base/icons/svg';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import ChatInputQA from '../../../qa/components/web/ChatInput';
@@ -21,8 +22,10 @@ import DisplayNameForm from './DisplayNameForm';
 import KeyboardAvoider from './KeyboardAvoider';
 import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
-import { useSelector } from 'react-redux';
-import MessageContainerQA from '../../../qa/components/web/MessageContainer';
+
+import MessageContainerQA from '../../../qa_next/qa';
+import Poll from '../../../poll-presenter/poll';
+//import MessageContainerQA from '../../../qa/components/web/MessageContainer';
 import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
 import { al } from 'react-emoji-render/data/aliases';
 /**
@@ -46,6 +49,13 @@ class Chat extends AbstractChat<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
+       chatCounter:0,
+       qaCounter:0,
+       pollCounter:0,
+       chatOpened:false,
+       qaOpened:false,
+       pollOpened:false,
+            allMes:[],
 QAtab:false
         }
         this._messageContainerRef = React.createRef();
@@ -84,6 +94,165 @@ QAtab:false
             </div> : null
         );
     }
+    componentDidMount() {
+       this.getMessage();
+
+this.setState({chatCounter:0,chatOpened:true})
+
+
+    }
+
+    componentDidUpdate(prevProps, prevState) 
+    {  
+
+        if( this.props._socketQaMessage!="" && this.props._socketQaMessage!=null && this.props._socketQaMessage!=undefined)
+        { 
+
+         let hasNewMessages = this.props._socketQaMessage !== prevProps._socketQaMessage;
+
+         if (hasNewMessages) {
+            if(!this.state.qaOpened)
+            {
+                let counter=this.state.qaCounter;
+               counter++
+              this.setState({qaCounter:counter})
+            }
+        }
+        }
+
+
+        if( this.props._socketPollStartMessage!="" && this.props._socketPollStartMessage!=null && this.props._socketPollStartMessage!=undefined)
+        {    let hasNewMessages = this.props._socketPollStartMessage !== prevProps._socketPollStartMessage;
+
+            if (hasNewMessages) {
+            if(!this.state.pollOpened)
+            {
+                let counter=this.state.pollCounter;
+               counter++
+              this.setState({pollCounter:counter})
+            }
+        }
+        }
+        if( this.props._socketPollEndMessage!="" && this.props._socketPollEndMessage!=null && this.props._socketPollEndMessage!=undefined)
+        {    let hasNewMessages = this.props._socketPollEndMessage !== prevProps._socketPollEndMessage;
+
+            if (hasNewMessages) {
+            if(!this.state.pollOpened)
+            {
+                let counter=this.state.pollCounter;
+               counter++
+              this.setState({pollCounter:counter})
+            }
+        }
+        }
+
+     
+
+        if( this.props._socketChatMessage!="" && this.props._socketChatMessage!=null && this.props._socketChatMessage!=undefined)
+        { 
+
+         let hasNewMessagesChat = this.props._socketChatMessage !== prevProps._socketChatMessage;
+
+         if (hasNewMessagesChat) {
+ 
+if(!this.state.chatOpened)
+{
+    let counter=this.state.chatCounter;
+   counter++
+  this.setState({chatCounter:counter})
+
+
+ 
+}
+
+
+let obj=[]
+obj=this.state.allMes;
+
+    
+let usertype="local";
+
+
+            if(this.props._socketChatMessage.data.fromUserName!=this.props._socketChatMessage.data.toUserName)
+            {
+                usertype='remote'
+            }
+            let socketObj= {
+        "displayName":this.props._socketChatMessage.data.fromUserName,
+      
+        "id":this.props._socketChatMessage.data.id,
+        "isReaction":"false",
+        "lobbyChat":"false",
+        "message":this.props._socketChatMessage.data.message,
+        "messageId":this.props._socketChatMessage.data.id,
+        "messageType":usertype,
+        "recipient":this.props._socketChatMessage.data.toUserName,
+        "timestamp":new Date( this.props._socketChatMessage.data.updatedAt).getTime()}
+       
+     
+
+      let  allMes=obj.concat(socketObj)
+
+     
+   
+        this.setState({allMes:allMes})
+
+   }
+   
+}
+}
+   
+
+
+   getMessage()
+   {
+    const queryString = window.location.search;
+      
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const meetingId = urlParams.get('meetingId')
+    const userId = urlParams.get('userId')
+
+   
+    let url = 'https://dev.awesomereviewstream.com/svr/api/chat?meetingId='+meetingId+'&userId='+userId;
+    
+    fetch(
+        url
+    )
+        .then((response) => response.json())
+        .then((data) => {
+           
+           var allMes = data.map((mesAPI: { fromUserName: any; toUserName: any; id: any; message: any; updatedAt: string | number | Date; }) =>  
+    {
+let usertype='local'
+        if(mesAPI.fromUserName!=mesAPI.toUserName)
+        {
+            usertype='remote'
+        }
+    return({
+    "displayName":mesAPI.fromUserName,
+  
+    "id":mesAPI.id,
+    "isReaction":"false",
+    "lobbyChat":"false",
+    "message":mesAPI.message,
+    "messageId":mesAPI.id,
+    "messageType":usertype,
+    "recipient":mesAPI.toUserName,
+    "timestamp":new Date( mesAPI.updatedAt).getTime()})
+    
+    })
+
+    this.setState({allMes:allMes})
+
+        })
+
+        if (isMobileBrowser()) {
+            // Ensure textarea is not focused when opening chat on mobile browser.
+            this._textArea?.current && this._textArea.current.blur();
+        }
+   }
 
     _onChatTabKeyDown: (KeyboardEvent) => void;
 
@@ -152,6 +321,8 @@ QAtab:false
                         id = 'polls-panel'
                         role = 'tabpanel'>
                         <PollsPane />
+
+{/* <Poll/> */}
                     </div>
                     <KeyboardAvoider />
                 </>
@@ -164,15 +335,13 @@ QAtab:false
                 { _isPollsEnabled && this._renderTabs() }
                 <div
                     aria-labelledby = { CHAT_TABS.QA }
-                    className = { clsx('chat-panel', !_isPollsEnabled && 'chat-panel-no-tabs') }
+                    className = { clsx('chat-panel1', !_isPollsEnabled && 'chat-panel-no-tabs') }
                     id = 'QA-panel'
                     role = 'tabpanel'>
-                    <MessageContainerQA
-                        messages = { this.props._messagesQa } />
-                    <MessageRecipientQA />
-                    <ChatInputQA
-                         onSend = { this._onSendMessageQa } />
+                        <MessageContainerQA/>
+             
                 </div>
+              
             </>
             )
         }else{
@@ -190,11 +359,61 @@ QAtab:false
                     id = 'chat-panel'
                     role = 'tabpanel'>
                     <MessageContainer
-                        messages = { this.props._messages } />
+                        messages = { this.state.allMes} />
                     <MessageRecipient />
-                    <ChatInput
-                        onSend = { this._onSendMessage} />
-                </div>
+                    <div className = 'chat-input-container'>
+                    <ChatInput onSend={this._onSendMessage}/>
+
+<Button
+                      
+                      
+                        icon = { IconPlane }
+                        onClick={() =>  {
+
+
+                            
+                            const queryString = window.location.search;
+      
+
+                            const urlParams = new URLSearchParams(queryString);
+                    
+                            const meetingId = urlParams.get('meetingId')
+                            const userId = urlParams.get('userId')
+
+                         let chatMessage =document.querySelectorAll('#chatMessage')[0].value;
+                         const trimmed = chatMessage.trim();
+                         const reqBody = {
+                            "meetingId": meetingId,
+                            "fromUserId": userId,
+                            "toUserId": userId,
+                            "message": trimmed
+                        };
+                         let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
+                         if (url) {
+
+
+                            const requestOptions = {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(reqBody)
+                            };
+                            fetch(url, requestOptions)
+                                .then(response => response.json())
+                                .then(data =>
+                                    
+                                    
+                                 
+                                {
+                                
+                                    document.querySelectorAll('#chatMessage')[0].value="";
+
+                                    this.getMessage()}
+                                    );
+
+                        
+                        }}}
+                        size = { isMobileBrowser() ? 'large' : 'medium' } />
+                </div>  </div>
             </>
         );
         }
@@ -208,7 +427,7 @@ QAtab:false
      */
     _renderTabs() {
         const { _isPollsEnabled, _isPollsTabFocused, _nbUnreadMessages, _nbUnreadPolls, t } = this.props;
-
+      
         return (
             <Tabs
                 accessibilityLabel = { t(_isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }
@@ -216,19 +435,19 @@ QAtab:false
                 selected = { _isPollsTabFocused ? CHAT_TABS.POLLS : this.state.QAtab? CHAT_TABS.QA : CHAT_TABS.CHAT }
                 tabs = { [ {
                     accessibilityLabel: t('chat.tabs.chat'),
-                    countBadge:  _isPollsTabFocused && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
+                    countBadge:this.state.chatCounter,
                     id: CHAT_TABS.CHAT,
                     label: t('chat.tabs.chat')
                 }, 
                 {
                     accessibilityLabel: t('chat.tabs.polls'),
-                    countBadge: !_isPollsTabFocused &&  _nbUnreadPolls > 0 ? _nbUnreadPolls : undefined,
+                    countBadge: this.state.pollCounter,
                     id: CHAT_TABS.POLLS,
                     label: t('chat.tabs.polls')
                 },
                 {
                     accessibilityLabel: t('chat.tabs.QA'),
-                    countBadge: !_isPollsTabFocused  && _nbUnreadMessages > 0 ? _nbUnreadMessages : undefined,
+                    countBadge:!this.state.QAtab? this.state.qaCounter:"0",
                     id: CHAT_TABS.QA,
                     label: t('chat.tabs.QA')
 
@@ -252,7 +471,7 @@ QAtab:false
     * @returns {Function}
     */
     _onToggleChat() {
-        
+        document.getElementById("mainchatcounter").innerHTML ="" 
         this.props.dispatch(toggleChat());
        
     }
@@ -272,17 +491,24 @@ QAtab:false
         
         if(id === CHAT_TABS.CHAT)
         {
-            this.setState({QAtab:false});
+           
+            this.setState({QAtab:false,chatCounter:0,
+                chatOpened:true,qaOpened:false,pollOpened:false
+            
+            
+            });
             this._onToggleChatTab() 
         }else   if(id === CHAT_TABS.POLLS)
         {
            // state["features/base/app"].urlInfo
           
-            this.setState({QAtab:false});
+            this.setState({QAtab:false,pollCounter:0,chatOpened:false,qaOpened:false,pollOpened:true});
             this._onTogglePollsTab() 
         }else  
         {
-            this.setState({QAtab:true});
+        
+            this.setState({QAtab:true,qaCounter:0,chatOpened:false,qaOpened:true,pollOpened:false});
+          
             this._onToggleQATab() 
         }
     }

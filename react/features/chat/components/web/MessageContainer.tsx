@@ -139,50 +139,10 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     componentDidMount() {
-        
-        const queryString = window.location.search;
-      
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
-
-       
-        let url = 'https://dev.awesomereviewstream.com/svr/api/chat?meetingId='+meetingId+'&userId='+userId;
-        
-        fetch(
-            url
-        )
-            .then((response) => response.json())
-            .then((data) => {
-               
-               var allMes = data.map((mesAPI: { fromUserName: any; toUserName: any; id: any; message: any; updatedAt: string | number | Date; }) =>  
-        {
-let usertype='local'
-            if(mesAPI.fromUserName!=mesAPI.toUserName)
-            {
-                usertype='remote'
-            }
-        return({
-        "displayName":mesAPI.fromUserName,
-      
-        "id":mesAPI.id,
-        "isReaction":"false",
-        "lobbyChat":"false",
-        "message":mesAPI.message,
-        "messageId":mesAPI.id,
-        "messageType":usertype,
-        "recipient":mesAPI.toUserName,
-        "timestamp":new Date( mesAPI.updatedAt).getTime()})
-        
-        })
-        this.setState({allMes:allMes})
-      
-
+    
       this.scrollToElement(false, null);
       this._createBottomListObserver();
-            })
+           // })
     }
 
     /**
@@ -194,6 +154,12 @@ let usertype='local'
      * @returns {void}
      */
     componentDidUpdate(prevProps: IProps) {
+
+    
+//      if(this.props._socketChatMessage!=null && _socketChatMessage!=undefined)
+//    {console.log(_socketChatMessage.data)}
+
+
         const hasNewMessages = this.props.messages.length !== prevProps.messages.length;
 
         if (hasNewMessages) {
