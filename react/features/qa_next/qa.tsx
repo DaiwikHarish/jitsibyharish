@@ -13,7 +13,7 @@ import { IQuestionDto, QANotificationDto } from '../base/cs-socket/types';
     const inputReferenceinpute = useRef(document.createElement("textarea"));
     const [qa, setqa] = useState("");
     const [allQa, setAllQa] = useState([]);
-    const [allQaDiv, setAllQaDiv] = useState({});
+    const [allQaDiv, setAllQaDiv] = useState([]);
     let queryString = window.location.search;
 
 
@@ -211,7 +211,7 @@ import { IQuestionDto, QANotificationDto } from '../base/cs-socket/types';
 
          
 
-            let qaDiv  = allQa.map((item:{fromUserName:any;answers:any;  question:any;} ) => (
+            let qaDiv:any  = allQa.map((item:{fromUserName:any;answers:any;  question:any;} ) => (
 
 
 
