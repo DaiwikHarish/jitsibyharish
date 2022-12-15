@@ -40,8 +40,7 @@ export type AbstractProps = {
  * @param {React.AbstractComponent} Component - The concrete component.
  * @returns {React.AbstractComponent}
  */
-const AbstractPollAnswer = (Component: ComponentType<AbstractProps>): React.AbstractComponent => (props: InputProps) => {
-
+ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
     const { pollId } = props;
 
     const conference: any = useSelector((state: IReduxState) => state['features/base/conference'].conference);
