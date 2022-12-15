@@ -125,6 +125,67 @@ if(!this.props._chatOpen)
          }
          
         }
+
+        if( this.props._socketQaMessage!="" && this.props._socketQaMessage!=null && this.props._socketQaMessage!=undefined)
+        { 
+
+            let hasNewMessagesChat = this.props._socketQaMessage !== prevProps._socketQaMessage;
+
+            if (hasNewMessagesChat) {
+ 
+if(!this.props._chatOpen)
+{
+    let counter=this.state.chatCounter;
+   counter++
+  this.setState({chatCounter:counter})
+
+
+ 
+}
+         }
+         
+        }
+
+        if( this.props._socketPollStartMessage!="" && this.props._socketPollStartMessage!=null && this.props._socketPollStartMessage!=undefined)
+        { 
+
+            let hasNewMessagesChat = this.props._socketPollStartMessage !== prevProps._socketPollStartMessage;
+
+            if (hasNewMessagesChat) {
+ 
+if(!this.props._chatOpen)
+{
+    let counter=this.state.chatCounter;
+   counter++
+  this.setState({chatCounter:counter})
+
+
+ 
+}
+         }
+         
+        }
+
+        if( this.props._socketPollEndMessage!="" && this.props._socketPollEndMessage!=null && this.props._socketPollEndMessage!=undefined)
+        { 
+
+            let hasNewMessagesChat = this.props._socketPollEndMessage !== prevProps._socketPollEndMessage;
+
+            if (hasNewMessagesChat) {
+ 
+if(!this.props._chatOpen)
+{
+    let counter=this.state.chatCounter;
+   counter++
+  this.setState({chatCounter:counter})
+
+
+ 
+}
+         }
+         
+        }
+
     }
 }
 
@@ -139,7 +200,10 @@ const mapStateToProps = state => {
   
     return {
         _chatOpen: state['features/chat'].isOpen,
-        _socketChatMessage:socketChatMessage
+        _socketChatMessage:socketChatMessage,
+        _socketQaMessage:socketQaMessage,
+        _socketPollStartMessage:socketPollStartMessage,
+        _socketPollEndMessage:socketPollEndMessage
     };
 };
 

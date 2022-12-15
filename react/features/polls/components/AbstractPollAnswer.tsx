@@ -69,9 +69,12 @@ export type AbstractProps = {
 
     const submitAnswer = useCallback(() => {
        
-            const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+            const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+            if(pollidsdiv!=null)
+            {
             pollidsdiv.style.display = "none";
-        
+            }
 
 
 const queryString = window.location.search;
@@ -125,8 +128,14 @@ const putMethod = {
    // pollids74
 console.log("sent poll")
 
-const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+//document.getElementById("pollids"+poll.senderId)
+
+if(pollidsdiv!=null)
+{
 pollidsdiv.style.display = "none";
+}
 }) // Manipulate the data retrieved back, if we want to do something with it
    .catch(err => console.log(err)) // Do something with the error
 
