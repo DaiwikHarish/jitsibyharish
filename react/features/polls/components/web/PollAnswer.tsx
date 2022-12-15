@@ -142,13 +142,13 @@ const PollAnswer = ({
                 }
             </ol>
             <div id={"pollids"+poll.senderId} className = 'poll-footer poll-answer-footer' >
-                <Button
+                {/* <Button
                     accessibilityLabel = { t('polls.answer.skip') }
                     className = { styles.buttonMargin }
                     fullWidth = { true }
                     labelKey = { 'polls.answer.skip' }
                     onClick = { changingVote ? skipChangeVote : skipAnswer }
-                    type = { BUTTON_TYPES.SECONDARY } />
+                    type = { BUTTON_TYPES.SECONDARY } /> */}
                 <Button
                     accessibilityLabel = { t('polls.answer.submit') }
                     disabled = { isSubmitAnswerDisabled(checkBoxStates) }

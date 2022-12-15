@@ -139,7 +139,8 @@ export default class MessageContainer extends AbstractMessageContainer<IProps, I
      * @inheritdoc
      */
     componentDidMount() {
-    
+        
+       
       this.scrollToElement(false, null);
       this._createBottomListObserver();
            // })
