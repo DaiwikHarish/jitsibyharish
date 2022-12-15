@@ -40,7 +40,7 @@ class ChatCounter extends Component<Props> {
         return (
             <span className = 'badge-round'>
 
-                <span>
+                <span id="mainchatcounter">
                     {
                         !this.props._isOpen
                         && (this.props._count || null)

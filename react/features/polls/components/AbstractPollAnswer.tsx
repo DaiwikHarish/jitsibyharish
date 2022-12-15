@@ -40,7 +40,7 @@ export type AbstractProps = {
  * @param {React.AbstractComponent} Component - The concrete component.
  * @returns {React.AbstractComponent}
  */
-const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
+const AbstractPollAnswer = (Component: ComponentType<AbstractProps>): React.AbstractComponent => (props: InputProps) => {
 
     const { pollId } = props;
 
@@ -69,6 +69,11 @@ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: 
     const dispatch = useDispatch();
 
     const submitAnswer = useCallback(() => {
+       
+            const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+            pollidsdiv.style.display = "none";
+        
+
 
 const queryString = window.location.search;
      
@@ -115,18 +120,26 @@ const putMethod = {
    // make the HTTP put request using fetch api
    fetch(url, putMethod)
    .then(response => response.json())
-   .then(data => {console.log(data)}) // Manipulate the data retrieved back, if we want to do something with it
+   .then(data => {
+    
+    console.log(data)
+   // pollids74
+console.log("sent poll")
+
+const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+pollidsdiv.style.display = "none";
+}) // Manipulate the data retrieved back, if we want to do something with it
    .catch(err => console.log(err)) // Do something with the error
 
 
-        conference.sendMessage({
-            type: COMMAND_ANSWER_POLL,
-            pollId:poll.senderId,
-            answers: checkBoxStates
-        });
+        // conference.sendMessage({
+        //     type: COMMAND_ANSWER_POLL,
+        //     pollId:poll.senderId,
+        //     answers: checkBoxStates
+        // });
 
-        sendAnalytics(createPollEvent('vote.sent'));
-        dispatch(registerVote(pollId, checkBoxStates));
+        // sendAnalytics(createPollEvent('vote.sent'));
+        // dispatch(registerVote(pollId, checkBoxStates));
 
         //return false;
     }, [ pollId, checkBoxStates, conference ]);

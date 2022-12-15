@@ -18,12 +18,21 @@ type Props = AbstractButtonProps & {
      * Whether or not the chat feature is currently displayed.
      */
      _chatOpen: boolean,
+     _socketChatMessage:Number
 };
 
 /**
  * Implementation of a button for accessing chat pane.
  */
 class ChatButton extends AbstractButton<Props, *> {
+
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+       chatCounter:0,}
+        }
+
+     
     accessibilityLabel = 'toolbar.accessibilityLabel.chat';
     icon = IconChat;
     label = 'toolbar.openChat';
@@ -57,6 +66,7 @@ class ChatButton extends AbstractButton<Props, *> {
      * @returns {boolean}
      */
     _isToggled() {
+        
         return this.props._chatOpen;
     }
 
@@ -68,14 +78,53 @@ class ChatButton extends AbstractButton<Props, *> {
      * @returns {boReact$Nodeolean}
      */
     render(): React$Node {
+
+  
+
+
+
+
         return (
             <div
                 className = 'toolbar-button-with-badge'
                 key = 'chatcontainer'>
                 {super.render()}
-                <ChatCounter />
+                <span className = 'badge-round'>
+
+<span id="mainchatcounter">
+  {this.state.chatCounter!=0 ?this.state.chatCounter:""}
+</span>
+</span>
+                {/* <ChatCounter /> */}
             </div>
         );
+    }
+
+    componentDidUpdate(prevProps, prevState) 
+    {  
+
+    
+
+
+        if( this.props._socketChatMessage!="" && this.props._socketChatMessage!=null && this.props._socketChatMessage!=undefined)
+        { 
+
+            let hasNewMessagesChat = this.props._socketChatMessage !== prevProps._socketChatMessage;
+
+            if (hasNewMessagesChat) {
+ 
+if(!this.props._chatOpen)
+{
+    let counter=this.state.chatCounter;
+   counter++
+  this.setState({chatCounter:counter})
+
+
+ 
+}
+         }
+         
+        }
     }
 }
 
@@ -86,8 +135,11 @@ class ChatButton extends AbstractButton<Props, *> {
  * @returns {Object}
  */
 const mapStateToProps = state => {
+    const { socketChatMessage,socketQaMessage,socketPollStartMessage,socketPollEndMessage } = state["features/base/cs-socket"];
+  
     return {
-        _chatOpen: state['features/chat'].isOpen
+        _chatOpen: state['features/chat'].isOpen,
+        _socketChatMessage:socketChatMessage
     };
 };
 

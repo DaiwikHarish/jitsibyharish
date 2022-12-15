@@ -431,10 +431,11 @@ export default class LargeVideoManager {
             // Get user's display name
             const displayName
                 = getParticipantDisplayName(state, id);
+                const [userName, userType] = displayName.split('|');
 
             this._setRemoteConnectionMessage(
                 messageKey,
-                { displayName });
+                { userName });
 
             // Show it now only if the VideoContainer is on top
             this.showRemoteConnectionMessage(

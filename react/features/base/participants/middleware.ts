@@ -789,12 +789,12 @@ function _raiseHandUpdated({ dispatch, getState }: IStore, conference: IJitsiCon
 
     if (raisedHandTimestamp) {
         let notificationTitle;
-        const participantName = getParticipantDisplayName(state, participantId);
+        const userName = getParticipantDisplayName(state, participantId);
+        const [participantName, userType] = userName.split('|');
         const { raisedHandsQueue } = state['features/base/participants'];
 
         if (raisedHandsQueue.length > 1) {
             const raisedHands = raisedHandsQueue.length - 1;
-
             notificationTitle = i18n.t('notify.raisedHands', {
                 participantName,
                 raisedHands

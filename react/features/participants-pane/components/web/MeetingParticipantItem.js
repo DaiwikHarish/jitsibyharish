@@ -9,6 +9,7 @@ import {
     getLocalParticipant,
     getParticipantByIdOrUndefined,
     getParticipantDisplayName,
+    getParticipantItemDisplayName,
     hasRaisedHand,
     isParticipantModerator
 } from '../../../base/participants';
@@ -315,7 +316,7 @@ function _mapStateToProps(state, ownProps): Object {
 
     const participant = getParticipantByIdOrUndefined(state, participantID);
 
-    const _displayName = getParticipantDisplayName(state, participant?.id);
+    const _displayName = getParticipantItemDisplayName(state, participant?.id);
 
     const _matchesSearch = participantMatchesSearch(participant, searchString);
 

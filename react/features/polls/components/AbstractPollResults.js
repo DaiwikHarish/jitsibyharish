@@ -26,6 +26,8 @@ type InputProps = {
 export type AnswerInfo = {
     name: string,
     percentage: number,
+    pollPercentage:number,
+    pollStatistics:string,
     voters?: Array<{ id: number, name: string }>,
     voterCount: number
 };
@@ -39,6 +41,8 @@ export type AbstractProps = {
     creatorName: string,
     showDetails: boolean,
     question: string,
+    pollStatistics:string,
+    pollPercentage:number,
     t: Function,
     toggleIsDetailed: Function,
     haveVoted: boolean,
@@ -54,7 +58,10 @@ export type AbstractProps = {
 const AbstractPollResults = (Component: AbstractComponent<AbstractProps>) => (props: InputProps) => {
     const { pollId } = props;
 
+
+
     const pollDetails = useSelector(getPoll(pollId));
+   // alert(JSON.stringify(pollDetails))
     const participant = useBoundSelector(getParticipantById, pollDetails.senderId);
     const reduxState = useSelector(state => state);
 
@@ -76,6 +83,8 @@ const AbstractPollResults = (Component: AbstractComponent<AbstractProps>) => (pr
         }
 
         return pollDetails.answers.map(answer => {
+            const pollPercentage= answer.pollPercentage;
+            const pollStatistics= answer.pollStatistics;
             const nrOfVotersPerAnswer = answer.voters ? Object.keys(answer.voters).length : 0;
             const percentage = allVoters.size > 0 ? Math.round(nrOfVotersPerAnswer / allVoters.size * 100) : 0;
 
@@ -95,6 +104,8 @@ const AbstractPollResults = (Component: AbstractComponent<AbstractProps>) => (pr
             return {
                 name: answer.name,
                 percentage,
+                pollPercentage,
+                pollStatistics,
                 voters,
                 voterCount: nrOfVotersPerAnswer
             };
@@ -116,6 +127,9 @@ const AbstractPollResults = (Component: AbstractComponent<AbstractProps>) => (pr
             creatorName = { participant ? participant.name : '' }
             haveVoted = { pollDetails.lastVote !== null }
             question = { pollDetails.question }
+            pollStatistics = { pollDetails.pollStatistics }
+            pollPercentage = { pollDetails.pollPercentage }
+           
             showDetails = { showDetails }
             t = { t }
             toggleIsDetailed = { toggleIsDetailed } />
