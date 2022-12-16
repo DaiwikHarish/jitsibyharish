@@ -25,7 +25,7 @@ import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 
 import MessageContainerQA from '../../../qa_next/qa';
-import Poll from '../../../poll-presenter/poll';
+
 //import MessageContainerQA from '../../../qa/components/web/MessageContainer';
 import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
 import { al } from 'react-emoji-render/data/aliases';
@@ -399,6 +399,7 @@ event.stopPropagation();
                         <PollsPane />
 
 {/* <Poll/> */}
+
                     </div>
                     <KeyboardAvoider />
                 </>
