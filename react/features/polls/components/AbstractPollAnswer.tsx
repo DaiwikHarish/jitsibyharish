@@ -40,8 +40,7 @@ export type AbstractProps = {
  * @param {React.AbstractComponent} Component - The concrete component.
  * @returns {React.AbstractComponent}
  */
-const AbstractPollAnswer = (Component: ComponentType<AbstractProps>): React.AbstractComponent => (props: InputProps) => {
-
+ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
     const { pollId } = props;
 
     const conference: any = useSelector((state: IReduxState) => state['features/base/conference'].conference);
@@ -70,9 +69,12 @@ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>): React.Abst
 
     const submitAnswer = useCallback(() => {
        
-            const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+            const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+            if(pollidsdiv!=null)
+            {
             pollidsdiv.style.display = "none";
-        
+            }
 
 
 const queryString = window.location.search;
@@ -126,8 +128,14 @@ const putMethod = {
    // pollids74
 console.log("sent poll")
 
-const pollidsdiv = document.getElementById("toggleFilter") as HTMLInputElement
+const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+//document.getElementById("pollids"+poll.senderId)
+
+if(pollidsdiv!=null)
+{
 pollidsdiv.style.display = "none";
+}
 }) // Manipulate the data retrieved back, if we want to do something with it
    .catch(err => console.log(err)) // Do something with the error
 
