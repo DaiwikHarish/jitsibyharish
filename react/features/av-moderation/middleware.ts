@@ -97,11 +97,11 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
         }
 
         dispatch(showNotification({
-            customActionNameKey: [ 'notify.raiseHandAction' ],
-            customActionHandler: [ () => batch(() => {
-                !raisedHand && dispatch(raiseHand(true));
-                dispatch(hideNotification(uid));
-            }) ],
+            // customActionNameKey: [ 'notify.raiseHandAction' ],
+            // customActionHandler: [ () => batch(() => {
+            //     !raisedHand && dispatch(raiseHand(true));
+            //     dispatch(hideNotification(uid));
+            // }) ],
             descriptionKey,
             sticky: true,
             titleKey,

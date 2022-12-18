@@ -32,13 +32,15 @@ import PostWelcome from '../../../base/post-welcome-page/PostWelcome';
 import { OptionType } from '../../../base/app/reducer';
 import {IAttendeeInfo,IUrlInfo,IMeetingInfo} from '../../../base/app/types'
 import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app/actions';
-
+import { muteAllParticipants } from '../../../video-menu/actions.any';
+import { MEDIA_TYPE } from '../../../base/media/constants';
 
 function storeMeetingInfo(meeting:IMeetingInfo){
     return(dispatch)=>{
         dispatch(appMeetingInfo(meeting))
     }
 }
+
 
 function storeAttendeeInfo(attendee:IAttendeeInfo){
     return(dispatch)=>{
@@ -188,6 +190,7 @@ class Prejoin extends Component<Props, State> {
 
     clickHandler() {
         this.setState({clickStartBtn:true });
+
     };
     /**
      * Handler for the join button.
@@ -426,6 +429,7 @@ class Prejoin extends Component<Props, State> {
      * Calling attendee and meeting api on first rendering of this component.
      */
     componentDidMount() {
+
         const meetingId = this.props._urlInfo.meetingId;
         const userId = this.props._urlInfo.userId;
 
@@ -458,10 +462,14 @@ class Prejoin extends Component<Props, State> {
             showCameraPreview,
             showDialog,
             t,
+            
             videoTrack,
             _attendeeInfo,
             _clientType
         } = this.props;
+
+
+
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
             const [userName, userType] = name.split('|');
@@ -591,7 +599,8 @@ const mapDispatchToProps = {
     setJoinByPhoneDialogVisiblity: setJoinByPhoneDialogVisiblityAction,
     updateSettings,
     storeAttendeeInfo,
-    storeMeetingInfo
+    storeMeetingInfo,
+    
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate(Prejoin));

@@ -1,3 +1,5 @@
+
+// @ts-ignore
 /* eslint-disable lines-around-comment */
 import React, { useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';

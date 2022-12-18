@@ -44,10 +44,10 @@ type Props = AbstractButtonProps & {
  *
  * @augments AbstractAudioMuteButton
  */
-class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
+class MIcrophoneButtonDisable extends AbstractAudioMuteButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.mute';
     label = 'toolbar.mute';
-    tooltip = 'toolbar.mute';
+    tooltip = 'Disable by Admin';
 
     /**
      * Initializes a new {@code AudioMuteButton} instance.
@@ -75,7 +75,8 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
                 null,
                 this._onKeyboardShortcut,
                 'keyboardShortcuts.mute');
-                this._setAudioMuted(false)
+
+                this._setAudioMuted(true);
     }
 
     /**
@@ -97,7 +98,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {boolean}
      */
     _isAudioMuted() {
-        return this.props._audioMuted;
+        return true;
     }
 
     _onKeyboardShortcut: () => void;
@@ -158,7 +159,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
  */
 function _mapStateToProps(state): Object {
     const _audioMuted = isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.AUDIO);
-    const _disabled = isAudioMuteButtonDisabled(state);
+    const _disabled = true;
     const enabledFlag = getFeatureFlag(state, AUDIO_MUTE_BUTTON_ENABLED, true);
 
     return {
@@ -168,4 +169,4 @@ function _mapStateToProps(state): Object {
     };
 }
 
-export default translate(connect(_mapStateToProps)(AudioMuteButton));
+export default translate(connect(_mapStateToProps)(MIcrophoneButtonDisable));

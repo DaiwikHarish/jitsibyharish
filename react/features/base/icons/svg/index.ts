@@ -125,6 +125,10 @@ export { default as IconSignalLevel2 } from './signal_cellular_2.svg';
 export { default as IconShare } from './share.svg';
 export { default as IconShareAudio } from './share-audio.svg';
 export { default as IconShareDesktop } from './share-desktop.svg';
+export { default as IconShareDesktopDisable } from './share-desktop-disable.svg';
+export { default as Iconraisehanddisable } from './raisehanddisable.svg';
+
+
 export { default as IconShareDoc } from './share-doc.svg';
 export { default as IconShareVideo } from './shared-video.svg';
 export { default as IconSmile } from './smile.svg';

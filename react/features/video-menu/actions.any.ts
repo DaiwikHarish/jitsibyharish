@@ -87,6 +87,10 @@ export function muteRemote(participantId: string, mediaType: MediaType) {
  * @returns {Function}
  */
 export function muteAllParticipants(exclude: Array<string>, mediaType: MediaType) {
+
+alert()
+
+
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         const state = getState();
         const localId = getLocalParticipant(state)?.id ?? '';

@@ -728,7 +728,12 @@ export function isStageFilmstripAvailable(state, minParticipantCount = 0) {
         && activeParticipants.length >= minParticipantCount
         && (isTopPanelEnabled(state) || remoteScreenShares.length === 0);
 }
+export function isStageFilmstripAvailableScreen(state, minParticipantCount = 0) {
 
+
+    console.log(state)
+   return true;
+}
 /**
  * Whether the stage filmstrip should be displayed on the top.
  *

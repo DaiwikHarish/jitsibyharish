@@ -276,7 +276,7 @@ function MeetingParticipantItem({
 
             {!overflowDrawer && !_participant?.fakeParticipant
                 && <>
-                    {!isInBreakoutRoom && (
+                    {/* {!isInBreakoutRoom && (
                         <ParticipantQuickAction
                             askUnmuteText = { askToUnmuteText }
                             _attendeeInfo = {_attendeeInfo}
@@ -285,7 +285,7 @@ function MeetingParticipantItem({
                             muteParticipantButtonText = { muteParticipantButtonText }
                             participantID = { _participantID }
                             participantName = { userName } />
-                    )}
+                    )} */}
                     <ParticipantActionEllipsis
                         accessibilityLabel = { participantActionEllipsisLabel }
                         onClick = { onContextMenu } />
