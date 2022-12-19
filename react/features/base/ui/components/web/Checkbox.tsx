@@ -166,7 +166,7 @@ const Checkbox = ({
 }: ICheckboxProps) => {
     const { classes: styles, cx, theme } = useStyles();
     const isMobile = isMobileBrowser();
-
+type!=undefined ||type!=null ||type!=""?type="checkbox":type;
     return (
         <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
             <label className = { cx(styles.activeArea, isMobile && 'is-mobile') }>
@@ -175,6 +175,7 @@ const Checkbox = ({
                     disabled = { disabled }
                     name = { name }
                     id={id}
+                    
                     onChange = { onChange }
                     type = {type} />
                 <Icon

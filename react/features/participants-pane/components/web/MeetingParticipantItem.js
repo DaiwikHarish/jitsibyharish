@@ -29,7 +29,9 @@ import {
 } from '../../functions';
 
 import ParticipantActionEllipsis from './ParticipantActionEllipsis';
+// @ts-ignore
 import ParticipantItem from './ParticipantItem';
+// @ts-ignore
 import ParticipantQuickAction from './ParticipantQuickAction';
 
 type Props = {

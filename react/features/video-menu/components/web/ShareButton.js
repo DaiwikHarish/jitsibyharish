@@ -35,11 +35,23 @@ const ShareButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, 
 
   const dispatch = useDispatch();
   
+  let node = document.getElementById(participantIDbyjitsi);
+  let sreenshare="false";
+  if(node!=undefined)
+  {
+    sreenshare = node.getAttribute("data-screenshare");
+  }
+let text="Enable Sreen share"
+sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
+
+
+  
+
     return (
         <ContextMenuItem
           
             icon = { IconShareDesktop }
-            spanId="sreenshare"
+           spanId="sreenshare"
           
             onClick={() => {
               console.log(participantID)
@@ -50,22 +62,10 @@ const ShareButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, 
                 //   text1 = "You canceled!";
                 // }
             
-                let node = document.getElementById('sreenshare');
-
-                let htmlContent = node.textContent;
                
-                if(htmlContent.indexOf("Enable")>=0)
+               
+                if(sreenshare=="false")
                 {
-                  dispatch(
-                    socketSendCommandMessage(
-                      participantID.trim(),
-                        PermissionType.ENABLE_SCREEN_SHARE,
-                        CommandType.TO_THIS_USER
-                    )
-                )
-                    document.getElementById('sreenshare').innerHTML='Disable Screen Share'
-                  
-                }else{
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -73,12 +73,22 @@ const ShareButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, 
                         CommandType.TO_THIS_USER
                     )
                 )
-                    document.getElementById('sreenshare').innerHTML='Enable Screen Share'
-                   
+                node.setAttribute("data-screenshare","true");
+                document.getElementById('sreenshare').innerHTML='Enable Sreen share'
+                }else{
+                  dispatch(
+                    socketSendCommandMessage(
+                      participantID.trim(),
+                        PermissionType.ENABLE_SCREEN_SHARE,
+                        CommandType.TO_THIS_USER
+                    )
+                )
+                document.getElementById('sreenshare').innerHTML='Disable Sreen share'
+                node.setAttribute("data-screenshare","false");
                 }
                 
               }}
-            text = "Enable Screen Share"
+            text = {text}
             />
     );
             }

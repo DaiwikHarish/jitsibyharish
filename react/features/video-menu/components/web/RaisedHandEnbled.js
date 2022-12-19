@@ -33,7 +33,16 @@ type Props = {
 const RaisedHandEnbled = ({ className, noIcon = false, onClick,participantIDbyjitsi, participantID }: Props) => {
 
   const dispatch = useDispatch();
+  let node = document.getElementById(participantIDbyjitsi);
+  let raisehand=true;
+if(node!=undefined)
+{
+  raisehand = node.getAttribute("data-raisehand");
+
+}
   
+let text="Enable Raised Hand"
+raisehand=="false"?text="Enable Raised Hand":text="Disable Raised Hand"
     return (
         <ContextMenuItem
           
@@ -41,20 +50,12 @@ const RaisedHandEnbled = ({ className, noIcon = false, onClick,participantIDbyji
             spanId="RaisedHandEnbled"
           
             onClick={() => {
-              console.log(participantID)
-                let text1 = participantID;
-                // if (confirm(text1) == true) {
-                //   text1 = "You pressed OK!";
-                // } else {
-                //   text1 = "You canceled!";
-                // }
+              
             
-                let node = document.getElementById('RaisedHandEnbled');
-
-                let htmlContent = node.textContent;
+              if(raisehand=="false")
+              {
                
-                if(htmlContent.indexOf("Enable")>=0)
-                {
+              
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -62,6 +63,8 @@ const RaisedHandEnbled = ({ className, noIcon = false, onClick,participantIDbyji
                         CommandType.TO_THIS_USER
                     )
                 )
+                node.setAttribute("data-raisehand","true");
+            
                     document.getElementById('RaisedHandEnbled').innerHTML='Disable Raised Hand'
                   
                 }else{
@@ -72,12 +75,13 @@ const RaisedHandEnbled = ({ className, noIcon = false, onClick,participantIDbyji
                         CommandType.TO_THIS_USER
                     )
                 )
+                node.setAttribute("data-raisehand","false");
                     document.getElementById('RaisedHandEnbled').innerHTML='Enable Raised Hand'
                    
                 }
                 
-              }}
-            text = "Enable Raised Hand"
+            }}
+            text = {text}
             />
     );
             }

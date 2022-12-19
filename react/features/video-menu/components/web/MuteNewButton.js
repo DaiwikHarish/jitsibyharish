@@ -34,28 +34,31 @@ const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi
 
   const dispatch = useDispatch();
   
-  let spanId="MuteNewButton"+participantID
+
+//alert(participantIDbyjitsi)
+
+  let node = document.getElementById(participantIDbyjitsi);
+  let mute=true;
+if(node!=undefined)
+{
+   mute = node.getAttribute("data-mute");
+
+}
+  
+let text="UnMute"
+mute=="false"?text="UnMute":text="Mute"
     return (
         <ContextMenuItem
           
             icon = { IconMicrophone }
-            spanId={spanId}
-          
+            spanId="MuteEnbled"
             onClick={() => {
-              console.log(spanId)
-                let text1 = participantID;
-                // if (confirm(text1) == true) {
-                //   text1 = "You pressed OK!";
-                // } else {
-                //   text1 = "You canceled!";
-                // }
-            
-                let node = document.getElementById('MuteNewButton'+participantID);
-
-                let htmlContent = node.textContent;
-               
-                if(htmlContent.indexOf("Un")>=0)
+             // alert(mute=="false")
+                if(mute=="false")
                 {
+                  node.setAttribute("data-mute","true");
+
+                
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -63,9 +66,11 @@ const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi
                         CommandType.TO_THIS_USER
                     )
                 )
-                    document.getElementById('MuteNewButton'+participantID).innerHTML='Mute'
-                  
+                document.getElementById('MuteEnbled').innerHTML='Mute'
+           
                 }else{
+                  node.setAttribute("data-mute","false");
+                  
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -73,12 +78,12 @@ const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi
                         CommandType.TO_THIS_USER
                     )
                 )
-                    document.getElementById('MuteNewButton'+participantID).innerHTML='UnMute'
-                   
+          
+                document.getElementById('MuteEnbled').innerHTML='UnMute'
                 }
                 
               }}
-            text = "UnMute"
+            text = {text}
             />
     );
             }
