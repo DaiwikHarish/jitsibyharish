@@ -54,7 +54,7 @@ raisehand=="false"?text="Enable Raised Hand":text="Disable Raised Hand"
             
               if(raisehand=="false")
               {
-               
+                text='Disable Raised Hand'
               
                   dispatch(
                     socketSendCommandMessage(
@@ -67,7 +67,9 @@ raisehand=="false"?text="Enable Raised Hand":text="Disable Raised Hand"
             
                     document.getElementById('RaisedHandEnbled').innerHTML='Disable Raised Hand'
                   
+                  
                 }else{
+                  text='Enable Raised Hand'
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -76,6 +78,7 @@ raisehand=="false"?text="Enable Raised Hand":text="Disable Raised Hand"
                     )
                 )
                 node.setAttribute("data-raisehand","false");
+               
                     document.getElementById('RaisedHandEnbled').innerHTML='Enable Raised Hand'
                    
                 }

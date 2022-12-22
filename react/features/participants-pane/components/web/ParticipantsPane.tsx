@@ -165,6 +165,22 @@ const ParticipantsPane = () => {
                 </div>
                 {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
                     <div className = { classes.footer }>
+
+<Button
+                                accessibilityLabel = "Mute All"
+                                labelKey = "Mute All"
+                                onClick = { onMuteAll }
+                                type = { BUTTON_TYPES.SECONDARY } />
+
+
+<Button
+                                accessibilityLabel = "Raise Hand"
+                                labelKey = "RaiseHand"
+                                onClick = { onMuteAll }
+                                type = { BUTTON_TYPES.SECONDARY } />
+
+
+
                         {/* {showMuteAllButton && (
                             <Button
                                 accessibilityLabel = { t('participantsPane.actions.muteAll') }

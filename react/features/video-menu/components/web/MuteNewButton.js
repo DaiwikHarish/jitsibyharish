@@ -67,7 +67,7 @@ mute=="false"?text="UnMute":text="Mute"
                     )
                 )
                 document.getElementById('MuteEnbled').innerHTML='Mute'
-           
+                text='Mute'
                 }else{
                   node.setAttribute("data-mute","false");
                   
@@ -80,6 +80,7 @@ mute=="false"?text="UnMute":text="Mute"
                 )
           
                 document.getElementById('MuteEnbled').innerHTML='UnMute'
+                text='UnMute'
                 }
                 
               }}
