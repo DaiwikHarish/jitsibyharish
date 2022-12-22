@@ -1524,7 +1524,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
         this._doToggleRaiseHand();
         }else{
-            alert("Disable by Admin")
+            //alert("Disable by Admin")
         }
     }
 
@@ -1546,7 +1546,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         this._closeOverflowMenuIfOpen();
         this._doToggleScreenshare();
         }else{
-        alert("Disable by Admin")
+        //alert("Disable by Admin")
         }
     }
 
