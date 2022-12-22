@@ -75,6 +75,12 @@ class MeetingParticipantContextMenu extends Component<Props> {
      * @inheritdoc
      * @returns {ReactElement}
      */
+
+     constructor(props: Props) {
+        super(props);
+        this.state = {
+       chatCounter:false,}
+        }
     render() {
         const {
             _localVideoOwner,
@@ -84,7 +90,8 @@ class MeetingParticipantContextMenu extends Component<Props> {
             offsetTarget,
             onEnter,
             onLeave,
-            onSelect
+            onSelect,
+            
         } = this.props;
 
         if (!_participant) {
@@ -99,16 +106,20 @@ class MeetingParticipantContextMenu extends Component<Props> {
             onLeave,
             onSelect,
             participant: _participant,
-            thumbnailMenu: false
+            thumbnailMenu: false,
+            ScreenMenu: false
         };
 
-        if (_participant?.fakeParticipant) {
-            return (
-                <FakeParticipantContextMenu
-                    { ...props }
-                    localVideoOwner = { _localVideoOwner } />
-            );
-        }
+        console.log(_participant)
+
+
+        // if (_participant?.fakeParticipant) {
+        //     return (
+        //         <FakeParticipantContextMenu
+        //             { ...props }
+        //             localVideoOwner = { _localVideoOwner } />
+        //     );
+        // }
 
         return <ParticipantContextMenu { ...props } />;
     }

@@ -19,3 +19,11 @@ export { REMOTE_CONTROL_MENU_STATES, default as RemoteControlButton } from './Re
 export { default as RemoteVideoMenuTriggerButton } from './RemoteVideoMenuTriggerButton';
 export { default as LocalVideoMenuTriggerButton } from './LocalVideoMenuTriggerButton';
 export { default as VolumeSlider } from './VolumeSlider';
+
+export { default as ShareButton } from './ShareButton';
+
+export { default as RaisedHandEnbled } from './RaisedHandEnbled';
+
+
+
+

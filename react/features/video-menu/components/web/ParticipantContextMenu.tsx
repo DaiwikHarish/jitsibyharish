@@ -1,5 +1,5 @@
 /* eslint-disable lines-around-comment */
-
+// @ts-ignore
 import { Theme } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +32,14 @@ import { showOverflowDrawer } from '../../../toolbox/functions.web';
 import { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
 // @ts-ignore
 import SendToRoomButton from './SendToRoomButton';
+// @ts-ignore
+import ShareButton from './ShareButton';
+// @ts-ignore
+import RaisedHandEnbled from './RaisedHandEnbled';
+// @ts-ignore
+import MuteNewButton from './MuteNewButton';
+
+
 
 import {
     AskToUnmuteButton,
@@ -179,26 +187,41 @@ const ParticipantContextMenu = ({
         && typeof _volume === 'number'
         && !isNaN(_volume);
 
-    if (_isModerator) {
-        if ((thumbnailMenu || _overflowDrawer) && isModerationSupported && _isAudioMuted) {
-            buttons.push(<AskToUnmuteButton
-                isAudioForceMuted = { _isAudioForceMuted }
-                isVideoForceMuted = { _isVideoForceMuted }
-                key = 'ask-unmute'
-                participantID = { _getCurrentParticipantId() } />
-            );
+    if ((PARTICIPANT_ROLE.MODERATOR=="moderator" && !showVolumeSlider) && !showVolumeSlider) {
+        if ( isModerationSupported) {
+            // buttons.push(<AskToUnmuteButton
+            //     isAudioForceMuted = { _isAudioForceMuted }
+            //     isVideoForceMuted = { _isVideoForceMuted }
+            //     key = 'ask-unmute'
+            //     participantID = { _getCurrentParticipantId() } />
+            // );
+         
+
+        if (!showVolumeSlider && disableRemoteMute) {
+        
+            buttons2.push(<MuteNewButton key="MuteNewButton"
+            participantIDbyjitsi = {participant!.id}
+            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim():null}/>);
+       
+       
         }
         if (!disableRemoteMute) {
-            buttons.push(
-                <MuteButton
-                    key = 'mute'
-                    participantID = { _getCurrentParticipantId() } />
-            );
-            buttons.push(
-                <MuteEveryoneElseButton
-                    key = 'mute-others'
-                    participantID = { _getCurrentParticipantId() } />
-            );
+
+            buttons2.push(<MuteNewButton key="MuteNewButton"
+            participantIDbyjitsi = {participant!.id}
+            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim():null}/>);
+       
+       
+            // buttons.push(
+            //     <MuteButton
+            //         key = 'mute'
+            //         participantID = { _getCurrentParticipantId() } />
+            // );
+            // buttons.push(
+            //     <MuteEveryoneElseButton
+            //         key = 'mute-others'
+            //         participantID = { _getCurrentParticipantId() } />
+            // );
             buttons.push(
                 <MuteVideoButton
                     key = 'mute-video'
@@ -211,13 +234,13 @@ const ParticipantContextMenu = ({
             );
         }
 
-        if (!disableGrantModerator && !isBreakoutRoom) {
-            buttons2.push(
-                <GrantModeratorButton
-                    key = 'grant-moderator'
-                    participantID = { _getCurrentParticipantId() } />
-            );
-        }
+        // if (!disableGrantModerator && !isBreakoutRoom) {
+        //     buttons2.push(
+        //         <GrantModeratorButton
+        //             key = 'grant-moderator'
+        //             participantID = { _getCurrentParticipantId() } />
+        //     );
+        // }
 
         if (!disableKick) {
             buttons2.push(
@@ -226,6 +249,21 @@ const ParticipantContextMenu = ({
                     participantID = { _getCurrentParticipantId() } />
             );
         }
+        if (!showVolumeSlider) {
+        
+            buttons2.push(<ShareButton key="sharescrn"
+            participantIDbyjitsi = {participant!.id}
+            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
+        }
+        if (!showVolumeSlider) {
+        
+            buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
+            participantIDbyjitsi = {participant.id}
+            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
+        }
+        
+    }
+
     }
 
     if (stageFilmstrip) {

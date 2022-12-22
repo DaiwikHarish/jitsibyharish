@@ -165,14 +165,14 @@ const ParticipantsPane = () => {
                 </div>
                 {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
                     <div className = { classes.footer }>
-                        {showMuteAllButton && (
+                        {/* {showMuteAllButton && (
                             <Button
                                 accessibilityLabel = { t('participantsPane.actions.muteAll') }
                                 labelKey = { 'participantsPane.actions.muteAll' }
                                 onClick = { onMuteAll }
                                 type = { BUTTON_TYPES.SECONDARY } />
-                        )}
-                        {showMoreActionsButton && (
+                        )} */}
+                        {/* {showMoreActionsButton && (
                             <div className = { classes.footerMoreContainer }>
                                 <Button
                                     accessibilityLabel = { t('participantsPane.actions.moreModerationActions') }
@@ -185,7 +185,7 @@ const ParticipantsPane = () => {
                                     onDrawerClose = { onDrawerClose }
                                     onMouseLeave = { onToggleContext } />
                             </div>
-                        )}
+                        )} */}
                     </div>
                 )}
             </div>

@@ -417,6 +417,7 @@
         "shareVideoLinkError": "Please provide a correct video link.",
         "shareVideoTitle": "Share video",
         "shareYourScreen": "Share your screen",
+
         "shareYourScreenDisabled": "Screen sharing disabled.",
         "sharedVideoDialogError": "Error: Invalid URL",
         "sharedVideoLinkPlaceholder": "YouTube link or direct video link",
@@ -1112,6 +1113,8 @@
             "help": "Help",
             "invite": "Invite people",
             "kick": "Kick participant",
+            "EnableScreenShare": "Enable Screen Share",
+            "DisableScreenShare": "Disable Screen Share",
             "laugh": "Laugh",
             "leaveConference": "Leave meeting",
             "like": "Thumbs Up",

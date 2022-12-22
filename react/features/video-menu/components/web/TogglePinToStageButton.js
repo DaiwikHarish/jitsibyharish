@@ -33,10 +33,16 @@ type Props = {
 }
 
 const TogglePinToStageButton = ({ className, noIcon = false, onClick, participantID }: Props) => {
+
+    
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+
     const isActive = Boolean(useSelector(getPinnedActiveParticipants)
         .find(p => p.participantId === participantID));
+
+
     const _onClick = useCallback(() => {
         dispatch(togglePinStageParticipant(participantID));
         onClick && onClick();

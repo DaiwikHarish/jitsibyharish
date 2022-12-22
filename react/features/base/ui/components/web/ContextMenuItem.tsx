@@ -69,6 +69,8 @@ export interface IProps {
      * Class name for the text.
      */
     textClassName?: string;
+
+    spanId?: string;
 }
 
 const useStyles = makeStyles()((theme: Theme) => {
@@ -126,6 +128,7 @@ const ContextMenuItem = ({
     disabled,
     id,
     icon,
+    spanId,
     onClick,
     onKeyDown,
     onKeyPress,
@@ -155,7 +158,7 @@ const ContextMenuItem = ({
                     className = { styles.contextMenuItemIcon }
                     size = { 20 }
                     src = { icon } />}
-            <span className = { cx(textClassName) }>{text}</span>
+            <span id={spanId} className = { cx(textClassName) }>{text}</span>
         </div>
     );
 };

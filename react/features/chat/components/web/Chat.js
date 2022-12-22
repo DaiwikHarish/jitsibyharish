@@ -13,6 +13,7 @@ import AbstractChat, {
     type Props,
     _mapStateToProps
 } from '../AbstractChat';
+import Input from '../../../base/ui/components/web/Input';
 import Button from '../../../base/ui/components/web/Button';
 import { IconPlane, IconSmile } from '../../../base/icons/svg';
 import ChatHeader from './ChatHeader';
@@ -24,7 +25,7 @@ import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 
 import MessageContainerQA from '../../../qa_next/qa';
-import Poll from '../../../poll-presenter/poll';
+
 //import MessageContainerQA from '../../../qa/components/web/MessageContainer';
 import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
 import { al } from 'react-emoji-render/data/aliases';
@@ -55,6 +56,7 @@ class Chat extends AbstractChat<Props> {
        chatOpened:false,
        qaOpened:false,
        pollOpened:false,
+       messageInput:"",
             allMes:[],
 QAtab:false
         }
@@ -301,7 +303,81 @@ let usertype='local'
             this._onTogglePollsTab();
         }
     }
+    _onMessageChange=(value)=> {
 
+        this.setState({ messageInput: value });
+
+    }
+    _setMessage()
+    {
+            
+        const queryString = window.location.search;
+      
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const meetingId = urlParams.get('meetingId')
+        const userId = urlParams.get('userId')
+
+     let chatMessage =this.state.messageInput;
+     const trimmed = chatMessage;
+     const reqBody = {
+        "meetingId": meetingId,
+        "fromUserId": userId,
+        "toUserId": userId,
+        "message": trimmed
+    };
+     let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
+     if (url) {
+
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqBody)
+        };
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .then(data =>
+                
+                
+             
+            {
+            
+           
+               this.setState({chatMessage:""})
+
+                this.getMessage()
+            
+            
+            }
+                );
+
+    
+    }
+    }
+    _onDetectSubmit(event) {
+        // Composition events used to add accents to characters
+        // despite their absence from standard US keyboards,
+        // to build up logograms of many Asian languages
+        // from their base components or categories and so on.
+        if (event.isComposing || event.keyCode === 229) {
+            // keyCode 229 means that user pressed some button,
+            // but input method is still processing that.
+            // This is a standard behavior for some input methods
+            // like entering japanese or сhinese hieroglyphs.
+            return;
+        }
+
+        if (event.key === 'Enter'
+            && event.shiftKey === false
+            && event.ctrlKey === false) {
+                this.setState({messageInput:""})
+this._setMessage()
+event.preventDefault();
+event.stopPropagation();
+        }
+    }
     /**
      * Returns a React Element for showing chat messages and a form to send new
      * chat messages.
@@ -323,6 +399,7 @@ let usertype='local'
                         <PollsPane />
 
 {/* <Poll/> */}
+
                     </div>
                     <KeyboardAvoider />
                 </>
@@ -347,8 +424,11 @@ let usertype='local'
         }else{
 
 
-        
-      
+            const pollidsdiv = document.getElementById("mainchatcounter")  
+            if(pollidsdiv!=null)
+            {
+            pollidsdiv.innerHTML= "";
+            }
 
         return (
             <>
@@ -362,56 +442,36 @@ let usertype='local'
                         messages = { this.state.allMes} />
                     <MessageRecipient />
                     <div className = 'chat-input-container'>
-                    <ChatInput onSend={this._onSendMessage}/>
+                    {/* <ChatInput onSend={this._onSendMessage}/> */}
+
+                    <Input
+                        autoFocus = { true }
+                        className = 'chat-input'
+                        id="chatMessage"
+                        icon = { this.props._areSmileysDisabled ? undefined : IconSmile }
+                        iconClick = { this._toggleSmileysPanel }
+                        maxRows = { 5 }
+                        onChange ={(e) => { this._onMessageChange(e) }}
+                        onKeyPress={(e) => {this._onDetectSubmit(e) }}
+                        placeholder = { this.props.t('chat.messagebox') }
+                        ref = { this._textArea }
+                        textarea = { true }
+                        value = { this.state.messageInput } />
+
 
 <Button
                       
                       
                         icon = { IconPlane }
                         onClick={() =>  {
+this.setState({messageInput:""})
 
-
-                            
-                            const queryString = window.location.search;
-      
-
-                            const urlParams = new URLSearchParams(queryString);
+                        this._setMessage()
                     
-                            const meetingId = urlParams.get('meetingId')
-                            const userId = urlParams.get('userId')
-
-                         let chatMessage =document.querySelectorAll('#chatMessage')[0].value;
-                         const trimmed = chatMessage.trim();
-                         const reqBody = {
-                            "meetingId": meetingId,
-                            "fromUserId": userId,
-                            "toUserId": userId,
-                            "message": trimmed
-                        };
-                         let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
-                         if (url) {
-
-
-                            const requestOptions = {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(reqBody)
-                            };
-                            fetch(url, requestOptions)
-                                .then(response => response.json())
-                                .then(data =>
-                                    
-                                    
-                                 
-                                {
-                                
-                                    document.querySelectorAll('#chatMessage')[0].value="";
-
-                                    this.getMessage()}
-                                    );
-
-                        
-                        }}}
+                    }
+                    
+                    
+                    }
                         size = { isMobileBrowser() ? 'large' : 'medium' } />
                 </div>  </div>
             </>
@@ -471,7 +531,7 @@ let usertype='local'
     * @returns {Function}
     */
     _onToggleChat() {
-        document.getElementById("mainchatcounter").innerHTML ="" 
+    
         this.props.dispatch(toggleChat());
        
     }

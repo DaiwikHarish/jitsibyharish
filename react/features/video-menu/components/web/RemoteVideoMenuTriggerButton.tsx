@@ -253,11 +253,11 @@ class RemoteVideoMenuTriggerButton extends Component<IProps> {
             );
         }
 
-        return (
-            <ParticipantContextMenu
-                { ...props }
-                remoteControlState = { _remoteControlState } />
-        );
+        // return (
+        //     <ParticipantContextMenu
+        //         { ...props }
+        //         remoteControlState = { _remoteControlState } />
+        // );
     }
 }
 
