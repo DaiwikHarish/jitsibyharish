@@ -454,13 +454,13 @@ this.state={
     componentDidMount() {
   
             
-//         const queryString = window.location.search;
+        const queryString = window.location.search;
       
 
-//         const urlParams = new URLSearchParams(queryString);
+        const urlParams = new URLSearchParams(queryString);
     
-//         const meetingId = urlParams.get('meetingId')
-//         const userId = urlParams.get('userId')
+        const meetingId = urlParams.get('meetingId')
+        const userId = urlParams.get('userId')
     
        
 //         let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+userId;
@@ -501,30 +501,30 @@ this.state={
                 
 
 
-//                 let urlRaiseHand = 'https://dev.awesomereviewstream.com/svr/api/meeting?meetingId='+meetingId;
+                let urlRaiseHand = 'https://dev.awesomereviewstream.com/svr/api/meeting?meetingId='+meetingId;
         
-//                 fetch(
-//                     urlRaiseHand
-//                 )
-//                     .then((response) => response.json())
-//                     .then((dataRaiseHand) => {
+                fetch(
+                    urlRaiseHand
+                )
+                    .then((response) => response.json())
+                    .then((dataRaiseHand) => {
 
-//                         if(data[0].isHandRaise==false)
-//                         {
-//         this.setState({enableRaiseHand:false})
-//                         }
+                        if(dataRaiseHand[0].isHandRaise==false)
+                        {
+        this.setState({enableRaiseHand:false})
+                        }
         
                         
-//                         if(data[0].isHandRaise==true)
-//                         {
-//         this.setState({enableRaiseHand:true})
-//                         }
+                        if(dataRaiseHand[0].isHandRaise==true)
+                        {
+        this.setState({enableRaiseHand:true})
+                        }
                         
 
-//                     })
+                    })
 
 
-//                 })
+               // })
 
 
         const { _toolbarButtons, t, dispatch, _reactionsEnabled, _gifsEnabled, _isSpeakerStatsDisabled } = this.props;
@@ -677,7 +677,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND"
 if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 
 {
-    this.setState({enableMike:true})
+    this.setState({enableMike:false})
 
 
     
@@ -686,8 +686,9 @@ if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
 {
-    this.setState({enableMike:false})
+    this.setState({enableMike:true})
 }
+
 
 
 
@@ -1524,7 +1525,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
         this._doToggleRaiseHand();
         }else{
-            alert("Disable by Admin")
+            //alert("Disable by Admin")
         }
     }
 
@@ -1546,7 +1547,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         this._closeOverflowMenuIfOpen();
         this._doToggleScreenshare();
         }else{
-        alert("Disable by Admin")
+        //alert("Disable by Admin")
         }
     }
 

@@ -56,21 +56,9 @@ mute=="false"?text="UnMute":text="Mute"
              // alert(mute=="false")
                 if(mute=="false")
                 {
-                  node.setAttribute("data-mute","true");
+                
 
                 
-                  dispatch(
-                    socketSendCommandMessage(
-                      participantID.trim(),
-                        PermissionType.MUTE_MIC,
-                        CommandType.TO_THIS_USER
-                    )
-                )
-                document.getElementById('MuteEnbled').innerHTML='Mute'
-           
-                }else{
-                  node.setAttribute("data-mute","false");
-                  
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -78,8 +66,24 @@ mute=="false"?text="UnMute":text="Mute"
                         CommandType.TO_THIS_USER
                     )
                 )
+                node.setAttribute("data-mute","true");
+                document.getElementById('MuteEnbled').innerHTML='Mute'
+                text='Mute'
+                mute='true'
+                }else{
+                  node.setAttribute("data-mute","false");
+                  
+                  dispatch(
+                    socketSendCommandMessage(
+                      participantID.trim(),
+                        PermissionType.MUTE_MIC,
+                        CommandType.TO_THIS_USER
+                    )
+                )
           
                 document.getElementById('MuteEnbled').innerHTML='UnMute'
+                text='UnMute'
+                mute='false'
                 }
                 
               }}

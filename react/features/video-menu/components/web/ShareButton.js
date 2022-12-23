@@ -66,16 +66,7 @@ sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
                
                 if(sreenshare=="false")
                 {
-                  dispatch(
-                    socketSendCommandMessage(
-                      participantID.trim(),
-                        PermissionType.DISABLE_SCREEN_SHARE,
-                        CommandType.TO_THIS_USER
-                    )
-                )
-                node.setAttribute("data-screenshare","true");
-                document.getElementById('sreenshare').innerHTML='Enable Sreen share'
-                }else{
+                  
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
@@ -83,8 +74,24 @@ sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
                         CommandType.TO_THIS_USER
                     )
                 )
+                node.setAttribute("data-screenshare","true");
                 document.getElementById('sreenshare').innerHTML='Disable Sreen share'
+                text="Disable Sreen share"
+                sreenshare="true"
+                }else{
+               
+                  dispatch(
+                    socketSendCommandMessage(
+                      participantID.trim(),
+                        PermissionType.DISABLE_SCREEN_SHARE,
+                        CommandType.TO_THIS_USER
+                    )
+                )
+                
+                document.getElementById('sreenshare').innerHTML='Enable Sreen share'
+                text="Enable Sreen share"
                 node.setAttribute("data-screenshare","false");
+                sreenshare="false"
                 }
                 
               }}
