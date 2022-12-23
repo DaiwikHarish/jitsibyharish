@@ -463,27 +463,27 @@ this.state={
         const userId = urlParams.get('userId')
     
        
-//         let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+userId;
+        let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+userId;
         
-//         fetch(
-//             url
-//         )
-//             .then((response) => response.json())
-//             .then((data) => {
+        fetch(
+            url
+        )
+            .then((response) => response.json())
+            .then((data) => {
 
                
 
-//                 if(data[0].isScreenShare==false)
-//                 {
-// this.setState({enableDesktop:false})
-//                 }
+                if(data[0].isScreenShare==false)
+                {
+this.setState({enableDesktop:false})
+                }
 
 
-//                 if(data[0].isScreenShare==true)
-//                 {
-// this.setState({enableDesktop:true})
-//                 }
-
+                if(data[0].isScreenShare==true)
+                {
+this.setState({enableDesktop:true})
+                }
+//Mute will take care internally
 
 // if(data[0].isMute==false)
 //                 {
@@ -524,7 +524,7 @@ this.state={
                     })
 
 
-               // })
+                })
 
 
         const { _toolbarButtons, t, dispatch, _reactionsEnabled, _gifsEnabled, _isSpeakerStatsDisabled } = this.props;

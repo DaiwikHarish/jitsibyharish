@@ -39,7 +39,7 @@ const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi
 
   let node = document.getElementById(participantIDbyjitsi);
   let mute=true;
-if(node!=undefined)
+if(node!=undefined && node!=null)
 {
    mute = node.getAttribute("data-mute");
 
@@ -66,13 +66,19 @@ mute=="false"?text="UnMute":text="Mute"
                         CommandType.TO_THIS_USER
                     )
                 )
+                if(node!=undefined && node!=null)
+{
                 node.setAttribute("data-mute","true");
+}
+
                 document.getElementById('MuteEnbled').innerHTML='Mute'
                 text='Mute'
                 mute='true'
                 }else{
+                  if(node!=undefined && node!=null)
+{
                   node.setAttribute("data-mute","false");
-                  
+}
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),

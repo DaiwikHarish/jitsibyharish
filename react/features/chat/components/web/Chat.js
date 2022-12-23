@@ -79,7 +79,7 @@ QAtab:false
     render() {
         const { _isOpen, _isPollsEnabled, _showNamePrompt } = this.props;
        
-         
+     
         return (
             _isOpen ? <div
                 className = 'sideToolbarContainer'
@@ -100,7 +100,7 @@ QAtab:false
        this.getMessage();
 
 this.setState({chatCounter:0,chatOpened:true})
-
+  
 
     }
 
@@ -152,7 +152,9 @@ this.setState({chatCounter:0,chatOpened:true})
 
         if( this.props._socketChatMessage!="" && this.props._socketChatMessage!=null && this.props._socketChatMessage!=undefined)
         { 
+            
 
+           
          let hasNewMessagesChat = this.props._socketChatMessage !== prevProps._socketChatMessage;
 
          if (hasNewMessagesChat) {
@@ -198,7 +200,12 @@ let usertype="local";
      
    
         this.setState({allMes:allMes})
+        const chattab = document.getElementById("chat-tab")
 
+        if(chattab!=null)
+        {
+            chattab.style.display = "block";
+        }
    }
    
 }
@@ -224,7 +231,22 @@ let usertype="local";
     )
         .then((response) => response.json())
         .then((data) => {
-           
+          
+if(data.length>=1)
+{
+  
+        
+    
+        //     if(chattab!=null)
+        //     {
+        //         chattab.style.display = "block";
+        //     }
+        //      this.props.dispatch(isPollsEnabled(false));
+        //    // Object.assign(_isPollsEnabled,false)
+        //    // alert(_isPollsEnabled)
+        
+          
+
            var allMes = data.map((mesAPI: { fromUserName: any; toUserName: any; id: any; message: any; updatedAt: string | number | Date; }) =>  
     {
 let usertype='local'
@@ -247,9 +269,9 @@ let usertype='local'
     })
 
     this.setState({allMes:allMes})
-
+}
         })
-
+    
         if (isMobileBrowser()) {
             // Ensure textarea is not focused when opening chat on mobile browser.
             this._textArea?.current && this._textArea.current.blur();
@@ -387,7 +409,9 @@ event.stopPropagation();
      */
     _renderChat() {
         const { _isPollsEnabled, _isPollsTabFocused} = this.props;
-
+        const chattab = document.getElementById("chat-tab")
+    
+        
         if (_isPollsTabFocused) {
             return (
                 <>

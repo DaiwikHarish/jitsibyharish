@@ -17,7 +17,9 @@
         width: auto;
     }
 }
-
+#chat-tab{
+    display: none;
+}
 .chat-panel {
     display: flex;
     flex-direction: column;
