@@ -70,19 +70,20 @@ sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
-                        PermissionType.DISABLE_SCREEN_SHARE,
+                        PermissionType.ENABLE_SCREEN_SHARE,
                         CommandType.TO_THIS_USER
                     )
                 )
                 node.setAttribute("data-screenshare","true");
                 document.getElementById('sreenshare').innerHTML='Disable Sreen share'
                 text="Disable Sreen share"
+                sreenshare="true"
                 }else{
                
                   dispatch(
                     socketSendCommandMessage(
                       participantID.trim(),
-                        PermissionType.ENABLE_SCREEN_SHARE,
+                        PermissionType.DISABLE_SCREEN_SHARE,
                         CommandType.TO_THIS_USER
                     )
                 )
@@ -90,6 +91,7 @@ sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
                 document.getElementById('sreenshare').innerHTML='Enable Sreen share'
                 text="Enable Sreen share"
                 node.setAttribute("data-screenshare","false");
+                sreenshare="false"
                 }
                 
               }}

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
-
+import { socketSendCommandMessage } from "../../../base/cs-socket/actions";
 import { IReduxState } from '../../../app/types';
 import UserType  from '../../../base/app/types'
 import participantsPaneTheme from '../../../base/components/themes/participantsPaneTheme.json';
@@ -27,7 +27,7 @@ import {
 import { AddBreakoutRoomButton } from '../breakout-rooms/components/web/AddBreakoutRoomButton';
 // @ts-ignore
 import { RoomList } from '../breakout-rooms/components/web/RoomList';
-
+import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs-socket/types";
 import { FooterContextMenu } from './FooterContextMenu';
 import LobbyParticipants from './LobbyParticipants';
 import MeetingParticipants from './MeetingParticipants';
@@ -110,7 +110,7 @@ const ParticipantsPane = () => {
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
-
+    const [ raiseHandEvent, setRaiseHandEvent ] = useState(true);
     const onWindowClickListener = useCallback((e: any) => {
         if (contextOpen && !findAncestorByClass(e.target, classes.footerMoreContainer)) {
             setContextOpen(false);
@@ -136,7 +136,45 @@ const ParticipantsPane = () => {
     const onMuteAll = useCallback(() => {
         dispatch(openDialog(MuteEveryoneDialog));
     }, []);
+    const RaiseHand = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.DISABLE_RAISE_HAND,
+                CommandType.TO_ALL_USER
+            )
+        )
+       
+        setRaiseHandEvent(false)
 
+    }, []);
+    const EnableRaiseHand = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.ENABLE_RAISE_HAND,
+                CommandType.TO_ALL_USER
+            )
+        )
+        setRaiseHandEvent(true)
+
+    }, []);
+
+
+    
+     const MuteAll = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.MUTE_MIC,
+                CommandType.TO_ALL_USER
+            )
+        )
+        
+    }, []);
     const onToggleContext = useCallback(() => {
         setContextOpen(open => !open);
     }, []);
@@ -169,15 +207,20 @@ const ParticipantsPane = () => {
 <Button
                                 accessibilityLabel = "Mute All"
                                 labelKey = "Mute All"
-                                onClick = { onMuteAll }
+                                onClick = { MuteAll }
                                 type = { BUTTON_TYPES.SECONDARY } />
 
-
+{raiseHandEvent?
 <Button
-                                accessibilityLabel = "Raise Hand"
-                                labelKey = "RaiseHand"
-                                onClick = { onMuteAll }
+                                accessibilityLabel = "Disable Raise Hand"
+                                labelKey = "Disable RaiseHand"
+                                onClick = { RaiseHand }
                                 type = { BUTTON_TYPES.SECONDARY } />
+                                :<Button
+                                accessibilityLabel = "Enable Raise Hand"
+                                labelKey = "Enable RaiseHand"
+                                onClick = { EnableRaiseHand }
+                                type = { BUTTON_TYPES.SECONDARY } />}
 
 
 

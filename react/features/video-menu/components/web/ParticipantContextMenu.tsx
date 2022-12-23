@@ -5,6 +5,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
+import UserType  from '../../../base/app/types'
 
 import { IReduxState } from '../../../app/types';
 import { isSupported as isAvModerationSupported } from '../../../av-moderation/functions';
@@ -164,7 +165,7 @@ const ParticipantContextMenu = ({
 
     const _currentRoomId = useSelector(getCurrentRoomId);
     const _rooms: Array<{ id: string; }> = Object.values(useSelector(getBreakoutRooms));
-
+    const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
     const _onVolumeChange = useCallback(value => {
         dispatch(setVolume(participant.id, value));
     }, [ setVolume, dispatch ]);
@@ -187,7 +188,7 @@ const ParticipantContextMenu = ({
         && typeof _volume === 'number'
         && !isNaN(_volume);
 
-    if ((PARTICIPANT_ROLE.MODERATOR=="moderator" && !showVolumeSlider) && !showVolumeSlider) {
+    if ((PARTICIPANT_ROLE.MODERATOR=="moderator" && _attendeeInfo?.userType === UserType.Admin && !showVolumeSlider) && !showVolumeSlider) {
         if ( isModerationSupported) {
             // buttons.push(<AskToUnmuteButton
             //     isAudioForceMuted = { _isAudioForceMuted }
@@ -251,16 +252,16 @@ const ParticipantContextMenu = ({
         }
         if (!showVolumeSlider) {
         
-            buttons2.push(<ShareButton key="sharescrn"
+            buttons2.push(<ShareButton key="sharescrns"
             participantIDbyjitsi = {participant!.id}
             participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
         }
-        if (!showVolumeSlider) {
+        // if (!showVolumeSlider) {
         
-            buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
-            participantIDbyjitsi = {participant.id}
-            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
-        }
+        //     buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
+        //     participantIDbyjitsi = {participant.id}
+        //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
+        // }
         
     }
 
