@@ -811,6 +811,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
      */
     _doToggleChat() {
         this.props.dispatch(toggleChat());
+
+      
     }
 
     /**

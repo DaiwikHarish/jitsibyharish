@@ -9,10 +9,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PollCreate from './PollCreate';
 // @ts-ignore
 import PollsList from './PollsList';
-import { useSelector } from 'react-redux';
 
+import {clearPolls, receivePoll } from '../../actions';
 import { IReduxState } from '../../../app/types';
-
+import { useDispatch, useSelector } from 'react-redux';
 const PollsPane = (props: AbstractProps) => {
    // const polls = useSelector(state => state['features/polls'].polls);
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);
@@ -22,15 +22,16 @@ const PollsPane = (props: AbstractProps) => {
     const [loadApi, setLoadApi] = useState(0);
     const [allPollsdata, setallPolls] = useState([]);
     const [groupname, setGroupname] = useState("");
-
+    const dispatch = useDispatch();
     useEffect(() => {
+        dispatch(clearPolls());
         const queryString = window.location.search;
       
 
         const urlParams = new URLSearchParams(queryString);
     
         const meetingId = urlParams.get('meetingId')
-
+        const userId = urlParams.get('userId')
         let url = 'https://dev.awesomereviewstream.com/svr/api/poll-group/latest?meetingId='+meetingId;
         
         fetch(
@@ -41,12 +42,17 @@ const PollsPane = (props: AbstractProps) => {
 
 
                 setGroupname(data.data[0].groupName)
-
+             
                 
                let pollNo=0;
                
                let allPolls = data.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
         {
+
+         
+
+            
+            
             pollNo=pollNo++;
     
             let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
@@ -62,9 +68,10 @@ const PollsPane = (props: AbstractProps) => {
                  
                    let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
                     {
-                       return option.isSelected;
+                      // return option.isSelected;
+                      return false;
                     })
-                   
+                  //  "lastVote": lastVote,
     
         return(
         {
@@ -72,7 +79,8 @@ const PollsPane = (props: AbstractProps) => {
                 "changingVote": pollAPI.isAnswerTypeSingle,
                 "senderId": pollAPI.id,
                 "showResults": data.status=='Ended'?true:false,
-                "lastVote": lastVote,
+                "seleted":false,
+               "lastVote":lastVote,
                 "question": pollAPI.question,
                 "answers": ans,
             "quetionId":pollAPI.id,
@@ -84,14 +92,81 @@ const PollsPane = (props: AbstractProps) => {
         
         
         )
-   })
 
-setallPolls(allPolls)
-Object.assign(polls, allPolls)
+    
+
+   })
+   
+   let selectedUrl = 'https://dev.awesomereviewstream.com/svr/api/poll?userId='+userId;
+        
+                fetch(
+                    selectedUrl
+                )
+                    .then((response) => response.json())
+                    .then((selected) => {
+                       
+                    let allPollsSel=allPolls.map((allPolls: {lastVote:any, changingVote:any; senderId:any; showResults: any; answers: any; groupname: any;quetionId: any; question: any;id: any; }) =>  
+                           {     let check=false;
+                        selected.data.map((sel:{id:any})=>{
+                       
+                            if(allPolls.quetionId==sel.id)
+                            {
+                                check=true;
+                            }
+                        })
+
+
+                        if(check)
+                        {
+                            return(
+                                {
+                                    
+                                        "changingVote": allPolls.changingVote,
+                                        "senderId": allPolls.senderId,
+                                        "showResults": allPolls.showResults,
+                                        "seleted":true,
+                                        "lastVote":allPolls.lastVote,
+                                        "question": allPolls.question,
+                                        "answers": allPolls.answers,
+                                    "quetionId":allPolls.quetionId,
+                                    'groupname':allPolls.groupname,
+                                    
+                                })
+                        }else{
+
+                            return(
+                                {
+                                    
+                                    "changingVote": allPolls.changingVote,
+                                    "senderId": allPolls.senderId,
+                                    "showResults": allPolls.showResults,
+                                    "seleted":false,
+                                    "lastVote":allPolls.lastVote,
+                                    "question": allPolls.question,
+                                    "answers": allPolls.answers,
+                                "quetionId":allPolls.quetionId,
+                                'groupname':allPolls.groupname,
+                                })
+                        }
+
+                    })
+
+
+setallPolls(allPollsSel)
+Object.assign(polls, allPollsSel)
+console.log(allPollsSel)
 setLoadApi(1)
-         
-  
-  })
+
+
+// allPollsSel.map((allPolls)=>{
+
+// dispatch(receivePoll(allPolls.id, allPolls, false));
+
+
+// })
+
+
+  })  })
   },[])
 
   useEffect(() => {

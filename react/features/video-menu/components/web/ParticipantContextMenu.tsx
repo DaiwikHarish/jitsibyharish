@@ -35,7 +35,7 @@ import { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
 import SendToRoomButton from './SendToRoomButton';
 // @ts-ignore
 import ShareButton from './ShareButton';
-
+// @ts-ignore
 import MuteNewButton from './MuteNewButton';
 
 
