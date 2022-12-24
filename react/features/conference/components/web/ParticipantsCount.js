@@ -89,14 +89,17 @@ class ParticipantsCount extends PureComponent<Props> {
         }
 
         return (
-            _attendeeInfo.userType === UserType.Admin
-                             &&
-            <Label
-                color = { COLORS.white }
-                icon = { IconUserGroups }
-                iconColor = '#fff'
-                onClick = { !this.props._isSpeakerStatsDisabled && this._onClick }
-                text = { count } />
+            _attendeeInfo.userType !== UserType.Viewer && (
+                <Label
+                    color={COLORS.white}
+                    icon={IconUserGroups}
+                    iconColor="#fff"
+                    onClick={
+                        !this.props._isSpeakerStatsDisabled && this._onClick
+                    }
+                    text={count}
+                />
+            )
         );
     }
 }

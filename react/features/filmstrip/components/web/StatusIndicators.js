@@ -81,7 +81,7 @@ class StatusIndicators extends Component<Props> {
         return (
             <>
                 { _showAudioMutedIndicator && <AudioMutedIndicator tooltipPosition = { tooltipPosition } /> }
-                { _showModeratorIndicator && _attendeeInfo.userType === UserType.Admin && <ModeratorIndicator tooltipPosition = { tooltipPosition } />}
+                { _showModeratorIndicator && _attendeeInfo.userType !== UserType.Viewer && <ModeratorIndicator tooltipPosition = { tooltipPosition } />}
                 { _showScreenShareIndicator && <ScreenShareIndicator tooltipPosition = { tooltipPosition } /> }
             </>
         );

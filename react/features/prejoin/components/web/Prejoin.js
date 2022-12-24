@@ -50,6 +50,8 @@ function storeAttendeeInfo(attendee:IAttendeeInfo){
 
 type Props = {
 
+    _userId:String,
+
     /**
      * Type of url params.
      */
@@ -265,7 +267,6 @@ class Prejoin extends Component<Props, State> {
      * @returns {void}
      */
     _setName(displayName) {
-        console.log("alam _setName",displayName)
         this.props.updateSettings({
             displayName
         });
@@ -389,7 +390,13 @@ class Prejoin extends Component<Props, State> {
             .then((data) => {
                 const attendee: IAttendeeInfo = data[0];
                 this.props.storeAttendeeInfo(attendee)
-                this._setName(attendee.userName +'|'+ attendee.userType)
+                this._setName(
+                    attendee.userName +
+                        '|' +
+                        attendee.userType +
+                        '|' +
+                        attendee.id
+                );
                 this.setState({loading:false});
             })
             .catch((err) => {
@@ -472,7 +479,7 @@ class Prejoin extends Component<Props, State> {
 
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
-            const [userName, userType] = name.split('|');
+            const [userName, userType,userId] = name.split('|');
         const extraJoinButtons = this._getExtraJoinButtons();
         let extraButtonsToRender = Object.values(extraJoinButtons).filter((val: Object) =>
             !(prejoinConfig?.hideExtraJoinButtons || []).includes(val.key)
@@ -483,7 +490,6 @@ class Prejoin extends Component<Props, State> {
         }
         const hasExtraJoinButtons = Boolean(extraButtonsToRender.length);
         const { showJoinByPhoneButtons, showError } = this.state;
-
 
         return (
             <PreMeetingScreen
@@ -590,6 +596,7 @@ function mapStateToProps(state): Object {
         _attendeeInfo: state["features/base/app"].attendeeInfo,
         _urlInfo: state["features/base/app"].urlInfo,
         _clientType: state["features/base/app"].clientType,
+        _userId:state['features/base/settings'].userId
     };
 }
 

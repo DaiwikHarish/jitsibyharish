@@ -49,7 +49,7 @@ class MuteButton extends AbstractMuteButton {
         }
 
         return (
-            _attendeeInfo.userType === UserType.Admin &&
+            _attendeeInfo.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('dialog.muteParticipantButton') }
                 className = 'mutelink'

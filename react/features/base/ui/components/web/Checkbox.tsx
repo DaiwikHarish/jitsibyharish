@@ -171,13 +171,13 @@ type!=undefined ||type!=null ||type!=""?type="checkbox":type;
         <div className = { cx(styles.formControl, isMobile && 'is-mobile', className) }>
             <label className = { cx(styles.activeArea, isMobile && 'is-mobile') }>
                 <input
-                    checked = { checked }
+                    defaultChecked = { checked }
                     disabled = { disabled }
                     name = { name }
                     id={id}
                     
                     onChange = { onChange }
-                    type = {type} />
+                    type = {type ? type : 'checkbox'} />
                 <Icon
                     className = 'checkmark'
                     color = { disabled ? theme.palette.icon03 : theme.palette.icon01 }

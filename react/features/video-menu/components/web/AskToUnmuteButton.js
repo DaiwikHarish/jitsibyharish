@@ -42,7 +42,7 @@ const AskToUnmuteButton = ({ isAudioForceMuted, isVideoForceMuted, participantID
         : t('participantsPane.actions.allowVideo');
 
     return (
-        _attendeeInfo.userType === UserType.Admin &&
+        _attendeeInfo.userType !== UserType.Viewer &&
         <ContextMenuItem
             accessibilityLabel = { text }
             icon = { IconMicrophoneEmpty }

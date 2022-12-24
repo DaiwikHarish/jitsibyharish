@@ -245,7 +245,8 @@ class Conference extends AbstractConference<Props, *> {
                         id="videospace"
                         onTouchStart={this._onVidespaceTouchStart}
                     >
-                        <LargeVideo />
+                        {_clientType == OptionType.ENABLE_CHAT_POLL  ||( <LargeVideo />)}
+                        
                         {_showPrejoin || _showLobby || (
 
                             <>
