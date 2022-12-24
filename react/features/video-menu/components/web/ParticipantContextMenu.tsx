@@ -36,8 +36,6 @@ import SendToRoomButton from './SendToRoomButton';
 // @ts-ignore
 import ShareButton from './ShareButton';
 // @ts-ignore
-import RaisedHandEnbled from './RaisedHandEnbled';
-// @ts-ignore
 import MuteNewButton from './MuteNewButton';
 
 
@@ -188,7 +186,7 @@ const ParticipantContextMenu = ({
         && typeof _volume === 'number'
         && !isNaN(_volume);
 
-    if ((PARTICIPANT_ROLE.MODERATOR=="moderator" && _attendeeInfo?.userType === UserType.Admin && !showVolumeSlider) && !showVolumeSlider) {
+    if ((_attendeeInfo?.userType != UserType.Viewer && !showVolumeSlider) && !showVolumeSlider) {
         if ( isModerationSupported) {
             // buttons.push(<AskToUnmuteButton
             //     isAudioForceMuted = { _isAudioForceMuted }

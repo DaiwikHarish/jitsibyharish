@@ -124,9 +124,7 @@ const putMethod = {
    .then(response => response.json())
    .then(data => {
     
-    console.log(data)
-   // pollids74
-console.log("sent poll")
+
 
 const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
 

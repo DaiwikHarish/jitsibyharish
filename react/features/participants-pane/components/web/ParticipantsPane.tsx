@@ -201,7 +201,8 @@ const ParticipantsPane = () => {
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                     {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
-                {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
+                {/* showFooter && */}
+                {_attendeeInfo?.userType != UserType.Viewer  &&  (
                     <div className = { classes.footer }>
 
 <Button

@@ -54,7 +54,7 @@ export interface IPoll {
      * Whether the results should be shown instead of the answer form.
      */
     showResults: boolean;
-
+    seleted:boolean;
     quetionId: string;
     groupname:string,
     pollStatistics:string,

@@ -39,7 +39,7 @@ const parsePollData = (pollData: IPollData): IPoll | null => {
     }
     const { id, senderId, groupname,
         pollStatistics,
-        pollPercentage, quetionId,question, answers } = pollData;
+        pollPercentage, quetionId,question,seleted, answers } = pollData;
 
     if (typeof id !== 'string' || typeof senderId !== 'string'
         || typeof question !== 'string' || !(answers instanceof Array)) {
@@ -49,6 +49,7 @@ const parsePollData = (pollData: IPollData): IPoll | null => {
     return {
         changingVote: false,
         senderId,
+        seleted,
         question,
         showResults: true,
         lastVote: null,
@@ -113,7 +114,7 @@ function _handleReceivePollsMessage(data: any, dispatch: IStore['dispatch']) {
     case COMMAND_NEW_POLL: {
         const { question, answers,  groupname,
             pollStatistics,
-            pollPercentage, quetionId,pollId, senderId } = data;
+            pollPercentage, quetionId,pollId,seleted, senderId } = data;
 
         const poll = {
             changingVote: false,
@@ -122,6 +123,7 @@ function _handleReceivePollsMessage(data: any, dispatch: IStore['dispatch']) {
             lastVote: null,
             question,
             quetionId,
+            seleted,
             groupname,
             pollStatistics,
             pollPercentage,

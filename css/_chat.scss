@@ -17,7 +17,9 @@
         width: auto;
     }
 }
-
+#chat-tab{
+    display: none;
+}
 .chat-panel {
     display: flex;
     flex-direction: column;
@@ -690,4 +692,20 @@
     transition: background .2s;
     cursor: pointer;
     padding: 10px;
+}
+
+.css-qa-input {
+    background-color: #3D3D3D;
+    background: #3D3D3D;
+    color: #FFF;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 0;
+    height: 40px;
+    box-sizing: border-box;
+    width: 100%;
 }

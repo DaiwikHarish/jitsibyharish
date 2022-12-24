@@ -7,7 +7,7 @@ import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 import Tabs from '../../../base/ui/components/web/Tabs';
 import { PollsPane } from '../../../polls/components';
-import { toggleChat } from '../../actions.web';
+import { setIsPollsTabFocused, toggleChat } from '../../actions.web';
 import { CHAT_TABS } from '../../constants';
 import AbstractChat, {
     type Props,
@@ -17,8 +17,7 @@ import Input from '../../../base/ui/components/web/Input';
 import Button from '../../../base/ui/components/web/Button';
 import { IconPlane, IconSmile } from '../../../base/icons/svg';
 import ChatHeader from './ChatHeader';
-import ChatInput from './ChatInput';
-import ChatInputQA from '../../../qa/components/web/ChatInput';
+
 import DisplayNameForm from './DisplayNameForm';
 import KeyboardAvoider from './KeyboardAvoider';
 import MessageContainer from './MessageContainer';
@@ -26,9 +25,7 @@ import MessageRecipient from './MessageRecipient';
 
 import MessageContainerQA from '../../../qa_next/qa';
 
-//import MessageContainerQA from '../../../qa/components/web/MessageContainer';
-import MessageRecipientQA from '../../../qa/components/web/MessageRecipient';
-import { al } from 'react-emoji-render/data/aliases';
+
 /**
  * React Component for holding the chat feature in a side panel that slides in
  * and out of view.
@@ -57,6 +54,8 @@ class Chat extends AbstractChat<Props> {
        qaOpened:false,
        pollOpened:false,
        messageInput:"",
+    
+
             allMes:[],
 QAtab:false
         }
@@ -79,7 +78,7 @@ QAtab:false
     render() {
         const { _isOpen, _isPollsEnabled, _showNamePrompt } = this.props;
        
-         
+     
         return (
             _isOpen ? <div
                 className = 'sideToolbarContainer'
@@ -100,12 +99,35 @@ QAtab:false
        this.getMessage();
 
 this.setState({chatCounter:0,chatOpened:true})
-
+  
 
     }
 
     componentDidUpdate(prevProps, prevState) 
-    {  
+    { 
+        
+        if(prevProps._isOpen!=this.props._isOpen)
+        {
+        if(this.state.allMes.length>0)
+        {
+           
+        if (this.props._isOpen) {
+           
+
+
+        
+        const chattab = document.getElementById("chat-tab")
+   
+        if(chattab!=null)
+        {
+           
+            chattab.style.display = "flex";
+        }
+    }
+}
+}
+          
+
 
         if( this.props._socketQaMessage!="" && this.props._socketQaMessage!=null && this.props._socketQaMessage!=undefined)
         { 
@@ -152,7 +174,9 @@ this.setState({chatCounter:0,chatOpened:true})
 
         if( this.props._socketChatMessage!="" && this.props._socketChatMessage!=null && this.props._socketChatMessage!=undefined)
         { 
+            
 
+           
          let hasNewMessagesChat = this.props._socketChatMessage !== prevProps._socketChatMessage;
 
          if (hasNewMessagesChat) {
@@ -198,7 +222,12 @@ let usertype="local";
      
    
         this.setState({allMes:allMes})
+        const chattab = document.getElementById("chat-tab")
 
+        if(chattab!=null)
+        {
+            chattab.style.display = "flex";
+        }
    }
    
 }
@@ -224,7 +253,13 @@ let usertype="local";
     )
         .then((response) => response.json())
         .then((data) => {
-           
+          
+if(data.length>=1)
+{
+
+
+          
+
            var allMes = data.map((mesAPI: { fromUserName: any; toUserName: any; id: any; message: any; updatedAt: string | number | Date; }) =>  
     {
 let usertype='local'
@@ -247,9 +282,18 @@ let usertype='local'
     })
 
     this.setState({allMes:allMes})
+}else{
+    const chattab = document.getElementById("chat-tab")
 
+    if(chattab!=null)
+    {
+        chattab.style.display = "none";
+    }
+    this.props.dispatch(setIsPollsTabFocused(true));
+          
+}
         })
-
+    
         if (isMobileBrowser()) {
             // Ensure textarea is not focused when opening chat on mobile browser.
             this._textArea?.current && this._textArea.current.blur();
@@ -387,7 +431,9 @@ event.stopPropagation();
      */
     _renderChat() {
         const { _isPollsEnabled, _isPollsTabFocused} = this.props;
-
+       
+    
+        
         if (_isPollsTabFocused) {
             return (
                 <>

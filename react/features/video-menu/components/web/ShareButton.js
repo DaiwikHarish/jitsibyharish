@@ -1,7 +1,7 @@
 // @ts-ignore
 // @flow
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { socketSendCommandMessage } from "../../../base/cs-socket/actions";
 import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs-socket/types";
 import { IconShareDesktop } from '../../../base/icons';
@@ -34,70 +34,95 @@ type Props = {
 const ShareButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, participantID }: Props) => {
 
   const dispatch = useDispatch();
-  
-  let node = document.getElementById(participantIDbyjitsi);
-  let sreenshare="false";
-  if(node!=undefined)
-  {
-    sreenshare = node.getAttribute("data-screenshare");
-  }
-let text="Enable Sreen share"
-sreenshare=="false"?text="Enable Sreen share":text="Disable Sreen share"
+  const queryString = window.location.search;
+      
+
+  const urlParams = new URLSearchParams(queryString);
+
+  const meetingId = urlParams.get('meetingId')
+  const userId = urlParams.get('userId')
+  const [ sreenshare, setsreenshareEvent ] = useState(false);
+ 
 
 
+  useEffect(() => {
   
+    let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+ participantID.trim();
+ 
+
+    fetch(
+      url
+  )
+      .then((response) => response.json())
+      .then((data) => {
+
+         
+if(data.length>0)
+{
+          if(data[0]!=undefined && data[0].isScreenShare==false)
+          {
+           
+
+            setsreenshareEvent(false)
+         
+          }
+
+
+          if(data[0]!=undefined && data[0].isScreenShare==true)
+          {
+            setsreenshareEvent(true)
+           
+          }
+        }
+ 
+            })
+}, [participantID]);
+
+      
 
     return (
-        <ContextMenuItem
+      <ContextMenuItem
+        
+          icon = { IconShareDesktop }
+         spanId="sreenshare"
+        
+          onClick={() => {
+           
           
-            icon = { IconShareDesktop }
-           spanId="sreenshare"
+             
+              if(sreenshare==false)
+              {
+                
+                dispatch(
+                  socketSendCommandMessage(
+                    participantID.trim(),
+                      PermissionType.ENABLE_SCREEN_SHARE,
+                      CommandType.TO_THIS_USER
+                  )
+              )
+         
+              setsreenshareEvent(true)
           
-            onClick={() => {
-              console.log(participantID)
-                let text1 = participantID;
-                // if (confirm(text1) == true) {
-                //   text1 = "You pressed OK!";
-                // } else {
-                //   text1 = "You canceled!";
-                // }
+             
+              }else{
+             
+                dispatch(
+                  socketSendCommandMessage(
+                    participantID.trim(),
+                      PermissionType.DISABLE_SCREEN_SHARE,
+                      CommandType.TO_THIS_USER
+                  )
+              )
+              
+           
+              setsreenshareEvent(false)       
             
-               
-               
-                if(sreenshare=="false")
-                {
-                  
-                  dispatch(
-                    socketSendCommandMessage(
-                      participantID.trim(),
-                        PermissionType.ENABLE_SCREEN_SHARE,
-                        CommandType.TO_THIS_USER
-                    )
-                )
-                node.setAttribute("data-screenshare","true");
-                document.getElementById('sreenshare').innerHTML='Disable Sreen share'
-                text="Disable Sreen share"
-                sreenshare="true"
-                }else{
-               
-                  dispatch(
-                    socketSendCommandMessage(
-                      participantID.trim(),
-                        PermissionType.DISABLE_SCREEN_SHARE,
-                        CommandType.TO_THIS_USER
-                    )
-                )
-                
-                document.getElementById('sreenshare').innerHTML='Enable Sreen share'
-                text="Enable Sreen share"
-                node.setAttribute("data-screenshare","false");
-                sreenshare="false"
-                }
-                
-              }}
-            text = {text}
-            />
-    );
-            }
+              }
+              
+            }}
+          text = {sreenshare==false?"Enable Sreen share":"Disable Sreen share"}
+          />
+  );
+          }
 
 export default ShareButton;

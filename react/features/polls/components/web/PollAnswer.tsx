@@ -149,12 +149,12 @@ const PollAnswer = ({
                     labelKey = { 'polls.answer.skip' }
                     onClick = { changingVote ? skipChangeVote : skipAnswer }
                     type = { BUTTON_TYPES.SECONDARY } /> */}
-                <Button
-                    accessibilityLabel = { t('polls.answer.submit') }
-                    disabled = { isSubmitAnswerDisabled(checkBoxStates) }
-                    fullWidth = { true }
-                    labelKey = { 'polls.answer.submit' }
-                    onClick = { submitAnswer } />
+            {!poll.seleted? <Button
+                accessibilityLabel = { t('polls.answer.submit') }
+                disabled = { isSubmitAnswerDisabled(checkBoxStates) }
+                fullWidth = { true }
+                labelKey = { 'polls.answer.submit' }
+                onClick = { submitAnswer } />:null}
             </div>
         </div>
     );
