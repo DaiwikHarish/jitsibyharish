@@ -94,7 +94,7 @@ const PollsPane = (props: AbstractProps) => {
    })
    
   
-        
+        try{
                 fetch(
                  ApiConstants.pollbyUser
                 )
@@ -162,7 +162,13 @@ setLoadApi(1)
 // })
 
 
-  })  })
+  })
+        }
+        catch{
+            
+        }
+
+})
   },[])
 
   useEffect(() => {

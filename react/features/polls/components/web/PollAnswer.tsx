@@ -61,6 +61,8 @@ const PollAnswer = ({
                                 label = { answer.name }
                                 name= { poll.quetionId }
                                 type = 'radio' 
+                                
+                                disabled={poll.seleted}
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { ev => setCheckbox(index, ev.target.checked) } />:<Checkbox
                                 checked = { checkBoxStates[index] }
@@ -69,6 +71,8 @@ const PollAnswer = ({
                                 type = 'checkbox' 
                                 name= { poll.quetionId }
                                 label = { answer.name }
+                                disabled={poll.seleted}
+                                
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { ev => setCheckbox(index, ev.target.checked) } />
 }

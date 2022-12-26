@@ -80,10 +80,13 @@ export type AbstractProps = {
 
 
         let ansCount=0;
-   
+
 let convertAns=checkBoxStates.map((selected)=>
     {
      
+
+        
+
         if(selected==true)
         { 
             return        poll.answers[ansCount].id;
@@ -91,6 +94,9 @@ let convertAns=checkBoxStates.map((selected)=>
         }
         ansCount++;
     }
+
+
+  
 )
 
 var convertAns_filter = convertAns.filter(function (el) {
@@ -128,6 +134,18 @@ if(pollidsdiv!=null)
 {
 pollidsdiv.style.display = "none";
 }
+
+
+poll.answers.map((answers)=>
+{
+   
+    const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
+    answersidsdiv.disabled=true
+
+
+}
+
+    )
 }) // Manipulate the data retrieved back, if we want to do something with it
    .catch(err => console.log(err)) // Do something with the error
 
