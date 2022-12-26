@@ -904,14 +904,14 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
         // const microphone = _clientType === OptionType.ENABLE_ALL && {
         //     key: 'microphone',
-        //     Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
-        //     group: 0
+        //      Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
+          //     group: 0
         // };
         
 
         const microphone = _clientType === OptionType.ENABLE_ALL && {
             key: 'microphone',
-            Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
+            Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButton,
             group: 0
         };
         
