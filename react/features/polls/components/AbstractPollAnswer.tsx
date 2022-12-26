@@ -10,7 +10,8 @@ import { useBoundSelector } from '../../base/util/hooks';
 import { registerVote, setVoteChanging } from '../actions';
 import { COMMAND_ANSWER_POLL } from '../constants';
 import { IPoll } from '../types';
-
+import { ApiConstants } from '../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../ApplicationConstants';
 /**
  * The type of the React {@code Component} props of inheriting component.
  */
@@ -77,13 +78,6 @@ export type AbstractProps = {
             }
 
 
-const queryString = window.location.search;
-     
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
 
         let ansCount=0;
    
@@ -103,7 +97,7 @@ var convertAns_filter = convertAns.filter(function (el) {
     return el != null;
   });
 
-let url = 'https://dev.awesomereviewstream.com/svr/api/poll'
+
 
 const putMethod = {
     method: 'PUT', // Method itself
@@ -111,8 +105,8 @@ const putMethod = {
      'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
     },
     body: JSON.stringify({
-        "meetingId": meetingId,
-        "userId": userId,
+        "meetingId": ApplicationConstants.meetingId,
+        "userId": ApplicationConstants.userId,
         "pollQuestionId": poll.senderId,
         "pollAnswerOptionIds": convertAns_filter,
        
@@ -120,7 +114,7 @@ const putMethod = {
    }
    
    // make the HTTP put request using fetch api
-   fetch(url, putMethod)
+   fetch(ApiConstants.poll, putMethod)
    .then(response => response.json())
    .then(data => {
     

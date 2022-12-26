@@ -200,7 +200,7 @@ const ParticipantContextMenu = ({
         
             buttons2.push(<MuteNewButton key="MuteNewButton"
             participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim():null}/>);
+            participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
        
        
         }
@@ -208,7 +208,7 @@ const ParticipantContextMenu = ({
 
             buttons2.push(<MuteNewButton key="MuteNewButton"
             participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim() :null}/>);
+            participantID = {participant!=undefined? participant!.name!.split('|')[2] :null}/>);
        
        
             // buttons.push(
@@ -252,7 +252,7 @@ const ParticipantContextMenu = ({
         
             buttons2.push(<ShareButton key="sharescrns"
             participantIDbyjitsi = {participant!.id}
-            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
+            participantID = { participant!.name!.split('|')[2]}/>);
         }
         // if (!showVolumeSlider) {
         

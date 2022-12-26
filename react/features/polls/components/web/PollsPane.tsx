@@ -9,9 +9,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PollCreate from './PollCreate';
 // @ts-ignore
 import PollsList from './PollsList';
+import { ApiConstants } from '../../../../../ApiConstants';
 
 import {clearPolls, receivePoll } from '../../actions';
 import { IReduxState } from '../../../app/types';
+
 import { useDispatch, useSelector } from 'react-redux';
 const PollsPane = (props: AbstractProps) => {
    // const polls = useSelector(state => state['features/polls'].polls);
@@ -23,19 +25,13 @@ const PollsPane = (props: AbstractProps) => {
     const [allPollsdata, setallPolls] = useState([]);
     const [groupname, setGroupname] = useState("");
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(clearPolls());
-        const queryString = window.location.search;
       
-
-        const urlParams = new URLSearchParams(queryString);
-    
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
-        let url = 'https://dev.awesomereviewstream.com/svr/api/poll-group/latest?meetingId='+meetingId;
         
         fetch(
-            url
+            ApiConstants.latestPoll
         )
             .then((response) => response.json())
             .then((data) => {
@@ -97,10 +93,10 @@ const PollsPane = (props: AbstractProps) => {
 
    })
    
-   let selectedUrl = 'https://dev.awesomereviewstream.com/svr/api/poll?userId='+userId;
+  
         
                 fetch(
-                    selectedUrl
+                 ApiConstants.pollbyUser
                 )
                     .then((response) => response.json())
                     .then((selected) => {

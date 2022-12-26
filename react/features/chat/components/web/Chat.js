@@ -17,7 +17,8 @@ import Input from '../../../base/ui/components/web/Input';
 import Button from '../../../base/ui/components/web/Button';
 import { IconPlane, IconSmile } from '../../../base/icons/svg';
 import ChatHeader from './ChatHeader';
-
+import { ApiConstants } from '../../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 import DisplayNameForm from './DisplayNameForm';
 import KeyboardAvoider from './KeyboardAvoider';
 import MessageContainer from './MessageContainer';
@@ -237,19 +238,9 @@ let usertype="local";
 
    getMessage()
    {
-    const queryString = window.location.search;
-      
-
-    const urlParams = new URLSearchParams(queryString);
-
-    const meetingId = urlParams.get('meetingId')
-    const userId = urlParams.get('userId')
-
    
-    let url = 'https://dev.awesomereviewstream.com/svr/api/chat?meetingId='+meetingId+'&userId='+userId;
-    
-    fetch(
-        url
+     fetch(
+        ApiConstants.chat
     )
         .then((response) => response.json())
         .then((data) => {
@@ -355,24 +346,17 @@ let usertype='local'
     _setMessage()
     {
             
-        const queryString = window.location.search;
-      
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
-
+  
      let chatMessage =this.state.messageInput;
      const trimmed = chatMessage;
      const reqBody = {
-        "meetingId": meetingId,
-        "fromUserId": userId,
-        "toUserId": userId,
+        "meetingId": ApplicationConstants.meetingId,
+        "fromUserId": ApplicationConstants.userId,
+        "toUserId": ApplicationConstants.userId,
         "message": trimmed
     };
-     let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
-     if (url) {
+
+
 
 
         const requestOptions = {
@@ -380,7 +364,7 @@ let usertype='local'
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reqBody)
         };
-        fetch(url, requestOptions)
+        fetch(ApiConstants.chat, requestOptions)
             .then(response => response.json())
             .then(data =>
                 
@@ -398,7 +382,7 @@ let usertype='local'
                 );
 
     
-    }
+    
     }
     _onDetectSubmit(event) {
         // Composition events used to add accents to characters

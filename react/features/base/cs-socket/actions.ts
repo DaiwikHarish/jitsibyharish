@@ -54,8 +54,9 @@ export function socketSendCommandMessage(
 ) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         console.log(
-            'Inside the middleware function call socketSendCommandMessage'
+            'Inside the middleware function call socketSendCommandMessage',toUserId,permissionType,commandType
         );
+
         _socketSendCommandMessage(dispatch, getState,toUserId, permissionType, commandType);
     };
 }

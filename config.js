@@ -27,8 +27,8 @@ var enableJaaS = false;
 var config = {
 
     //awesomeReviewBaseUrl
-    baseUrl:'https://dev.awesomereviewstream.com/svr/api',
-
+    apiUrl:'https://dev.awesomereviewstream.com/svr/api/',
+    appUrl:"https://dev.awesomereviewstream.com",
     // Connection
     //
     hosts: {

@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { IStore } from '../../app/types';
 import { IAttendeeInfo } from '../app/types';
+
 import { socketJoinRoom, socketSendCommandMessage } from './actions';
 import {
     APP_SOCKET_CHAT_MESSAGE,
@@ -27,7 +28,7 @@ export let _csSocket: Socket;
 
 export function _initSocket(dispatch: IStore['dispatch']) {
     console.log('Socket called init');
-    let appUrl = 'https://dev.awesomereviewstream.com';
+    let appUrl = config.appUrl?config.appUrl:'https://dev.awesomereviewstream.com';
     let one2ManyPath = '/svr/ws/one2many';
 
     _csSocket = io(appUrl, {

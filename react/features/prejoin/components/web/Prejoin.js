@@ -13,6 +13,8 @@ import { ActionButton, InputField, PreMeetingScreen } from '../../../base/premee
 import { connect } from '../../../base/redux';
 import { getDisplayName, updateSettings } from '../../../base/settings';
 import { getLocalJitsiVideoTrack } from '../../../base/tracks';
+import { ApiConstants } from '../../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 import {
     joinConference as joinConferenceAction,
     joinConferenceWithoutAudio as joinConferenceWithoutAudioAction,
@@ -384,8 +386,7 @@ class Prejoin extends Component<Props, State> {
         this.setState({loading:true});
     
         fetch(
-            'https://dev.awesomereviewstream.com/svr/api' + '/' +`attendee?meetingId=${meetingId}&userId=${userId}`
-        )
+            ApiConstants.attendee+"?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId     )
             .then((response) => response.json())
             .then((data) => {
                 const attendee: IAttendeeInfo = data[0];
@@ -395,7 +396,7 @@ class Prejoin extends Component<Props, State> {
                         '|' +
                         attendee.userType +
                         '|' +
-                        attendee.id
+                        attendee.userId
                 );
                 this.setState({loading:false});
             })
@@ -419,8 +420,11 @@ class Prejoin extends Component<Props, State> {
 
         this.setState({loading:true});
             fetch(
-                'https://dev.awesomereviewstream.com/svr/api' + '/' +`meeting?meetingId=${meetingId}&includeAttendee=false`
-            )
+                //'https://dev.awesomereviewstream.com/svr/api' + '/' +`meeting?meetingId=${meetingId}&includeAttendee=false`
+           
+                ApiConstants.meeting+'&userId=includeAttendee=false'
+           
+                )
                 .then((response) => response.json())
                 .then((data) => {
                     const meeting: IMeetingInfo =data[0];
