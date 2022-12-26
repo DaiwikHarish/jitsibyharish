@@ -53,6 +53,7 @@ mute=="false"?text="UnMute":text="Mute"
             icon = { IconMicrophone }
             spanId="MuteEnbled"
             onClick={() => {
+              console.log(participantID)
              // alert(mute=="false")
                 if(mute=="false")
                 {

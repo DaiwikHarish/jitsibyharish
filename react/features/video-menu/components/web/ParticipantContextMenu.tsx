@@ -200,7 +200,7 @@ const ParticipantContextMenu = ({
         
             buttons2.push(<MuteNewButton key="MuteNewButton"
             participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim():null}/>);
+            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim():null}/>);
        
        
         }
@@ -208,7 +208,7 @@ const ParticipantContextMenu = ({
 
             buttons2.push(<MuteNewButton key="MuteNewButton"
             participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim():null}/>);
+            participantID = {participant!=undefined? participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim() :null}/>);
        
        
             // buttons.push(
@@ -252,13 +252,13 @@ const ParticipantContextMenu = ({
         
             buttons2.push(<ShareButton key="sharescrns"
             participantIDbyjitsi = {participant!.id}
-            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
+            participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
         }
         // if (!showVolumeSlider) {
         
         //     buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
         //     participantIDbyjitsi = {participant.id}
-        //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").replace("|","").trim()}/>);
+        //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
         // }
         
     }
