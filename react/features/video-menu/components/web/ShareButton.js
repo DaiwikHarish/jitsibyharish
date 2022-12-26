@@ -6,6 +6,9 @@ import { socketSendCommandMessage } from "../../../base/cs-socket/actions";
 import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs-socket/types";
 import { IconShareDesktop } from '../../../base/icons';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
+import { ApiConstants } from '../../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
+ 
 type Props = {
 
     /**
@@ -34,24 +37,17 @@ type Props = {
 const ShareButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, participantID }: Props) => {
 
   const dispatch = useDispatch();
-  const queryString = window.location.search;
-      
-
-  const urlParams = new URLSearchParams(queryString);
-
-  const meetingId = urlParams.get('meetingId')
-  const userId = urlParams.get('userId')
+  
   const [ sreenshare, setsreenshareEvent ] = useState(false);
  
 
 
   useEffect(() => {
   
-    let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+ participantID.trim();
- 
+   
 
     fetch(
-      url
+    ApiConstants.attendee+"?meetingId="+ApplicationConstants.meetingId+"&userId="+ participantID.trim()
   )
       .then((response) => response.json())
       .then((data) => {

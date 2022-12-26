@@ -10,6 +10,7 @@ import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
 import { areSmileysDisabled } from '../../functions';
 import {IUrlInfo} from '../../../base/app/types'
+
 // @ts-ignore
 import SmileysPanel from './SmileysPanel';
 
@@ -165,26 +166,6 @@ class ChatInput extends Component<IProps, IState> {
             this.props.onSend(trimmed);
 
 //post message by API (Harish)
-
-let url = 'https://dev.awesomereviewstream.com/svr/api/chat'
-const meetingId = this.props._urlInfo.meetingId;
-const userId = this.props._urlInfo.userId;
-
-fetch(url,{
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    method: "POST",     
-  
-    // Fields that to be updated are passed
-    body: JSON.stringify({
-        "meetingId": meetingId,
-        "fromUserId": userId,
-        "toUserId": userId,
-        "message": trimmed
-    })
-})
 
 
             this.setState({ message: '' });

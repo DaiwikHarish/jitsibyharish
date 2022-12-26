@@ -6,7 +6,8 @@ import { withStyles } from '@mui/styles';
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { batch } from 'react-redux';
-
+import { ApiConstants } from '../../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 // @ts-expect-error
 import keyboardShortcut from '../../../../../modules/keyboardshortcut/keyboardshortcut';
 // @ts-ignore
@@ -80,7 +81,8 @@ import {
 // @ts-ignore
 import { isSalesforceEnabled } from '../../../salesforce/functions';
 import {
-    startScreenShareFlow
+    setScreenAudioShareState,
+    startScreenShareFlow,
 } from '../../../screen-share/actions.web';
 // @ts-ignore
 import ShareAudioButton from '../../../screen-share/components/web/ShareAudioButton';
@@ -160,6 +162,12 @@ import VideoSettingsButton from './VideoSettingsButton';
 import ShareDesktopButtonDisable from './ShareDesktopButtonDisable';
 // @ts-ignore
 import MIcrophoneButtonDisable from './MIcrophoneButtonDisable';
+// @ts-ignore
+import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
+// @ts-ignore
+import { muteLocal } from '../../../video-menu/actions.any';
+// @ts-ignore
+import { MEDIA_TYPE } from '../../../base/media';
 
 
 
@@ -440,6 +448,8 @@ this.state={
         this._onToolbarToggleFullScreen = this._onToolbarToggleFullScreen.bind(this);
         this._onToolbarToggleRaiseHand = this._onToolbarToggleRaiseHand.bind(this);
         this._onToolbarToggleScreenshare = this._onToolbarToggleScreenshare.bind(this);
+        this._onToolbarToggleScreenshareAdmin = this._onToolbarToggleScreenshareAdmin.bind(this);
+        
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this._onShortcutSpeakerStats = this._onShortcutSpeakerStats.bind(this);
         this._onEscKey = this._onEscKey.bind(this);
@@ -453,20 +463,9 @@ this.state={
      */
     componentDidMount() {
   
-            
-        const queryString = window.location.search;
-      
-
-        const urlParams = new URLSearchParams(queryString);
-    
-        const meetingId = urlParams.get('meetingId')
-        const userId = urlParams.get('userId')
-    
        
-        let url = 'https://dev.awesomereviewstream.com/svr/api/attendee?meetingId='+meetingId+'&userId='+userId;
-        
         fetch(
-            url
+            ApiConstants.attendee+"?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId
         )
             .then((response) => response.json())
             .then((data) => {
@@ -501,10 +500,9 @@ this.setState({enableDesktop:true})
                 
 
 
-                let urlRaiseHand = 'https://dev.awesomereviewstream.com/svr/api/meeting?meetingId='+meetingId;
-        
+                
                 fetch(
-                    urlRaiseHand
+                    ApiConstants.meeting
                 )
                     .then((response) => response.json())
                     .then((dataRaiseHand) => {
@@ -659,6 +657,10 @@ if(this.props._socketReceivedCommandMessage.permissionType=="ENABLE_SCREEN_SHARE
 if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_SCREEN_SHARE")
 
 {
+
+    this.props._screenSharing? this._onToolbarToggleScreenshare():null
+
+
     this.setState({enableDesktop:false})
 }
 
@@ -678,15 +680,15 @@ if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 
 {
     this.setState({enableMike:false})
-
-
-    
+    this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
 }
+  
 
 if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
 {
     this.setState({enableMike:true})
+    this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
 }
 
 
@@ -900,14 +902,19 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             _clientType
         } = this.props;
 
+        // const microphone = _clientType === OptionType.ENABLE_ALL && {
+        //     key: 'microphone',
+        //     Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
+        //     group: 0
+        // };
+        
+
         const microphone = _clientType === OptionType.ENABLE_ALL && {
             key: 'microphone',
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable :AudioSettingsButton,
+            Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
             group: 0
         };
         
-
-
 
         const camera = _clientType === OptionType.ENABLE_ALL &&{
             key: 'camera',
@@ -931,7 +938,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
             key: 'desktop',
             Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableDesktop? ShareDesktopButton :ShareDesktopButtonDisable:ShareDesktopButton,
-            handleClick:  this._onToolbarToggleScreenshare,
+            handleClick:_attendeeInfo.userType === UserType.Viewer ? this._onToolbarToggleScreenshare:this._onToolbarToggleScreenshareAdmin  ,
+       
             group: 2
         };
 
@@ -1536,7 +1544,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
      * @returns {void}
      */
     _onToolbarToggleScreenshare() {
-
+      
         if(this.state.enableDesktop)
         {
         sendAnalytics(createToolbarEvent(
@@ -1546,9 +1554,23 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         this._closeOverflowMenuIfOpen();
         this._doToggleScreenshare();
         }else{
+         
+
+            
         //alert("Disable by Admin")
         }
     }
+    _onToolbarToggleScreenshareAdmin() {
+
+
+      
+
+        this._closeOverflowMenuIfOpen();
+        this._doToggleScreenshare();
+      
+    }
+
+    
 
     /**
      * Returns true if the audio sharing button should be visible and

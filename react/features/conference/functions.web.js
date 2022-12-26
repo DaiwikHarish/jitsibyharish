@@ -1,7 +1,7 @@
 import { isSuboptimalBrowser } from '../base/environment';
 import { translateToHTML } from '../base/i18n';
 import { NOTIFICATION_TIMEOUT_TYPE, showWarningNotification } from '../notifications';
-
+import { ApiConstants } from '../../../ApiConstants';
 export * from './functions.any';
 
 /**
@@ -31,10 +31,10 @@ export function maybeShowSuboptimalExperienceNotification(dispatch, t) {
 }
 
 export function _onKickedOut(id){
-    let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
-   // console.log("alam updateId",id)
+    //let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
 
-    fetch(url,{
+
+    fetch(ApiConstants.attendee,{
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
@@ -47,12 +47,12 @@ export function _onKickedOut(id){
           id: id
         })
     })
-    .then((response) => {console.log("alam response",response); response.json()})
+    .then((response) => {response.json()})
             .then((data) => {
-              // console.log("alam Successfully updated")
+          
             })
             .catch((err) => {
-               // console.log("alam kickout error",err.message);
+             
             })
 
 };

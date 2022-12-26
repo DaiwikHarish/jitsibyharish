@@ -114,7 +114,9 @@ export interface IConfig {
     autoCaptionOnRecord?: boolean;
     autoKnockLobby?: boolean;
     backgroundAlpha?: number;
+    apiUrl?: string;
     bosh?: string;
+    appUrl?: string;
     brandingDataUrl?: string;
     brandingRoomAlias?: string;
     breakoutRooms?: {

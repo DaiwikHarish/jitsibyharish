@@ -11,7 +11,7 @@ import { ToolboxButtonWithIcon } from '../../../base/toolbox/components';
 import { AudioSettingsPopup, toggleAudioSettings } from '../../../settings';
 import { getAudioSettingsVisibility } from '../../../settings/functions';
 import { isAudioSettingsButtonDisabled } from '../../functions';
-import AudioMuteButton from '../MIcrophoneButtonDisable';
+import AudioMuteButtonAdmin from '../AudioMuteButtonAdmin';
 import { muteAllParticipants } from '../../../video-menu/actions.any';
 import { MEDIA_TYPE } from '../../../base/media/constants';
 type Props = {
@@ -69,9 +69,9 @@ type Props = {
  *
  * @returns {ReactElement}
  */
-class MIcrophoneButtonDisable extends Component<Props> {
+class AudioSettingsButtonAdminDisable extends Component<Props> {
     /**
-     * Initializes a new {@code MIcrophoneButtonDisable} instance.
+     * Initializes a new {@code AudioSettingsButtonAdminDisable} instance.
      *
      * @inheritdoc
      */
@@ -98,8 +98,8 @@ class MIcrophoneButtonDisable extends Component<Props> {
         }
     }
     componentDidMount() {
-  
 
+        this.props._audioMuted;
     }
     _onClick: () => void;
 
@@ -140,12 +140,12 @@ class MIcrophoneButtonDisable extends Component<Props> {
                     notifyMode = { notifyMode }
                     onIconClick = { this._onClick }
                     onIconKeyDown = { this._onEscClick }>
-                    <AudioMuteButton
+                    <AudioMuteButtonAdmin
                         buttonKey = { buttonKey }
                         notifyMode = { notifyMode } />
                 </ToolboxButtonWithIcon>
             </AudioSettingsPopup>
-        ) : <AudioMuteButton
+        ) : <AudioMuteButtonAdmin
             buttonKey = { buttonKey }
             notifyMode = { notifyMode } />;
     }
@@ -175,4 +175,4 @@ const mapDispatchToProps = {
 export default translate(connect(
     mapStateToProps,
     mapDispatchToProps
-)(MIcrophoneButtonDisable));
+)(AudioSettingsButtonAdminDisable));
