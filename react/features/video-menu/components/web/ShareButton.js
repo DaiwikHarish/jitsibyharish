@@ -69,6 +69,12 @@ if(data.length>0)
             setsreenshareEvent(true)
            
           }
+// Only for admin
+
+          if(data[0].userType=='Admin')
+          {
+            setsreenshareEvent(true)
+          }
         }
  
             })

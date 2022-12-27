@@ -167,7 +167,7 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 // @ts-ignore
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
-import { MEDIA_TYPE } from '../../../base/media';
+import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
 
 
 
@@ -679,16 +679,24 @@ if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND"
 if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 
 {
-    this.setState({enableMike:false})
     this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
+    this.props.dispatch(setAudioMuted(true));
+    this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
+
+    this.setState({enableMike:false})
+   
 }
   
 
 if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
 {
-    this.setState({enableMike:true})
     this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
+    this.props.dispatch(setAudioMuted(false));
+ 
+    this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
+    this.setState({enableMike:true})
+  
 }
 
 
