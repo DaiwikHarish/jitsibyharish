@@ -23,7 +23,7 @@ import {
     getToolbarButtons,
     isToolbarButtonEnabled
 } from '../../../base/config/functions.web';
-import { openDialog, toggleDialog } from '../../../base/dialog/actions';
+import { hideDialog, openDialog, toggleDialog } from '../../../base/dialog/actions';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import JitsiMeetJS from '../../../base/lib-jitsi-meet';
@@ -168,6 +168,8 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE } from '../../../base/media';
+import ChatDialog from '../../../chat-admin/components/ChatDialog';
+import SettingsDialog from '../../../settings/components/web/SettingsDialog';
 
 
 
@@ -453,6 +455,7 @@ this.state={
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this._onShortcutSpeakerStats = this._onShortcutSpeakerStats.bind(this);
         this._onEscKey = this._onEscKey.bind(this);
+        this._openDialog = this._openDialog.bind(this)
     }
 
     /**
@@ -882,6 +885,15 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         this.props.dispatch(toggleTileView());
     }
 
+    _openDialog() {
+        console.log("alam _openDialog")
+        this.props.dispatch(openDialog(ChatDialog));
+    }
+    // _openDialog() {
+    //     console.log("alam _openDialog")
+    //     this.props.dispatch(hideDialog(ChatDialog));
+    // }
+
     /**
      * Returns all buttons that could be rendered.
      *
@@ -928,10 +940,10 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             group: 1
         };
 
-        const chat = _attendeeInfo.userType === UserType.Viewer && {
+        const chat = _attendeeInfo.userType !== UserType.Presenter && {
             key: 'chat',
             Content: ChatButton,
-            handleClick: this._onToolbarToggleChat,
+            handleClick: _attendeeInfo.userType === UserType.Admin? this._openDialog  :  this._onToolbarToggleChat,
             group: 2
         };
 

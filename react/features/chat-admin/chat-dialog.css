@@ -1,0 +1,131 @@
+.container {
+    width: 100%;
+    min-height: 70vh;
+    background-color:white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.Left-box {
+    width: 25%;
+    /* padding:10; */
+    background-color: darkcyan;
+    align-items: center;
+    color: white;
+
+}
+.Left-box-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    border-bottom: 1px solid #ccdcff;
+}
+.Participants-online {
+    align-items: center;
+    margin-block: 8px 8px;
+    color: white;
+    border-bottom: 1px solid #ccdcff;
+}
+.Search-input {
+    width: 95%;
+    display: flex;
+    align-self: center;
+    padding: 10px;
+    border-radius: 25px;
+    margin-block: 7px 7px;
+    margin-left: 5px;
+    border-width: 0;
+    /* background-color: blue; */
+}
+
+.Participants-list {
+    font-size: 15px;
+    font-weight: 700;
+    padding-block: 5px 7px;
+    border-bottom: 0.5px solid black;
+}
+.Right-box {
+    width: 75%;
+    padding:10;
+    background-color:'#f5f5f5';
+    align-items: center;
+    color: black;
+
+}
+.Right-box-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.Right-box-header-text{
+    color: grey;
+    font-weight: 700;
+}
+.Right-box-body {
+    display: flex;
+    height: 85%;
+    justify-content: center;
+    align-items: center;
+    /* background-color: blue; */
+    margin: 5px 10px 5px;
+}
+.Right-box-footer {
+    width: 73%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 5;
+    /* padding-inline: 5px 5px; */
+    position: absolute;
+    /* background-color: blue; */
+}
+.Send-msg-container {
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-around; */
+    align-items: center;
+    /* background-color: greenyellow; */
+}
+.Send-msg-input {
+    width: 80%;
+    padding-block: 10px;
+    padding-inline: 13px;
+    border: 0.5 solid black;
+    border-radius: 25px;
+}
+.button {
+    padding-block: 7px;
+    padding-inline: 9px;
+    margin:4;
+    border-width: 0;
+}
+.btn-danger{
+    background-color:red;
+    color: 'white';
+    border-radius:25px;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-width: 0;
+}
+.Send-msg-button{
+    min-width:12%;
+    min-height:10% ;
+    background-color:lightseagreen;
+    margin-left: 5px;
+    color: 'white';
+    border-radius:25px;
+    padding: 10px ;
+    border-width: 0;
+    font-size: 14px;
+}
+
+.text {
+    padding: 10;
+    color: white;
+}
