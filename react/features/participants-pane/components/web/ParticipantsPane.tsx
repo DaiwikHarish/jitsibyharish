@@ -110,7 +110,7 @@ const ParticipantsPane = () => {
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
-    const [ raiseHandEvent, setRaiseHandEvent ] = useState(true);
+    const [ raiseHandEvent, setRaiseHandEvent ] = useState(false);
     const onWindowClickListener = useCallback((e: any) => {
         if (contextOpen && !findAncestorByClass(e.target, classes.footerMoreContainer)) {
             setContextOpen(false);
