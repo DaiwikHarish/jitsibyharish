@@ -33,12 +33,11 @@ type Props = {
 const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, participantID }: Props) => {
 
   const dispatch = useDispatch();
-  
-
-//alert(participantIDbyjitsi)
 
   let node = document.getElementById(participantIDbyjitsi);
   let mute=true;
+
+  console.log(participantIDbyjitsi)
 if(node!=undefined && node!=null)
 {
    mute = node.getAttribute("data-mute");
