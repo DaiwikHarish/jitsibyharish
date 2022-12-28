@@ -81,7 +81,7 @@ export type AbstractProps = {
 
         let ansCount=0;
 
-let convertAns=checkBoxStates.map((selected)=>
+let convertAns=checkBoxStates.map((selected,index)=>
     {
      
 
@@ -89,7 +89,8 @@ let convertAns=checkBoxStates.map((selected)=>
 
         if(selected==true)
         { 
-            return        poll.answers[ansCount].id;
+           
+            return        poll.answers[index].id;
             
         }
         ansCount++;
@@ -98,7 +99,7 @@ let convertAns=checkBoxStates.map((selected)=>
 
   
 )
-
+console.log(convertAns)
 var convertAns_filter = convertAns.filter(function (el) {
     return el != null;
   });
@@ -136,14 +137,23 @@ pollidsdiv.style.display = "none";
 }
 
 
-poll.answers.map((answers)=>
+poll.answers.map((answers,index)=>
 {
    
     const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
+    let type = answersidsdiv.getAttribute("type");
 
-    if(convertAns_filter[0]!=answers.id)
+  
+    if(type=="radio")
     {
-    answersidsdiv.disabled=true
+
+        checkBoxStates[index]==false?
+    answersidsdiv.disabled=true:  answersidsdiv.disabled=false
+
+
+    }
+    else{
+        answersidsdiv.disabled=true
     }
 
 }

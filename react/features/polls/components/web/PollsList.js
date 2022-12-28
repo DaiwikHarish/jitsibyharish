@@ -51,10 +51,18 @@ let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; id: any; pollStatist
             "voters": []})
         })
    
-     
-       let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
+        let seleted=false;
+        let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
         {
-           return option.isSelected;
+           if(option.isSelected=="true")
+           {
+               seleted=true
+               return true;
+           }else{
+               return false;
+           }
+       
+
         })
        
 
@@ -64,6 +72,7 @@ return(
     "changingVote": pollAPI.isAnswerTypeSingle,
     "senderId": pollAPI.id,
     "showResults": false,
+    "seleted":seleted,
     "lastVote": lastVote,
     "question": pollAPI.question,
     "answers": ans,

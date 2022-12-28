@@ -71,7 +71,7 @@ if(data.length>0)
           }
 // Only for admin
 
-          if(data[0].userType=='Admin')
+          if(data[0].userType=='Admin' ||data[0].userType=='Presenter' )
           {
             setsreenshareEvent(true)
           }

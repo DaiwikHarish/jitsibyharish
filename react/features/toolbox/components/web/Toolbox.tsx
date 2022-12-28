@@ -679,7 +679,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND"
 if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 
 {
-    this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
+    
+   
     this.props.dispatch(setAudioMuted(true));
     this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
 
@@ -691,7 +692,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
 if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
 {
-    this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
+ 
+
     this.props.dispatch(setAudioMuted(false));
  
     this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
