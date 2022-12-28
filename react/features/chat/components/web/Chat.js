@@ -107,6 +107,14 @@ this.setState({chatCounter:0,chatOpened:true})
     componentDidUpdate(prevProps, prevState) 
     { 
         
+        if(prevProps._isPollsEnabled!=this.props._isPollsEnabled)
+        {
+            if(this.props._isPollsEnabled==true)
+            {
+this.setState({pollCounter:0})
+        }
+    }
+
         if(prevProps._isOpen!=this.props._isOpen)
         {
         if(this.state.allMes.length>0)
@@ -416,7 +424,12 @@ event.stopPropagation();
     _renderChat() {
         const { _isPollsEnabled, _isPollsTabFocused} = this.props;
        
-    
+        const pollidsdiv = document.getElementById("mainchatcounter")  
+        if(pollidsdiv!=null)
+        {
+        pollidsdiv.innerHTML= "";
+
+        }
         
         if (_isPollsTabFocused) {
             return (

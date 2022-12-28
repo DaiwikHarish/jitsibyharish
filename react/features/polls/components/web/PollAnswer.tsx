@@ -36,6 +36,7 @@ const PollAnswer = ({
     const [loadApi, setLoadApi] = useState(0);
 
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);
+  //  poll.lastVote[index]==true?false:poll.seleted     disabled={poll.seleted}
 
     return (
         <div className = 'poll-answer'>
@@ -61,8 +62,8 @@ const PollAnswer = ({
                                 label = { answer.name }
                                 name= { poll.quetionId }
                                 type = 'radio' 
-                                
-                                disabled={poll.seleted}
+                                disabled={poll.lastVote[index]==true?false:poll.seleted  }
+                               
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { ev => setCheckbox(index, ev.target.checked) } />:<Checkbox
                                 checked = { checkBoxStates[index] }
@@ -71,8 +72,7 @@ const PollAnswer = ({
                                 type = 'checkbox' 
                                 name= { poll.quetionId }
                                 label = { answer.name }
-                                disabled={poll.seleted}
-                                
+                                disabled={poll.lastVote[index]==true?false:poll.seleted  }
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onChange = { ev => setCheckbox(index, ev.target.checked) } />
 }

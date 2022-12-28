@@ -66,6 +66,8 @@ class ChatButton extends AbstractButton<Props, *> {
      * @returns {boolean}
      */
     _isToggled() {
+
+     
         
         return this.props._chatOpen;
     }
@@ -103,8 +105,18 @@ class ChatButton extends AbstractButton<Props, *> {
     componentDidUpdate(prevProps, prevState) 
     {  
 
-    
-
+        if(prevProps._chatOpen !==this.props._chatOpen)
+        {
+        if(!this.props._chatOpen)
+        {
+            let counter=0;
+         
+          this.setState({chatCounter:counter})
+        
+        
+         
+        }
+    }
 
         if( this.props._socketChatMessage!="" && this.props._socketChatMessage!=null && this.props._socketChatMessage!=undefined)
         { 

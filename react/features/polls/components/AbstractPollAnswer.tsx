@@ -140,8 +140,11 @@ poll.answers.map((answers)=>
 {
    
     const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
-    answersidsdiv.disabled=true
 
+    if(convertAns_filter[0]!=answers.id)
+    {
+    answersidsdiv.disabled=true
+    }
 
 }
 

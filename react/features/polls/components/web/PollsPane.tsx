@@ -10,7 +10,7 @@ import PollCreate from './PollCreate';
 // @ts-ignore
 import PollsList from './PollsList';
 import { ApiConstants } from '../../../../../ApiConstants';
-
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 import {clearPolls, receivePoll } from '../../actions';
 import { IReduxState } from '../../../app/types';
 
@@ -40,117 +40,79 @@ const PollsPane = (props: AbstractProps) => {
                 setGroupname(data.data[0].groupName)
              
                 
-               let pollNo=0;
-               
-               let allPolls = data.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
-        {
-
-         
-
-            
-            
-            pollNo=pollNo++;
-    
-            let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
-                    {
-           
-                        return({"name": ans.answerLabel+" : "+ans.answerOption,
-                       "id":ans.id,
-                       'pollStatistics':ans.pollStatistics,
-            'pollPercentage':ans.pollPercentage,
-                        "voters": []})
-                    })
-               
-                 
-                   let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
-                    {
-                      // return option.isSelected;
-                      return false;
-                    })
-                  //  "lastVote": lastVote,
-    
-        return(
-        {
-            
-                "changingVote": pollAPI.isAnswerTypeSingle,
-                "senderId": pollAPI.id,
-                "showResults": data.status=='Ended'?true:false,
-                "seleted":false,
-               "lastVote":lastVote,
-                "question": pollAPI.question,
-                "answers": ans,
-            "quetionId":pollAPI.id,
-            'groupname':pollAPI.groupName,
-            
-        }
-        
-        
-        
-        
-        )
-
-    
-
-   })
+       
    
   
-        try{
+
                 fetch(
-                 ApiConstants.pollbyUser
-                )
+                 ApiConstants.poll+"?groupId="+data.data[0].groupId+"&includeStatistic=true&userId="+ApplicationConstants.userId)
                     .then((response) => response.json())
                     .then((selected) => {
                        
-                    let allPollsSel=allPolls.map((allPolls: {lastVote:any, changingVote:any; senderId:any; showResults: any; answers: any; groupname: any;quetionId: any; question: any;id: any; }) =>  
-                           {     let check=false;
-                        selected.data.map((sel:{id:any})=>{
-                       
-                            if(allPolls.quetionId==sel.id)
-                            {
-                                check=true;
-                            }
-                        })
-
-
-                        if(check)
-                        {
-                            return(
+                        let pollNo=0;
+               
+                        let allPolls = selected.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
+                 {
+         
+                  
+         
+                     
+                     
+                     pollNo=pollNo++;
+             
+                     let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
+                             {
+                    
+                                 return({"name": ans.answerLabel+" : "+ans.answerOption,
+                                "id":ans.id,
+                                'pollStatistics':ans.pollStatistics,
+                     'pollPercentage':ans.pollPercentage,
+                                 "voters": []})
+                             })
+                        
+                          let seleted=false;
+                             let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
+                             {
+                                if(option.isSelected=="true")
                                 {
-                                    
-                                        "changingVote": allPolls.changingVote,
-                                        "senderId": allPolls.senderId,
-                                        "showResults": allPolls.showResults,
-                                        "seleted":true,
-                                        "lastVote":allPolls.lastVote,
-                                        "question": allPolls.question,
-                                        "answers": allPolls.answers,
-                                    "quetionId":allPolls.quetionId,
-                                    'groupname':allPolls.groupname,
-                                    
-                                })
-                        }else{
+                                    seleted=true
+                                    return true;
+                                }else{
+                                    return false;
+                                }
+                            
 
-                            return(
-                                {
-                                    
-                                    "changingVote": allPolls.changingVote,
-                                    "senderId": allPolls.senderId,
-                                    "showResults": allPolls.showResults,
-                                    "seleted":false,
-                                    "lastVote":allPolls.lastVote,
-                                    "question": allPolls.question,
-                                    "answers": allPolls.answers,
-                                "quetionId":allPolls.quetionId,
-                                'groupname':allPolls.groupname,
-                                })
-                        }
+                             })
+                           //  "lastVote": lastVote,
+             
+                 return(
+                 {
+                     
+                         "changingVote": pollAPI.isAnswerTypeSingle,
+                         "senderId": pollAPI.id,
+                         "showResults": data.status=='Ended'?true:false,
+                         "seleted":seleted,
+                        "lastVote":lastVote,
+                         "question": pollAPI.question,
+                         "answers": ans,
+                     "quetionId":pollAPI.id,
+                     'groupname':pollAPI.groupName,
+                     
+                 }
+                 
+                 
+                 
+                 
+                 )
+         
+             
+         
+            })
 
-                    })
 
-
-setallPolls(allPollsSel)
-Object.assign(polls, allPollsSel)
-console.log(allPollsSel)
+setallPolls(allPolls)
+Object.assign(polls, allPolls)
+console.log(allPolls)
 setLoadApi(1)
 
 
@@ -163,10 +125,7 @@ setLoadApi(1)
 
 
   })
-        }
-        catch{
-            
-        }
+      
 
 })
   },[])
