@@ -99,7 +99,7 @@ let convertAns=checkBoxStates.map((selected,index)=>
 
   
 )
-console.log(convertAns)
+
 var convertAns_filter = convertAns.filter(function (el) {
     return el != null;
   });
@@ -137,7 +137,7 @@ pollidsdiv.style.display = "none";
 }
 
 
-poll.answers.map((answers,index)=>
+poll.answers.map((answers)=>
 {
    
     const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
@@ -146,11 +146,15 @@ poll.answers.map((answers,index)=>
   
     if(type=="radio")
     {
-
-        checkBoxStates[index]==false?
-    answersidsdiv.disabled=true:  answersidsdiv.disabled=false
-
-
+        answersidsdiv.disabled=true
+        checkBoxStates.map((selected,index)=>
+        { 
+    if(convertAns_filter[index]==answers.id)
+    {
+     answersidsdiv.disabled=false
+ 
+    }
+        })
     }
     else{
         answersidsdiv.disabled=true
