@@ -194,7 +194,7 @@ function ParticipantItem({
 
 {/* <div id={participantID}  className = { styles.moderatorLabel }> */}
 
-                Participants
+                Participant
             </div>}
         </>
     );
