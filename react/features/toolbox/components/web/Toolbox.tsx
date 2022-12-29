@@ -510,6 +510,7 @@ this.setState({enableDesktop:true})
                         if(dataRaiseHand[0].isHandRaise==false)
                         {
         this.setState({enableRaiseHand:false})
+                
                         }
         
                         
@@ -669,6 +670,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="ENABLE_RAISE_HAND")
 
 {
     this.setState({enableRaiseHand:true})
+
+
 }
 if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
 
@@ -1542,7 +1545,19 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
         this._doToggleRaiseHand();
         }else{
+
+            if(this.props._attendeeInfo.userType !== UserType.Viewer)
+            {
+                sendAnalytics(createToolbarEvent(
+                    'raise.hand',
+                    { enable: !this.props._raisedHand }));
+        
+                this._doToggleRaiseHand();
+            }
             //alert("Disable by Admin")
+
+
+
         }
     }
 

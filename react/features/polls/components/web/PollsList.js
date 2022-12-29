@@ -2,12 +2,13 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+
 import { COMMAND_NEW_POLL } from '../../constants';
 
 import { Icon, IconChatUnread } from '../../../base/icons';
 import { browser } from '../../../base/lib-jitsi-meet';
-
+import {clearPolls, receivePoll } from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
 import PollItem from './PollItem';
 
 const PollsList = () => {
@@ -15,7 +16,7 @@ const PollsList = () => {
 
    const polls = useSelector(state => state['features/polls'].polls);
    const conference = useSelector(state => state['features/base/conference'].conference);
-
+   const dispatch = useDispatch();
    const socketPollEndMessage= useSelector((state: IReduxState) =>  state["features/base/cs-socket"].socketPollEndMessage);
    const socketPollStartMessage= useSelector((state: IReduxState) => state["features/base/cs-socket"].socketPollStartMessage);
   
@@ -30,7 +31,8 @@ const PollsList = () => {
         
    if(socketPollStartMessage!=null)
    {
-
+    Object.assign(polls, [])
+    dispatch(clearPolls());
     setPollStartMessage(socketPollStartMessage)
     if(socketPollStartMessage!=null)
     {
