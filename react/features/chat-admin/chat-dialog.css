@@ -10,7 +10,7 @@
 .Left-box {
     width: 25%;
     /* padding:10; */
-    background-color: darkcyan;
+    background-color: rgb(27, 38, 56);
     align-items: center;
     color: white;
 
@@ -42,23 +42,48 @@
 }
 
 .Participants-list {
-    font-size: 15px;
-    font-weight: 700;
-    padding-block: 5px 7px;
-    border-bottom: 0.5px solid black;
+    display:flex;
+    flex-direction: row;
+    /* justify-content:flex-start; */
+    align-items: center;
+    /* font-size: 15px;
+    font-weight: 700; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid grey;
+    cursor: pointer;
+    /* background-color: blue; */
+}
+.Participants-list:hover {
+    background-color: rgb(24, 30, 40);
+}
+.Participants-list:active {
+    background-color: rgb(59, 64, 73);
+}
+
+.Name-avatar{
+    display:flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+    background-color:yellowgreen;
+    align-items: center;
+    justify-content: center;
+    /* text-align: center;
+    margin: auto */
 }
 .Right-box {
     width: 75%;
     padding:10;
-    background-color:'#f5f5f5';
+    background-color:rgb(27, 38, 56);
     align-items: center;
-    color: black;
+    color: white;
 
 }
 .Right-box-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content:flex-start;
     align-items: center;
 }
 .Right-box-header-text{
@@ -67,10 +92,13 @@
 }
 .Right-box-body {
     display: flex;
+    flex-direction:column;
     height: 85%;
-    justify-content: center;
-    align-items: center;
-    /* background-color: blue; */
+    overflow: auto;
+    color: white;
+    /* justify-content: center;
+    align-items: center; */
+    /* background-color: yellow; */
     margin: 5px 10px 5px;
 }
 .Right-box-footer {
@@ -105,24 +133,31 @@
     margin:4;
     border-width: 0;
 }
+.btn-close{
+    right: 10;
+    top:10;
+    position: absolute;
+    cursor: pointer;
+
+}
 .btn-danger{
     background-color:red;
     color: 'white';
+    margin-left: 10px;
     border-radius:25px;
     padding-block: 8px;
     padding-inline: 10px;
     border-width: 0;
 }
 .Send-msg-button{
-    min-width:12%;
-    min-height:10% ;
-    background-color:lightseagreen;
+    min-width:10%;
+    min-height:8% ;
+    background-color:#246FE5;
     margin-left: 5px;
     color: 'white';
     border-radius:25px;
-    padding: 10px ;
+    padding: 5px ;
     border-width: 0;
-    font-size: 14px;
 }
 
 .text {

@@ -3,11 +3,12 @@ import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
 import { useDispatch } from 'react-redux';
 import { css } from '@emotion/react';
 
-import { IAttendeeInfo } from '../../base/app/types';
+import UserType, { IAttendeeInfo } from '../../base/app/types';
 import '../chat-dialog.css';
 import { hideDialog } from '../../base/dialog';
 import { ApiConstants } from '../../../../ApiConstants';
 import { ApplicationConstants } from '../../../../ApplicationConstants';
+import { Icon, IconChatSendBtn, IconCloseX } from '../../base/icons';
 
 const boldStyles = css({
     backgroundColor: 'white',
@@ -16,6 +17,7 @@ const boldStyles = css({
 
 const ChatDialog = () => {
     const [attendeeList, setAttendeeList] = useState();
+    const [userChat, setUserChat] = useState();
     const dispatch = useDispatch();
 
     function _hideDialog() {
@@ -45,11 +47,47 @@ const ChatDialog = () => {
             });
     };
 
+    /**
+     * Fetching attendee API.
+     */
+    const FetchChatAPI = async (id) => {
+        // this.setState({loading:true});
+
+        fetch(
+            ApplicationConstants.API_BASE_URL +
+                'chat?meetingId=' +
+                ApplicationConstants.meetingId +
+                `&userId=${id}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('alam chat', data);
+                setUserChat(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+    const randColor = () => {
+        return (
+            '#' +
+            Math.floor(Math.random() * 16777215)
+                .toString(16)
+                .padStart(6, '0')
+                .toUpperCase()
+        );
+    };
+
+    console.log(randColor());
+
     useEffect(() => {
         FetchAttendees();
+        // FetchChatAPI()
+        randColor();
     }, []);
 
-    console.log('alam attendeeList', attendeeList);
+    console.log('alam attendeeList', userChat);
+    console.log('alam ApplicationConstants', ApplicationConstants.userId);
 
     return (
         <Modal
@@ -88,9 +126,21 @@ const ChatDialog = () => {
                         }}
                     >
                         {attendeeList?.map((user) => (
-                            <ul className="Participants-list" key={user.userId}>
-                                {user.userName}
-                            </ul>
+                            <div
+                                className="Participants-list"
+                                key={user.userId}
+                                onClick={() => FetchChatAPI(user.userId)}
+                            >
+                                <h4 className="Name-avatar">
+                                    {user.userName
+                                        .split(' ')
+                                        .reduce(
+                                            (acc, subname) => acc + subname[0],
+                                            ''
+                                        )}
+                                </h4>
+                                <h4>{user.userName}</h4>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -100,11 +150,44 @@ const ChatDialog = () => {
                             viewer@gmail.com | 9896493653
                         </h5>{' '}
                         <button className="btn-danger">Block User</button>{' '}
+                        <Icon
+                            className="btn-close"
+                            onClick={_hideDialog}
+                            size={26}
+                            src={IconCloseX}
+                        />
                     </div>
-                    <div className="Right-box-body">Body</div>
+                    <div className="Right-box-body">
+                        {userChat?.map((chat) =>
+                            chat.fromUserType === UserType.Admin ? (
+                                <h5
+                                    key={chat.id}
+                                    style={{
+                                        backgroundColor: '#242528',
+                                        color: 'white',
+                                        alignSelf: 'flex-end',
+                                    }}
+                                >
+                                    {chat.fromUserId}
+                                    {chat.message}
+                                </h5>
+                            ) : (
+                                <h5
+                                    key={chat.id}
+                                    style={{
+                                        backgroundColor: '#242528',
+                                        color: 'white',
+                                        alignSelf: 'flex-start',
+                                    }}
+                                >
+                                    {chat.message}
+                                </h5>
+                            )
+                        )}
+                    </div>
 
                     <div className="Right-box-footer">
-                        <div className='Send-msg-container'>
+                        <div className="Send-msg-container">
                             <input
                                 // aria-label = { accessibilityLabel }
                                 // autoFocus = { true }
@@ -116,15 +199,10 @@ const ChatDialog = () => {
                                 placeholder={'Send message...'}
                                 // value = {  }
                             />
-                            <button className="Send-msg-button">Send</button>
+                            <button className="Send-msg-button">
+                                <Icon size={26} src={IconChatSendBtn} />
+                            </button>
                         </div>
-                        <button
-                            className="btn-danger"
-                            role={'button'}
-                            onClick={_hideDialog}
-                        >
-                            Close Chat
-                        </button>
                     </div>
                 </div>
             </div>
