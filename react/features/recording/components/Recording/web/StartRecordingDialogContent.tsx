@@ -375,14 +375,14 @@ class StartRecordingDialogContent extends AbstractStartRecordingDialogContent<IP
                                 </Container>
                             </Container>
                         )}
-                        <Text className = 'local-recording-warning text'>
+                        {/* <Text className = 'local-recording-warning text'>
                             {t('recording.localRecordingWarning')}
                         </Text>
                         {_localRecordingNoNotification && !localRecordingOnlySelf
                             && <Text className = 'local-recording-warning notification'>
                                 {t('recording.localRecordingNoNotificationWarning')}
                             </Text>
-                        }
+                        } */}
                     </>
                 )}
             </>
