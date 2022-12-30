@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
-import { socketSendCommandMessage } from "../../../base/cs-socket/actions";
+import { socketSendCommandMessage  } from "../../../base/cs-socket/actions";
+
 import { IReduxState } from '../../../app/types';
 import UserType  from '../../../base/app/types'
 import participantsPaneTheme from '../../../base/components/themes/participantsPaneTheme.json';
@@ -31,6 +32,7 @@ import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs
 import { FooterContextMenu } from './FooterContextMenu';
 import LobbyParticipants from './LobbyParticipants';
 import MeetingParticipants from './MeetingParticipants';
+import { ApiConstants } from '../../../../../ApiConstants';
 
 
 const useStyles = makeStyles()((theme: Theme) => {
@@ -100,6 +102,9 @@ const ParticipantsPane = () => {
     const paneOpen = useSelector(getParticipantsPaneOpen);
     const isBreakoutRoomsSupported = useSelector((state: IReduxState) => state['features/base/conference'])
         .conference?.getBreakoutRooms()?.isSupported();
+
+
+
     const showAddRoomButton = useSelector(isAddBreakoutRoomButtonVisible);
     const showFooter = useSelector(isLocalParticipantModerator);
     const showMuteAllButton = useSelector(isMuteAllVisible);
@@ -107,6 +112,9 @@ const ParticipantsPane = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
+    
+
+    const socketReceivedCommandMessage= useSelector((state: IReduxState) => state["features/base/cs-socket"].socketReceivedCommandMessage);
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
@@ -118,12 +126,53 @@ const ParticipantsPane = () => {
     }, [ contextOpen ]);
 
     useEffect(() => {
+        fetch(
+            ApiConstants.meeting
+        )
+            .then((response) => response.json())
+            .then((dataRaiseHand) => {
+
+                if(dataRaiseHand[0].isHandRaise==false)
+                {
+                    setRaiseHandEvent(false)
+                }
+
+                
+                if(dataRaiseHand[0].isHandRaise==true)
+                {
+                    setRaiseHandEvent(true)
+                }
+                
+
+            })
         window.addEventListener('click', onWindowClickListener);
 
         return () => {
             window.removeEventListener('click', onWindowClickListener);
         };
+     
     }, []);
+
+    useEffect(() => {
+        if(socketReceivedCommandMessage!=null)
+        { 
+if(socketReceivedCommandMessage.permissionType=="ENABLE_RAISE_HAND")
+
+{
+
+    setRaiseHandEvent(true)
+
+    
+}
+if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
+
+{
+    setRaiseHandEvent(false)
+}
+        }
+
+  
+    }, [socketReceivedCommandMessage]);
 
     const onClosePane = useCallback(() => {
         dispatch(close());

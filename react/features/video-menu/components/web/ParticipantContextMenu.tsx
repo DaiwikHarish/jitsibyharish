@@ -196,26 +196,27 @@ const ParticipantContextMenu = ({
             // );
          
 
-        if (!showVolumeSlider && disableRemoteMute) {
+        // if (!showVolumeSlider && disableRemoteMute) {
         
-            buttons2.push(<MuteNewButton key="MuteNewButton"
-            participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
+        //     buttons2.push(<MuteNewButton key="MuteNewButton"
+        //     mute={false}
+        //     participantIDbyjitsi = {participant!.id}
+        //     participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
        
        
-        }
+        // }
+        buttons.push(
+            <MuteButton
+                key = 'mute'
+                participantAPIID = {participant!=undefined? participant!.name!.split('|')[2] :null}
+   
+   
+                participantID = { _getCurrentParticipantId() } />);
+    
         if (!disableRemoteMute) {
-
-            buttons2.push(<MuteNewButton key="MuteNewButton"
-            participantIDbyjitsi = {participant!.id}
-            participantID = {participant!=undefined? participant!.name!.split('|')[2] :null}/>);
        
-       
-            // buttons.push(
-            //     <MuteButton
-            //         key = 'mute'
-            //         participantID = { _getCurrentParticipantId() } />
-            // );
+           
+          
             // buttons.push(
             //     <MuteEveryoneElseButton
             //         key = 'mute-others'
