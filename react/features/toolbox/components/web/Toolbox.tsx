@@ -1684,13 +1684,14 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
                                 key = { key } />))}
 
                         {Boolean(overflowMenuButtons.length) && (
+                          
                             <OverflowMenuButton
                                 ariaControls = 'overflow-menu'
                                 isOpen = { _overflowMenuVisible }
                                 key = 'overflow-menu'
                                 onVisibilityChange = { this._onSetOverflowVisible }
                                 showMobileReactions = {
-                                    _reactionsEnabled && overflowMenuButtons.find(({ key }) => key === 'raisehand')
+                                    this.state.enableRaiseHand?   _reactionsEnabled && overflowMenuButtons.find(({ key }) => key === 'raisehand'):null
                                 }>
                                 <ContextMenu
                                     accessibilityLabel = { t(toolbarAccLabel) }
@@ -1726,6 +1727,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
                                         </ContextMenuItemGroup>))}
                                 </ContextMenu>
                             </OverflowMenuButton>
+
                         )}
 
                         {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo.userType !== UserType.Viewer && (
