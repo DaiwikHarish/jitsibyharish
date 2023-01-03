@@ -356,6 +356,7 @@ let usertype='local'
             
   
      let chatMessage =this.state.messageInput;
+     this.setState({messageInput:""})
      const trimmed = chatMessage;
      const reqBody = {
         "meetingId": ApplicationConstants.meetingId,
@@ -507,10 +508,11 @@ event.stopPropagation();
                       
                         icon = { IconPlane }
                         onClick={() =>  {
-this.setState({messageInput:""})
+                            if(this.state.messageInput.trim()!=""&&this.state.messageInput.trim()!=null&&this.state.messageInput.trim()!=undefined)
 
+{
                         this._setMessage()
-                    
+}
                     }
                     
                     

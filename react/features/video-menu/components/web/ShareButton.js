@@ -122,7 +122,7 @@ if(data.length>0)
               }
               
             }}
-          text = {sreenshare==false?"Enable Sreen share":"Disable Sreen share"}
+          text = {sreenshare==false?"Enable Screen share":"Disable Screen share"}
           />
   );
           }

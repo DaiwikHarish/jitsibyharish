@@ -96,7 +96,8 @@ import { ApplicationConstants } from '../../../ApplicationConstants';
 
     )
     async function qaSend(Question: string) {
-
+if(Question.trim()!="" &&Question.trim()!=undefined &&Question.trim()!=null )
+{
            const reqBody = {
             "meetingId": ApplicationConstants.meetingId,
             "fromUserId": ApplicationConstants.userId,
@@ -124,7 +125,7 @@ import { ApplicationConstants } from '../../../ApplicationConstants';
         
   
      
-
+            }
         
         
 
