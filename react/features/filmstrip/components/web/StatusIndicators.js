@@ -107,7 +107,8 @@ function _mapStateToProps(state, ownProps) {
 
     // Only the local participant won't have id for the time when the conference is not yet joined.
     const participant = getParticipantByIdOrUndefined(state, participantID);
-    //console.log(participant)
+    const [userName, userType,userId] = participant.name.split('|');
+    console.log('alam userType',userType)
     const tracks = state['features/base/tracks'];
 
     let isAudioMuted = true;
@@ -127,8 +128,7 @@ function _mapStateToProps(state, ownProps) {
 
     return {
         _showAudioMutedIndicator: isAudioMuted && audio,
-        _showModeratorIndicator:
-            !disableModeratorIndicator && participant && participant.name.split('|')[1] != "Viewer" && moderator,
+        _showModeratorIndicator: userType && userType !== UserType.Viewer,
         _showScreenShareIndicator: isScreenSharing && screenshare,
         _attendeeInfo : state['features/base/app'].attendeeInfo
     };
