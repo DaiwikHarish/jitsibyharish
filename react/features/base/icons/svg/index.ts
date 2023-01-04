@@ -128,6 +128,9 @@ export { default as IconShareAudio } from './share-audio.svg';
 export { default as IconShareDesktop } from './share-desktop.svg';
 export { default as IconShareDesktopDisable } from './share-desktop-disable.svg';
 export { default as Iconraisehanddisable } from './raisehanddisable.svg';
+export { default as IconUnlock } from './unlock.svg';
+export { default as IconLock } from './lock.svg';
+export { default as IconRefresh } from './refresh.svg';
 
 
 export { default as IconShareDoc } from './share-doc.svg';
