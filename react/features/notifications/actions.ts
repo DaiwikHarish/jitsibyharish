@@ -1,6 +1,7 @@
 import throttle from 'lodash/throttle';
 
 import { IStore } from '../app/types';
+import UserType, { IAttendeeInfo } from '../base/app/types';
 import { NOTIFICATIONS_ENABLED } from '../base/flags/constants';
 import { getFeatureFlag } from '../base/flags/functions';
 import { getParticipantCount } from '../base/participants/functions';
@@ -184,6 +185,7 @@ let joinedParticipantsNames: string[] = [];
  * @type {Function}
  */
 const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+    const _attendeeInfo : IAttendeeInfo | undefined = getState()['features/base/app'].attendeeInfo
     const participantCount = getParticipantCount(getState());
 
     // Skip join notifications altogether for large meetings.
@@ -225,7 +227,7 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatc
         };
     }
 
-    if (notificationProps) {
+    if ( _attendeeInfo?.userType !== UserType.Viewer && notificationProps) {
         dispatch(
             showNotification(notificationProps, NOTIFICATION_TIMEOUT_TYPE.SHORT));
     }
@@ -252,6 +254,7 @@ let leftParticipantsNames: string[] = [];
  * @type {Function}
  */
 const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+    const _attendeeInfo : IAttendeeInfo | undefined = getState()['features/base/app'].attendeeInfo
     const participantCount = getParticipantCount(getState());
 
     // Skip left notifications altogether for large meetings.
@@ -293,7 +296,7 @@ const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], 
         };
     }
 
-    if (notificationProps) {
+    if ( _attendeeInfo?.userType !== UserType.Viewer && notificationProps) {
         dispatch(
             showNotification(notificationProps, NOTIFICATION_TIMEOUT_TYPE.SHORT));
     }

@@ -99,6 +99,7 @@ interface IProps extends WithTranslation {
      * The translated "you" text.
      */
     youText?: string;
+    
 }
 
 const useStyles = makeStyles()((theme: Theme) => {
@@ -179,17 +180,20 @@ function ParticipantItem({
             // isModerator && !disableModeratorIndicator
             //     && 
             userType === UserType.Admin &&
-                <div className = { styles.moderatorLabel }>
+                <div id={participantID} data-mute="true"  data-screenshare="true" className = { styles.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}
             { 
             userType === UserType.Presenter &&
-                <div className = { styles.moderatorLabel }>
+                <div id={participantID} data-mute="true" data-screenshare="true" className = { styles.moderatorLabel }>
                 Host
             </div>}
             { 
             userType === UserType.Viewer &&
-                <div className = { styles.moderatorLabel }>
+                <div id={participantID}   className = { styles.moderatorLabel }  data-screenshare="false" data-mute="false">
+
+{/* <div id={participantID}  className = { styles.moderatorLabel }> */}
+
                 Participant
             </div>}
         </>

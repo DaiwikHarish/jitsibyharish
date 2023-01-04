@@ -137,7 +137,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                         <Input
                             readOnly={true}
                             id = 'setDisplayName'
-                            label = { t('profile.setDisplayNameLabel') }
+                            label = { 'Displayed Name' }
                             name = 'name'
                             onChange = { this._onDisplayNameChange }
                             placeholder = { t('settings.name') }
@@ -148,7 +148,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
                         <Input
                             readOnly={true}
                             id = 'setEmail'
-                            label = { t('profile.setEmailLabel') }
+                            label = { 'Displayed Email' }
                             name = 'email'
                             onChange = { this._onEmailChange }
                             placeholder = { t('profile.setEmailInput') }

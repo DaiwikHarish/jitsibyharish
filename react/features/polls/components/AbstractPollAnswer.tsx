@@ -10,7 +10,8 @@ import { useBoundSelector } from '../../base/util/hooks';
 import { registerVote, setVoteChanging } from '../actions';
 import { COMMAND_ANSWER_POLL } from '../constants';
 import { IPoll } from '../types';
-
+import { ApiConstants } from '../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../ApplicationConstants';
 /**
  * The type of the React {@code Component} props of inheriting component.
  */
@@ -40,8 +41,7 @@ export type AbstractProps = {
  * @param {React.AbstractComponent} Component - The concrete component.
  * @returns {React.AbstractComponent}
  */
-const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
-
+ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: InputProps) => {
     const { pollId } = props;
 
     const conference: any = useSelector((state: IReduxState) => state['features/base/conference'].conference);
@@ -69,16 +69,131 @@ const AbstractPollAnswer = (Component: ComponentType<AbstractProps>) => (props: 
     const dispatch = useDispatch();
 
     const submitAnswer = useCallback(() => {
-        conference.sendMessage({
-            type: COMMAND_ANSWER_POLL,
-            pollId,
-            answers: checkBoxStates
-        });
+       
+            const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
 
-        sendAnalytics(createPollEvent('vote.sent'));
-        dispatch(registerVote(pollId, checkBoxStates));
+            if(pollidsdiv!=null)
+            {
+            pollidsdiv.style.display = "none";
+            }
 
-        return false;
+
+
+          //  var convertAns_filter=""
+          //  const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+//                 var ele = document.getElementsByTagName(poll.senderId) 
+//                 console.log(ele)
+//                 for(let i = 0; i < ele.length; i++) {
+                      
+//                     console.log(ele[i])
+//                     console.log(ele[i].checked)
+//                         if(ele[i].checked)
+//                           {
+//                             convertAns_filter=poll.answers[i].id;
+                    
+//                 }
+//             }
+
+
+// console.log(convertAns_filter)
+
+let convertAns=checkBoxStates.map((selected,index)=>
+    {
+     
+
+        var ele =document.getElementById(poll.answers[index].id) as HTMLInputElement
+
+        if(ele.checked)
+        { 
+           
+            return        poll.answers[index].id;
+            
+        }
+      
+    }
+
+
+  
+)
+
+var convertAns_filter = convertAns.filter(function (el) {
+    return el != null;
+  });
+
+
+
+const putMethod = {
+    method: 'PUT', // Method itself
+    headers: {
+     'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+    },
+    body: JSON.stringify({
+        "meetingId": ApplicationConstants.meetingId,
+        "userId": ApplicationConstants.userId,
+        "pollQuestionId": poll.senderId,
+        "pollAnswerOptionIds": convertAns_filter,
+       
+    })
+   }
+   
+   // make the HTTP put request using fetch api
+   fetch(ApiConstants.poll, putMethod)
+   .then(response => response.json())
+   .then(data => {
+    
+
+
+const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
+
+//document.getElementById("pollids"+poll.senderId)
+
+if(pollidsdiv!=null)
+{
+pollidsdiv.style.display = "none";
+}
+
+
+poll.answers.map((answers)=>
+{
+   
+    const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
+    let type = answersidsdiv.getAttribute("type");
+
+  
+    if(type=="radio")
+    {
+        answersidsdiv.disabled=true
+        checkBoxStates.map((selected,index)=>
+        { 
+    if(convertAns_filter[index]==answers.id)
+    {
+     answersidsdiv.disabled=false
+ 
+    }
+        })
+    }
+    else{
+        answersidsdiv.disabled=true
+    }
+
+}
+
+    )
+}) // Manipulate the data retrieved back, if we want to do something with it
+   .catch(err => console.log(err)) // Do something with the error
+
+
+        // conference.sendMessage({
+        //     type: COMMAND_ANSWER_POLL,
+        //     pollId:poll.senderId,
+        //     answers: checkBoxStates
+        // });
+
+        // sendAnalytics(createPollEvent('vote.sent'));
+        // dispatch(registerVote(pollId, checkBoxStates));
+
+        //return false;
     }, [ pollId, checkBoxStates, conference ]);
 
     const skipAnswer = useCallback(() => {

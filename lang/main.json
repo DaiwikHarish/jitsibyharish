@@ -107,10 +107,41 @@
         "sendButton": "Send",
         "smileysPanel": "Emoji panel",
         "tabs": {
+            
             "chat": "Chat",
-            "polls": "Polls"
+            "polls": "Polls",
+            "QA": "QA"
         },
         "title": "Chat",
+        "titleWithPolls": "Chat and Polls",
+        "you": "you"
+    },
+    "QA": {
+        "enter": "Enter room",
+        "error": "Error: your message was not sent. Reason: {{error}}",
+        "fieldPlaceHolder": "Type your Question here",
+        "lobbyChatMessageTo": "Lobby chat message to {{recipient}}",
+        "message": "Question",
+        "messageAccessibleTitle": "{{user}} says:",
+        "messageAccessibleTitleMe": "me says:",
+        "messageTo": "Private message to {{recipient}}",
+        "messagebox": "Type a Question",
+        "newMessages": "New Question",
+        "nickname": {
+            "popover": "Choose a nickname",
+            "title": "Enter a nickname to use chat",
+            "titleWithPolls": "Enter a nickname to use chat and polls"
+        },
+        "noMessagesMessage": "There are no messages in the meeting yet. Start a conversation here!",
+        "privateNotice": "Private message to {{recipient}}",
+        "sendButton": "Send",
+        "smileysPanel": "Emoji panel",
+        "tabs": {
+            "chat": "Chat",
+            "polls": "Polls",
+            "QA": "QA"
+        },
+        "title": "QA",
         "titleWithPolls": "Chat and Polls",
         "you": "you"
     },
@@ -386,6 +417,7 @@
         "shareVideoLinkError": "Please provide a correct video link.",
         "shareVideoTitle": "Share video",
         "shareYourScreen": "Share your screen",
+
         "shareYourScreenDisabled": "Screen sharing disabled.",
         "sharedVideoDialogError": "Error: Invalid URL",
         "sharedVideoLinkPlaceholder": "YouTube link or direct video link",
@@ -777,7 +809,7 @@
         },
         "results": {
             "changeVote": "Change vote",
-            "empty": "There are no polls in the meeting yet. Start a poll here!",
+            "empty": "There are no polls in the meeting yet.",
             "hideDetailedResults": "Hide details",
             "showDetailedResults": "Show details",
             "vote": "Vote"
@@ -1081,6 +1113,8 @@
             "help": "Help",
             "invite": "Invite people",
             "kick": "Kick participant",
+            "EnableScreenShare": "Enable Screen Share",
+            "DisableScreenShare": "Disable Screen Share",
             "laugh": "Laugh",
             "leaveConference": "Leave meeting",
             "like": "Thumbs Up",

@@ -9,6 +9,7 @@ import { IAudioOnlyState } from '../base/audio-only/reducer';
 import { IConferenceState } from '../base/conference/reducer';
 import { IConfigState } from '../base/config/reducer';
 import { IConnectionState } from '../base/connection/reducer';
+import { ICSSocketState } from '../base/cs-socket/reducer';
 import { IDevicesState } from '../base/devices/types';
 import { IDialogState } from '../base/dialog/reducer';
 import { IFlagsState } from '../base/flags/reducer';
@@ -29,6 +30,8 @@ import { IUserInteractionState } from '../base/user-interaction/reducer';
 import { IBreakoutRoomsState } from '../breakout-rooms/reducer';
 import { ICalendarSyncState } from '../calendar-sync/reducer';
 import { IChatState } from '../chat/reducer';
+
+
 import { IDeepLinkingState } from '../deep-linking/reducer';
 import { IDropboxState } from '../dropbox/reducer';
 import { IDynamicBrandingState } from '../dynamic-branding/reducer';
@@ -92,6 +95,7 @@ export interface IReduxState {
     'features/base/conference': IConferenceState;
     'features/base/config': IConfigState;
     'features/base/connection': IConnectionState;
+    'features/base/cs-socket': ICSSocketState;
     'features/base/devices': IDevicesState;
     'features/base/dialog': IDialogState;
     'features/base/flags': IFlagsState;
@@ -113,6 +117,7 @@ export interface IReduxState {
     'features/calendar-sync': ICalendarSyncState;
     'features/call-integration': ICallIntegrationState;
     'features/chat': IChatState;
+    
     'features/deep-linking': IDeepLinkingState;
     'features/dropbox': IDropboxState;
     'features/dynamic-branding': IDynamicBrandingState;

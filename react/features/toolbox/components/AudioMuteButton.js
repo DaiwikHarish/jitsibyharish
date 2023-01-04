@@ -75,6 +75,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
                 null,
                 this._onKeyboardShortcut,
                 'keyboardShortcuts.mute');
+                this._setAudioMuted(false)
     }
 
     /**

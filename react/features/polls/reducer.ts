@@ -90,7 +90,8 @@ ReducerRegistry.register<IPollsState>('features/polls', (state = INITIAL_STATE, 
 
                 return {
                     name: _answer.name,
-                    voters: answerVoters
+                    voters: answerVoters,
+                    id:_answer.id
                 };
             });
 
@@ -124,7 +125,7 @@ ReducerRegistry.register<IPollsState>('features/polls', (state = INITIAL_STATE, 
     }
 
     case REGISTER_VOTE: {
-        const { answers, pollId }: { answers: Array<boolean> | null; pollId: string; } = action;
+        const { answers, pollId }: { answers: Array<boolean> ; pollId: string; } = action;
 
         return {
             ...state,

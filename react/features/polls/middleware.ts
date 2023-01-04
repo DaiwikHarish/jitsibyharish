@@ -37,7 +37,9 @@ const parsePollData = (pollData: IPollData): IPoll | null => {
     if (typeof pollData !== 'object' || pollData === null) {
         return null;
     }
-    const { id, senderId, question, answers } = pollData;
+    const { id, senderId, groupname,
+        pollStatistics,
+        pollPercentage, quetionId,question,seleted, answers } = pollData;
 
     if (typeof id !== 'string' || typeof senderId !== 'string'
         || typeof question !== 'string' || !(answers instanceof Array)) {
@@ -47,10 +49,15 @@ const parsePollData = (pollData: IPollData): IPoll | null => {
     return {
         changingVote: false,
         senderId,
+        seleted,
         question,
         showResults: true,
-        lastVote: null,
-        answers
+        lastVote: [],
+        answers,
+        quetionId,
+        groupname,
+        pollStatistics,
+        pollPercentage
     };
 };
 
@@ -105,18 +112,26 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 function _handleReceivePollsMessage(data: any, dispatch: IStore['dispatch']) {
     switch (data.type) {
     case COMMAND_NEW_POLL: {
-        const { question, answers, pollId, senderId } = data;
+        const { question, answers,  groupname,
+            pollStatistics,
+            pollPercentage, quetionId,pollId,seleted, senderId } = data;
 
         const poll = {
             changingVote: false,
             senderId,
             showResults: false,
-            lastVote: null,
+            lastVote: [],
             question,
+            quetionId,
+            seleted,
+            groupname,
+            pollStatistics,
+            pollPercentage,
             answers: answers.map((answer: IAnswer) => {
                 return {
                     name: answer,
-                    voters: []
+                    voters: [],
+             
                 };
             })
         };

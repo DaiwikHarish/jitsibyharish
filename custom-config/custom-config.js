@@ -1,4 +1,8 @@
 
+config.appUrl='https://dev.awesomereviewstream.com';
+config.apiUrl=config.appUrl + '/svr/api/';
+config.socketUrl=config.appUrl + '/svr/ws/one2many/';
+
 // Custom Configuration
 config.enableWelcomePage = false;
 

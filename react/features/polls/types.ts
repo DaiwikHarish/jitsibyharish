@@ -27,7 +27,7 @@ export interface IPoll {
      * An array of answers:
      * the name of the answer name and a map of ids and names of voters voting for this option.
      */
-    answers: Array<{ name: string; voters: Array<string>; }>;
+    answers: Array<{ name: string; id: string; voters: Array<string>; }>;
 
     /**
      * Whether the poll vote is being edited/changed.
@@ -38,7 +38,7 @@ export interface IPoll {
      * The last sent votes for this poll, or null if voting was skipped
      * Note: This is reset when voting/skipping, not when clicking "Change vote".
      */
-    lastVote: Array<boolean> | null;
+    lastVote: Array<boolean>
 
     /**
      * The question asked by this poll.
@@ -54,6 +54,11 @@ export interface IPoll {
      * Whether the results should be shown instead of the answer form.
      */
     showResults: boolean;
+    seleted:boolean;
+    quetionId: string;
+    groupname:string,
+    pollStatistics:string,
+    pollPercentage:string,
 }
 
 export interface IPollData extends IPoll {

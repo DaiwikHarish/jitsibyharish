@@ -9,6 +9,7 @@ import { connect } from '../../../base/redux/functions';
 import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
 import { areSmileysDisabled } from '../../functions';
+import {IUrlInfo} from '../../../base/app/types'
 
 // @ts-ignore
 import SmileysPanel from './SmileysPanel';
@@ -32,6 +33,9 @@ interface IProps extends WithTranslation {
      * Callback to invoke on message send.
      */
     onSend: Function;
+
+    _urlInfo:IUrlInfo;
+
 }
 
 /**
@@ -102,7 +106,7 @@ class ChatInput extends Component<IProps, IState> {
      */
     render() {
         return (
-            <div className = { `chat-input-container${this.state.message.trim().length ? ' populated' : ''}` }>
+          
                 <div id = 'chat-input' >
                     {!this.props._areSmileysDisabled && this.state.showSmileysPanel && (
                         <div
@@ -117,6 +121,7 @@ class ChatInput extends Component<IProps, IState> {
                     <Input
                         autoFocus = { true }
                         className = 'chat-input'
+                        id="chatMessage"
                         icon = { this.props._areSmileysDisabled ? undefined : IconSmile }
                         iconClick = { this._toggleSmileysPanel }
                         maxRows = { 5 }
@@ -126,14 +131,14 @@ class ChatInput extends Component<IProps, IState> {
                         ref = { this._textArea }
                         textarea = { true }
                         value = { this.state.message } />
-                    <Button
+                    {/* <Button
                         accessibilityLabel = { this.props.t('chat.sendButton') }
                         disabled = { !this.state.message.trim() }
                         icon = { IconPlane }
                         onClick = { this._onSubmitMessage }
-                        size = { isMobileBrowser() ? 'large' : 'medium' } />
+                        size = { isMobileBrowser() ? 'large' : 'medium' } /> */}
                 </div>
-            </div>
+         
         );
     }
 
@@ -153,10 +158,15 @@ class ChatInput extends Component<IProps, IState> {
      * @returns {void}
      */
     _onSubmitMessage() {
+        
         const trimmed = this.state.message.trim();
 
         if (trimmed) {
+            
             this.props.onSend(trimmed);
+
+//post message by API (Harish)
+
 
             this.setState({ message: '' });
 
@@ -206,6 +216,7 @@ class ChatInput extends Component<IProps, IState> {
      */
     _onMessageChange(value: string) {
         this.setState({ message: value });
+
     }
 
     /**
@@ -256,7 +267,8 @@ class ChatInput extends Component<IProps, IState> {
  */
 const mapStateToProps = (state: IReduxState) => {
     return {
-        _areSmileysDisabled: areSmileysDisabled(state)
+        _areSmileysDisabled: areSmileysDisabled(state),
+        _urlInfo: state["features/base/app"].urlInfo,
     };
 };
 

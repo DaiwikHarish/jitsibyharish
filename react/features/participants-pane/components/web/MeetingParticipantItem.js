@@ -29,7 +29,9 @@ import {
 } from '../../functions';
 
 import ParticipantActionEllipsis from './ParticipantActionEllipsis';
+// @ts-ignore
 import ParticipantItem from './ParticipantItem';
+// @ts-ignore
 import ParticipantQuickAction from './ParticipantQuickAction';
 
 type Props = {
@@ -210,7 +212,7 @@ function MeetingParticipantItem({
 
     const [ hasAudioLevels, setHasAudioLevel ] = useState(false);
     const [ registeredEvent, setRegisteredEvent ] = useState(false);
-    console.log('alam item',_displayName)
+    //console.log('alam item',_displayName)
     const [userName, userType] = _displayName.split('|');
 
     const _updateAudioLevel = useCallback(level => {
@@ -276,7 +278,7 @@ function MeetingParticipantItem({
 
             {!overflowDrawer && !_participant?.fakeParticipant
                 && <>
-                    {!isInBreakoutRoom && (
+                    {/* {!isInBreakoutRoom && (
                         <ParticipantQuickAction
                             askUnmuteText = { askToUnmuteText }
                             _attendeeInfo = {_attendeeInfo}
@@ -285,7 +287,7 @@ function MeetingParticipantItem({
                             muteParticipantButtonText = { muteParticipantButtonText }
                             participantID = { _participantID }
                             participantName = { userName } />
-                    )}
+                    )} */}
                     <ParticipantActionEllipsis
                         accessibilityLabel = { participantActionEllipsisLabel }
                         onClick = { onContextMenu } />

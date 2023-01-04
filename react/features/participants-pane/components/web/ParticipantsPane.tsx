@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
+import { socketSendCommandMessage  } from "../../../base/cs-socket/actions";
 
 import { IReduxState } from '../../../app/types';
 import UserType  from '../../../base/app/types'
@@ -27,10 +28,11 @@ import {
 import { AddBreakoutRoomButton } from '../breakout-rooms/components/web/AddBreakoutRoomButton';
 // @ts-ignore
 import { RoomList } from '../breakout-rooms/components/web/RoomList';
-
+import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs-socket/types";
 import { FooterContextMenu } from './FooterContextMenu';
 import LobbyParticipants from './LobbyParticipants';
 import MeetingParticipants from './MeetingParticipants';
+import { ApiConstants } from '../../../../../ApiConstants';
 
 
 const useStyles = makeStyles()((theme: Theme) => {
@@ -100,6 +102,9 @@ const ParticipantsPane = () => {
     const paneOpen = useSelector(getParticipantsPaneOpen);
     const isBreakoutRoomsSupported = useSelector((state: IReduxState) => state['features/base/conference'])
         .conference?.getBreakoutRooms()?.isSupported();
+
+
+
     const showAddRoomButton = useSelector(isAddBreakoutRoomButtonVisible);
     const showFooter = useSelector(isLocalParticipantModerator);
     const showMuteAllButton = useSelector(isMuteAllVisible);
@@ -107,10 +112,13 @@ const ParticipantsPane = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
+    
+
+    const socketReceivedCommandMessage= useSelector((state: IReduxState) => state["features/base/cs-socket"].socketReceivedCommandMessage);
 
     const [ contextOpen, setContextOpen ] = useState(false);
     const [ searchString, setSearchString ] = useState('');
-
+    const [ raiseHandEvent, setRaiseHandEvent ] = useState(false);
     const onWindowClickListener = useCallback((e: any) => {
         if (contextOpen && !findAncestorByClass(e.target, classes.footerMoreContainer)) {
             setContextOpen(false);
@@ -118,12 +126,53 @@ const ParticipantsPane = () => {
     }, [ contextOpen ]);
 
     useEffect(() => {
+        fetch(
+            ApiConstants.meeting
+        )
+            .then((response) => response.json())
+            .then((dataRaiseHand) => {
+
+                if(dataRaiseHand[0].isHandRaise==false)
+                {
+                    setRaiseHandEvent(false)
+                }
+
+                
+                if(dataRaiseHand[0].isHandRaise==true)
+                {
+                    setRaiseHandEvent(true)
+                }
+                
+
+            })
         window.addEventListener('click', onWindowClickListener);
 
         return () => {
             window.removeEventListener('click', onWindowClickListener);
         };
+     
     }, []);
+
+    useEffect(() => {
+        if(socketReceivedCommandMessage!=null)
+        { 
+if(socketReceivedCommandMessage.permissionType=="ENABLE_RAISE_HAND")
+
+{
+
+    setRaiseHandEvent(true)
+
+    
+}
+if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
+
+{
+    setRaiseHandEvent(false)
+}
+        }
+
+  
+    }, [socketReceivedCommandMessage]);
 
     const onClosePane = useCallback(() => {
         dispatch(close());
@@ -136,7 +185,45 @@ const ParticipantsPane = () => {
     const onMuteAll = useCallback(() => {
         dispatch(openDialog(MuteEveryoneDialog));
     }, []);
+    const RaiseHand = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.DISABLE_RAISE_HAND,
+                CommandType.TO_ALL_USER
+            )
+        )
+       
+        setRaiseHandEvent(false)
 
+    }, []);
+    const EnableRaiseHand = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.ENABLE_RAISE_HAND,
+                CommandType.TO_ALL_USER
+            )
+        )
+        setRaiseHandEvent(true)
+
+    }, []);
+
+
+    
+     const MuteAll = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.MUTE_MIC,
+                CommandType.TO_ALL_USER
+            )
+        )
+        
+    }, []);
     const onToggleContext = useCallback(() => {
         setContextOpen(open => !open);
     }, []);
@@ -163,16 +250,38 @@ const ParticipantsPane = () => {
                     {isBreakoutRoomsSupported && <RoomList searchString = { searchString } />}
                     {/* {showAddRoomButton && <AddBreakoutRoomButton />} */}
                 </div>
-                {_attendeeInfo?.userType === UserType.Admin &&  showFooter && (
+                {/* showFooter && */}
+                {_attendeeInfo?.userType != UserType.Viewer  &&  (
                     <div className = { classes.footer }>
-                        {showMuteAllButton && (
+
+<Button
+                                accessibilityLabel = "Mute All"
+                                labelKey = "Mute All"
+                                onClick = { MuteAll }
+                                type = { BUTTON_TYPES.SECONDARY } />
+
+{raiseHandEvent?
+<Button
+                                accessibilityLabel = "Disable Raise Hand"
+                                labelKey = "Disable RaiseHand"
+                                onClick = { RaiseHand }
+                                type = { BUTTON_TYPES.SECONDARY } />
+                                :<Button
+                                accessibilityLabel = "Enable Raise Hand"
+                                labelKey = "Enable RaiseHand"
+                                onClick = { EnableRaiseHand }
+                                type = { BUTTON_TYPES.SECONDARY } />}
+
+
+
+                        {/* {showMuteAllButton && (
                             <Button
                                 accessibilityLabel = { t('participantsPane.actions.muteAll') }
                                 labelKey = { 'participantsPane.actions.muteAll' }
                                 onClick = { onMuteAll }
                                 type = { BUTTON_TYPES.SECONDARY } />
-                        )}
-                        {showMoreActionsButton && (
+                        )} */}
+                        {/* {showMoreActionsButton && (
                             <div className = { classes.footerMoreContainer }>
                                 <Button
                                     accessibilityLabel = { t('participantsPane.actions.moreModerationActions') }
@@ -185,7 +294,7 @@ const ParticipantsPane = () => {
                                     onDrawerClose = { onDrawerClose }
                                     onMouseLeave = { onToggleContext } />
                             </div>
-                        )}
+                        )} */}
                     </div>
                 )}
             </div>
