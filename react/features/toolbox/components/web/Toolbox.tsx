@@ -168,6 +168,7 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
+import QuestionAnswer from '../../../qa-admin/components/qa-admin';
 
 
 
@@ -453,6 +454,7 @@ this.state={
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this._onShortcutSpeakerStats = this._onShortcutSpeakerStats.bind(this);
         this._onEscKey = this._onEscKey.bind(this);
+        this._openDialog = this._openDialog.bind(this);
     }
 
     /**
@@ -885,6 +887,11 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         this.props.dispatch(toggleDialog(VideoQualityDialog));
     }
 
+    _openDialog() {
+            console.log("alam _openDialog")
+            this.props.dispatch(openDialog(QuestionAnswer));
+        }
+
     /**
      * Dispaches an action to toggle tile view.
      *
@@ -941,10 +948,10 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             group: 1
         };
 
-        const chat = _attendeeInfo.userType === UserType.Viewer && {
+        const chat = _attendeeInfo.userType !== UserType.Presenter && {
             key: 'chat',
             Content: ChatButton,
-            handleClick: this._onToolbarToggleChat,
+            handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
             group: 2
         };
 
