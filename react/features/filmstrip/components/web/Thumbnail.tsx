@@ -1041,7 +1041,7 @@ class Thumbnail extends Component<IProps, IState> {
                     ? <span id = 'localVideoWrapper'>{video}</span>
                     : video)}
                 <div className = { classes.containerBackground } />
-                {/* <div
+                <div
                     className = { clsx(classes.indicatorsContainer,
                         classes.indicatorsTopContainer,
                         _thumbnailType === THUMBNAIL_TYPE.TILE && 'tile-view-mode'
@@ -1056,7 +1056,7 @@ class Thumbnail extends Component<IProps, IState> {
                         popoverVisible = { popoverVisible }
                         showPopover = { this._showPopover }
                         thumbnailType = { _thumbnailType } />
-                </div> */}
+                </div>
                 <div
                     className = { clsx(classes.indicatorsContainer,
                         classes.indicatorsBottomContainer,
