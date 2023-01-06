@@ -996,7 +996,7 @@ class Toolbox extends Component<IProps, AppState> {
             handleClick: this._onToolbarOpenVideoQuality,
             group: 2
         };
-        const hostPoll = _attendeeInfo.userType === UserType.Presenter && {
+        const hostPoll = _attendeeInfo?.userType === UserType.Presenter && {
             key: 'hostPoll',
             Content: PollButton,
             handleClick: this._doOpenHostPoll,
