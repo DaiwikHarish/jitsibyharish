@@ -14,7 +14,7 @@ export class ApiConstants {
 
 
 
-    public static meeting                        = ApplicationConstants.API_BASE_URL + "meeting?meetingId="+ApplicationConstants.meetingId;
+    public static meeting                        = ApplicationConstants.API_BASE_URL + "meeting?meetingId="+ApplicationConstants?.meetingId;
  
     
 }

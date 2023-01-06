@@ -200,7 +200,7 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatc
     let notificationProps;
 
     if (joinedParticipantsCount >= 3) {
-        const [userName, userType] = joinedParticipantsNames[0].split('|');
+        const [userName, userType] = joinedParticipantsNames[0]?.split('|');
         notificationProps = {
             titleArguments: {
                 name: userName
@@ -208,8 +208,8 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatc
             titleKey: 'notify.connectedThreePlusMembers'
         };
     } else if (joinedParticipantsCount === 2) {
-        const [userName1, userType1] = joinedParticipantsNames[0].split('|');
-        const [userName2, userType2] = joinedParticipantsNames[1].split('|');
+        const [userName1, userType1] = joinedParticipantsNames[0]?.split('|');
+        const [userName2, userType2] = joinedParticipantsNames[1]?.split('|');
         notificationProps = {
             titleArguments: {
                 first: userName1,
@@ -218,7 +218,7 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: IStore['dispatc
             titleKey: 'notify.connectedTwoMembers'
         };
     } else if (joinedParticipantsCount) {
-        const [userName, userType] = joinedParticipantsNames[0].split('|');
+        const [userName, userType] = joinedParticipantsNames[0]?.split('|');
         notificationProps = {
             titleArguments: {
                 name: userName
@@ -269,7 +269,7 @@ const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], 
     let notificationProps;
 
     if (leftParticipantsCount >= 3) {
-        const [userName, userType] = leftParticipantsNames[0].split('|');
+        const [userName, userType] = leftParticipantsNames[0]?.split('|');
         notificationProps = {
             titleArguments: {
                 name: userName
@@ -277,8 +277,8 @@ const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], 
             titleKey: 'notify.leftThreePlusMembers'
         };
     } else if (leftParticipantsCount === 2) {
-        const [userName1, userType1] = leftParticipantsNames[0].split('|');
-        const [userName2, userType2] = leftParticipantsNames[1].split('|');
+        const [userName1, userType1] = leftParticipantsNames[0]?.split('|');
+        const [userName2, userType2] = leftParticipantsNames[1]?.split('|');
         notificationProps = {
             titleArguments: {
                 first: userName1,
@@ -287,7 +287,7 @@ const _throttledNotifyParticipantLeft = throttle((dispatch: IStore['dispatch'], 
             titleKey: 'notify.leftTwoMembers'
         };
     } else if (leftParticipantsCount) {
-        const [userName, userType] = leftParticipantsNames[0].split('|');
+        const [userName, userType] = leftParticipantsNames[0]?.split('|');
         notificationProps = {
             titleArguments: {
                 name: userName

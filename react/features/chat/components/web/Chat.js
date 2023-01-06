@@ -246,6 +246,9 @@ let usertype="local";
 
    getMessage()
    {
+    if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+        return
+    }
    
      fetch(
         ApiConstants.chat

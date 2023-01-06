@@ -466,6 +466,12 @@ class Toolbox extends Component<IProps, AppState> {
      * @returns {void}
      */
     componentDidMount() {
+  
+        if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+            return
+        }
+
+       
 
 
         fetch(
@@ -918,7 +924,7 @@ class Toolbox extends Component<IProps, AppState> {
 
         const microphone = _clientType === OptionType.ENABLE_ALL && {
             key: 'microphone',
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike ? AudioSettingsButton : MIcrophoneButtonDisable : this.state.enableMike ? AudioSettingsButton : AudioSettingsButton,
+            Content:  _attendeeInfo?.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButton,
             group: 0
         };
 
@@ -935,7 +941,7 @@ class Toolbox extends Component<IProps, AppState> {
             group: 1
         };
 
-        const chat = _attendeeInfo.userType === UserType.Viewer && {
+        const chat = _attendeeInfo?.userType === UserType.Viewer && {
             key: 'chat',
             Content: ChatButton,
             handleClick: this._onToolbarToggleChat,
@@ -944,17 +950,17 @@ class Toolbox extends Component<IProps, AppState> {
 
         const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
             key: 'desktop',
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableDesktop ? ShareDesktopButton : ShareDesktopButtonDisable : ShareDesktopButton,
-            handleClick: _attendeeInfo.userType === UserType.Viewer ? this._onToolbarToggleScreenshare : this._onToolbarToggleScreenshareAdmin,
-
+            Content: _attendeeInfo?.userType === UserType.Viewer ? this.state.enableDesktop? ShareDesktopButton :ShareDesktopButtonDisable:ShareDesktopButton,
+            handleClick:_attendeeInfo?.userType === UserType.Viewer ? this._onToolbarToggleScreenshare:this._onToolbarToggleScreenshareAdmin  ,
+       
             group: 2
         };
 
         const raisehand = {
             key: 'raisehand',
-
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableRaiseHand ? ReactionsMenuButton : ReactionsMenuButtonDisable : ReactionsMenuButton,
-
+          
+            Content: _attendeeInfo?.userType === UserType.Viewer ? this.state.enableRaiseHand? ReactionsMenuButton :ReactionsMenuButtonDisable:ReactionsMenuButton,
+            
             handleClick: this._onToolbarToggleRaiseHand,
             group: 2
         };
@@ -999,14 +1005,14 @@ class Toolbox extends Component<IProps, AppState> {
 
 
 
-        const fullscreen = _attendeeInfo.userType !== UserType.Viewer && !_isIosMobile && {
+        const fullscreen = _attendeeInfo?.userType !== UserType.Viewer && !_isIosMobile && {
             key: 'fullscreen',
             Content: FullscreenButton,
             handleClick: this._onToolbarToggleFullScreen,
             group: 2
         };
 
-        const security = _attendeeInfo.userType !== UserType.Viewer && {
+        const security = _attendeeInfo?.userType !== UserType.Viewer && {
             key: 'security',
             alias: 'info',
             Content: SecurityDialogButton,
@@ -1019,13 +1025,13 @@ class Toolbox extends Component<IProps, AppState> {
             group: 2
         };
 
-        const recording = _attendeeInfo.userType !== UserType.Viewer && {
+        const recording = _attendeeInfo?.userType !== UserType.Viewer && {
             key: 'recording',
             Content: RecordButton,
             group: 2
         };
 
-        const livestreaming = _attendeeInfo.userType !== UserType.Viewer && {
+        const livestreaming = _attendeeInfo?.userType !== UserType.Viewer && {
             key: 'livestreaming',
             Content: LiveStreamButton,
             group: 2
@@ -1037,13 +1043,13 @@ class Toolbox extends Component<IProps, AppState> {
             group: 2
         };
 
-        const shareVideo = _attendeeInfo.userType !== UserType.Viewer && {
+        const shareVideo = _attendeeInfo?.userType !== UserType.Viewer  && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = _attendeeInfo.userType !== UserType.Viewer && this._showAudioSharingButton() && {
+        const shareAudio = _attendeeInfo?.userType !== UserType.Viewer && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -1056,7 +1062,7 @@ class Toolbox extends Component<IProps, AppState> {
         };
 
 
-        const whiteboard = _attendeeInfo.userType !== UserType.Viewer && _whiteboardEnabled && {
+        const whiteboard = _attendeeInfo?.userType !== UserType.Viewer && _whiteboardEnabled && {
             key: 'whiteboard',
             Content: WhiteboardButton,
             group: 3
@@ -1098,7 +1104,7 @@ class Toolbox extends Component<IProps, AppState> {
             group: 4
         };
 
-        const shortcuts = _attendeeInfo.userType !== UserType.Viewer && !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _attendeeInfo?.userType !== UserType.Viewer  && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
@@ -1110,7 +1116,7 @@ class Toolbox extends Component<IProps, AppState> {
         //     group: 4
         // };
 
-        const feedback = _attendeeInfo.userType !== UserType.Viewer && _feedbackConfigured && {
+        const feedback = _attendeeInfo?.userType !== UserType.Viewer && _feedbackConfigured && {
             key: 'feedback',
             Content: FeedbackButton,
             group: 4
@@ -1548,7 +1554,7 @@ class Toolbox extends Component<IProps, AppState> {
             this._doToggleRaiseHand();
         } else {
 
-            if (this.props._attendeeInfo.userType !== UserType.Viewer) {
+            if (this.props._attendeeInfo?.userType !== UserType.Viewer) {
                 sendAnalytics(createToolbarEvent(
                     'raise.hand',
                     { enable: !this.props._raisedHand }));
@@ -1730,7 +1736,7 @@ class Toolbox extends Component<IProps, AppState> {
 
                         )}
 
-                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo.userType !== UserType.Viewer && (
+                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo?.userType !== UserType.Viewer && (
                             _endConferenceSupported
                                 ? <HangupMenuButton
                                     ariaControls='hangup-menu'
@@ -1738,12 +1744,12 @@ class Toolbox extends Component<IProps, AppState> {
                                     key='hangup-menu'
                                     onVisibilityChange={this._onSetHangupVisible}>
                                     <ContextMenu
-                                        accessibilityLabel={t(toolbarAccLabel)}
-                                        className={classes.hangupMenu}
-                                        hidden={false}
-                                        inDrawer={_overflowDrawer}
-                                        onKeyDown={this._onEscKey}>
-                                        {_attendeeInfo.userType !== UserType.Viewer && <EndConferenceButton />}
+                                        accessibilityLabel = { t(toolbarAccLabel) }
+                                        className = { classes.hangupMenu }
+                                        hidden = { false }
+                                        inDrawer = { _overflowDrawer }
+                                        onKeyDown = { this._onEscKey }>
+                                        {_attendeeInfo?.userType !== UserType.Viewer  && <EndConferenceButton />}
                                         <LeaveConferenceButton />
                                     </ContextMenu>
                                 </HangupMenuButton>

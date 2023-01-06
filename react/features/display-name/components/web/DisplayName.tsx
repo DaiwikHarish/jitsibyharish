@@ -84,7 +84,7 @@ const DisplayName = ({
     const configuredDisplayName = useSelector((state: IReduxState) =>
         getParticipantById(state, participantID))?.name ?? '';
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, participantID));
-    const [userName, userType] = nameToDisplay.split('|');
+    const [userName, userType] = nameToDisplay?.split('|');
     const [ editDisplayNameValue, setEditDisplayNameValue ] = useState('');
     const [ isEditing, setIsEditing ] = useState(false);
     const dispatch = useDispatch();

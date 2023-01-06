@@ -198,7 +198,12 @@ class Avatar<P: Props> extends PureComponent<P, State> {
         // an avatar URL anyhow.
         const useReduxLoadableAvatarURL = avatarFailed || !url;
         const effectiveURL = useReduxLoadableAvatarURL ? _loadableAvatarUrl : url;
-        const [userName, userType] = _initialsBase.split('|');
+        let arr = _initialsBase?.split('|');
+        let [userName, userType] = ['',''];
+        if(arr && arr.length > 0){
+            userName = arr[0];
+            userType = arr[1]
+        }
 
         if (effectiveURL) {
             avatarProps.onAvatarLoadError = this._onAvatarLoadError;

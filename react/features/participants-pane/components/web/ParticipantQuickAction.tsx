@@ -80,7 +80,7 @@ const ParticipantQuickAction = ({
     switch (buttonType) {
     case QUICK_ACTION_BUTTON.MUTE: {
         return (
-            _attendeeInfo.userType !== UserType.Viewer &&
+            _attendeeInfo?.userType !== UserType.Viewer &&
             <Button
                 accessibilityLabel = { `${t('participantsPane.actions.mute')} ${participantName}` }
                 className = { styles.button }
@@ -92,7 +92,7 @@ const ParticipantQuickAction = ({
     }
     case QUICK_ACTION_BUTTON.ASK_TO_UNMUTE: {
         return (
-            _attendeeInfo.userType !== UserType.Viewer &&
+            _attendeeInfo?.userType !== UserType.Viewer &&
             <Button
                 accessibilityLabel = { `${t('participantsPane.actions.askUnmute')} ${participantName}` }
                 className = { styles.button }

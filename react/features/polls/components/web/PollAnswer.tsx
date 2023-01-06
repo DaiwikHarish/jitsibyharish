@@ -32,7 +32,7 @@ const PollAnswer = ({
     const { changingVote } = poll;
     const { classes: styles } = useStyles();
 
-    const [userName, userType] = creatorName.split('|');
+    const [userName, userType] = creatorName?.split('|');
     const [loadApi, setLoadApi] = useState(0);
 
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);

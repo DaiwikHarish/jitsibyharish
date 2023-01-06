@@ -422,7 +422,7 @@ class Prejoin extends Component<Props, State> {
             fetch(
                 //'https://dev.awesomereviewstream.com/svr/api' + '/' +`meeting?meetingId=${meetingId}&includeAttendee=false`
            
-                ApiConstants.meeting+'&userId=includeAttendee=false'
+                ApiConstants.meeting+'&includeAttendee=false'
            
                 )
                 .then((response) => response.json())

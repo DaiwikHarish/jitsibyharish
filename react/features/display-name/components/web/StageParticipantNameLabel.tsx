@@ -55,7 +55,7 @@ const StageParticipantNameLabel = () => {
     const largeVideoParticipant: IParticipant = useSelector(getLargeVideoParticipant);
     const selectedId = largeVideoParticipant?.id;
     const nameToDisplay = useSelector((state: IReduxState) => getParticipantDisplayName(state, selectedId));
-    const [userName, userType] = nameToDisplay.split('|');
+    const [userName, userType] = nameToDisplay?.split('|');
 
     const localParticipant = useSelector(getLocalParticipant);
     const localId = localParticipant?.id;

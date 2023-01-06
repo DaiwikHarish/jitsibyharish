@@ -33,6 +33,7 @@ import { FooterContextMenu } from './FooterContextMenu';
 import LobbyParticipants from './LobbyParticipants';
 import MeetingParticipants from './MeetingParticipants';
 import { ApiConstants } from '../../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 
 
 const useStyles = makeStyles()((theme: Theme) => {
@@ -126,6 +127,9 @@ const ParticipantsPane = () => {
     }, [ contextOpen ]);
 
     useEffect(() => {
+        if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+            return
+        }
         fetch(
             ApiConstants.meeting
         )

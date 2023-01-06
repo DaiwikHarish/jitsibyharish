@@ -74,7 +74,7 @@ const SpeakerStatsItem = (props: Props) => {
         props.showFaceExpressions ? ' name-time_expressions-on' : ''
     }`;
     const timeClass = `${props.styles.time} ${props.isDominantSpeaker ? props.styles.dominant : ''}`;
-    const [userName, userType] = props.displayName.split('|');
+    const [userName, userType] = props.displayName?.split('|');
 
     const FaceExpressions = () => FACE_EXPRESSIONS.map(
             expression => (

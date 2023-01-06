@@ -9,8 +9,8 @@ export class ApplicationConstants {
 
       public static API_BASE_URL =config.apiUrl?config.apiUrl:"https://dev.awesomereviewstream.com/svr/api/";
 
-      public static meetingId =urlParams.get('meetingId')
-      public static userId = urlParams.get('userId')
+      public static meetingId =urlParams.get('meetingId') ? urlParams.get('meetingId')  :'14'
+      public static userId = urlParams.get('userId') ? urlParams.get('userId') :'3'
     
     }
 
