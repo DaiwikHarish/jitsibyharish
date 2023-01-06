@@ -119,6 +119,8 @@ export interface IConfig {
     apiUrl?: string;
     bosh?: string;
     appUrl?: string;
+    recordingUserId?: string;
+    recordingMeetingId?: string;
     brandingDataUrl?: string;
     brandingRoomAlias?: string;
     breakoutRooms?: {
