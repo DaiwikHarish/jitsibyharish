@@ -87,10 +87,15 @@ export default function poll() {
                         </div></div>
 
 
+<div>
 
-
+<div>Enter Poll Duration</div>
+<input name="30" id="61" placeholder='Enter Poll Duration' type="text" />
                     <button aria-label="Launch" className="pollbtn" title="Launch" type="button">Launch</button>
-
+                  
+                  
+                  
+                    </div>
                 </div>
 
 
