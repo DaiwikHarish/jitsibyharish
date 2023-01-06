@@ -19,7 +19,7 @@ const PollsPane = (props: AbstractProps) => {
    // const polls = useSelector(state => state['features/polls'].polls);
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);
    
-     
+    Object.assign(polls, [])
     const { createMode, onCreate, setCreateMode, t } = props;
     const [loadApi, setLoadApi] = useState(0);
     const [allPollsdata, setallPolls] = useState([]);
@@ -28,8 +28,8 @@ const PollsPane = (props: AbstractProps) => {
 
     useEffect(() => {
         dispatch(clearPolls());
-      
         
+        Object.assign(polls, [])
         fetch(
             ApiConstants.latestPoll
         )
@@ -108,8 +108,13 @@ const PollsPane = (props: AbstractProps) => {
              
          
             })
+            const groupname = document.getElementById('groupname');
 
+            if(groupname!=null && groupname!=undefined)
+            {
+            groupname.innerHTML =allPolls[0].groupname
 
+            }
 setallPolls(allPolls)
 Object.assign(polls, allPolls)
 console.log(allPolls)
@@ -131,18 +136,18 @@ setLoadApi(1)
   },[])
 
   useEffect(() => {
-
+   // document.getElementById("groupname").innerHTML =allPollsdata[0].groupname
     Object.assign(polls, allPollsdata)
   },[loadApi])
 
     
     return(
     <div className = 'polls-pane-content'>
-    <div style={{textAlign:'center', fontWeight:'bold', fontSize:18, textTransform:'uppercase', padding:3,}}>
-<span id='groupname'>{groupname}</span>
+    <div style={{textAlign:'center', fontWeight:'bold', marginTop:5, fontSize:18, textTransform:'uppercase', padding:3,}}>
+<div style={{height:25}} id='groupname'>{groupname}</div>
 </div>
   <div className = { 'poll-container' } >
-      <PollsList />
+     {loadApi==1? <PollsList  />:null}
   </div>
 
 </div>
