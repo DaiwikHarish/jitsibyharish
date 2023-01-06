@@ -23,7 +23,7 @@ const PollResults = (props: AbstractProps) => {
         toggleIsDetailed,
     } = props;
 
-    const [userName, userType] = creatorName.split('|');
+    const [userName, userType] = creatorName?.split('|');
 
     return (
         <div className = 'poll-results'>
@@ -69,7 +69,7 @@ const PollResults = (props: AbstractProps) => {
 function VoterContainer(props) {
   
     //alert(JSON.stringify(props))
-    const [userName, userType] = props.name.split('|');
+    const [userName, userType] = props.name?.split('|');
     return (
         <li key={props.index}>
             <div className="poll-answer-header">
@@ -100,7 +100,7 @@ function VoterContainer(props) {
 }
 
 function VoterName(props) {
-    const [userName, userType] = props.voter.name.split('|');
+    const [userName, userType] = props.voter.name?.split('|');
     return <li key={props.voter.id}>{userName}</li>;
 }
 

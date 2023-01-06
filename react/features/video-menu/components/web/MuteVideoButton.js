@@ -48,7 +48,7 @@ class MuteVideoButton extends AbstractMuteVideoButton {
         }
 
         return (
-            _attendeeInfo.userType !== UserType.Viewer &&
+            _attendeeInfo?.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('participantsPane.actions.stopVideo') }
                 className = 'mutevideolink'

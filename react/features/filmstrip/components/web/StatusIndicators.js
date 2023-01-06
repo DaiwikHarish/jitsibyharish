@@ -128,7 +128,7 @@ function _mapStateToProps(state, ownProps) {
     return {
         _showAudioMutedIndicator: isAudioMuted && audio,
         _showModeratorIndicator:
-            !disableModeratorIndicator && participant && participant.name.split('|')[1] != "Viewer" && moderator,
+            !disableModeratorIndicator && participant && participant?.name.split('|')[1] != "Viewer" && moderator,
         _showScreenShareIndicator: isScreenSharing && screenshare,
         _attendeeInfo : state['features/base/app'].attendeeInfo
     };
