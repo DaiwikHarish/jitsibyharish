@@ -2,6 +2,7 @@ type ToolbarButtons = 'camera' |
     'chat' |
     'closedcaptions' |
     'desktop' |
+    'hostPoll'|
     'dock-iframe' |
     'download' |
     'embedmeeting' |
@@ -37,6 +38,7 @@ type ButtonsWithNotifyClick = 'camera' |
     'chat' |
     'closedcaptions' |
     'desktop' |
+    'hostPoll'|
     'download' |
     'embedmeeting' |
     'etherpad' |
