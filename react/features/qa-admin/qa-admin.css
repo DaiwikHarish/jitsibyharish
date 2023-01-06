@@ -1,6 +1,34 @@
-.header{
-    width: 95%;
-    padding: 10px;
-    align-self: center;
-    background-color: white;
+.Container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* align-items: center; */
+    justify-content: center;
+    background-color: rgb(29, 35, 46);
 }
+.header{
+    display: flex;
+    width: 97%;
+    height: 3%;
+    padding: 10px;
+    flex-direction: row;
+    /* align-self: center; */
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: yellow; */
+}
+.title{
+    padding: 3px;
+}
+.btn-close{
+    padding: 3px;
+    border-radius: 5px;
+    /* margin:10px; */
+    cursor: pointer;
+}
+.btn-close:hover{
+   /* padding: 5px; */
+   border-radius: 5px;
+   background-color: #3D3D3D;
+     
+     }

@@ -7,6 +7,8 @@ import { IAttendeeInfo } from '../../base/app/types';
 import { hideDialog } from '../../base/dialog';
 import { ApiConstants } from '../../../../ApiConstants';
 import { ApplicationConstants } from '../../../../ApplicationConstants';
+import '../qa-admin.css';
+import { Icon, IconClose } from '../../base/icons';
 
 const boldStyles = css({
     backgroundColor: 'white',
@@ -14,14 +16,11 @@ const boldStyles = css({
 });
 
 const QuestionAnswer = () => {
-
-
-    const { innerWidth: width, innerHeight: height } = window;
     const dispatch = useDispatch();
 
     function _hideDialog() {
         console.log('alam _hideDialog');
-        dispatch(hideDialog(ChatDialog));
+        dispatch(hideDialog(QuestionAnswer));
     }
 
     return (
@@ -34,8 +33,17 @@ const QuestionAnswer = () => {
             isChromeless={true}
             scrollBehavior="inside"
         >
-            
-                   <div className='header'>welcome</div>
+            <div className="Container">
+                <div className="header">
+                    <div className='title'>Questions</div>{' '}
+                    <Icon
+                        className="btn-close"
+                        onClick={_hideDialog}
+                        size={24}
+                        src={IconClose}
+                    />{' '}
+                </div>
+            </div>
         </Modal>
     );
 };
