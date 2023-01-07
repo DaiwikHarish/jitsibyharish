@@ -1,5 +1,6 @@
 // @flow
 
+import { textAlign } from '@mui/system';
 import React, { useCallback } from 'react';
 
 import { translate } from '../../../base/i18n';
@@ -48,7 +49,11 @@ function Header({ onCancel, className, isPollsEnabled, t }: Props) {
         <div
             className = { className || 'chat-dialog-header' }
             role = 'heading'>
-            { t(isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }
+
+                <div style={{width:'100%',marginTop:20, textAlign:'center'}}>
+            { t(isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }</div>
+
+
             <Icon
                 ariaLabel = { t('toolbar.closeChat') }
                 onClick = { onCancel }
