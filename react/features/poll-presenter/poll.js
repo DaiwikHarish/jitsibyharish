@@ -3,8 +3,10 @@ import Select from 'react-select';
 import Input from '../base/ui/components/web/Input';
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
+import Spinner from '@atlaskit/spinner';
 
-import { IconTimer,IconTimerRed ,Icon} from '../base/icons';
+import { IconTimer,IconTimerRed ,IconWarning, Icon} from '../base/icons';
+import { split } from 'lodash';
 
 
 
@@ -23,7 +25,7 @@ export default function poll() {
       const [seconds, setSeconds] = useState(0); // Count sec when its given time
       const [pollRelaunch, setpollRelaunch] = useState(null); //state of relaunched button
       const [apicall, setapicall] = useState(false); // call when to call api
-      
+      const [ loading, setLoading ] = useState(false);
       const Ref = useRef(null);
   
       // The state for our timer
@@ -37,10 +39,12 @@ export default function poll() {
        
         // if(seconds>=60)
         // {
+
+
             let hours   = Math.floor(seconds / 3600);
             let minutes = Math.floor((seconds - (hours * 3600)) / 60);
             let secondstime = seconds - (hours * 3600) - (minutes * 60);
-
+ 
             setTimerCount(
                 (hours > 9 ? hours : '0' + hours) + ':' +
                 (minutes > 9 ? minutes : '0' + minutes) + ':'
@@ -236,6 +240,8 @@ if(apibyseconds>=3)
 
       }
       function getSeletecdpoll(id){
+
+        setLoading(true)
         fetch(
             ApiConstants.pollGroup+"?id="+id
         )
@@ -245,20 +251,38 @@ if(apibyseconds>=3)
             ApiConstants.poll+"?groupId="+id+"&includeStatistic=true")
                .then((response) => response.json())
                .then((selected) => {
+            
               let  startDateTime = data.data[0].startDateTime!=null&& data.data[0].startDateTime!=undefined && data.data[0].startDateTime!=""?true:false
                let status= data.data[0].status=='Launched'?true:false
               setpollRelaunch(startDateTime)
               setpollResult(status)
               if (status)
-              { setapicall(true)
-              setisDisabledSelect(true)
+              { 
+
+                let newDate = new Date();
+                let oldDate = new Date(data.data[0].startDateTime);
+                newDate.setTime(newDate - oldDate);
+
+                
+             
+                // 2023-01-10T12:39:01.281Z
+                //   startDateTime: "2023-01-09T03:15:40.000Z"
+
+                setapicall(true)
+                setisDisabledSelect(true)
+
+             
+
+                setSeconds(Number((new Date(newDate.getTime())/1000).toString().split('.')[0]  ))
+
+            
               }
               else {setapicall(false);  setisDisabledSelect(false)}
 
 
-              
+              setLoading(false)
               setPoll(selected,startDateTime,status)
-        
+           
         })
         
           });
@@ -418,6 +442,10 @@ setpollAns(ansDiv)
         },[])
         const launchPoll = () => {
           //  alert(pollcounttime)
+          setLoading(true)
+          let currentdate = new Date(); 
+
+          currentdate.toISOString();
           setSeconds(0)
           setisDisabledSelect(true)
           pollcounttime>0?   setPolllauched(true):null;
@@ -433,7 +461,7 @@ setpollAns(ansDiv)
 "id": pollSeletedId,
 "isLaunched": true,
 "meetingId":  ApplicationConstants.meetingId,
-"startDateTime": "2023-01-09T03:15:40",
+"startDateTime": currentdate,
 "status": "Launched",
 "updatedUserId": ApplicationConstants.userId,
                    
@@ -447,12 +475,13 @@ setpollAns(ansDiv)
                .then(data => {
                 getSeletecdpoll(pollSeletedId)
                 setapicall(true)
+             
                })
 
 
           }
           const relaunchPoll = () => {
-           
+            setLoading(true)
               const DELETEMethod = {
                   method: 'DELETE', // Method itself
                   headers: {
@@ -476,14 +505,17 @@ setpollAns(ansDiv)
             }
       
           const endedPoll = () => {
+            setLoading(true)
             setPollcounttime(0)
             setapicall(false)
             setPolllauched(false)
             setisDisabledSelect(false)
             setTimer('00:00:00');
-            setTimerCount('00:00:00');
+          //  setTimerCount('00:00:00');
             setPollcounttime(0)
-       
+            let currentdate = new Date(); 
+
+            currentdate.toISOString();
 
             const PATCHMethod = {
                 method: 'PATCH', // Method itself
@@ -492,7 +524,7 @@ setpollAns(ansDiv)
                 },
                 body: JSON.stringify({
                   
-                    "endDateTime": "2023-01-09T03:17:01",
+                    "endDateTime":currentdate,
 "id": pollSeletedId,
 
 "meetingId":  ApplicationConstants.meetingId,
@@ -510,6 +542,7 @@ setpollAns(ansDiv)
                .then(data => {
                 getSeletecdpoll(pollSeletedId)
                 setisDisabledSelect(false)
+              
                })
 
 
@@ -545,9 +578,9 @@ setpollAns(ansDiv)
         options={pollOptions}
       />
 
+{!loading?
 
-
-<div style={{minHeight:'30vh'}}>
+<div style={{minHeight:'50vh'}}>
 
 
 {
@@ -587,7 +620,15 @@ pollResult ?
 {!pollRelaunch?
                     <button aria-label="Launch the poll" onClick={launchPoll} className="pollbtn" title="Launch the poll" type="button">Launch</button>
                     :
-                    <button aria-label="Relaunch the poll" onClick={relaunchPoll} className="pollbtn" title="Relaunch the poll" type="button">Relaunch</button>
+                    <div>
+                    <button aria-label="Relaunch the poll" onClick={relaunchPoll} className="pollbtn" style={{width:'100%'}} title="Relaunch the poll" type="button">Relaunch</button>
+<div style={{color:'red', padding:8, display:'flex'}}>
+<Icon
+        color="red"
+            size = { 18 }
+            src = { IconWarning } /> <div style={{marginLeft:5,}}>  All existing result will be deleted</div>
+    </div>
+</div>
 
 }
                     </div>:null}
@@ -604,7 +645,13 @@ pollResult ?
                 </div>
 
 
-
+: <div style={{minHeight:'50vh', textAlign:'center', padding:'10%'}}> <Spinner
+                        // @ts-ignore
+                        isCompleting = { false }
+                        size = 'large' />
+                        
+                        </div>
+                        }
 
 
 
