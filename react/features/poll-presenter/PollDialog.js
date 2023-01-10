@@ -22,8 +22,9 @@ export default class PollDialog extends Component {
             <Dialog
                 cancel = {{ hidden: true }}
                 ok = {{ hidden: true }}
+                disableBackdropClose={true}
                 className="pollDialog"
-                size='large'
+                size='extralarge'
                 titleKey = 'Poll'>
                 <Poll />
             </Dialog>
