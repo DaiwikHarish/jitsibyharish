@@ -39,3 +39,4 @@ config.startWithAudioMuted = true;
   config.recordingUserId='3';
   config.recordingMeetingId='14';
 
+config.localRecording.disable = true;
