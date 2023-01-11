@@ -179,7 +179,7 @@ ol.poll-result-list {
 
 .poll-bar-container {
     background-color: #616161;
-    max-width: 160px;
+    max-width: 90%;
     margin-top: 3px;
     flex: 1;
 }
@@ -316,7 +316,7 @@ ol.poll-result-list {
 .poll-container-admin {
     font-size: 14px;
     font-weight: 600;
-max-height: 60vh;
+max-height: 90vh;
     line-height: 20px;
     overflow-y: auto;
     position: relative;
@@ -326,7 +326,7 @@ max-height: 60vh;
     }
 
     @media (max-width: 580px) {
-        max-height: 60vh;
+        max-height: 90vh;
     }
 }
 .poll-container {

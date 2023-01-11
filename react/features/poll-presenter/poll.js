@@ -23,6 +23,7 @@ export default function poll() {
     const [pollRelaunch, setpollRelaunch] = useState(null); //state of relaunched button
     const [apicall, setapicall] = useState(false); // call when to call api
     const [loading, setLoading] = useState(false);
+    const [endautopoll, setEndautopoll] = useState(false);
     const Ref = useRef(null);
 
     // The state for our timer
@@ -115,11 +116,13 @@ export default function poll() {
             );
         }
         if (total == 0 && polllauched) {
-            setTimer('00:00:00');
             setPollcounttime(0);
+            setTimer('00:00:00');
+       
             setPolllauched(false);
-            setisDisabledSelect(false);
-            endedPoll();
+
+          
+            endedautoPoll();
         }
     };
 
@@ -448,6 +451,66 @@ export default function poll() {
                 launchPoll();
             });
     };
+    const endedautoPoll = () => {
+        setLoading(true);
+        setPollcounttime(0);
+        setapicall(false);
+        setPolllauched(false);
+        setisDisabledSelect(true);
+        setEndautopoll(true)
+        setTimer('00:00:00');
+        //  setTimerCount('00:00:00');
+        setPollcounttime(0);
+        let currentdate = new Date();
+
+        currentdate.toISOString();
+
+        const PATCHMethod = {
+            method: 'PATCH', // Method itself
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8', // Indicates the content
+            },
+            body: JSON.stringify({
+                endDateTime: currentdate,
+                id: pollSeletedId,
+
+                meetingId: ApplicationConstants.meetingId,
+
+                status: 'Ended',
+                updatedUserId: ApplicationConstants.userId,
+            }),
+        };
+
+        // make the HTTP put request using fetch api
+
+        fetch(ApiConstants.pollGroup + '/id=' + pollSeletedId, PATCHMethod)
+            .then((response) => response.json())
+            .then((data) => {
+                getSeletecdpoll(pollSeletedId);
+                setisDisabledSelect(false);
+
+            });
+
+        //End
+
+        // endDateTime: "2023-01-09T03:17:01"
+        // id: 214
+        // meetingId: "16"
+        // status: "Ended"
+        // updatedUserId: "4"
+    };
+
+
+const endedPollclose=()=>
+{
+    
+    setPollcounttime(0);
+    setapicall(false);
+    setPolllauched(false);
+    setisDisabledSelect(false);
+    setTimer('00:00:00');
+    setEndautopoll(false)
+}
 
     const endedPoll = () => {
         setLoading(true);
@@ -497,8 +560,8 @@ export default function poll() {
     };
 
     return (
-        <div className="polls-pane-content">
-            <div className="poll-container-admin">
+        <div className="polls-pane-content" style={{minHeight:'90vh'}} >
+            <div className="poll-container-admin" >
                 <Select
                     className="basic-single"
                     classNamePrefix="select"
@@ -515,7 +578,7 @@ export default function poll() {
 
                 {!loading ? (
                     <div style={{ minHeight: '50vh' }}>
-                        {pollResult != null ? (
+                        {pollResult != null && !endautopoll ? (
                             pollResult ? (
                                 <div
                                     style={{
@@ -612,7 +675,7 @@ export default function poll() {
                                                 />{' '}
                                                 <div style={{ marginLeft: 5 }}>
                                                     {' '}
-                                                    All existing result will be
+                                                  On Relaunch, this poll related result will be
                                                     deleted
                                                 </div>
                                             </div>
@@ -620,7 +683,45 @@ export default function poll() {
                                     )}
                                 </div>
                             )
-                        ) : null}
+                        ) : 
+                        
+                        
+                        endautopoll ? (
+                        <div
+                        style={{
+                            display: 'flex',
+                            padding: 10,
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        {/* <h2>{timer}</h2> */}
+                        <h2
+                            style={{
+                                fontSize: 26,
+                                display: 'flex',
+                                fontWeight: '500',
+                                color: 'red',
+                            }}
+                        >
+                           
+                           <span>Poll is Ended</span>
+                        </h2>
+
+                        <button
+                            aria-label="EndPoll"
+                            onClick={endedPollclose}
+                            className="pollbtn"
+                            title="EndPoll"
+                            type="button"
+                        >
+                           Close
+                        </button>
+                    </div>):null
+                        
+                        }
+
+
+                        
 
                         {pollAns}
                     </div>
