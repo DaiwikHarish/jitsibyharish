@@ -26,6 +26,9 @@ var enableJaaS = false;
 
 var config = {
 
+    recordingUserId: '3',
+    recordingMeetingId: '14',
+
     //awesomeReviewBaseUrl
     apiUrl:'https://dev.awesomereviewstream.com/svr/api/',
     appUrl:"https://dev.awesomereviewstream.com",

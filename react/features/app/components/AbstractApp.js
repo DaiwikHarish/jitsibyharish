@@ -120,8 +120,8 @@ export class AbstractApp extends BaseApp<Props, *> {
         let urlObject = parseURIString(url);
         console.log("JB this.props.location.search", urlObject);
         const query = new URLSearchParams(urlObject.search);
-        const userId = query.get('userId') ? query.get('userId') : '3' ;
-        const meetingId = query.get('meetingId') ? query.get('meetingId') : '14';
+        const userId = query.get('userId') ? query.get('userId') : config.recordingUserId ;
+        const meetingId = query.get('meetingId') ? query.get('meetingId') : config.recordingMeetingId;
 
        let urlInfo: IUrlInfo = {
             userId: userId ,
