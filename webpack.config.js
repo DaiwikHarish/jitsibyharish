@@ -308,7 +308,7 @@ module.exports = (_env, argv) => {
                 })
             ],
 
-            performance: getPerformanceHints(perfHintOptions, 5 * 1024 * 1024)
+            performance: getPerformanceHints(perfHintOptions, 6 * 1024 * 1024)
 
         }),
         Object.assign({}, config, {
@@ -353,7 +353,7 @@ module.exports = (_env, argv) => {
                 ...config.plugins,
                 ...getBundleAnalyzerPlugin(analyzeBundle, 'analytics-ga')
             ],
-            performance: getPerformanceHints(perfHintOptions, 5 * 1024)
+            performance: getPerformanceHints(perfHintOptions, 6 * 1024)
         }),
         Object.assign({}, config, {
             entry: {
