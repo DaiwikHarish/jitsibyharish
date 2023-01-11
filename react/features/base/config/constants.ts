@@ -18,7 +18,7 @@ export const TOOLBAR_BUTTONS = [
     'chat',
     'closedcaptions',
     'desktop',
-    'hostPoll',
+    'adminPoll',
     'download',
     'embedmeeting',
     'etherpad',
