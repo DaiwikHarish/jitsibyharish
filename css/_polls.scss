@@ -409,11 +409,11 @@ height: 100%;
     -webkit-justify-content: center;
     justify-content: center;
     border: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 20px;
     font-weight: 600;
     letter-spacing: 0;
-   
+    font-weight: bold;
     cursor: pointer;
     width: 100%;
 }
@@ -421,7 +421,7 @@ height: 100%;
 {
     background-color: #616161;
     border-bottom: 2px solid #858585;
-    color: #fff;   
+    color: #fff;    font-size: 16px; font-weight: bold;
 }
 .select__single-value{
     color: #fff; 
@@ -430,14 +430,14 @@ height: 100%;
 {
     background-color: #616161;
 
-    color: #fff;    
+    color: #fff;    font-size: 16px; font-weight: bold;
 }
 .select__option:hover{
-    background-color: #8d8d8d;
+    background-color: #8d8d8d;font-size: 16px; font-weight: bold;
 }
 .select__menu 
 {
-    background-color: #616161;
+    background-color: #616161;font-size: 16px; font-weight: bold;
     color: #fff;
 }
 
@@ -453,7 +453,7 @@ height: 100%;
     color: #fff;
 }
 .select__control{
-    color: #fff;
+    color: #fff;font-size: 16px; font-weight: bold;
 }
 .select__control:hover{
     color: #fff;
@@ -509,7 +509,7 @@ background-color: #246FE5;
     -webkit-transition: background .2s;
     transition: background .2s;
     cursor: pointer;
-    width: 40%;
+    width: 100%;
 
 }
 .pollFormControl{

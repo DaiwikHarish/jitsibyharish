@@ -301,7 +301,7 @@ export default function poll() {
             !item.showResults ? (
                 <div className="poll-answer" style={{ margin: '36px 1px' }}>
                     <div className="poll-header">
-                        <div className="poll-question">
+                        <div className="poll-question"  style={{fontSize:18,}}>
                             <span>{item.question}</span>
                         </div>
                     </div>
@@ -345,7 +345,7 @@ export default function poll() {
                 <div>
                     <div className="poll-results">
                         <div className="poll-header">
-                            <div className="poll-question">
+                            <div className="poll-question" style={{fontSize:18,}}>
                                 <strong>{item.question}</strong>
                             </div>
                         </div>
@@ -574,16 +574,18 @@ const endedPollclose=()=>
                     isSearchable={true}
                     name="polls"
                     options={pollOptions}
+                    styles={{fontSize:16, fontWeight:'bold'}}
+                    
                 />
 
                 {!loading ? (
-                    <div style={{ minHeight: '50vh' }}>
+                    <div style={{ minHeight: '50vh', fontWeight:'bold',fontSize:16 }}>
                         {pollResult != null && !endautopoll ? (
                             pollResult ? (
                                 <div
                                     style={{
                                         display: 'flex',
-                                        padding: 10,
+                                        padding: 15,
                                         justifyContent: 'space-between',
                                     }}
                                 >
@@ -594,6 +596,7 @@ const endedPollclose=()=>
                                             display: 'flex',
                                             fontWeight: '500',
                                             color: 'red',
+                                            width:'100%'
                                         }}
                                     >
                                         <Icon
@@ -601,9 +604,9 @@ const endedPollclose=()=>
                                             size={30}
                                             src={IconTimerRed}
                                         />
-                                        {pollcounttime != 0
+                                        <div style={{marginLeft:10}}> {pollcounttime != 0
                                             ? timer
-                                            : timerCount}
+                                            : timerCount}</div>
                                     </h2>
 
                                     <button
@@ -634,8 +637,15 @@ const endedPollclose=()=>
                                             type="number"
                                             value={pollcounttime}
                                             onChange={(val) =>
-                                                setPollcounttime(val)
+
+                                               { 
+                                                val>=0?
+                                                setPollcounttime(val):null}
                                             }
+                                            name="tentacles"
+       min="1"
+                                          
+                                            style={{fontSize:16}}
                                             placeholder="Poll Duration in Seconds"
                                         />
                                     </div>
@@ -670,10 +680,10 @@ const endedPollclose=()=>
                                             >
                                                 <Icon
                                                     color="red"
-                                                    size={18}
+                                                    size={19}
                                                     src={IconWarning}
                                                 />{' '}
-                                                <div style={{ marginLeft: 5 }}>
+                                                <div style={{ marginLeft: 5, fontSize:18, fontWeight:'bold' }}>
                                                     {' '}
                                                   On Relaunch, this poll related result will be
                                                     deleted
@@ -700,7 +710,7 @@ const endedPollclose=()=>
                                 fontSize: 26,
                                 display: 'flex',
                                 fontWeight: '500',
-                                color: 'red',
+                                color: 'red', width:'100%'
                             }}
                         >
                            
