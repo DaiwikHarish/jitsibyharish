@@ -934,7 +934,12 @@ class Toolbox extends Component<IProps, AppState> {
             Content: VideoSettingsButton,
             group: 0
         };
-
+        const adminPoll = _attendeeInfo?.userType != UserType.Viewer && {
+            key: 'adminPoll',
+            Content: PollButton,
+            handleClick: this._doOpenHostPoll,
+            group: 0
+        };
         const profile = _clientType === OptionType.ENABLE_ALL && this._isProfileVisible() && {
             key: 'profile',
             Content: ProfileButton,
@@ -996,12 +1001,7 @@ class Toolbox extends Component<IProps, AppState> {
             handleClick: this._onToolbarOpenVideoQuality,
             group: 2
         };
-        const hostPoll = _attendeeInfo?.userType === UserType.Presenter && {
-            key: 'hostPoll',
-            Content: PollButton,
-            handleClick: this._doOpenHostPoll,
-            group: 2
-        };
+       
 
 
 
@@ -1137,10 +1137,10 @@ class Toolbox extends Component<IProps, AppState> {
         return {
             microphone,
             camera,
-            profile,
+            // profile,
             desktop,
             chat,
-            hostPoll,
+            adminPoll,
             raisehand,
             participants,
             // invite,

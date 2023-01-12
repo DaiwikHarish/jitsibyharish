@@ -86,6 +86,10 @@ const useStyles = makeStyles()((theme: Theme) => {
             '&.large': {
                 width: '664px'
             },
+            '&.extralarge': {
+                width: '864px',
+                minHeight:'90vh'
+            },
 
             '&.unmount': {
                 animation: `${keyframes`
@@ -201,7 +205,7 @@ interface IDialogProps {
     };
     onCancel?: () => void;
     onSubmit?: () => void;
-    size?: 'large' | 'medium';
+    size?:'extralarge'| 'large' | 'medium';
     title?: string;
     titleKey?: string;
 }

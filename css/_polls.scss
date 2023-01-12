@@ -179,7 +179,7 @@ ol.poll-result-list {
 
 .poll-bar-container {
     background-color: #616161;
-    max-width: 160px;
+    max-width: 90%;
     margin-top: 3px;
     flex: 1;
 }
@@ -313,10 +313,10 @@ ol.poll-result-list {
     height: calc(100% - 170px);
 }
 
-.poll-container {
+.poll-container-admin {
     font-size: 14px;
     font-weight: 600;
-    height: 100% ;
+max-height: 90vh;
     line-height: 20px;
     overflow-y: auto;
     position: relative;
@@ -326,10 +326,25 @@ ol.poll-result-list {
     }
 
     @media (max-width: 580px) {
-        height: 100% ;
+        max-height: 90vh;
     }
 }
+.poll-container {
+    font-size: 14px;
+    font-weight: 600;
+height: 100%;
+    line-height: 20px;
+    overflow-y: auto;
+    position: relative;
 
+    & > * + *:not(.ignore-child) {
+        margin-top: 16px;
+    }
+
+    @media (max-width: 580px) {
+        height: 100%;
+    }
+}
 // .poll-container {
 //     font-size: 14px;
 //     font-weight: 600;
@@ -375,12 +390,12 @@ ol.poll-result-list {
 .poll-answer-footer {
   padding: 8px 0 0 0;
 }
-.pollselect
+.select__control
 {
     background-color: #616161;
     color: #fff;
     border-radius: 4px;
-    padding: 10px 16px;
+    padding: 4px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -401,6 +416,73 @@ ol.poll-result-list {
    
     cursor: pointer;
     width: 100%;
+}
+.select__option
+{
+    background-color: #616161;
+    border-bottom: 2px solid #858585;
+    color: #fff;   
+}
+.select__single-value{
+    color: #fff; 
+}
+.select__menu-list
+{
+    background-color: #616161;
+
+    color: #fff;    
+}
+.select__option:hover{
+    background-color: #8d8d8d;
+}
+.select__menu 
+{
+    background-color: #616161;
+    color: #fff;
+}
+
+.select__placeholder{
+    color: #fff;
+}
+.select__indicators
+{
+    color: #fff;
+}
+.select__value-container
+{
+    color: #fff;
+}
+.select__control{
+    color: #fff;
+}
+.select__control:hover{
+    color: #fff;
+}
+.select__clear-indicator
+{
+    color: #fff;
+}
+.select__indicators
+{
+    color: #fff;
+
+}
+.select__indicator
+{
+    color: #fff;
+
+}
+.select__dropdown-indicator 
+{
+    color: #fff;
+}
+ .select__indicator-separator
+{
+    color: #fff;
+}
+.select__input-container
+{
+    color: #fff;
 }
 .pollbtn{
 background-color: #246FE5;
@@ -427,8 +509,8 @@ background-color: #246FE5;
     -webkit-transition: background .2s;
     transition: background .2s;
     cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
+    width: 40%;
+
 }
 .pollFormControl{
     font-size: 14px;

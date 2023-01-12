@@ -37,7 +37,7 @@ type Props = AbstractButtonProps & {
 class PollButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'Poll';
     label = 'Poll';
-    tooltip = 'Host Poll';
+    tooltip = 'Admin Poll';
     icon = IconChatUnread;
 }
 
