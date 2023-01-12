@@ -659,9 +659,10 @@ class Toolbox extends Component<IProps, AppState> {
                     this.setState({ enableDesktop: true })
                 }
                 if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_SCREEN_SHARE") {
+                 
 
                     this.props._screenSharing ? this._onToolbarToggleScreenshare() : null
-
+                    this.props._screenSharing ? this._onToolbarToggleScreenshareAdmin() : null
 
                     this.setState({ enableDesktop: false })
                 }
