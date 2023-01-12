@@ -4,7 +4,8 @@ import Input from '../base/ui/components/web/Input';
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import Spinner from '@atlaskit/spinner';
-
+import MeetingValidation from "../base/post-welcome-page/meeting-validation";
+import { RingLoader } from "react-spinners";
 import { IconTimer, IconTimerRed, IconWarning, Icon } from '../base/icons';
 import { split } from 'lodash';
 
@@ -183,6 +184,7 @@ export default function poll() {
         setSeconds(0);
         getSeletecdpoll(newValue.id);
         setapicall(false);
+        
     };
     function getPoll() {
         setapicall(false);
@@ -744,11 +746,42 @@ const endedPollclose=()=>
                         }}
                     >
                         {' '}
-                        <Spinner
+                        {/* <Spinner
                             // @ts-ignore
                             isCompleting={false}
                             size="large"
-                        />
+                        /> */}
+<div style={{marginTop:80,height:500, }}>
+<div
+                    style={{
+                        margin: "auto",
+                        width: "25%",
+                        height: "55%",
+                    
+                        borderRadius: "5px",
+                        alignItems: "center",
+                        display: "block",
+                        padding: '20px',
+                        // boxSizing: "border-box",
+                        overflow: "auto",
+                        outline: 0,
+                        // minHeight: "inherit",
+                        // maxHeight: "inherit",
+                    }}
+                >
+                    <RingLoader
+                        cssOverride={{
+                            margin: "auto",
+                            width: "25%",
+                            height: "30%",
+                        }}
+                        color={"white"}
+                        loading={loading}
+                    />
+                </div>
+        
+        
+        </div>
                     </div>
                 )}
             </div>
