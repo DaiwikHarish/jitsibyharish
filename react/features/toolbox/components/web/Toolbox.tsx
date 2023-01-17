@@ -169,6 +169,7 @@ import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
 import QuestionAnswer from '../../../qa-admin/components/qa-admin';
+import QuestionAnswerButton from '../../../qa-admin/components/qa-button';
 
 
 
@@ -945,14 +946,20 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const profile = _clientType === OptionType.ENABLE_ALL && this._isProfileVisible() && {
             key: 'profile',
             Content: ProfileButton,
-            group: 1
+            group: 2
         };
 
-        const chat = _attendeeInfo.userType !== UserType.Presenter && {
-            key: 'chat',
-            Content: ChatButton,
+        // const chat = _attendeeInfo.userType !== UserType.Presenter && {
+        //     key: 'chat',
+        //     Content: ChatButton,
+        //     handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
+        //     group: 2
+        // };
+        const questionAnswer = _attendeeInfo.userType !== UserType.Presenter && {
+            key: 'QA',
+            Content: QuestionAnswerButton,
             handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
-            group: 2
+            group: 0
         };
 
         const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
@@ -1138,7 +1145,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             camera,
             profile,
             desktop,
-            chat,
+            // chat,
+            questionAnswer,
             raisehand,
             participants,
             // invite,

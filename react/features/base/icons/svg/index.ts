@@ -127,6 +127,10 @@ export { default as IconShareAudio } from './share-audio.svg';
 export { default as IconShareDesktop } from './share-desktop.svg';
 export { default as IconShareDesktopDisable } from './share-desktop-disable.svg';
 export { default as Iconraisehanddisable } from './raisehanddisable.svg';
+export { default as IconUser } from './user.svg';
+export { default as IconFlag } from './flag.svg';
+export { default as IconDanger } from './danger.svg';
+export { default as IconQuestion } from './question.svg';
 
 
 export { default as IconShareDoc } from './share-doc.svg';

@@ -1,5 +1,6 @@
 type ToolbarButtons = 'camera' |
     'chat' |
+    'QA' |
     'closedcaptions' |
     'desktop' |
     'dock-iframe' |
@@ -35,6 +36,7 @@ type ToolbarButtons = 'camera' |
 
 type ButtonsWithNotifyClick = 'camera' |
     'chat' |
+    'QA' |
     'closedcaptions' |
     'desktop' |
     'download' |
