@@ -1,0 +1,11 @@
+/****************************************************************
+ *  
+ *  
+ */
+export const CHAT_ADMIN_ISLOADING_STATUS = 'CHAT_ADMIN_ISLOADING_STATUS';
+
+export const CHAT_ADMIN_UPDATE_ATTENDEES = 'CHAT_ADMIN_UPDATE_ATTENDEES';
+
+export const CHAT_ADMIN_SELECTED_ATTENDEE = 'CHAT_ADMIN_SELECTED_ATTENDEE';
+
+export const CHAT_ADMIN_UPDATE_CHAT_HISTORY = 'CHAT_ADMIN_UPDATE_CHAT_HISTORY';
