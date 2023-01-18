@@ -29,12 +29,13 @@ const TIMESTAMP_FORMAT = 'H:mm';
 
 const ChatDialog = () => {
     const [attendeeList, setAttendeeList] = useState();
+    const [selectedAttendee, setSelectedAttendee] = useState();
     const [userChat, setUserChat] = useState();
     const [user, setUser] = useState();
     const [message, setMessage] = useState();
 
     const [searchInput, setSearchInput] = useState('');
-    const [block, setBlock] = useState(user?.isAllowed);
+    const [block, setBlock] = useState(selectedAttendee?.isAllowed);
     const [selected, setSelected] = useState();
 
     const { innerWidth: width, innerHeight: height } = window;
@@ -59,9 +60,29 @@ const ChatDialog = () => {
         )
             .then((response) => response.json())
             .then((data) => {
-                const attendee: IAttendeeInfo[] = data;
+                const attendees: IAttendeeInfo[] = data;
                 // console.log('alam attendee', attendee);
-                setAttendeeList(attendee);
+                setAttendeeList(attendees);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+    const FetchSelectedAttendee = async (uId) => {
+        // this.setState({loading:true});
+
+        fetch(
+            ApiConstants.attendee +
+                '?meetingId=' +
+                ApplicationConstants.meetingId +
+                `&userId=${uId}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const attendee: IAttendeeInfo[] = data[0];
+                console.log('alam attendee', attendee);
+                setSelectedAttendee(attendee);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -121,8 +142,8 @@ const ChatDialog = () => {
             });
     };
 
-    function _onBlockUser(value: Boolean) {
-        console.log('alam before', user?.id + '|' + user?.isAllowed);
+    function _onBlockUser(value: Boolean, uId) {
+        console.log('alam before', uId + '|' + value);
 
         fetch(ApiConstants.attendee, {
             headers: {
@@ -143,6 +164,7 @@ const ChatDialog = () => {
             .then((data) => {
                 FetchAttendees();
                 FetchChatAPI(user?.userId);
+                FetchSelectedAttendee(uId);
             })
             .catch((err) => {});
     }
@@ -154,7 +176,8 @@ const ChatDialog = () => {
     }, [block]);
 
     // console.log('alam attendeeList', userChat);
-    console.log('alam initial', user?.isAllowed);
+    console.log('alam initial', selectedAttendee?.isAllowed);
+    console.log('alam block', block);
 
     return (
         <Modal
@@ -196,11 +219,9 @@ const ChatDialog = () => {
                                     color: 'white',
                                 }}
                             >
-                                {
-                                    attendeeList?.filter(
-                                        (a) => a.isOnline === true
-                                    ).length-1
-                                }
+                                {attendeeList && attendeeList?.filter(
+                                    (a) => a.isOnline === true
+                                ).length - 1}
                             </div>
                             <div
                                 style={{
@@ -209,7 +230,7 @@ const ChatDialog = () => {
                                     color: '#858585',
                                 }}
                             >
-                                ({attendeeList?.length - 1})
+                                ({attendeeList && attendeeList?.length - 1})
                             </div>
                         </div>
                         <Icon
@@ -250,18 +271,19 @@ const ChatDialog = () => {
                                 (user) =>
                                     user.userId !== ApplicationConstants.userId
                             )
-                            .map((user, index) => (
+                            .map((user) => (
                                 <div
                                     className={
-                                        selected === index
+                                        selected === user.id
                                             ? 'Participants-list-selected'
                                             : 'Participants-list'
                                     }
-                                    key={index}
+                                    key={user.userId}
                                     onClick={() => {
                                         FetchChatAPI(user.userId);
+                                        FetchSelectedAttendee(user.userId);
                                         setUser(user);
-                                        setSelected(index);
+                                        setSelected(user.id);
                                     }}
                                 >
                                     <div className="Participant-list-left">
@@ -313,33 +335,100 @@ const ChatDialog = () => {
                 <div className="Right-box">
                     <div className="Right-box-header">
                         <div className="Right-box-header-left">
-                            {user && (
+                            {selectedAttendee && (
                                 <h5 className="Right-box-header-text">
-                                    {user?.emailId} | {user?.mobileNr}
+                                    {selectedAttendee?.emailId} |{' '}
+                                    {selectedAttendee?.mobileNr}
                                 </h5>
                             )}
-                            {user && (
+                            {selectedAttendee && (
                                 <button
                                     onClick={() => {
-                                        console.log(
-                                            'alam isAllowed',
-                                            user.isAllowed
-                                        );
-                                        if (user?.isAllowed === false) {
-                                            _onBlockUser(true);
+                                        if (
+                                            selectedAttendee?.isAllowed ===
+                                            false
+                                        ) {
+                                            _onBlockUser(
+                                                true,
+                                                selectedAttendee.userId
+                                            );
                                             setBlock(false);
                                         } else {
-                                            _onBlockUser(false);
+                                            _onBlockUser(
+                                                false,
+                                                selectedAttendee.userId
+                                            );
                                             setBlock(true);
                                         }
                                     }}
                                     className="btn-danger"
                                 >
-                                    {block === false
-                                        ? 'Block User'
-                                        : 'Unblock User'}
+                                    {selectedAttendee?.isAllowed ? (
+                                        <p>Block User</p>
+                                    ) : (
+                                        <p>Unblock User</p>
+                                    )}
                                 </button>
                             )}
+                            {/* {selectedAttendee?.isAllowed === true ? (
+                                <button
+                                    onClick={() => {
+                                        //     console.log(
+                                        //         'alam isAllowed',
+                                        //         selectedAttendee?.isAllowed
+                                        //     );
+                                        //     if (
+                                        //         selectedAttendee?.isAllowed ===
+                                        //         false
+                                        //     ) {
+                                        //         _onBlockUser(true);
+                                        //         setBlock(false);
+                                        //     } else {
+                                        _onBlockUser(
+                                            false,
+                                            selectedAttendee.userId
+                                        );
+                                        //         setBlock(true);
+                                        //     }
+                                    }}
+                                    className="btn-danger"
+                                >
+                                    {console.log(
+                                        'alam isAllowed',
+                                        selectedAttendee?.isAllowed
+                                    )}
+                                    Block User
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        //     console.log(
+                                        //         'alam isAllowed',
+                                        //         selectedAttendee?.isAllowed
+                                        //     );
+                                        //     if (
+                                        //         selectedAttendee?.isAllowed ===
+                                        //         false
+                                        //     ) {
+                                        _onBlockUser(
+                                            true,
+                                            selectedAttendee.userId
+                                        );
+                                        //         setBlock(false);
+                                        //     } else {
+                                        //         _onBlockUser(false);
+                                        //         setBlock(true);
+                                        //     }
+                                    }}
+                                    className="btn-danger"
+                                >
+                                    {console.log(
+                                        'alam isAllowed',
+                                        selectedAttendee?.isAllowed
+                                    )}
+                                    Unblock User
+                                </button>
+                            )} */}
                         </div>
                         <Icon
                             className="btn-close"
@@ -352,6 +441,7 @@ const ChatDialog = () => {
                         {userChat?.map((chat) =>
                             chat.fromUserId === ApplicationConstants.userId ? (
                                 <div
+                                    key={chat.id}
                                     style={{
                                         flexWrap: 'wrap',
                                         alignSelf: 'flex-end',
@@ -385,6 +475,7 @@ const ChatDialog = () => {
                                 </div>
                             ) : (
                                 <div
+                                    key={chat.id}
                                     style={{
                                         alignSelf: 'flex-start',
                                         flexWrap: 'wrap',
