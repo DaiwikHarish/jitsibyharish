@@ -24,6 +24,7 @@ export { default as IconCar } from './car.svg';
 export { default as IconChat } from './chat.svg';
 export { default as IconChatSend } from './send.svg';
 export { default as IconChatUnread } from './chat-unread.svg';
+export { default as adminpoll } from './adminpoll.svg';
 export { default as IconCheck } from './check.svg';
 export { default as IconCheckMark } from './checkmark.svg';
 export { default as IconCheckSolid } from './check-solid.svg';
