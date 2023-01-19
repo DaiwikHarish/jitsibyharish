@@ -15,6 +15,13 @@ export enum SocketMessageEventType {
     // for error messages for any sending messages from client
     MESSAGE = 'message',
 
+    // for presenter start/stop
+    START_MEETING = 'StartMeeting',
+    STOP_MEETING = 'StopMeeting',
+    
+    // meeting start/stop 
+    MEETING_ROOM_STATUS = 'MeetingRoomStatus',
+
     // user/presenter/admin/viewr to join/leave
     JOIN_MEETING_ROOM = 'JoinMeetingRoom',
     LEAVE_MEETING_ROOM = 'LeaveMeetingRoom',
@@ -69,15 +76,16 @@ export enum MeetingRoomStatus {
     MEETING_STARTED = 'MEETING_STARTED',
     MEETING_STOPPED = 'MEETINNG_STOPPED',
 
-    // camera stream
-    MEETING_CAMERA_NOT_STARTED = 'MEETING_CAMERA_NOT_STARTED',
-    MEETING_CAMERA_STARTED = 'MEETING_CAMERA_STARTED',
-    MEETING_CAMERA_STOPPED = 'MEETING_CAMERA_STOPPED',
+    // not required here as there is no stream in our socket 
+    // // camera stream
+    // MEETING_CAMERA_NOT_STARTED = 'MEETING_CAMERA_NOT_STARTED',
+    // MEETING_CAMERA_STARTED = 'MEETING_CAMERA_STARTED',
+    // MEETING_CAMERA_STOPPED = 'MEETING_CAMERA_STOPPED',
 
-    // screen share stream
-    MEETING_SCREEN_SHARE_NOT_STARTED = 'MEETING_CAMERA_NOT_STARTED',
-    MEETING_SCREEN_SHARE_STARTED = 'MEETING_SCREEN_SHARE_STARTED',
-    MEETING_SCREEN_SHARE_STOPPED = 'MEETING_SCREEN_SHARE_STOPPED',
+    // // screen share stream
+    // MEETING_SCREEN_SHARE_NOT_STARTED = 'MEETING_CAMERA_NOT_STARTED',
+    // MEETING_SCREEN_SHARE_STARTED = 'MEETING_SCREEN_SHARE_STARTED',
+    // MEETING_SCREEN_SHARE_STOPPED = 'MEETING_SCREEN_SHARE_STOPPED',
 }
 
 export enum JoinRoomPermissionStatus {

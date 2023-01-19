@@ -1,13 +1,20 @@
 import { io, Socket } from 'socket.io-client';
+import { ApiConstants } from '../../../../ApiConstants';
+import { ApplicationConstants } from '../../../../ApplicationConstants';
 import { IStore } from '../../app/types';
-import { IAttendeeInfo } from '../app/types';
+import UserType, { IAttendeeInfo } from '../app/types';
 
-import { socketJoinRoom, socketSendCommandMessage } from './actions';
+import {
+    socketJoinRoom,
+    socketSendCommandMessage,
+    socketStartMeeting,
+} from './actions';
 import {
     APP_SOCKET_CHAT_MESSAGE,
     APP_SOCKET_CONNECT,
     APP_SOCKET_DISCONNECT,
     APP_SOCKET_JOIN_ROOM,
+    APP_SOCKET_MEETING_ROOM_STATUS,
     APP_SOCKET_POLL_END_MESSAGE,
     APP_SOCKET_POLL_START_MESSAGE,
     APP_SOCKET_QA_MESSAGE,
@@ -21,14 +28,22 @@ import {
     CommandMessageDto,
     PermissionType,
     CommandType,
+    MeetingRoomStatus,
 } from './types';
 
 // global object
 export let _csSocket: Socket;
 
-export function _initSocket(dispatch: IStore['dispatch']) {
-    console.log('Socket called init');
-    let appUrl = config.appUrl?config.appUrl:'https://dev.awesomereviewstream.com';
+export function _initSocket(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState']
+) {
+    let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
+
+    console.log('Socket called init', attendeeInfo);
+    let appUrl = config.appUrl
+        ? config.appUrl
+        : 'https://dev.awesomereviewstream.com';
     let one2ManyPath = '/svr/ws/one2many';
 
     _csSocket = io(appUrl, {
@@ -47,7 +62,9 @@ export function _initSocket(dispatch: IStore['dispatch']) {
             isSocketConnected: true,
         });
 
-        dispatch(socketJoinRoom());
+        // if the user type is presenter call start meeting ,
+        // otherwise call join room
+        _checkAndStartOrJoinMeeting(dispatch);
     });
 
     // Socket Connection Error
@@ -76,12 +93,12 @@ export function _initSocket(dispatch: IStore['dispatch']) {
 
     // Socket error message for sending message from client
     _csSocket.on(SocketMessageEventType.MESSAGE, (input: string) => {
-        console.log('Socket:error message ' , input);
+        console.log('Socket:error message ', input);
     });
 
     // Socket command message received
     _csSocket.on(SocketMessageEventType.COMMAND_NOTIFICATION, (msg) => {
-        console.log('Socket: Command message received ' , msg);
+        console.log('Socket: Command message received ', msg);
         dispatch({
             type: APP_SOCKET_RECEIVED_COMMAND_MESSAGE,
             socketReceivedCommandMessage: msg,
@@ -106,6 +123,20 @@ export function _initSocket(dispatch: IStore['dispatch']) {
         });
     });
 
+    // Meeting room satus here
+    _csSocket.on(SocketMessageEventType.MEETING_ROOM_STATUS, (msg: string) => {
+        console.log('socket meeting room status message received => ', msg);
+        dispatch({
+            type: APP_SOCKET_MEETING_ROOM_STATUS,
+            socketMeetingRoomStatus: msg,
+        });
+
+        // join again only if meeting status comes as meeting started
+        // otherwise no action
+        if (msg == MeetingRoomStatus.MEETING_STARTED) {
+            dispatch(socketJoinRoom());
+        }
+    });
 
     // poll start message here
     _csSocket.on(SocketMessageEventType.POLL_START_MESSAGE, (msg) => {
@@ -142,6 +173,49 @@ export function _getUserDto(attendee: IAttendeeInfo) {
     };
 
     return dto;
+}
+
+export function _socketStartMeeting(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState']
+) {
+    let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
+
+    if (attendeeInfo) {
+        let userDto = _getUserDto(attendeeInfo);
+        _csSocket.emit(
+            SocketMessageEventType.START_MEETING,
+            userDto,
+            (response: string) => {
+                console.log(' _socketStartMeeting success response ', response);
+                dispatch({
+                    type: APP_SOCKET_MEETING_ROOM_STATUS,
+                    socketMeetingRoomStatus: response,
+                });
+            }
+        );
+    }
+}
+
+export function _socketStopMeeting(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState']
+) {
+    let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
+    if (attendeeInfo) {
+        let userDto = _getUserDto(attendeeInfo);
+        _csSocket.emit(
+            SocketMessageEventType.STOP_MEETING,
+            userDto,
+            (response: string) => {
+                console.log(' _socketStopMeeting success response ', response);
+                dispatch({
+                    type: APP_SOCKET_MEETING_ROOM_STATUS,
+                    socketMeetingRoomStatus: response,
+                });
+            }
+        );
+    }
 }
 
 export function _socketLeaveRoom(
@@ -225,4 +299,29 @@ export function _socketSendCommandMessage(
             }
         );
     }
+}
+
+function _checkAndStartOrJoinMeeting(dispatch: IStore['dispatch']) {
+    fetch(
+        ApiConstants.attendee +
+            '?meetingId=' +
+            ApplicationConstants.meetingId +
+            '&userId=' +
+            ApplicationConstants.userId
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            const attendee: IAttendeeInfo = data[0];
+            console.log('On Connect ', attendee);
+            if (attendee && attendee?.userType == UserType.Presenter) {
+                console.log('On Connect start meeting');
+                dispatch(socketStartMeeting());
+            } else if (attendee) {
+                console.log('On Connect join meeting');
+                dispatch(socketJoinRoom());
+            }
+        })
+        .catch((err) => {
+            console.log('socket calls attendee api error ', err.message);
+        });
 }
