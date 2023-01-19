@@ -18,7 +18,7 @@ import {
 
 const DEFAULT_STATE = {
     isOpen: false,
-    isPollsTabFocused: false,
+    isPollsTabFocused: true,
     lastReadMessage: undefined,
     messages: [],
     nbUnreadMessages: 0,

@@ -1,7 +1,7 @@
 // @flow
 
 import { translate } from '../base/i18n';
-import { IconChatUnread } from '../base/icons';
+import { adminpoll } from '../base/icons';
 import { AbstractButton, type AbstractButtonProps } from '../base/toolbox/components';
 
 /**
@@ -38,7 +38,7 @@ class PollButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'Poll';
     label = 'Poll';
     tooltip = 'Admin Poll';
-    icon = IconChatUnread;
+    icon = adminpoll;
 }
 
 export default translate(PollButton);
