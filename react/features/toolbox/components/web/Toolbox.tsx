@@ -112,7 +112,7 @@ import {
 // @ts-ignore
 import { VideoQualityButton, VideoQualityDialog } from '../../../video-quality/components';
 // @ts-ignore
-import { PollButton, PollDialog } from '../../../poll-presenter/';
+import { PollButton, PollDialog } from '../../../polls-admin';
 // @ts-ignore
 import { VideoBackgroundButton } from '../../../virtual-background';
 import WhiteboardButton from '../../../whiteboard/components/web/WhiteboardButton';
