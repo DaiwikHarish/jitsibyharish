@@ -161,6 +161,8 @@ import UndockIframeButton from './UndockIframeButton';
 // @ts-ignore
 import VideoSettingsButton from './VideoSettingsButton';
 // @ts-ignore
+import VideoSettingsDisableButton from './VideoSettingsDisableButton';
+// @ts-ignore
 import ShareDesktopButtonDisable from './ShareDesktopButtonDisable';
 // @ts-ignore
 import MIcrophoneButtonDisable from './MIcrophoneButtonDisable';
@@ -169,7 +171,7 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 // @ts-ignore
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
-import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
+import { MEDIA_TYPE, setAudioMuted, setVideoMuted } from '../../../base/media';
 
 
 
@@ -388,6 +390,7 @@ interface AppState {
     enableDesktop: any;
     enableRaiseHand: any;
     enableMike: any;
+    enableCamera:any;
 }
 const styles = () => {
     return {
@@ -429,7 +432,8 @@ class Toolbox extends Component<IProps, AppState> {
         this.state = {
             enableDesktop: false,
             enableRaiseHand: false,
-            enableMike: false
+            enableMike: false,
+            enableCamera :false
         }
         // Bind event handlers so they are only bound once per instance.
         this._onMouseOut = this._onMouseOut.bind(this);
@@ -687,6 +691,24 @@ class Toolbox extends Component<IProps, AppState> {
 
                 }
 
+                if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_CAMERA") {
+
+
+                    this.props.dispatch(setVideoMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
+
+                    this.setState({ enableCamera: false })
+
+                }
+                if (this.props._socketReceivedCommandMessage.permissionType == "ENABLE_CAMERA") {
+
+
+                    this.props.dispatch(setVideoMuted(false));
+                    this.props.dispatch(muteLocal(false, MEDIA_TYPE.VIDEO));
+
+                    this.setState({ enableCamera: true })
+
+                }
 
                 if (this.props._socketReceivedCommandMessage.permissionType == "UNMUTE_MIC") {
 
@@ -932,7 +954,8 @@ class Toolbox extends Component<IProps, AppState> {
 
         const camera = _clientType === OptionType.ENABLE_ALL && {
             key: 'camera',
-            Content: VideoSettingsButton,
+            Content:  _attendeeInfo?.userType === UserType.Viewer ? this.state.enableCamera?VideoSettingsButton: VideoSettingsDisableButton: this.state.enableMike?VideoSettingsButton: VideoSettingsButton,
+         
             group: 0
         };
         const adminPoll = _attendeeInfo?.userType != UserType.Viewer && {
