@@ -6,6 +6,9 @@ import { IconMuteVideoEveryone } from '../../base/icons';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 
 import { MuteEveryonesVideoDialog } from './';
+import { socketSendCommandMessage } from "../../base/cs-socket/actions";
+
+import { CommandMessageDto, CommandType, PermissionType } from "../../base/cs-socket/types";
 
 export type Props = AbstractButtonProps & {
 
@@ -40,9 +43,17 @@ export default class AbstractMuteEveryoneElsesVideoButton extends AbstractButton
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, participantID } = this.props;
+        const { dispatch,participantAPIID, participantID } = this.props;
 
         sendAnalytics(createToolbarEvent('mute.everyoneelsesvideo.pressed'));
-        dispatch(openDialog(MuteEveryonesVideoDialog, { exclude: [ participantID ] }));
+        // dispatch(openDialog(MuteEveryonesVideoDialog, { exclude: [ participantID ] }));
+   
+     dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.DISABLE_CAMERA,
+                CommandType.TO_ALL_USER_EXCEPT_THIS_USER
+            ))
+   
     }
 }

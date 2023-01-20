@@ -227,15 +227,19 @@ const ParticipantContextMenu = ({
 
 
 
-                // buttons.push(
-                //     <MuteEveryoneElseButton
-                //         key = 'mute-others'
-                //         participantID = { _getCurrentParticipantId() } />
-                // );
+                buttons.push(
+                    <MuteEveryoneElseButton
+                        key = 'mute-others'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
+                        participantID = { _getCurrentParticipantId() } />
+                );
               
                 buttons.push(
                     <MuteEveryoneElsesVideoButton
                         key='mute-others-video'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
                         participantID={_getCurrentParticipantId()} />
                 );
             }
