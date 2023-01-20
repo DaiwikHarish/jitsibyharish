@@ -29,7 +29,7 @@ import { INoSrcDataState, ITracksState } from '../base/tracks/reducer';
 import { IUserInteractionState } from '../base/user-interaction/reducer';
 import { IBreakoutRoomsState } from '../breakout-rooms/reducer';
 import { ICalendarSyncState } from '../calendar-sync/reducer';
-import { ICSChatAdminState } from '../chat-admin/reducer';
+import { ICSChatAdminState } from '../cs-chat-admin/reducer';
 import { IChatState } from '../chat/reducer';
 
 

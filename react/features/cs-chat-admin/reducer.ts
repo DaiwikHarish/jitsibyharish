@@ -1,6 +1,11 @@
 import { IAttendeeInfo } from '../base/app/types';
 import ReducerRegistry from '../base/redux/ReducerRegistry';
-import { CHAT_ADMIN_ISLOADING_STATUS, CHAT_ADMIN_SELECTED_ATTENDEE, CHAT_ADMIN_UPDATE_ATTENDEES, CHAT_ADMIN_UPDATE_CHAT_HISTORY } from './actionTypes';
+import {
+    CHAT_ADMIN_ISLOADING_STATUS,
+    CHAT_ADMIN_SELECTED_ATTENDEE,
+    CHAT_ADMIN_UPDATE_ATTENDEES,
+    CHAT_ADMIN_UPDATE_CHAT_HISTORY,
+} from './actionTypes';
 import { IChatDto } from './types';
 
 export interface ICSChatAdminState {
@@ -46,30 +51,32 @@ ReducerRegistry.register<ICSChatAdminState>(
                     };
                 }
                 break;
-            case  CHAT_ADMIN_UPDATE_ATTENDEES:
+            case CHAT_ADMIN_UPDATE_ATTENDEES:
                 return {
                     ...state,
-                    isLoading:action.isLoading,
-                    onLineCount: action?.attendees?.filter(x => x.isOnline==true)?.length,
+                    isLoading: action.isLoading,
+                    attendees: action?.attendees,
+                    onLineCount: Object.values(action?.attendees)?.filter(
+                        (x: any) => x.isOnline === true
+                    ).length,
                     total: action?.attendees.length,
-                    attendees: action.attendees
-                }
-                break;   
-            
-             case  CHAT_ADMIN_UPDATE_CHAT_HISTORY:
+                };
+                break;
+
+            case CHAT_ADMIN_UPDATE_CHAT_HISTORY:
                 return {
                     ...state,
-                    isLoading:action.isLoading,
-                    chatHistory: action.chatHistory
-                }
-                break;    
-            
-            case  CHAT_ADMIN_SELECTED_ATTENDEE:
+                    isLoading: action.isLoading,
+                    chatHistory: action.chatHistory,
+                };
+                break;
+
+            case CHAT_ADMIN_SELECTED_ATTENDEE:
                 return {
                     ...state,
-                    selectedAttendeeId: action.selectedAttendeeId
-                }
-                break;      
+                    selectedAttendeeId: action.selectedAttendeeId,
+                };
+                break;
 
             default:
                 return state;
