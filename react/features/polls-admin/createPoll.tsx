@@ -84,6 +84,16 @@ function createPoll() {
         const list = [...PollQtnList];
 
         const PollAnslist = [...list[index]["answerOptions"]];
+
+        if(list[index]["isAnswerTypeSingle"]==true)
+        {
+            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist[indexinside]["isCorrect"] = false
+            })
+        }
+
+        list[index]["answerOptions"] = PollAnslist;
+
 if(PollAnslist[indexAns]["isCorrect"]==true)
 {
     PollAnslist[indexAns]["isCorrect"] = false
@@ -92,6 +102,7 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
 }
        
         list[index]["answerOptions"] = PollAnslist;
+
 
         setPollQtnList(list);
     };
@@ -107,6 +118,17 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
         const list = [...PollQtnList];
 
         list[index]["isAnswerTypeSingle"] = value == "true" ? true : false;
+
+        const PollAnslist = [...list[index]["answerOptions"]];
+
+        if(list[index]["isAnswerTypeSingle"]==true)
+        {
+            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist[indexinside]["isCorrect"] = false
+            })
+        }
+
+        list[index]["answerOptions"] = PollAnslist;
 
         setPollQtnList(list);
     };
@@ -201,7 +223,7 @@ let valid=0
       .then((response) => response.json())
       .then((data) => {
 
-      setgroupId(data.id)
+      setgroupId(data.id);
 
 
      
@@ -211,6 +233,34 @@ let valid=0
       list[index]["groupId"] = data.id
 
       ))
+
+     
+
+      list.map((listQtn, index) => (
+
+        delete list[index]["images"] 
+        
+
+      ))
+
+      list.map((listQtn, index) => (
+
+        delete list[index]["questionNull"] 
+        
+
+      ))
+      list.map((listQtn, index) => {
+      const PollAnslist = [...list[index]["answerOptions"]];
+       
+      listQtn.answerOptions.map((answerOpt, indexans) => (
+
+        delete PollAnslist[indexans]["answerNull"] 
+          
+      ))
+      list[index]["answerOptions"] = PollAnslist;
+    })
+     
+        
 
 
 

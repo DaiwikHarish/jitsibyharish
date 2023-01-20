@@ -160,6 +160,19 @@ list.map((listQtn, index) => {
 
         list[index]["isAnswerTypeSingle"] = value == "Single" ? true : false;
 
+
+        const PollAnslist = [...list[index]["answerOptions"]];
+
+        if(list[index]["isAnswerTypeSingle"]==true)
+        {
+            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist[indexinside]["isCorrect"] = false
+            })
+        }
+
+        list[index]["answerOptions"] = PollAnslist;
+
+
         setPollQtnList(list);
     };
 
@@ -275,11 +288,31 @@ if(PollAnslist[indexAns]["operation"]=="Add")
 
       const list = [...PollQtnList];
 
-    //   list.map((listQtn, index) => (
+      list.map((listQtn, index) => (
 
-    //   list[index]["groupId"] = data.id
+        delete list[index]["images"] 
+        
 
-    //   ))
+      ))
+
+      list.map((listQtn, index) => (
+
+        delete list[index]["questionNull"] 
+        
+
+      ))
+      list.map((listQtn, index) => {
+      const PollAnslist = [...list[index]["answerOptions"]];
+       
+      listQtn.answerOptions.map((answerOpt, indexans) => (
+
+        delete PollAnslist[indexans]["answerNull"] 
+          
+      ))
+      list[index]["answerOptions"] = PollAnslist;
+    })
+     
+        
 
 
 
@@ -324,6 +357,16 @@ if(PollAnslist[indexAns]["operation"]=="Add")
         const list = [...PollQtnList];
 
         const PollAnslist = [...list[index]["answerOptions"]];
+
+        if(list[index]["isAnswerTypeSingle"]==true)
+        {
+            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist[indexinside]["isCorrect"] = false
+            })
+        }
+
+        list[index]["answerOptions"] = PollAnslist;
+
 if(PollAnslist[indexAns]["isCorrect"]==true)
 {
     PollAnslist[indexAns]["isCorrect"] = false
