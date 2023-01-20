@@ -228,6 +228,44 @@ if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
         )
         
     }, []);
+
+    const UnMuteAll = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.UNUTE_MIC,
+                CommandType.TO_ALL_USER
+            )
+        )
+        
+    }, []);
+    
+
+    const MuteCamera = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.DISABLE_CAMERA,
+                CommandType.TO_ALL_USER
+            )
+        )
+        
+    }, []);
+
+    const UnMuteCamera = useCallback(() => {
+       
+        dispatch(
+            socketSendCommandMessage(
+              "ALL",
+                PermissionType.ENABLE_CAMERA,
+                CommandType.TO_ALL_USER
+            )
+        )
+        
+    }, []);
+    
     const onToggleContext = useCallback(() => {
         setContextOpen(open => !open);
     }, []);
@@ -256,7 +294,10 @@ if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
                 </div>
                 {/* showFooter && */}
                 {_attendeeInfo?.userType != UserType.Viewer  &&  (
-                    <div className = { classes.footer }>
+                    <>
+                    <div style={{padding:"6px", display:'inline'}} className = { classes.footer }>
+
+                    <div style={{padding:"0px 10px", display:'flex', justifyContent:'space-between'}}>
 
 <Button
                                 accessibilityLabel = "Mute All"
@@ -264,19 +305,45 @@ if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
                                 onClick = { MuteAll }
                                 type = { BUTTON_TYPES.SECONDARY } />
 
-{raiseHandEvent?
+
 <Button
-                                accessibilityLabel = "Disable Raise Hand"
-                                labelKey = "Disable RaiseHand"
-                                onClick = { RaiseHand }
+                                accessibilityLabel = "Disable All Camera"
+                                labelKey = "Disable All Camera"
+                                onClick = { MuteCamera }
                                 type = { BUTTON_TYPES.SECONDARY } />
-                                :<Button
-                                accessibilityLabel = "Enable Raise Hand"
-                                labelKey = "Enable RaiseHand"
-                                onClick = { EnableRaiseHand }
-                                type = { BUTTON_TYPES.SECONDARY } />}
 
+</div>
+<div style={{padding:"0px 10px", display:'flex', marginTop:10, marginBottom:10, justifyContent:'space-between'}}>
+                               <Button
+                                accessibilityLabel = "UnMute All"
+                                labelKey = "UnMute All"
+                                onClick = { UnMuteAll }
+                                type = { BUTTON_TYPES.SECONDARY } />
 
+<Button
+                                accessibilityLabel = "Enable All Camera"
+                                labelKey = "Enable All Camera"
+                                onClick = { UnMuteCamera }
+                                type = { BUTTON_TYPES.SECONDARY } />
+
+                               
+                               </div>
+                               
+                               <div style={{padding:"0px 10px", display:'flex', }}>
+                               
+                               {raiseHandEvent?
+                               <Button
+                                                               accessibilityLabel = "Disable Raise Hand"
+                                                               labelKey = "Disable RaiseHand"
+                                                               onClick = { RaiseHand }
+                                                               type = { BUTTON_TYPES.SECONDARY } />
+                                                               :<Button
+                                                               accessibilityLabel = "Enable Raise Hand"
+                                                               labelKey = "Enable RaiseHand"
+                                                               onClick = { EnableRaiseHand }
+                                                               type = { BUTTON_TYPES.SECONDARY } />}
+                               </div>
+                               
 
                         {/* {showMuteAllButton && (
                             <Button
@@ -300,6 +367,10 @@ if(socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
                             </div>
                         )} */}
                     </div>
+                             
+                               
+                               
+                               </>
                 )}
             </div>
         </div>

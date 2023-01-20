@@ -4,7 +4,7 @@ import React from 'react';
 import UserType from '../../../base/app/types';
 
 import { translate } from '../../../base/i18n';
-import { IconVideoOff } from '../../../base/icons';
+import { IconVideoOff,IconCamera } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import AbstractMuteVideoButton, {
@@ -30,7 +30,7 @@ class MuteVideoButton extends AbstractMuteVideoButton {
      */
     constructor(props: Props) {
         super(props);
-
+        this._handleClickUnmute = this._handleClickUnmute.bind(this);
         this._handleClick = this._handleClick.bind(this);
     }
 
@@ -44,18 +44,24 @@ class MuteVideoButton extends AbstractMuteVideoButton {
         const { _videoTrackMuted, t,_attendeeInfo } = this.props;
 
         if (_videoTrackMuted) {
-            return null;
+            return ( <ContextMenuItem
+                accessibilityLabel = { t('dialog.muteParticipantButton') }
+            className = 'mutelink'
+            icon = { IconCamera }
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick = { this._handleClickUnmute }
+            text = "Enable Camera" />)
         }
 
         return (
-            _attendeeInfo?.userType !== UserType.Viewer &&
+           
             <ContextMenuItem
                 accessibilityLabel = { t('participantsPane.actions.stopVideo') }
                 className = 'mutevideolink'
                 icon = { IconVideoOff }
                 // eslint-disable-next-line react/jsx-handler-names
                 onClick = { this._handleClick }
-                text = { t('participantsPane.actions.stopVideo') } />
+                text = "Disable Camera" />
         );
     }
 
