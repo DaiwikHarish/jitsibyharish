@@ -496,17 +496,8 @@ class Toolbox extends Component<IProps, AppState> {
                 }
                 //Mute will take care internally
 
-                // if(data[0].isMute==false)
-                //                 {
-                // this.setState({enableMike:true})
-                //                 }
-
-
-                //                 if(data[0].isMute==true)
-                //                 {
-                // this.setState({enableMike:false})
-                //                 }
-
+                this.props.dispatch(setVideoMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
 
 
 
