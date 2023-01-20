@@ -678,6 +678,9 @@ class Toolbox extends Component<IProps, AppState> {
 
                 }
                 if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_RAISE_HAND") {
+
+                   
+                    this.props.dispatch(raiseHand(false));
                     this.setState({ enableRaiseHand: false })
                 }
 
