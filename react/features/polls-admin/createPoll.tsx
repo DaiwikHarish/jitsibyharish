@@ -1,15 +1,19 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Input from "../base/ui/components/web/Input";
-import { Icon, IconTrash } from "../base/icons";
+// @ts-ignore
+import { Icon, IconTrash } from "../base/icons/";
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import Poll from "./poll";
+import { RingLoader } from "react-spinners";
+
 function createPoll() {
     
     const [groupId, setgroupId] = useState("");
     const [createPollState, setcreatePollState] = useState(true);
     const [showPollState, setshowPollState] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [PollQtnList, setPollQtnList] = useState([
         {
             question: "",
@@ -17,13 +21,14 @@ function createPoll() {
             updatedUserId: ApplicationConstants.userId,
             meetingId: ApplicationConstants.meetingId,
             groupId: groupId,
-         
+            questionNull:false,
             isAnswerTypeSingle: true,
             displaySeqNr: 1,
             answerOptions: [
               {
                   answerLabel: "1",
                   answerOption: "",
+                  answerNull:false,
                   displaySeqNr: 1,
                   createdUserId: ApplicationConstants.userId,
             updatedUserId: ApplicationConstants.userId,
@@ -42,15 +47,16 @@ function createPoll() {
    
     
 
-    const handlePollQtnChange = (e, index) => {
+    const handlePollQtnChange = (e:any, index:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
-        const list = [...PollQtnList];
-
+        const list:any = [...PollQtnList];
         list[index][name] = value;
         setPollQtnList(list);
     };
 
-    const handlePollAnsChange = (e, index, indexAns) => {
+    const handlePollAnsChange = (e:any, index:any, indexAns:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
 
         const list = [...PollQtnList];
@@ -63,7 +69,8 @@ function createPoll() {
 
         setPollQtnList(list);
     };
-    const handlePollAnslableChange = (e, index, indexAns) => {
+    const handlePollAnslableChange = (e:any, index:any, indexAns:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
 
         const list = [...PollQtnList];
@@ -77,7 +84,7 @@ function createPoll() {
         setPollQtnList(list);
     };
 
-    const handlePollAnscheckChange = (e, index, indexAns) => {
+    const handlePollAnscheckChange = (e:any, index:any, indexAns:any) => {
 
 
        
@@ -113,7 +120,7 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
 
 
 
-    const handlePollSelectChange = (e, index) => {
+    const handlePollSelectChange = (e:any, index:any) => {
         const { name, value } = e.target;
         const list = [...PollQtnList];
 
@@ -133,13 +140,13 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
         setPollQtnList(list);
     };
 
-    const handlePollQtnRemove = (index) => {
+    const handlePollQtnRemove = (index:any) => {
         const list = [...PollQtnList];
 
         list.splice(index, 1);
         setPollQtnList(list);
     };
-    const handlePollAnsRemove = (index, indexAns) => {
+    const handlePollAnsRemove = (index:any, indexAns:any) => {
         const list = [...PollQtnList];
         const PollAnslist = [...list[index]["answerOptions"]];
         PollAnslist.splice(indexAns, 1);
@@ -147,7 +154,10 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
         setPollQtnList(list);
     };
 
-    const handlePollQtnAdd = (index) => {
+    const handlePollQtnAdd = (index:any) => {
+
+
+        
         setPollQtnList([
             ...PollQtnList,
             {
@@ -156,7 +166,7 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
               updatedUserId: ApplicationConstants.userId,
               meetingId: ApplicationConstants.meetingId,
               groupId: groupId,
-           
+              questionNull:false,
               isAnswerTypeSingle: true,
               displaySeqNr: index+2,
               answerOptions: [
@@ -164,6 +174,7 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
                     answerLabel: "1",
                     answerOption: "",
                     displaySeqNr: 1,
+                    answerNull:false,
                     createdUserId: ApplicationConstants.userId,
               updatedUserId: ApplicationConstants.userId,
                     isCorrect: false,
@@ -181,21 +192,20 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
 
 if(pollTitle!="")
 {
-    const list = [...PollQtnList];
+    const list:any = [...PollQtnList];
 let valid=0
 
-    list.map((listQtn, index) => {
+    list.map((listQtn:any, index:any) => {
 
         if(listQtn.question.trim()=="" || listQtn.question==null)
         {
-
         list[index]["questionNull"] =true
         valid=1
         }
        
         const PollAnslist = [...list[index]["answerOptions"]];
        
-        listQtn.answerOptions.map((answerOpt, indexans) => {
+        listQtn.answerOptions.map((answerOpt:any, indexans:any) => {
 
             if(answerOpt.answerOption.trim()=="" || answerOpt.answerOption==null)
             {
@@ -209,7 +219,7 @@ let valid=0
     })
     if(valid==0)
     {
-        
+        setLoading(true)
 
       const POSTGroupMethod = {
         method: 'POST', // Method itself
@@ -219,8 +229,18 @@ let valid=0
         body: JSON.stringify({name: pollTitle, meetingId:  ApplicationConstants.meetingId, createdUserId:  ApplicationConstants.userId, status: "Not Launched"}),
     };
 
+
       fetch(ApiConstants.pollGroup, POSTGroupMethod)
-      .then((response) => response.json())
+      .then(res => {
+        // Unfortunately, fetch doesn't send (404 error) into the cache itself
+        // You have to send it, as I have done below
+        console.log(res)
+        if(res.status >= 400) {
+            throw new Error("Server responds with error!");
+        }
+        return res.json();
+    })
+     
       .then((data) => {
 
       setgroupId(data.id);
@@ -228,35 +248,52 @@ let valid=0
 
      
 
-      list.map((listQtn, index) => (
+      list.map((listQtn:any, index:any) => (
 
       list[index]["groupId"] = data.id
 
       ))
 
+      list.map((listQtn:any, index:any) => (
+
+        list[index]["displaySeqNr"] = index+1
+  
+        ))
+
      
 
-      list.map((listQtn, index) => (
+      list.map((listQtn:any, index:any) => (
 
         delete list[index]["images"] 
         
 
       ))
 
-      list.map((listQtn, index) => (
+      list.map((listQtn:any, index:any) => (
 
         delete list[index]["questionNull"] 
         
 
       ))
-      list.map((listQtn, index) => {
-      const PollAnslist = [...list[index]["answerOptions"]];
-       
-      listQtn.answerOptions.map((answerOpt, indexans) => (
+      list.map((listQtn:any, index:any) => {
+     // const PollAnslist = [...list[index]["answerOptions"]];
+      const PollAnslist:any = [...list[index]["answerOptions"]];
+      listQtn.answerOptions.map((answerOpt:any, indexans:any) => (
 
-        delete PollAnslist[indexans]["answerNull"] 
+        delete   PollAnslist[indexans]["answerNull"]  
           
       ))
+      listQtn.answerOptions.map((answerOpt:any, indexans:any) => (
+
+        PollAnslist[indexans]["displaySeqNr"] = indexans+1
+      ))
+     
+    //   listQtn.answerOptions.map((answerOpt, indexans) => (
+
+    //     PollAnslist[indexans]["answerLabel"] = String(indexans+1)
+    //   ))
+
+
       list[index]["answerOptions"] = PollAnslist;
     })
      
@@ -277,21 +314,30 @@ let valid=0
     // make the HTTP put request using fetch api
 
     fetch(ApiConstants.poll, POSTMethod)
-        .then((response) => response.json())
+        .then((response) => {console.log( response.json())
+        
+        
+        })
         .then((data) => {
           setshowPollState(true)
-          
+          setLoading(false)
           setcreatePollState(false)
 
-        });
-      });
+        }).catch((error) => console.log('Error log:', error));
+      })
+      .catch((error) => console.log('Error:', error))
+      
+      ;
+
+     
+      
    
 }else{
     setPollQtnList(list);
 }
 }
 else{
-    var pollTitleinput = document.getElementById('pollTitle');
+    var pollTitleinput = document.getElementById('pollTitle') as HTMLElement;
     pollTitleinput.style.border = '2px solid red';
 }
 
@@ -300,9 +346,9 @@ else{
     }
 
     
-    const handlePollOptionAdd = (index, indexAns) => {
+    const handlePollOptionAdd = (index:any, indexAns:any) => {
         const list = [...PollQtnList];
-        const PollAnslist = [
+        const PollAnslist:any = [
             ...list[index]["answerOptions"],
             { 
               
@@ -313,13 +359,13 @@ else{
             answerOption: "",
             displaySeqNr: indexAns + 2,
             createdUserId: ApplicationConstants.userId,
-     
+            updatedUserId: ApplicationConstants.userId,
             isCorrect: false,
           },
         ];
 
         list[index]["answerOptions"] = PollAnslist;
-console.log(list)
+
         setPollQtnList(list);
     };
 
@@ -328,20 +374,20 @@ console.log(list)
 <>      {  createPollState ?
 
         <div style={{ padding: 20 }}>
-            <div className="form-field">
+        {!loading ?     <div className="form-field">
                 <h3 style={{ fontSize: 18 }}>Poll Title:</h3>
                 <Input
                     type="text"
                     textarea={true}
                     value={pollTitle}
                     onChange={(val) => setpollTitle(val)}
-                    style={{ fontSize: 16 }}
+                    
                     id="pollTitle"
                     name="pollTitle"
                     className="inputBox"
                     placeholder="Enter Poll Title"
                 />
-                {PollQtnList.map((singlePollQtn, index) => (
+                {PollQtnList.map((singlePollQtn:any, index:any) => (
                     <div
                         key={index}
                         className="PollQtns"
@@ -380,7 +426,7 @@ console.log(list)
                                                     padding: "10px 16px",
                                                     borderRadius: "6px",
                                                     border: singlePollQtn.questionNull?"1px solid red":"1px solid rgb(204, 204, 204)",
-                                                    height: "40px",
+                                                    height: "65px",
                                                     boxSizing: "border-box",
                                                     width: "70%",
 
@@ -390,7 +436,7 @@ console.log(list)
                                             
                                             }
                                             
-                                                type="text"
+                                                
                                                 id="question"
                                                 name="question"
                                                 value={
@@ -415,7 +461,7 @@ console.log(list)
                                                     padding: "10px 16px",
                                                     borderRadius: "6px",
                                                     border: "1px solid rgb(204, 204, 204)",
-                                                    height: "40px",
+                                                    height: "50px",
                                                     boxSizing: "border-box",
                                                     marginLeft: "3%",
                                                     width: "27%",
@@ -441,7 +487,7 @@ console.log(list)
                                 </div>
                                 <ol className="poll-answer-list">
                                     {singlePollQtn.answerOptions.map(
-                                        (answerOptions, indexAns) => (
+                                        (answerOptions:any, indexAns:any) => (
                                             <>
                                                 <li className="poll-answer-container">
                                                     <div className="pollFormControl" style={{width:'100%'}}>
@@ -512,7 +558,7 @@ console.log(list)
                                                                     textAlign:
                                                                         "center",
                                                                 }}
-                                                                type="text"
+                                                                
                                                                 id="answerOptions"
                                                                 name="answerOptions"
                                                                 value={
@@ -546,14 +592,14 @@ console.log(list)
                                                                         "6px",
                                                                    
                                                                     border: answerOptions.answerNull?"1px solid red":"1px solid rgb(204, 204, 204)",
-                                                                    height: "40px",
+                                                                    height: "52px",
                                                                     boxSizing:
                                                                         "border-box",
                                                                     width: "85%",
                                                                     marginLeft:
                                                                         "2%",
                                                                 }}
-                                                                type="text"
+                                                              
                                                                 id="answerOptions"
                                                                 name="answerOptions"
                                                                 value={
@@ -681,10 +727,10 @@ console.log(list)
                                         display: "flex",
                                         WebkitAlignItems: "center",
                                         WebkitBoxAlign: "center",
-                                        MsFlexAlign: "center",
+                                     
                                         alignItems: "center",
                                         WebkitBoxPack: "center",
-                                        MsFlexPack: "center",
+                                       
                                         WebkitJustifyContent: "center",
                                         justifyContent: "center",
                                         border: "0",
@@ -707,7 +753,7 @@ console.log(list)
                 <div
                     style={{
                         display: "flex",
-                        bottom: 20,
+                        bottom: '5%',
                         marginLeft: 700,
                         justifyContent: "flex-end",
                         position: "absolute",
@@ -733,10 +779,10 @@ console.log(list)
                             display: "flex",
                             WebkitAlignItems: "center",
                             WebkitBoxAlign: "center",
-                            MsFlexAlign: "center",
+                          
                             alignItems: "center",
                             WebkitBoxPack: "center",
-                            MsFlexPack: "center",
+                            
                             WebkitJustifyContent: "center",
                             justifyContent: "center",
                             border: "0",
@@ -765,10 +811,10 @@ console.log(list)
                             display: "flex",
                             WebkitAlignItems: "center",
                             WebkitBoxAlign: "center",
-                            MsFlexAlign: "center",
+                          
                             alignItems: "center",
                             WebkitBoxPack: "center",
-                            MsFlexPack: "center",
+                           
                             WebkitJustifyContent: "center",
                             justifyContent: "center",
                             border: "0",
@@ -785,7 +831,58 @@ console.log(list)
                         <span>Save</span>
                     </Button>
                 </div>{" "}
-            </div>
+            </div>:
+
+<div
+style={{
+    minHeight: '50vh',
+    textAlign: 'center',
+    padding: '10%',
+}}
+>
+{' '}
+{/* <Spinner
+    // @ts-ignore
+    isCompleting={false}
+    size="large"
+/> */}
+<div style={{marginTop:80,height:500, }}>
+<div
+style={{
+margin: "auto",
+width: "25%",
+height: "75%",
+
+borderRadius: "5px",
+alignItems: "center",
+display: "block",
+padding: '20px',
+// boxSizing: "border-box",
+overflow: "auto",
+outline: 0,
+// minHeight: "inherit",
+// maxHeight: "inherit",
+}}
+>
+<RingLoader
+cssOverride={{
+    margin: "auto",
+    width: "25%",
+    height: "30%",
+}}
+color={"white"}
+loading={loading}
+/>
+</div>
+
+
+</div>
+</div>
+
+                    }
+
+
+            
         </div>:  <Poll showAddmessage={showPollState}/>
         
                       }

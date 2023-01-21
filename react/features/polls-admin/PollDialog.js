@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Dialogpoll from '../base/ui/components/web/Dialogpoll';
-
+// @ts-ignore
 import Poll from './poll';
 
 /**
@@ -23,6 +23,7 @@ export default class PollDialog extends Component {
                 cancel = {{ hidden: true }}
                 ok = {{ hidden: true }}
                 disableBackdropClose={true}
+                disableEnter={true}
                 className="pollDialog"
                 size='extralarge'
                 titleKey = 'Poll'>
