@@ -614,11 +614,7 @@ const endedPollclose=()=>
                     isSearchable={true}
                     name="polls"
                     options={pollOptions}
-<<<<<<< HEAD:react/features/polls-admin/poll.tsx
                 
-=======
-                    styles={{fontSize:16, fontWeight:'bold'}}
->>>>>>> ar-vc-develop:react/features/poll-presenter/poll.js
                     
                 />
           {   showDeletemessage || showAddmessagein ?   <div>
@@ -659,11 +655,7 @@ const endedPollclose=()=>
 </div>:
 <div>
                 {!loading ? (
-<<<<<<< HEAD:react/features/polls-admin/poll.tsx
                     <div style={{ minHeight: '68vh', maxHeight:'68vh',  fontWeight:'bold',fontSize:16 }}>
-=======
-                    <div style={{ minHeight: '50vh', fontWeight:'bold',fontSize:16 }}>
->>>>>>> ar-vc-develop:react/features/poll-presenter/poll.js
                         {pollResult != null && !endautopoll ? (
                             pollResult ? (
                                 <div
@@ -723,21 +715,11 @@ const endedPollclose=()=>
                                             onChange={(val) =>
 
                                                { 
-<<<<<<< HEAD:react/features/polls-admin/poll.tsx
                                                 parseInt(val)>=0?
                                                 setPollcounttime( parseInt(val) ):null}
                                             }
                                             name="tentacles"
    
-=======
-                                                val>=0?
-                                                setPollcounttime(val):null}
-                                            }
-                                            name="tentacles"
-       min="1"
-                                          
-                                            style={{fontSize:16}}
->>>>>>> ar-vc-develop:react/features/poll-presenter/poll.js
                                             placeholder="Poll Duration in Seconds"
                                         />
                                     </div>
