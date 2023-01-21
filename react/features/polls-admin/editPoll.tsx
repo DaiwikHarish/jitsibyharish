@@ -1,15 +1,16 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Input from "../base/ui/components/web/Input";
+// @ts-ignore
 import { Icon, IconTrash } from "../base/icons";
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import Poll from "./poll";
-
+import { RingLoader } from "react-spinners";
 
 interface IpollProps {
     
-    showpollid?: string;
+    showpollid?: number;
    
 }
 
@@ -19,6 +20,7 @@ const editPoll = ({
 
     const [createPollState, setcreatePollState] = useState(true);
     const [showPollState, setshowPollState] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [PollQtnList, setPollQtnList] = useState([
         {
            
@@ -54,9 +56,9 @@ const editPoll = ({
     useEffect(() => {
         getSeletecdpoll(showpollid);
     }, []);
-    function getSeletecdpoll(id) {
+    function getSeletecdpoll(id:any) {
       
-       
+        setLoading(true)
                 fetch(
                     ApiConstants.poll +
                         '?groupId=' +
@@ -67,10 +69,10 @@ const editPoll = ({
                       
                         const list = [...selected.data];
 
-                          list.map((listQtn, index) => {
+                          list.map((listQtn:any, index:any) => {
 
 
-                          let answerOptions=  listQtn.answerOptions.map((listans, indexans) => {
+                          let answerOptions=  listQtn.answerOptions.map((listans:any, indexans:any) => {
                             
                                       return {
                                    ...listans,
@@ -86,14 +88,14 @@ const editPoll = ({
                     
                     })
                       
-console.log(list)
+
 
                
 
-list.map((listQtn, index) => {
+list.map((listQtn:any, index:any) => {
 
 
-    let answerOptions=  listQtn.answerOptions.map((listans, indexans) => {
+    let answerOptions=  listQtn.answerOptions.map((listans:any, indexans:any) => {
       
                 return {
              ...listans,
@@ -114,32 +116,36 @@ list.map((listQtn, index) => {
 
                         setpollTitle(selected.data[0].groupName)
                         
-                      
+                        setLoading(false)
                     });
           
     }
-    const handlePollQtnChange = (e, index) => {
+    const handlePollQtnChange = (e:any, index:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
-        const list = [...PollQtnList];
+        const list:any = [...PollQtnList];
 
         list[index][name] = value;
         setPollQtnList(list);
     };
 
-    const handlePollAnsChange = (e, index, indexAns) => {
+    const handlePollAnsChange = (e:any, index:any, indexAns:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
 
         const list = [...PollQtnList];
-
+      
         const PollAnslist = [...list[index]["answerOptions"]];
-
+        console.log(indexAns)
         PollAnslist[indexAns]["answerOption"] = value;
-
+        console.log(PollAnslist[indexAns]["answerOption"])
         list[index]["answerOptions"] = PollAnslist;
-
+     
         setPollQtnList(list);
+    
     };
-    const handlePollAnslableChange = (e, index, indexAns) => {
+    const handlePollAnslableChange = (e:any, index:any, indexAns:any) => {
+        e.preventDefault(); 
         const { name, value } = e.target;
 
         const list = [...PollQtnList];
@@ -154,7 +160,7 @@ list.map((listQtn, index) => {
     };
     
 
-    const handlePollSelectChange = (e, index) => {
+    const handlePollSelectChange = (e:any, index:any) => {
         const { name, value } = e.target;
         const list = [...PollQtnList];
 
@@ -165,7 +171,7 @@ list.map((listQtn, index) => {
 
         if(list[index]["isAnswerTypeSingle"]==true)
         {
-            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist.map((listQtn:any, indexinside:any) => {
             PollAnslist[indexinside]["isCorrect"] = false
             })
         }
@@ -176,7 +182,7 @@ list.map((listQtn, index) => {
         setPollQtnList(list);
     };
 
-    const handlePollQtnRemove = (index) => {
+    const handlePollQtnRemove = (index:any) => {
         const list = [...PollQtnList];
         
 
@@ -188,11 +194,17 @@ else{
     list[index]["operation"]="Remove";
 }
         //list.splice(index, 1);
+
+        
         setPollQtnList(list);
     };
-    const handlePollAnsRemove = (index, indexAns) => {
+    const handlePollAnsRemove = (index:any, indexAns:any) => {
         const list = [...PollQtnList];
+        console.log("core list...")
+
+
         const PollAnslist = [...list[index]["answerOptions"]];
+        console.log(PollAnslist)
 if(PollAnslist[indexAns]["operation"]=="Add")
 {
     PollAnslist.splice(indexAns, 1);
@@ -202,10 +214,17 @@ if(PollAnslist[indexAns]["operation"]=="Add")
         
        // PollAnslist.splice(indexAns, 1);
         list[index]["answerOptions"] = PollAnslist;
+// console.log(PollAnslist)
+ console.log(indexAns)
+       console.log( PollAnslist.filter( element => element.operation !="Remove").length)
+      console.log("Remove list...")
+        console.log(PollAnslist)
         setPollQtnList(list);
     };
 
-    const handlePollQtnAdd = (index) => {
+    const handlePollQtnAdd = () => {
+        const list = [...PollQtnList];
+        let index=list[list.length-1].displaySeqNr
         setPollQtnList([
             ...PollQtnList,
             {
@@ -219,7 +238,7 @@ if(PollAnslist[indexAns]["operation"]=="Add")
               : 
               "Add",
               isAnswerTypeSingle: true,
-              displaySeqNr: index+2,
+              displaySeqNr: index+1,
               answerOptions: [
                 {
                     answerLabel: "1",
@@ -243,10 +262,10 @@ if(PollAnslist[indexAns]["operation"]=="Add")
 
         if(pollTitle!="")
         {
-            const list = [...PollQtnList];
+            const list:any= [...PollQtnList];
         let valid=0
         
-            list.map((listQtn, index) => {
+            list.map((listQtn:any, index:any) => {
         
                 if(listQtn.question.trim()=="" || listQtn.question==null)
                 {
@@ -257,7 +276,7 @@ if(PollAnslist[indexAns]["operation"]=="Add")
                
                 const PollAnslist = [...list[index]["answerOptions"]];
                
-                listQtn.answerOptions.map((answerOpt, indexans) => {
+                listQtn.answerOptions.map((answerOpt:any, indexans:any) => {
         
                     if(answerOpt.answerOption.trim()=="" || answerOpt.answerOption==null)
                     {
@@ -269,8 +288,12 @@ if(PollAnslist[indexAns]["operation"]=="Add")
                 })
         
             })
+
             if(valid==0)
             {
+
+                setLoading(true)
+
       const PATCHGroupMethod = {
         method: 'PATCH', // Method itself
         headers: {
@@ -279,39 +302,57 @@ if(PollAnslist[indexAns]["operation"]=="Add")
         body: JSON.stringify({  id:showpollid, name: pollTitle, meetingId:  ApplicationConstants.meetingId, updatedUserId:  ApplicationConstants.userId}),
     };
 
-      fetch(ApiConstants.pollGroup+"/id="+showpollid, PATCHGroupMethod)
+      fetch(ApiConstants.pollGroup+"/id="+  showpollid, PATCHGroupMethod)
       .then((response) => response.json())
       .then((data) => {
 
      // setgroupId(data.id)
 
 
-      const list = [...PollQtnList];
+      const list:any = [...PollQtnList];
 
-      list.map((listQtn, index) => (
+      list.map((listQtn:any, index:any) => (
 
         delete list[index]["images"] 
         
 
       ))
 
-      list.map((listQtn, index) => (
+      list.map((listQtn:any, index:any) => (
 
         delete list[index]["questionNull"] 
         
 
       ))
-      list.map((listQtn, index) => {
-      const PollAnslist = [...list[index]["answerOptions"]];
-       
-      listQtn.answerOptions.map((answerOpt, indexans) => (
+      list.map((listQtn:any, index:any) => (
 
-        delete PollAnslist[indexans]["answerNull"] 
+        list[index]["displaySeqNr"] = index+1
+  
+        ))
+      list.map((listQtn:any, index:any) => {
+        const PollAnslist:any = [...list[index]["answerOptions"]];
+       
+        listQtn.answerOptions.map((answerOpt:any, indexans:any) => (
+  
+          delete   PollAnslist[indexans]["answerNull"]  
+            
+        ))
+        listQtn.answerOptions.map((answerOpt:any, indexans:any) => (
+  
+          PollAnslist[indexans]["displaySeqNr"] = indexans+1
+        ))
+       
+      //   listQtn.answerOptions.map((answerOpt, indexans) => (
+  
+      //     PollAnslist[indexans]["answerLabel"] = String(indexans+1)
+      //   ))
+  
+  
+        list[index]["answerOptions"] = PollAnslist;
+      })
+       
           
-      ))
-      list[index]["answerOptions"] = PollAnslist;
-    })
-     
+  
         
 
 
@@ -332,7 +373,7 @@ if(PollAnslist[indexAns]["operation"]=="Add")
         .then((response) => response.json())
         .then((data) => {
             setshowPollState(true)
-          
+            setLoading(false)
           setcreatePollState(false)
 
         });
@@ -346,11 +387,11 @@ if(PollAnslist[indexAns]["operation"]=="Add")
     
     
     else{
-        var pollTitleinput = document.getElementById('pollTitle');
+        var pollTitleinput = document.getElementById('pollTitle') as HTMLElement;
         pollTitleinput.style.border = '2px solid red';
     }
     }
-    const handlePollAnscheckChange = (e, index, indexAns) => {
+    const handlePollAnscheckChange = (index:any, indexAns:any) => {
 
 
        
@@ -360,7 +401,7 @@ if(PollAnslist[indexAns]["operation"]=="Add")
 
         if(list[index]["isAnswerTypeSingle"]==true)
         {
-            PollAnslist.map((listQtn, indexinside) => {
+            PollAnslist.map((listQtn:any, indexinside:any) => {
             PollAnslist[indexinside]["isCorrect"] = false
             })
         }
@@ -380,27 +421,38 @@ if(PollAnslist[indexAns]["isCorrect"]==true)
     };
 
     
-    const handlePollOptionAdd = (index, indexAns) => {
-        const list = [...PollQtnList];
+    const handlePollOptionAdd = (index:any) => {
+    
+        const list:any = [...PollQtnList];
+
+      //  let indexAns= list[index]["answerOptions"].filter( element => element.operation !="Remove").length
+
+        let indexAns=list[index]["answerOptions"][list[index]["answerOptions"].length-1].displaySeqNr
+        console.log("Add list...")
+       
         const PollAnslist = [
             ...list[index]["answerOptions"],
             { 
               
               
-              answerLabel: indexAns + 2, 
+              answerLabel: indexAns + 1, 
           
               operation:"Add",
             answerOption: "",
-            displaySeqNr: indexAns + 2,
+            displaySeqNr: indexAns + 1,
             createdUserId: ApplicationConstants.userId,
             updatedUserId: ApplicationConstants.userId,
             isCorrect: false,
-            pollQuestionId:PollQtnList[index].id,
+            pollQuestionId:list[index]["id"],
           },
         ];
 
-        list[index]["answerOptions"] = PollAnslist;
-console.log(list)
+        list[index]["answerOptions"] = PollAnslist as any;
+
+
+       console.log( PollAnslist.filter( element => element.operation !="Remove").length)
+       console.log("PollAnslist...")
+       console.log( PollAnslist.filter( element => element.operation !="Remove"))
         setPollQtnList(list);
     };
 
@@ -409,19 +461,19 @@ console.log(list)
 <>      {  createPollState ?
 
         <div style={{ padding: 20 }}>
-            <div className="form-field">
+          {!loading ?        <div className="form-field">
                 <h3 style={{ fontSize: 18 }}>Poll Title:</h3>
                 <Input
                     type="text"
                     textarea={true}
                     value={pollTitle}
                     onChange={(val) => setpollTitle(val)}
-                    style={{ fontSize: 16 }}
+                    
                     name="pollTitle"
                     className="inputBox"
                     placeholder="Enter Poll Title"
                 />
-                {PollQtnList.map((singlePollQtn, index) => (
+                {PollQtnList.map((singlePollQtn:any, index:any) => (
 
 
 singlePollQtn.operation!='Remove'?
@@ -462,11 +514,11 @@ singlePollQtn.operation!='Remove'?
                                                     borderRadius: "6px",
                                                     border: singlePollQtn.questionNull?"1px solid red":"1px solid rgb(204, 204, 204)",
                                                  
-                                                    height: "40px",
+                                                    height: "65px",
                                                     boxSizing: "border-box",
                                                     width: "70%",
                                                 }}
-                                                type="text"
+                                                
                                                 id="question"
                                                 name="question"
                                                 value={
@@ -491,7 +543,7 @@ singlePollQtn.operation!='Remove'?
                                                     padding: "10px 16px",
                                                     borderRadius: "6px",
                                                     border: "1px solid rgb(204, 204, 204)",
-                                                    height: "40px",
+                                                    height: "50px",
                                                     boxSizing: "border-box",
                                                     marginLeft: "3%",
                                                     width: "27%",
@@ -517,7 +569,7 @@ singlePollQtn.operation!='Remove'?
                                 </div>
                                 <ol className="poll-answer-list">
                                     {singlePollQtn.answerOptions.map(
-                                        (answerOptions, indexAns) => (
+                                        (answerOptions:any, indexAns:any) => (
                                             answerOptions.operation!='Remove'?
                                             <>
                                                 <li className="poll-answer-container">
@@ -533,7 +585,7 @@ singlePollQtn.operation!='Remove'?
                                                             />
                                                             <div onClick={(e) =>
                                                                     handlePollAnscheckChange(
-                                                                        e,
+                                                                      
                                                                         index,
                                                                         indexAns
                                                                     )
@@ -581,7 +633,7 @@ singlePollQtn.operation!='Remove'?
                                                                     textAlign:
                                                                         "center",
                                                                 }}
-                                                                type="text"
+                                                              
                                                                 id="answerOptions"
                                                                 name="answerOptions"
                                                                 value={
@@ -615,14 +667,14 @@ singlePollQtn.operation!='Remove'?
                                                                         "6px",
                                                                         border: answerOptions.answerNull?"1px solid red":"1px solid rgb(204, 204, 204)",
                                                                 
-                                                                    height: "40px",
+                                                                    height: "52px",
                                                                     boxSizing:
                                                                         "border-box",
                                                                     width: "85%",
                                                                     marginLeft:
                                                                         "2%",
                                                                 }}
-                                                                type="text"
+                                                          
                                                                 id="answerOptions"
                                                                 name="answerOptions"
                                                                 value={
@@ -676,7 +728,7 @@ singlePollQtn.operation!='Remove'?
                                                         )}
                                                     </div>
                                                 </li>
-                                                {singlePollQtn.answerOptions.length -
+                                                {/* {singlePollQtn.answerOptions.filter( element => element.operation !="Remove").length-
                                                     1 ===
                                                     indexAns && (
                                                     <Button
@@ -698,10 +750,59 @@ singlePollQtn.operation!='Remove'?
                                                             + Add Option{" "}
                                                         </span>
                                                     </Button>
-                                                )}
-                                            </>:null
+                                                )} */}
+
+
+                                            </>:
+
+                                            <>
+                                            
+                                            {/* {singlePollQtn.answerOptions.filter( element => element.operation !="Remove").length-
+                                                    1 ===
+                                                    indexAns && (
+                                                    <Button
+                                                        type="button"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                        // style={{"color":"#040404","borderRadius":"6px","padding":"5px 10px","display":"flex","WebkitAlignItems":"center","WebkitBoxAlign":"center","MsFlexAlign":"center","alignItems":"center","WebkitBoxPack":"center","MsFlexPack":"center","WebkitJustifyContent":"center","justifyContent":"center","border":"0","fontSize":"14px","lineHeight":"20px","fontWeight":"600","letterSpacing":"0","WebkitTransition":"background .2s","transition":"background .2s","cursor":"pointer","backgroundColor":"#E0E0E0"}}
+
+                                                        onClick={() =>
+                                                            handlePollOptionAdd(
+                                                                index,
+                                                                indexAns
+                                                            )
+                                                        }
+                                                        className="add-btn"
+                                                    >
+                                                        <span>
+                                                            + Add Option{" "}
+                                                        </span>
+                                                    </Button>
+                                                )} */}
+                                            </>
                                         )
                                     )}
+
+<Button
+                                                        type="button"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                        // style={{"color":"#040404","borderRadius":"6px","padding":"5px 10px","display":"flex","WebkitAlignItems":"center","WebkitBoxAlign":"center","MsFlexAlign":"center","alignItems":"center","WebkitBoxPack":"center","MsFlexPack":"center","WebkitJustifyContent":"center","justifyContent":"center","border":"0","fontSize":"14px","lineHeight":"20px","fontWeight":"600","letterSpacing":"0","WebkitTransition":"background .2s","transition":"background .2s","cursor":"pointer","backgroundColor":"#E0E0E0"}}
+
+                                                        onClick={() =>
+                                                            handlePollOptionAdd(
+                                                                index
+                                                                
+                                                            )
+                                                        }
+                                                        className="add-btn"
+                                                    >
+                                                        <span>
+                                                            + Add Option{" "}
+                                                        </span>
+                                                    </Button>
                                 </ol>
                                 <div className="poll-footer poll-answer-footer">
                                     <div className="second-division" style={{marginLeft:700}}>
@@ -736,7 +837,7 @@ singlePollQtn.operation!='Remove'?
                                 </div>
                             </div>
 
-                            {PollQtnList.length - 1 === index && (
+                            {/* {PollQtnList.filter( element => element.operation !="Remove").length - 1 === index && (
                                 <Button
                                     type="button"
                                  
@@ -770,14 +871,50 @@ singlePollQtn.operation!='Remove'?
                                 >
                                     <span>+ Add Question </span>
                                 </Button>
-                            )}
+                            )} */}
                         </div>
                     </div>:null
                 ))}
+
+
+                                <Button
+                                    type="button"
+                                 
+                                    onClick={() =>
+                                        handlePollQtnAdd()
+                                    }
+                                    className="add-btn"
+                                    style={{
+                                        color: "#040404",
+                                        borderRadius: "6px",
+                                        padding: "5px 10px",
+                                        display: "flex",
+                                        WebkitAlignItems: "center",
+                                        WebkitBoxAlign: "center",
+                                    
+                                        alignItems: "center",
+                                        WebkitBoxPack: "center",
+                                      
+                                        WebkitJustifyContent: "center",
+                                        justifyContent: "center",
+                                        border: "0",
+                                        fontSize: "14px",
+                                        lineHeight: "20px",
+                                        fontWeight: "600",
+                                        letterSpacing: "0",
+                                        WebkitTransition: "background .2s",
+                                        transition: "background .2s",
+                                        cursor: "pointer",
+                                        backgroundColor: "#E0E0E0",
+                                    }}
+                                >
+                                    <span>+ Add Question </span>
+                                </Button>
+                            
                 <div
                     style={{
                         display: "flex",
-                        bottom: 20,
+                        bottom: '5%',
                         marginLeft: 700,
                         justifyContent: "flex-end",
                         position: "absolute",
@@ -803,10 +940,10 @@ singlePollQtn.operation!='Remove'?
                             display: "flex",
                             WebkitAlignItems: "center",
                             WebkitBoxAlign: "center",
-                            MsFlexAlign: "center",
+                            
                             alignItems: "center",
                             WebkitBoxPack: "center",
-                            MsFlexPack: "center",
+                            
                             WebkitJustifyContent: "center",
                             justifyContent: "center",
                             border: "0",
@@ -835,10 +972,10 @@ singlePollQtn.operation!='Remove'?
                             display: "flex",
                             WebkitAlignItems: "center",
                             WebkitBoxAlign: "center",
-                            MsFlexAlign: "center",
+                        
                             alignItems: "center",
                             WebkitBoxPack: "center",
-                            MsFlexPack: "center",
+                           
                             WebkitJustifyContent: "center",
                             justifyContent: "center",
                             border: "0",
@@ -855,7 +992,55 @@ singlePollQtn.operation!='Remove'?
                         <span>Save</span>
                     </Button>
                 </div>{" "}
-            </div>
+            </div>:
+
+<div
+style={{
+    minHeight: '50vh',
+    textAlign: 'center',
+    padding: '10%',
+}}
+>
+{' '}
+{/* <Spinner
+    // @ts-ignore
+    isCompleting={false}
+    size="large"
+/> */}
+<div style={{marginTop:80,height:500, }}>
+<div
+style={{
+margin: "auto",
+width: "25%",
+height: "75%",
+
+borderRadius: "5px",
+alignItems: "center",
+display: "block",
+padding: '20px',
+// boxSizing: "border-box",
+overflow: "auto",
+outline: 0,
+// minHeight: "inherit",
+// maxHeight: "inherit",
+}}
+>
+<RingLoader
+cssOverride={{
+    margin: "auto",
+    width: "25%",
+    height: "30%",
+}}
+color={"white"}
+loading={loading}
+/>
+</div>
+
+
+</div>
+</div>
+
+                    }
         </div>:  <Poll showAddmessage={showPollState}/>
         
                       }

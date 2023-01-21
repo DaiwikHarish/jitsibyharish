@@ -10,6 +10,7 @@ import Input from '../base/ui/components/web/Input';
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import { RingLoader } from "react-spinners";
+// @ts-ignore
 import { IconTimer, IconTimerRed, IconWarning, Icon } from '../base/icons';
 
 
@@ -26,15 +27,16 @@ const poll = ({
     const [pollOptions, setPollOptions] = useState([]); // Data display in dropdown select box
 
     const [pollAns, setpollAns] = useState([]); // set the ans in the poll data
-    const [pollResult, setpollResult] = useState(null); // show or hide result
-    const [pollSeletedId, setPollSeletedId] = useState(null); // Seleted id from dropdown menu
+    const [pollResult, setpollResult] = useState<boolean | null>(null); // show or hide result
+
+    const [pollSeletedId, setPollSeletedId] = useState(0); // Seleted id from dropdown menu
 
     const [apibyseconds, setapibyseconds] = useState(0); // Every 3 seconds poll api calls
     const [pollcounttime, setPollcounttime] = useState(0); // Count from start 0
     const [polllauched, setPolllauched] = useState(false); // Enable state of poll is launched or not
     const [isDisabledSelect, setisDisabledSelect] = useState(false); //  state of disable the dropdown menu
     const [seconds, setSeconds] = useState(0); // Count sec when its given time
-    const [pollRelaunch, setpollRelaunch] = useState(null); //state of relaunched button
+    const [pollRelaunch, setpollRelaunch] = useState<boolean | null>(null); //state of relaunched button
     const [apicall, setapicall] = useState(false); // call when to call api
     const [loading, setLoading] = useState(false);
     const [endautopoll, setEndautopoll] = useState(false);
@@ -94,7 +96,7 @@ const poll = ({
     }, [apibyseconds]);
 
     useEffect(() => {
-        let interval = setInterval(() => {
+        let interval = window.setInterval(() => {
             setapibyseconds((apibyseconds) => apibyseconds + 1);
         }, 1000);
 
@@ -109,8 +111,9 @@ const poll = ({
         return () => clearInterval(interval);
     }, []);
 
-    const getTimeRemaining = (e) => {
-        const total = Date.parse(e) - Date.parse(new Date());
+    const getTimeRemaining = (e:any) => {
+        let todaydate=new Date()
+        const total = Date.parse(e) - Date.parse(new Date().toString());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / 1000 / 60 / 60) % 24);
@@ -122,7 +125,7 @@ const poll = ({
         };
     };
 
-    const startTimer = (e) => {
+    const startTimer = (e:any) => {
         let { total, hours, minutes, seconds } = getTimeRemaining(e);
         if (total >= 0) {
             // update the timer
@@ -147,7 +150,7 @@ const poll = ({
         }
     };
 
-    const clearTimer = (e) => {
+    const clearTimer = (e:any) => {
         // If you adjust it you should also need to
         // adjust the Endtime formula we are about
         // to code next
@@ -160,7 +163,8 @@ const poll = ({
         const id = setInterval(() => {
             startTimer(e);
         }, 1000);
-        Ref.current = id;
+        let refs=Ref.current as any
+        refs = id;
     };
 
     const getDeadTime = () => {
@@ -171,7 +175,7 @@ const poll = ({
 
         polllauched
             ? deadline.setSeconds(
-                  deadline.getSeconds() + parseInt(pollcounttime)
+                  deadline.getSeconds() + parseInt(pollcounttime.toString())
               )
             : null;
 
@@ -196,8 +200,8 @@ const poll = ({
     };
 
     const onChange = (
-        newValue: OnChangeValue<Option, true>,
-        actionMeta: ActionMeta<Option>
+        newValue:any,
+   
     ) => {
         // console.log(newValue)
         setPollSeletedId(newValue.id); // globaly setting poll id
@@ -217,7 +221,7 @@ const poll = ({
         fetch(ApiConstants.pollGroupbyMeeting)
             .then((response) => response.json())
             .then((pollData) => {
-                let allPolls = pollData.data.map((polls, index) => {
+                let allPolls = pollData.data.map((polls:any, index:any) => {
                     return {
                         value: index,
                         label: polls.name,
@@ -246,7 +250,7 @@ const poll = ({
           })
 
     }
-    function getSeletecdpoll(id) {
+    function getSeletecdpoll(id:any) {
         setLoading(true);
         fetch(ApiConstants.pollGroup + '?id=' + id)
             .then((response) => response.json())
@@ -272,7 +276,7 @@ const poll = ({
                         if (status) {
                             let newDate = new Date();
                             let oldDate = new Date(data.data[0].startDateTime);
-                            newDate.setTime(newDate - oldDate);
+                            newDate.setTime(+newDate - +oldDate);
 
                             // 2023-01-10T12:39:01.281Z
                             //   startDateTime: "2023-01-09T03:15:40.000Z"
@@ -282,7 +286,7 @@ const poll = ({
 
                             setSeconds(
                                 Number(
-                                    (new Date(newDate.getTime()) / 1000)
+                                    (+new Date(newDate.getTime()) / 1000)
                                         .toString()
                                         .split('.')[0]
                                 )
@@ -298,13 +302,13 @@ const poll = ({
             });
     }
 
-    function setPoll(selected, startDateTime, status) {
+    function setPoll(selected:any, startDateTime:any, status:any) {
         let pollNo = 0;
 
-        let allPolls = selected.data.map((pollAPI) => {
+        let allPolls = selected.data.map((pollAPI:any) => {
             pollNo = pollNo++;
 
-            let ans = pollAPI.answerOptions.map((ans) => {
+            let ans = pollAPI.answerOptions.map((ans:any) => {
                 return {
                     name: ans.answerLabel + ' : ' + ans.answerOption,
                     id: ans.id,
@@ -315,7 +319,7 @@ const poll = ({
             });
 
             let seleted = false;
-            let lastVote = pollAPI.answerOptions.map((option) => {
+            let lastVote = pollAPI.answerOptions.map((option:any) => {
                 if (option.isSelected == 'true') {
                     seleted = true;
                     return true;
@@ -341,7 +345,7 @@ const poll = ({
         });
         setpollAns([]);
 
-        let ansDiv = allPolls.map((item) =>
+        let ansDiv = allPolls.map((item:any) =>
             !item.showResults ? (
                 <div className="poll-answer" style={{ margin: '36px 1px' }}>
                     <div className="poll-header">
@@ -350,7 +354,7 @@ const poll = ({
                         </div>
                     </div>
                     <ol className="poll-answer-list">
-                        {item.answers.map((ans, index) => (
+                        {item.answers.map((ans:any) => (
                             <li className="poll-answer-container">
                                 <div className="pollFormControl">
                                     <label className="pollActiveArea">
@@ -398,7 +402,7 @@ const poll = ({
                             {parseInt(item.usersAnsweredPercentage)}%) answered
                         </div>
                         <ol className="poll-result-list">
-                            {item.answers.map((ans, index) => (
+                            {item.answers.map((ans:any) => (
                                 <li>
                                     <div className="poll-answer-header">
                                         <span className="poll-answer-vote-name">
@@ -602,7 +606,7 @@ const endedPollclose=()=>
                 <Select
                     className="basic-single"
                     classNamePrefix="select"
-                    getOptionLabel={(option) =>
+                    getOptionLabel={(option:any) =>
                         `${option.label} - (total questions:  ${option.questionCount})`
                     }
                     onChange={onChange}
@@ -611,22 +615,36 @@ const endedPollclose=()=>
                     isSearchable={true}
                     name="polls"
                     options={pollOptions}
-                    styles={{fontSize:16, fontWeight:'bold'}}
+                
                     
                 />
           {   showDeletemessage || showAddmessagein ?   <div>
 
-            <div style={{marginTop:'20%'}}>
+            <div style={{background: "#292929",
+  borderRadius: "8px",
+  border: "1px solid #666",
+  margin: "16px",
+  padding: "45px 5px",
+  marginTop: "15%",
+  wordBreak: "break-word"}}>
 
 
-<div style={{"color": "green", justifyContent:'center', "padding": "8px", "display": "flex"}}>
+<div style={{"color": "green", justifyContent:'center',textAlign:'center', "padding": "8px", }}>
 
+<div className="jitsi-icon " style={{padding:30}}>
+<svg fill="green" version="1.1" xmlns="http://www.w3.org/2000/svg" width="85" height="85" viewBox="0 0 24 24">
+<title>check</title>
+<path d="M9 16.172l10.594-10.594 1.406 1.406-12 12-5.578-5.578 1.406-1.406z"></path>
+</svg>
 
-{showDeletemessage?  <div style={{"margin-left": "5px", "font-size": "25px", "font-weight": "bold"}}>    Poll deleted successfully ! 
+    
+    </div>
+
+{showDeletemessage?  <div style={{marginLeft: "5px", fontSize: "30px", fontWeight: "bold"}}>    Poll deleted successfully ! 
 
 </div>:
 
-<div style={{"margin-left": "5px", "font-size": "25px", "font-weight": "bold"}}>   Poll saved successfully 
+<div style={{marginLeft: "5px", fontSize: "30px", fontWeight: "bold"}}>   Poll saved successfully 
 </div>
 }
 
@@ -698,13 +716,11 @@ const endedPollclose=()=>
                                             onChange={(val) =>
 
                                                { 
-                                                val>=0?
-                                                setPollcounttime(val):null}
+                                                parseInt(val)>=0?
+                                                setPollcounttime( parseInt(val) ):null}
                                             }
                                             name="tentacles"
-       min="1"
-                                          
-                                            style={{fontSize:16}}
+   
                                             placeholder="Poll Duration in Seconds"
                                         />
                                     </div>
@@ -895,10 +911,21 @@ createPollState?
 <CreatePoll /> :  editPollState? <EditPoll showpollid={pollSeletedId}/>:
 
 deletePollState?
-<div style={{marginTop:'20%'}}>
+<div style={{  background: "#292929",
+  borderRadius: "8px",
+  border: "1px solid #666",
+  margin: "16px",
+  padding: "45px 5px",
+  marginTop: "15%",
+  wordBreak: "break-word"}}>
 
 
-<div style={{"color": "red", justifyContent:'center', "padding": "8px", "display": "flex"}}><div className="jitsi-icon "><svg fill="red" height="25" width="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg></div> <div style={{"margin-left": "5px", "font-size": "25px", "font-weight": "bold"}}> Are you sure you want to delete {PollSeleted}? </div>
+<div style={{"color": "red", justifyContent:'center', textAlign:'center', "padding": "8px"}}>
+    
+    <div className="jitsi-icon " style={{padding:30,}}><svg fill="red" height="75" width="75" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg></div>
+
+
+ <div style={{marginLeft: "5px", fontSize: "25px", fontWeight: "bold"}}> Are you sure you want to delete {PollSeleted}? </div>
 </div>
 <div  style={{marginRight:35, display:'flex', justifyContent:'space-around', margin:'auto',  marginTop:60, width:'50%'}}>
         
