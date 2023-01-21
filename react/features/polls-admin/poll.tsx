@@ -10,6 +10,7 @@ import Input from '../base/ui/components/web/Input';
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import { RingLoader } from "react-spinners";
+// @ts-ignore
 import { IconTimer, IconTimerRed, IconWarning, Icon } from '../base/icons';
 
 
