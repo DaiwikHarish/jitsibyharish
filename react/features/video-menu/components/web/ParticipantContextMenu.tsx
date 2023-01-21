@@ -34,6 +34,9 @@ import { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
 // @ts-ignore
 import SendToRoomButton from './SendToRoomButton';
 // @ts-ignore
+
+
+// @ts-ignore
 import ShareButton from './ShareButton';
 // @ts-ignore
 import MuteNewButton from './MuteNewButton';
@@ -213,23 +216,30 @@ const ParticipantContextMenu = ({
 
                     participantID={_getCurrentParticipantId()} />);
 
+
+                    buttons.push(
+                        <MuteVideoButton
+                            key='mute-video'
+                            participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                            participantID={_getCurrentParticipantId()} />
+                    );
             if (!disableRemoteMute) {
 
 
 
-                // buttons.push(
-                //     <MuteEveryoneElseButton
-                //         key = 'mute-others'
-                //         participantID = { _getCurrentParticipantId() } />
-                // );
                 buttons.push(
-                    <MuteVideoButton
-                        key='mute-video'
-                        participantID={_getCurrentParticipantId()} />
+                    <MuteEveryoneElseButton
+                        key = 'mute-others'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
+                        participantID = { _getCurrentParticipantId() } />
                 );
+              
                 buttons.push(
                     <MuteEveryoneElsesVideoButton
                         key='mute-others-video'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
                         participantID={_getCurrentParticipantId()} />
                 );
             }
@@ -254,6 +264,8 @@ const ParticipantContextMenu = ({
                 buttons2.push(<ShareButton key="sharescrns"
                     participantIDbyjitsi={participant!.id}
                     participantID={participant!.name!.split('|')[2]} />);
+
+                
             }
             // if (!showVolumeSlider) {
 

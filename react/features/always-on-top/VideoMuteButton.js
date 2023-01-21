@@ -171,7 +171,7 @@ export default class VideoMuteButton extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const toggled = this._isVideoMuted();
+        const toggled = true;
 
         return (<ToolbarButton
             accessibilityLabel = { this.accessibilityLabel }

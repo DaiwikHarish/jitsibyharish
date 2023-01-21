@@ -9,8 +9,8 @@ import { IconVideoOff } from '../../base/icons';
 import { MEDIA_TYPE } from '../../base/media';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { isRemoteTrackMuted } from '../../base/tracks';
-
-import { MuteRemoteParticipantsVideoDialog } from './';
+import { socketSendCommandMessage } from "../../base/cs-socket/actions";
+import { CommandMessageDto, CommandType, PermissionType } from "../../base/cs-socket/types";
 
 export type Props = AbstractButtonProps & {
 
@@ -53,17 +53,23 @@ export default class AbstractMuteVideoButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, participantID } = this.props;
-
-        sendAnalytics(createRemoteVideoMenuButtonEvent(
-            'video.mute.button',
-            {
-                'participant_id': participantID
-            }));
-
-        dispatch(openDialog(MuteRemoteParticipantsVideoDialog, { participantID }));
+        const { dispatch, participantID,participantAPIID } = this.props;
+        dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.DISABLE_CAMERA,
+                CommandType.TO_THIS_USER
+            ))
     }
-
+    _handleClickUnmute() {
+        const { dispatch, participantID,participantAPIID } = this.props;
+        dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.ENABLE_CAMERA,
+                CommandType.TO_THIS_USER
+            ))
+    }
     /**
      * Renders the item disabled if the participant is muted.
      *
