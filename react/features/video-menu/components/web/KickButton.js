@@ -52,7 +52,7 @@ class KickButton extends AbstractKickButton {
                 id = { `ejectlink_${participantID}` }
                 // eslint-disable-next-line react/jsx-handler-names
                 onClick = { this._handleClick }
-                text = { t('videothumbnail.kick') } />
+                text = {'Dismiss' } />
         );
     }
 
