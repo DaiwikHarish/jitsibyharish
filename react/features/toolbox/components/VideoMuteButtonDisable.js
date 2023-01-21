@@ -44,10 +44,10 @@ type Props = AbstractButtonProps & {
  *
  * @augments AbstractVideoMuteButton
  */
-class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
-    accessibilityLabel = 'toolbar.accessibilityLabel.videomute';
-    label = 'toolbar.videomute';
-    tooltip = 'toolbar.videomute';
+class VideoMuteButtonDisable extends AbstractVideoMuteButton<Props, *> {
+    accessibilityLabel = 'Disable by Admin';
+    label = 'Disable by Admin';
+    tooltip = 'Disable by Admin';
 
     /**
      * Initializes a new {@code VideoMuteButton} instance.
@@ -159,15 +159,13 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
  */
 function _mapStateToProps(state): Object {
     const tracks = state['features/base/tracks'];
-
-    
     const enabledFlag = getFeatureFlag(state, VIDEO_MUTE_BUTTON_ENABLED, true);
 
     return {
-        _videoDisabled: isVideoMuteButtonDisabled(state),
-        _videoMuted: isLocalCameraTrackMuted(tracks),
-        visible: enabledFlag
+        _videoDisabled: true,
+        _videoMuted: true,
+        visible: true
     };
 }
 
-export default translate(connect(_mapStateToProps)(VideoMuteButton));
+export default translate(connect(_mapStateToProps)(VideoMuteButtonDisable));

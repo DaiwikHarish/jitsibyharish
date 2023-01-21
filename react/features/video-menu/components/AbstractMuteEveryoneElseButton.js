@@ -6,6 +6,9 @@ import { IconMuteEveryone } from '../../base/icons';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 
 import { MuteEveryoneDialog } from './';
+import { socketSendCommandMessage } from "../../base/cs-socket/actions";
+
+import { CommandMessageDto, CommandType, PermissionType } from "../../base/cs-socket/types";
 
 export type Props = AbstractButtonProps & {
 
@@ -40,9 +43,17 @@ export default class AbstractMuteEveryoneElseButton extends AbstractButton<Props
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, participantID } = this.props;
+        const { dispatch,participantAPIID, participantID } = this.props;
 
         sendAnalytics(createToolbarEvent('mute.everyoneelse.pressed'));
-        dispatch(openDialog(MuteEveryoneDialog, { exclude: [ participantID ] }));
+        // dispatch(openDialog(MuteEveryoneDialog, { exclude: [ participantID ] }));
+       
+       
+        dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.MUTE_MIC,
+                CommandType.TO_ALL_USER_EXCEPT_THIS_USER
+            ))
     }
 }
