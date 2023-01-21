@@ -1036,12 +1036,12 @@ class Toolbox extends Component<IProps, AppState> {
             group: 2
         };
 
-        const security = _attendeeInfo?.userType !== UserType.Viewer && {
-            key: 'security',
-            alias: 'info',
-            Content: SecurityDialogButton,
-            group: 2
-        };
+        // const security = _attendeeInfo?.userType !== UserType.Viewer && {
+        //     key: 'security',
+        //     alias: 'info',
+        //     Content: SecurityDialogButton,
+        //     group: 2
+        // };
 
         const cc = {
             key: 'closedcaptions',
@@ -1172,7 +1172,7 @@ class Toolbox extends Component<IProps, AppState> {
             toggleCamera,
             videoQuality,
             fullscreen,
-            security,
+            // security,
             cc,
             recording,
             livestreaming,
