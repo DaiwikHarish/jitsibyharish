@@ -11,8 +11,8 @@ export class OptionType {
 export interface IAppState {
     app?: any;
     urlInfo?:IUrlInfo;
-    meetingInfo?:IMeetingInfo[];
-    attendeeInfo?: IAttendeeInfo[];
+    meetingInfo?:IMeetingInfo;
+    attendeeInfo?: IAttendeeInfo;
     clientType?:string
 }
 const DEFAULT_STATE: IAppState = {
