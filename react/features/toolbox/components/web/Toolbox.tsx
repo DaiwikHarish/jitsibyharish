@@ -112,7 +112,7 @@ import {
 // @ts-ignore
 import { VideoQualityButton, VideoQualityDialog } from '../../../video-quality/components';
 // @ts-ignore
-import { PollButton, PollDialog } from '../../../poll-presenter/';
+import { PollButton, PollDialog } from '../../../polls-admin';
 // @ts-ignore
 import { VideoBackgroundButton } from '../../../virtual-background';
 import WhiteboardButton from '../../../whiteboard/components/web/WhiteboardButton';
@@ -496,17 +496,8 @@ class Toolbox extends Component<IProps, AppState> {
                 }
                 //Mute will take care internally
 
-                // if(data[0].isMute==false)
-                //                 {
-                // this.setState({enableMike:true})
-                //                 }
-
-
-                //                 if(data[0].isMute==true)
-                //                 {
-                // this.setState({enableMike:false})
-                //                 }
-
+                this.props.dispatch(setVideoMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
 
 
 
@@ -678,6 +669,9 @@ class Toolbox extends Component<IProps, AppState> {
 
                 }
                 if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_RAISE_HAND") {
+
+                   
+                    this.props.dispatch(raiseHand(false));
                     this.setState({ enableRaiseHand: false })
                 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import Dialog from '../base/ui/components/web/Dialog';
-
+import Dialogpoll from '../base/ui/components/web/Dialogpoll';
+// @ts-ignore
 import Poll from './poll';
 
 /**
@@ -19,15 +19,16 @@ export default class PollDialog extends Component {
      */
     render() {
         return (
-            <Dialog
+            <Dialogpoll
                 cancel = {{ hidden: true }}
                 ok = {{ hidden: true }}
                 disableBackdropClose={true}
+                disableEnter={true}
                 className="pollDialog"
                 size='extralarge'
                 titleKey = 'Poll'>
-                <Poll />
-            </Dialog>
+                <Poll showAddmessage={false}/>
+            </Dialogpoll>
         );
     }
 }
