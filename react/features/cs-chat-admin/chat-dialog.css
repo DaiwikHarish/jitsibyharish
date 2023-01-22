@@ -20,7 +20,9 @@
     align-items: center;
     justify-content: center;
 }
-
+.content-pointer-event-none {
+    pointer-events: none;
+  }
 .Left-box {
     width: 25%;
     /* padding:10; */
