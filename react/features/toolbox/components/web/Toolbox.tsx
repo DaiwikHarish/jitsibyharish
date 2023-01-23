@@ -168,8 +168,8 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
-import QuestionAnswer from '../../../qa-admin/components/qa-admin';
-import QuestionAnswerButton from '../../../qa-admin/components/qa-button';
+import QuestionAnswer from '../../../cs-qa-admin/components/qa-admin';
+import QuestionAnswerButton from '../../../cs-qa-admin/components/qa-admin';
 
 
 
@@ -958,7 +958,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const questionAnswer = _attendeeInfo.userType !== UserType.Presenter && {
             key: 'QA',
             Content: QuestionAnswerButton,
-            handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
+            handleClick: _attendeeInfo.userType !== UserType.Viewer ? this._openDialog : this._onToolbarToggleChat,
             group: 0
         };
 
