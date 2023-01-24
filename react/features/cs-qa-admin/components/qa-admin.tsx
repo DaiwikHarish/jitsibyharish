@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Modal, {
     ModalBody,
     ModalTitle,
     ModalTransition,
-} from '@atlaskit/modal-dialog';
-import Button from '@atlaskit/button/standard-button';
-import { useDispatch, useSelector } from 'react-redux';
-import { css } from '@emotion/react';
+} from "@atlaskit/modal-dialog";
+import Button from "@atlaskit/button/standard-button";
+import { useDispatch, useSelector } from "react-redux";
+import { css } from "@emotion/react";
 // import 'react-calendar/dist/Calendar.css';
 
-import { IQuestionAnswer } from '../../base/app/types';
-import '../qa-admin.css';
+import "../qa-admin.css";
+
 import {
     Icon,
     IconClose,
@@ -19,82 +19,136 @@ import {
     IconTrash,
     IconUser,
     IconUserGroups,
-} from '../../base/icons';
-// import Datepicker from 'react-datetime-picker';
-import { getLocalizedDateFormatter } from '../../base/i18n';
+} from "../../base/icons";
+
 import {
     deleteQuestion,
-    loadQuestionAnswers,
     postAnswer,
-    selectedEndDate,
+    qaAction,
     selectedQuestion,
-    selectedStartDate,
-} from '../actions';
-import { IReduxState } from '../../app/types';
-import { hideDialog } from '../../base/dialog';
-import { QuestionType } from '../types';
+} from "../actions";
+
+import { IReduxState } from "../../app/types";
+import { hideDialog } from "../../base/dialog";
+import { IQuestionAnswer, QuestionType } from "../types";
+import { ICSQaAdminState } from "../reducer";
+import moment from "moment";
+import { getQaData, getQuestionTypeCount } from "../functions";
 
 const boldStyles = css({
-    backgroundColor: 'rgb(29, 35, 46)',
-    display: 'flex',
+    backgroundColor: "rgb(29, 35, 46)",
+    display: "flex",
 });
-
-const DATE_FORMAT = 'DD/MM/YYYY';
-const REQUEST_DATETIME_FORMAT = 'YYYY-MM-DDTHH:MM:SS';
 
 const QuestionAnswer = () => {
     const dispatch = useDispatch();
-    const [selectedQA, setSelectedQA] = useState();
-    const [selectedIndex, setSelectedIndex] = useState();
-    const [searchInput, setSearchInput] = useState('');
-    const [messageSend, setMessageSend] = useState(false);
-    const [message, setMessage] = useState(selectedQA?.answer);
-    const [openModal, setOpenModal] = useState(false);
-    const [radioChecked, setRadioChecked] = useState(QuestionType.Both);
+    const [selectedQA, setSelectedQA] = useState<IQuestionAnswer>();
+    const [selectedIndex, setSelectedIndex] = useState<number>();
 
-    const questionAnswerList: IQuestionAnswer[] | undefined = useSelector(
+    const [messageSend, setMessageSend] = useState(false);
+
+    const [message, setMessage] = useState<string>("");
+
+    const [openModal, setOpenModal] = useState(false);
+
+    const csQaAdminState: ICSQaAdminState = useSelector(
         (state: IReduxState) => {
-            if (radioChecked === QuestionType.NotAnswered) {
-                return state['features/cs-qa-admin'].unAnsweredQA;
-            } else if (radioChecked === QuestionType.Answered) {
-                return state['features/cs-qa-admin'].answeredQA;
-            } else {
-                return state['features/cs-qa-admin'].questionAnswers;
-            }
+            return state["features/cs-qa-admin"];
         }
     );
 
-    const selectedQuestionId: number = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].selectedQuestionId
+    const searchInput = useSelector((state: IReduxState) => {
+        return state["features/cs-qa-admin"]?.searchText;
+    });
+
+    const selectedQuestionId: string | null = useSelector(
+        (state: IReduxState) =>
+            state["features/cs-qa-admin"]?.selectedQuestionId
     );
 
-    const totalQA: number = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].total
+    const startDateTime: string = useSelector(
+        (state: IReduxState) => state["features/cs-qa-admin"].startDateTime
     );
 
-    const answeredCount: number = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].answeredCount
+    const endDateTime: string = useSelector(
+        (state: IReduxState) => state["features/cs-qa-admin"].endDateTime
     );
 
-    const unAnsweredCount: number = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].unAnsweredCount
+    const questionType: QuestionType = useSelector(
+        (state: IReduxState) => state["features/cs-qa-admin"].questionType
     );
 
-    const updateStartDate: string | Date = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].startDate
-    );
-    const updateEndDate: string | Date = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].endDate
-    );
-    console.log('alam updateStartDate', updateStartDate);
-    console.log('alam unAnswered', updateEndDate);
+    const [questionAnswerList, setQuestionAnswerList] = useState<
+        IQuestionAnswer[]
+    >([]);
+
+    // const questionAnswerList: IQuestionAnswer[] = useSelector(
+    //     (state: IReduxState) => {
+    //         return getQaData(state["features/cs-qa-admin"]);
+    //     }
+    // );
+
+    const [totalQA, setTotalQA] = useState<number>(0);
+    // const totalQA: number = useSelector((state: IReduxState) =>
+    //     getQuestionTypeCount(state["features/cs-qa-admin"], QuestionType.Both)
+    // );
+
+    const [answeredCount, setAnsweredCount] = useState<number>(0);
+    // const answeredCount: number = useSelector((state: IReduxState) =>
+    //     getQuestionTypeCount(
+    //         state["features/cs-qa-admin"],
+    //         QuestionType.Answered
+    //     )
+    // );
+    const [unAnsweredCount, setUnAnsweredCount] = useState<number>(0);
+
+    // const unAnsweredCount: number = useSelector((state: IReduxState) =>
+    //     getQuestionTypeCount(
+    //         state["features/cs-qa-admin"],
+    //         QuestionType.NotAnswered
+    //     )
+    // );
+
+    console.log("alam updateStartDate", startDateTime);
+    console.log("alam unAnswered", endDateTime);
     function _hideDialog() {
         dispatch(hideDialog(QuestionAnswer));
     }
 
     useEffect(() => {
-        dispatch(loadQuestionAnswers(updateStartDate, updateEndDate));
-    }, [radioChecked, updateStartDate, updateEndDate, messageSend]);
+        // trigger firt time on mount
+        let fromDateTime = moment().format("YYYY-MM-DD") + "T00:00:00";
+        let toDateTime = moment().format("YYYY-MM-DD") + "T23:59:59";
+        dispatch(qaAction(fromDateTime, toDateTime));
+    }, []);
+
+    // this will execute when the state changes
+    useEffect(() => {
+        // qadata
+        setQuestionAnswerList(getQaData(csQaAdminState));
+
+        setTotalQA(getQuestionTypeCount(csQaAdminState, QuestionType.Both));
+        setAnsweredCount(
+            getQuestionTypeCount(csQaAdminState, QuestionType.Answered)
+        );
+        setUnAnsweredCount(
+            getQuestionTypeCount(csQaAdminState, QuestionType.NotAnswered)
+        );
+    }, [csQaAdminState]);
+
+    /////////////////// methods to filter ///////////////
+
+    const updateQuestionType = (value: string) => {
+        let type: QuestionType = QuestionType.Both;
+        if (value == QuestionType.Answered) {
+            type = QuestionType.Answered;
+        } else if (value == QuestionType.NotAnswered) {
+            type = QuestionType.NotAnswered;
+        } else if (value == QuestionType.Both) {
+            type = QuestionType.Both;
+        }
+        dispatch(qaAction(undefined, undefined, type, undefined));
+    };
 
     return (
         <Modal
@@ -108,23 +162,18 @@ const QuestionAnswer = () => {
         >
             <div className="Container">
                 <div className="header">
-                    <div className="title">Questions</div>{' '}
+                    <div className="title">Questions</div>{" "}
                     <Icon
                         className="btn-close"
                         onClick={_hideDialog}
                         size={24}
                         src={IconClose}
-                    />{' '}
+                    />{" "}
                 </div>
                 <div className="input-container">
                     <button
                         onClick={() =>
-                            dispatch(
-                                loadQuestionAnswers(
-                                    updateStartDate,
-                                    updateEndDate
-                                )
-                            )
+                            dispatch(qaAction(startDateTime, endDateTime))
                         }
                         className="btn-refresh"
                     >
@@ -134,25 +183,34 @@ const QuestionAnswer = () => {
                         type="text"
                         className="q-search"
                         maxLength={25}
-                        name={'searchInput'}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        name={"searchInput"}
+                        onChange={(e) =>
+                            dispatch(
+                                qaAction(
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    e.target.value?e.target.value:'CS_EMPTY'
+                                )
+                            )
+                        }
                         // onKeyPress = { onKeyPress }
-                        placeholder={'Search'}
-                        value={searchInput}
+                        placeholder={"Search"}
+                        value={searchInput ? searchInput : ""}
                     />
                     <input
                         type="date"
                         className="q-search"
                         // defaultValue={updateStartDate}
                         maxLength={25}
-                        name={'startDate'}
+                        name={"startDate"}
                         onChange={(e) => {
-                            dispatch(selectedStartDate(e.target.value));
+                            dispatch(qaAction(e.target.value));
                         }}
                         // onKeyPress = { onKeyPress }
-                        placeholder={'StartDate'}
-                        value={updateStartDate}
-                        max={updateEndDate}
+                        placeholder={"StartDate"}
+                        value={startDateTime?.split("T")[0]}
+                        max={endDateTime?.split("T")[0]}
                     />
 
                     <input
@@ -160,14 +218,14 @@ const QuestionAnswer = () => {
                         className="q-search"
                         // defaultValue={updateEndDate}
                         maxLength={25}
-                        name={'endDate'}
+                        name={"endDate"}
                         onChange={(e) =>
-                            dispatch(selectedEndDate(e.target.value))
+                            dispatch(qaAction(undefined, e.target.value))
                         }
                         // onKeyPress = { onKeyPress }
-                        placeholder={'EndDate'}
-                        value={updateEndDate}
-                        min={updateStartDate}
+                        placeholder={"EndDate"}
+                        value={endDateTime?.split("T")[0]}
+                        min={startDateTime?.split("T")[0]}
                     />
                 </div>
                 <div className="radio-btn-container">
@@ -176,9 +234,11 @@ const QuestionAnswer = () => {
                         type="radio"
                         value="NotAnswered"
                         name="QA"
-                        onChange={(e) => setRadioChecked(e.target.value)}
-                        checked={radioChecked === 'NotAnswered'}
-                    />{' '}
+                        onChange={(e) => {
+                            updateQuestionType(e.target.value);
+                        }}
+                        checked={questionType === QuestionType.NotAnswered}
+                    />{" "}
                     Unanswered ({unAnsweredCount}
                     )
                     <input
@@ -186,9 +246,9 @@ const QuestionAnswer = () => {
                         type="radio"
                         value="Answered"
                         name="QA"
-                        onChange={(e) => setRadioChecked(e.target.value)}
-                        checked={radioChecked === 'Answered'}
-                    />{' '}
+                        onChange={(e) => updateQuestionType(e.target.value)}
+                        checked={questionType === QuestionType.Answered}
+                    />{" "}
                     Answered ({answeredCount}
                     )
                     <input
@@ -196,83 +256,53 @@ const QuestionAnswer = () => {
                         type="radio"
                         value="Both"
                         name="QA"
-                        onChange={(e) => setRadioChecked(e.target.value)}
-                        checked={radioChecked === 'Both'}
-                    />{' '}
+                        onChange={(e) => updateQuestionType(e.target.value)}
+                        checked={questionType === QuestionType.Both}
+                    />{" "}
                     All ({totalQA})
                 </div>
                 <div className="qa-table">
                     <table>
                         <thead>
                             <tr>
-                                <th width="5%">
+                                <th style={{ width: "5%" }}>
                                     <Icon
                                         color="#000"
                                         size={18}
                                         src={IconClose}
                                     />
                                 </th>
-                                <th width="30%">Question</th>
-                                <th width="15%">Asker</th>
-                                <th width="13%">Rec'd</th>
-                                <th width="12%">Send To</th>
-                                <th width="5%">
+                                <th style={{ width: "30%" }}>Question</th>
+                                <th style={{ width: "15%" }}>Asker</th>
+                                <th style={{ width: "13%" }}>Rec'd</th>
+                                <th style={{ width: "12%" }}>Send To</th>
+                                <th style={{ width: "5%" }}>
                                     <Icon
                                         color="#079223"
                                         size={18}
                                         src={IconFlag}
                                     />
                                 </th>
-                                <th width="30%">Answer</th>
+                                <th style={{ width: "30%" }}>Answer</th>
                             </tr>
                         </thead>
                         {questionAnswerList
                             ?.slice(0)
                             .reverse()
-                            .filter((qus) => {
-                                if (searchInput === undefined) {
-                                    return qus;
-                                } else if (
-                                    qus.question
-                                        .toLowerCase()
-                                        .includes(searchInput.toLowerCase())
-                                ) {
-                                    return qus;
-                                } else if (
-                                    qus.fromUserName
-                                        .toLowerCase()
-                                        .includes(searchInput.toLowerCase())
-                                ) {
-                                    return qus;
-                                } else if (
-                                    getLocalizedDateFormatter(
-                                        new Date(qus.createdAt)
-                                    )
-                                        .format(DATE_FORMAT)
-                                        .toLowerCase()
-                                        .includes(searchInput.toLowerCase())
-                                ) {
-                                    return qus;
-                                } else if (
-                                    qus.answer
-                                        ?.toLowerCase()
-                                        .includes(searchInput.toLowerCase())
-                                ) {
-                                    return qus;
-                                }
-                            })
                             .map((qa: IQuestionAnswer, index) => (
                                 <tbody key={index}>
                                     <tr
                                         onClick={() => {
                                             setSelectedQA(qa);
                                             setSelectedIndex(index);
-                                            dispatch(selectedQuestion(qa.id));
+                                            dispatch(
+                                                selectedQuestion(qa.questionId)
+                                            );
                                         }}
                                         className={
                                             selectedIndex === index
-                                                ? 'selected-row'
-                                                : ''
+                                                ? "selected-row"
+                                                : ""
                                         }
                                     >
                                         <td>
@@ -290,18 +320,14 @@ const QuestionAnswer = () => {
                                             <p className="q">{qa.question}</p>
                                         </td>
                                         <td>{qa.fromUserName}</td>
-                                        <td>
-                                            {getLocalizedDateFormatter(
-                                                new Date(qa.createdAt)
-                                            ).format(DATE_FORMAT)}
-                                        </td>
+                                        <td>{qa.questionCreatedAt}</td>
                                         <td>{qa.sendTo}</td>
                                         <td>
                                             <Icon
                                                 color={
                                                     qa.answer !== undefined
-                                                        ? '#079223'
-                                                        : 'red'
+                                                        ? "#079223"
+                                                        : "red"
                                                 }
                                                 size={18}
                                                 src={IconFlag}
@@ -318,13 +344,13 @@ const QuestionAnswer = () => {
             </div>
             <div className="footer">
                 <div className="footer-q">
-                    {' '}
+                    {" "}
                     {selectedQA === undefined && <p> Select a question...</p>}
                     <p>{selectedQA?.question}</p>
                 </div>
                 <textarea
                     rows={3}
-                    type="textarea"
+                    // type="textarea"
                     placeholder="Enter the answer...."
                     className="footer-a-input"
                     name="message"
@@ -338,11 +364,11 @@ const QuestionAnswer = () => {
                                 postAnswer(
                                     message,
                                     selectedQuestionId,
-                                    'Send To User'
+                                    "Send To User"
                                 )
                             );
                             setMessageSend(true);
-                            setMessage('');
+                            setMessage("");
                             setSelectedQA(undefined);
                         }}
                         className="send-type"
@@ -356,11 +382,11 @@ const QuestionAnswer = () => {
                                 postAnswer(
                                     message,
                                     selectedQuestionId,
-                                    'Send To All'
+                                    "Send To All"
                                 )
                             );
                             setMessageSend(true);
-                            setMessage('');
+                            setMessage("");
                             setSelectedQA(undefined);
                         }}
                         className="send-type"
@@ -372,7 +398,7 @@ const QuestionAnswer = () => {
             </div>
             <ModalTransition
                 css={css({
-                    marginTop: '25%',
+                    marginTop: "25%",
                 })}
             >
                 {openModal && (
@@ -399,15 +425,15 @@ const QuestionAnswer = () => {
                             </svg>
                             <ModalTitle
                                 aria-label="warning icon"
-                                appearance="warning"
+                                data-appearance="warning"
                             >
                                 Delete
                             </ModalTitle>
                         </div>
                         <ModalBody className="warning-modal-body">
-                            Are you sure you want to delete{' '}
+                            Are you sure you want to delete{" "}
                             <span className="span-qus">
-                                {selectedQA.question} {'?'}
+                                {selectedQA?.question} {"?"}
                             </span>
                         </ModalBody>
                         <div className="warning-modal-footer">

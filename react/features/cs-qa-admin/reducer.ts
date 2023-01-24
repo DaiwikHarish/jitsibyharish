@@ -1,43 +1,51 @@
-import { IAttendeeInfo, IQuestionAnswer } from '../base/app/types';
+import moment from 'moment';
 import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     QA_ADMIN_ISLOADING_STATUS,
-    QA_ADMIN_UPDATE_LIST,
-    QA_END_DATE,
     QA_SELECTED_QUESTION,
-    QA_START_DATE,
+    QA_STATE_UPDATE,
 } from './actionTypes';
+import { IQuestionAnswer,  QuestionType } from './types';
 
 export interface ICSQaAdminState {
-    // api call request/response time
-    isLoading?: boolean;
-    messageType?: string | null;
-    message?: string | null;
 
-    // UI to show
-    questionAnswers?: IQuestionAnswer[];
-    answeredCount?: number;
-    unAnsweredCount?: number;
-    total?: number;
-    startDate: string | Date;
-    endDate: string | Date;
-    answeredQA: IQuestionAnswer[];
-    unAnsweredQA: IQuestionAnswer[];
-    selectedQuestionId?: number;
+    // api call request/response
+    isLoading: boolean;
+    messageType: string | null;
+    message: string | null;
+
+    // qa data
+    qaData: IQuestionAnswer[];
+
+    // what question type selected by user     
+    questionType:QuestionType;
+
+    // what is from and to date selected by user 
+    startDateTime: string ;
+    endDateTime: string ;
+    
+    // what is search text 
+    searchText:string | null;
+
+    // selected question to highlight
+    selectedQuestionId: string | null;
 }
 
 const DEFAULT_STATE: ICSQaAdminState = {
     isLoading: false,
+    messageType: null,
     message: null,
-    answeredCount: 0,
-    unAnsweredCount: 0,
-    total: 0,
-    startDate: new Date().toLocaleDateString('en-CA'),
-    endDate: new Date().toLocaleDateString('en-CA'),
-    answeredQA: [],
-    unAnsweredQA: [],
-    questionAnswers: [],
-    selectedQuestionId: undefined,
+   
+    // api response 
+    qaData: [],
+
+    questionType:QuestionType.NotAnswered,
+
+    startDateTime:  moment().format('YYYY-MM-DD') + 'T00:00:00',
+    endDateTime: moment().format('YYYY-MM-DD') + 'T23:59:59',
+    
+    searchText:null,
+    selectedQuestionId: null,
 };
 
 ReducerRegistry.register<ICSQaAdminState>(
@@ -56,27 +64,19 @@ ReducerRegistry.register<ICSQaAdminState>(
                     return {
                         ...state,
                         isLoading: action.isLoading,
+
                     };
                 }
                 break;
-            case QA_ADMIN_UPDATE_LIST:
+            case QA_STATE_UPDATE:
                 return {
                     ...state,
-                    isLoading: action.isLoading,
-                    questionAnswers: action?.questionAnswers,
-                    answeredQA: action?.questionAnswers?.filter(
-                        (x) => x.answer !== undefined
-                    ),
-                    unAnsweredQA: action?.questionAnswers?.filter(
-                        (x) => x.answer === undefined
-                    ),
-                    answeredCount: action?.questionAnswers?.filter(
-                        (x) => x.answer !== undefined
-                    ).length,
-                    unAnsweredCount: action?.questionAnswers?.filter(
-                        (x) => x.answer === undefined
-                    ).length,
-                    total: action?.questionAnswers?.length,
+                    qaData:action.qaData,
+                    questionType:action.questionType,
+                    startDateTime:action.startDateTime,
+                    endDateTime:action.endDateTime,
+                    searchText:action.searchText,
+                    isLoading:action.isloading
                 };
                 break;
             case QA_SELECTED_QUESTION:
@@ -85,21 +85,12 @@ ReducerRegistry.register<ICSQaAdminState>(
                     selectedQuestionId: action?.selectedAQuestionId,
                 };
                 break;
-            case QA_START_DATE:
-                return {
-                    ...state,
-                    startDate: action?.startDate,
-                };
-                break;
-            case QA_END_DATE:
-                return {
-                    ...state,
-                    endDate: action?.endDate,
-                };
-                break;
+            
 
             default:
                 return state;
         }
     }
 );
+
+

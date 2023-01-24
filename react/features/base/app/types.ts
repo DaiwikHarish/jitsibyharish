@@ -4,6 +4,8 @@ export type IStateful = Function | IStore | IReduxState;
 
 export const AppName = 'Awesome Review';
 
+export const YYYY_MM_DD_T_HH_MM_SS = 'YYYY-MM-DDTHH:mm:ss';
+export const UI_DATE_FORMAT = "DD/MM/YYYY";
 export default class UserType {
     public static Admin = 'Admin';
     public static Presenter = 'Presenter';
@@ -47,28 +49,3 @@ export interface IMeetingInfo {
     updatedAt: string;
 }
 
-export interface IQuestion {
-    id: number;
-    meetingId: string;
-    fromUserId: string;
-    fromUserName: string;
-    fromUserEmailId: string;
-    fromUserMobileNr: string;
-    fromUserType: string;
-    question: string;
-    createdAt: string;
-    updatedAt: string;
-    answers: [];
-}
-
-export interface IQuestionAnswer {
-    id?: number;
-    meetingId?: string;
-    question?: string;
-    fromUserId?: string;
-    fromUserName?: string;
-    createdAt?: string;
-    answerId?: number;
-    answer?: string;
-    sendTo?: string;
-}
