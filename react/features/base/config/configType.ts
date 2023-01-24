@@ -3,6 +3,7 @@ type ToolbarButtons = 'camera' |
     'QA' |
     'closedcaptions' |
     'desktop' |
+    'adminPoll'|
     'dock-iframe' |
     'download' |
     'embedmeeting' |
@@ -39,6 +40,7 @@ type ButtonsWithNotifyClick = 'camera' |
     'QA' |
     'closedcaptions' |
     'desktop' |
+    'adminPoll'|
     'download' |
     'embedmeeting' |
     'etherpad' |
@@ -119,6 +121,8 @@ export interface IConfig {
     apiUrl?: string;
     bosh?: string;
     appUrl?: string;
+    recordingUserId?: string;
+    recordingMeetingId?: string;
     brandingDataUrl?: string;
     brandingRoomAlias?: string;
     breakoutRooms?: {

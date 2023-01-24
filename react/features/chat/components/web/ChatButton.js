@@ -5,6 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconChat } from '../../../base/icons';
 import { connect } from '../../../base/redux';
+import { openChat } from '../../../chat';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 
 import ChatCounter from './ChatCounter';
@@ -164,16 +165,17 @@ if(!this.props._chatOpen)
             let hasNewMessagesChat = this.props._socketPollStartMessage !== prevProps._socketPollStartMessage;
 
             if (hasNewMessagesChat) {
- 
+                this.props.dispatch(openChat());
 if(!this.props._chatOpen)
 {
     let counter=this.state.chatCounter;
    counter++
-  this.setState({chatCounter:counter})
-
-
+  this.setState({chatCounter:0})
  
 }
+
+
+
          }
          
         }
@@ -184,7 +186,7 @@ if(!this.props._chatOpen)
             let hasNewMessagesChat = this.props._socketPollEndMessage !== prevProps._socketPollEndMessage;
 
             if (hasNewMessagesChat) {
- 
+                this.props.dispatch(openChat());
 if(!this.props._chatOpen)
 {
     let counter=this.state.chatCounter;
@@ -216,6 +218,7 @@ const mapStateToProps = state => {
         _socketQaMessage:socketQaMessage,
         _socketPollStartMessage:socketPollStartMessage,
         _socketPollEndMessage:socketPollEndMessage
+
     };
 };
 

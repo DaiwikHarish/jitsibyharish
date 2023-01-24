@@ -19,6 +19,7 @@ export const TOOLBAR_BUTTONS = [
     'QA',
     'closedcaptions',
     'desktop',
+    'adminPoll',
     'download',
     'embedmeeting',
     'etherpad',

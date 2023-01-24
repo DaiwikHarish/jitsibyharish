@@ -164,6 +164,11 @@ this.setState({pollCounter:0})
                counter++
               this.setState({pollCounter:counter})
             }
+            if(this.props._isPollsTabFocused)
+            {
+
+                this.setState({pollCounter:0})
+            }
         }
         }
         if( this.props._socketPollEndMessage!="" && this.props._socketPollEndMessage!=null && this.props._socketPollEndMessage!=undefined)
@@ -175,6 +180,11 @@ this.setState({pollCounter:0})
                 let counter=this.state.pollCounter;
                counter++
               this.setState({pollCounter:counter})
+            }
+            if(this.props._isPollsTabFocused)
+            {
+
+                this.setState({pollCounter:0})
             }
         }
         }
@@ -246,6 +256,9 @@ let usertype="local";
 
    getMessage()
    {
+    if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+        return
+    }
    
      fetch(
         ApiConstants.chat

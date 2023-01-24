@@ -5,7 +5,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
-import UserType  from '../../../base/app/types'
+import UserType from '../../../base/app/types'
 
 import { IReduxState } from '../../../app/types';
 import { isSupported as isAvModerationSupported } from '../../../av-moderation/functions';
@@ -33,6 +33,9 @@ import { showOverflowDrawer } from '../../../toolbox/functions.web';
 import { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
 // @ts-ignore
 import SendToRoomButton from './SendToRoomButton';
+// @ts-ignore
+
+
 // @ts-ignore
 import ShareButton from './ShareButton';
 // @ts-ignore
@@ -163,19 +166,19 @@ const ParticipantContextMenu = ({
 
     const _currentRoomId = useSelector(getCurrentRoomId);
     const _rooms: Array<{ id: string; }> = Object.values(useSelector(getBreakoutRooms));
-    const _attendeeInfo = useSelector((state:IReduxState)=>state["features/base/app"].attendeeInfo)
+    const _attendeeInfo = useSelector((state: IReduxState) => state["features/base/app"].attendeeInfo)
     const _onVolumeChange = useCallback(value => {
         dispatch(setVolume(participant.id, value));
-    }, [ setVolume, dispatch ]);
+    }, [setVolume, dispatch]);
 
-    const clickHandler = useCallback(() => onSelect(true), [ onSelect ]);
+    const clickHandler = useCallback(() => onSelect(true), [onSelect]);
 
     const _getCurrentParticipantId = useCallback(() => {
         const drawer = _overflowDrawer && !thumbnailMenu;
 
         return (drawer ? drawerParticipant?.participantID : participant?.id) ?? '';
     }
-    , [ thumbnailMenu, _overflowDrawer, drawerParticipant, participant ]);
+        , [thumbnailMenu, _overflowDrawer, drawerParticipant, participant]);
 
     const buttons = [];
     const buttons2 = [];
@@ -187,90 +190,99 @@ const ParticipantContextMenu = ({
         && !isNaN(_volume);
 
     if ((_attendeeInfo?.userType != UserType.Viewer && !showVolumeSlider) && !showVolumeSlider) {
-        if ( isModerationSupported) {
+        if (isModerationSupported) {
             // buttons.push(<AskToUnmuteButton
             //     isAudioForceMuted = { _isAudioForceMuted }
             //     isVideoForceMuted = { _isVideoForceMuted }
             //     key = 'ask-unmute'
             //     participantID = { _getCurrentParticipantId() } />
             // );
-         
 
-        // if (!showVolumeSlider && disableRemoteMute) {
-        
-        //     buttons2.push(<MuteNewButton key="MuteNewButton"
-        //     mute={false}
-        //     participantIDbyjitsi = {participant!.id}
-        //     participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
-       
-       
-        // }
-        buttons.push(
-            <MuteButton
-                key = 'mute'
-                participantAPIID = {participant!=undefined? participant!.name!.split('|')[2] :null}
-   
-   
-                participantID = { _getCurrentParticipantId() } />);
-    
-        if (!disableRemoteMute) {
-       
-           
-          
-            // buttons.push(
-            //     <MuteEveryoneElseButton
-            //         key = 'mute-others'
-            //         participantID = { _getCurrentParticipantId() } />
-            // );
+
+            // if (!showVolumeSlider && disableRemoteMute) {
+
+            //     buttons2.push(<MuteNewButton key="MuteNewButton"
+            //     mute={false}
+            //     participantIDbyjitsi = {participant!.id}
+            //     participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
+
+
+            // }
             buttons.push(
-                <MuteVideoButton
-                    key = 'mute-video'
-                    participantID = { _getCurrentParticipantId() } />
-            );
-            buttons.push(
-                <MuteEveryoneElsesVideoButton
-                    key = 'mute-others-video'
-                    participantID = { _getCurrentParticipantId() } />
-            );
+                <MuteButton
+                    key='mute'
+                    participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+
+
+                    participantID={_getCurrentParticipantId()} />);
+
+
+                    buttons.push(
+                        <MuteVideoButton
+                            key='mute-video'
+                            participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                            participantID={_getCurrentParticipantId()} />
+                    );
+            if (!disableRemoteMute) {
+
+
+
+                buttons.push(
+                    <MuteEveryoneElseButton
+                        key = 'mute-others'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
+                        participantID = { _getCurrentParticipantId() } />
+                );
+              
+                buttons.push(
+                    <MuteEveryoneElsesVideoButton
+                        key='mute-others-video'
+                        participantAPIID={participant != undefined ? participant!.name!.split('|')[2] : null}
+                    
+                        participantID={_getCurrentParticipantId()} />
+                );
+            }
+
+            // if (!disableGrantModerator && !isBreakoutRoom) {
+            //     buttons2.push(
+            //         <GrantModeratorButton
+            //             key = 'grant-moderator'
+            //             participantID = { _getCurrentParticipantId() } />
+            //     );
+            // }
+
+            if (!disableKick) {
+                buttons2.push(
+                    <KickButton
+                        key='kick'
+                        participantID={_getCurrentParticipantId()} />
+                );
+            }
+            if (!showVolumeSlider) {
+
+                buttons2.push(<ShareButton key="sharescrns"
+                    participantIDbyjitsi={participant!.id}
+                    participantID={participant!.name!.split('|')[2]} />);
+
+                
+            }
+            // if (!showVolumeSlider) {
+
+            //     buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
+            //     participantIDbyjitsi = {participant.id}
+            //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
+            // }
+
         }
 
-        // if (!disableGrantModerator && !isBreakoutRoom) {
-        //     buttons2.push(
-        //         <GrantModeratorButton
-        //             key = 'grant-moderator'
-        //             participantID = { _getCurrentParticipantId() } />
-        //     );
-        // }
-
-        if (!disableKick) {
-            buttons2.push(
-                <KickButton
-                    key = 'kick'
-                    participantID = { _getCurrentParticipantId() } />
-            );
-        }
-        if (!showVolumeSlider) {
-        
-            buttons2.push(<ShareButton key="sharescrns"
-            participantIDbyjitsi = {participant!.id}
-            participantID = { participant!.name!.split('|')[2]}/>);
-        }
-        // if (!showVolumeSlider) {
-        
-        //     buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
-        //     participantIDbyjitsi = {participant.id}
-        //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
-        // }
-        
     }
 
-    }
-
-    if (stageFilmstrip) {
-        buttons2.push(<TogglePinToStageButton
-            key = 'pinToStage'
-            participantID = { _getCurrentParticipantId() } />);
-    }
+    // if (stageFilmstrip) {
+    buttons2.push(<TogglePinToStageButton
+        key='pinToStage'
+        participantID={_getCurrentParticipantId()} />);
+    // }
 
     // if (!disablePrivateChat) {
     //     buttons2.push(<PrivateMessageMenuButton
@@ -282,8 +294,8 @@ const ParticipantContextMenu = ({
     if (thumbnailMenu && isMobileBrowser()) {
         buttons2.push(
             <ConnectionStatusButton
-                key = 'conn-status'
-                participantId = { _getCurrentParticipantId() } />
+                key='conn-status'
+                participantId={_getCurrentParticipantId()} />
         );
     }
 
@@ -298,10 +310,10 @@ const ParticipantContextMenu = ({
 
         buttons2.push(
             <RemoteControlButton
-                key = 'remote-control'
-                onClick = { onRemoteControlToggle }
-                participantID = { _getCurrentParticipantId() }
-                remoteControlState = { remoteControlState } />
+                key='remote-control'
+                onClick={onRemoteControlToggle}
+                participantID={_getCurrentParticipantId()}
+                remoteControlState={remoteControlState} />
         );
     }
 
@@ -312,10 +324,10 @@ const ParticipantContextMenu = ({
             if (room.id !== _currentRoomId) {
                 breakoutRoomsButtons.push(
                     <SendToRoomButton
-                        key = { room.id }
-                        onClick = { clickHandler }
-                        participantID = { _getCurrentParticipantId() }
-                        room = { room } />
+                        key={room.id}
+                        onClick={clickHandler}
+                        participantID={_getCurrentParticipantId()}
+                        room={room} />
                 );
             }
         });
@@ -323,24 +335,24 @@ const ParticipantContextMenu = ({
 
     return (
         <ContextMenu
-            className = { className }
-            entity = { participant }
-            hidden = { thumbnailMenu ? false : undefined }
-            inDrawer = { thumbnailMenu && _overflowDrawer }
-            isDrawerOpen = { Boolean(drawerParticipant) }
-            offsetTarget = { offsetTarget }
-            onClick = { onSelect }
-            onDrawerClose = { thumbnailMenu ? onSelect : closeDrawer }
-            onMouseEnter = { onEnter }
-            onMouseLeave = { onLeave }>
+            className={className}
+            entity={participant}
+            hidden={thumbnailMenu ? false : undefined}
+            inDrawer={thumbnailMenu && _overflowDrawer}
+            isDrawerOpen={Boolean(drawerParticipant)}
+            offsetTarget={offsetTarget}
+            onClick={onSelect}
+            onDrawerClose={thumbnailMenu ? onSelect : closeDrawer}
+            onMouseEnter={onEnter}
+            onMouseLeave={onLeave}>
             {!thumbnailMenu && _overflowDrawer && drawerParticipant && <ContextMenuItemGroup
-                actions = { [ {
+                actions={[{
                     accessibilityLabel: drawerParticipant.displayName,
                     customIcon: <Avatar
-                        participantId = { drawerParticipant.participantID }
-                        size = { 20 } />,
+                        participantId={drawerParticipant.participantID}
+                        size={20} />,
                     text: drawerParticipant.displayName
-                } ] } />}
+                }]} />}
             {buttons.length > 0 && (
                 <ContextMenuItemGroup>
                     {buttons}
@@ -352,14 +364,14 @@ const ParticipantContextMenu = ({
             {showVolumeSlider && (
                 <ContextMenuItemGroup>
                     <VolumeSlider
-                        initialValue = { _volume }
-                        key = 'volume-slider'
-                        onChange = { _onVolumeChange } />
+                        initialValue={_volume}
+                        key='volume-slider'
+                        onChange={_onVolumeChange} />
                 </ContextMenuItemGroup>
             )}
             {breakoutRoomsButtons.length > 0 && (
                 <ContextMenuItemGroup>
-                    <div className = { styles.text }>
+                    <div className={styles.text}>
                         {t('breakoutRooms.actions.sendToBreakoutRoom')}
                     </div>
                     {breakoutRoomsButtons}

@@ -140,13 +140,13 @@ const ThumbnailTopIndicators = ({
                 iconSize = { _indicatorIconSize }
                 participantId = { participantId }
                 tooltipPosition = { tooltipPosition } />
-            {thumbnailType !== THUMBNAIL_TYPE.TILE && (
+            {/* {thumbnailType !== THUMBNAIL_TYPE.TILE && (
                 <div className = { cx(indicatorsClassName, 'top-indicators') }>
                     <StatusIndicators
                         participantID = { participantId }
                         screenshare = { !_isMultiStreamEnabled } />
                 </div>
-            )}
+            )} */}
         </div>
         <div className = { styles.container }>
             <VideoMenuTriggerButton

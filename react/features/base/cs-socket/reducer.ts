@@ -9,6 +9,7 @@ import {
     APP_SOCKET_RECEIVED_COMMAND_MESSAGE,
     APP_SOCKET_POLL_START_MESSAGE,
     APP_SOCKET_POLL_END_MESSAGE,
+    APP_SOCKET_MEETING_ROOM_STATUS,
 } from './actionTypes';
 import {
     IJoinMeetingRoomResponse,
@@ -17,6 +18,7 @@ import {
     CommandMessageDto,
     SocketErrorMessage,
     PollQuestionDto,
+    MeetingRoomStatus,
 } from './types';
 
 export interface ICSSocketState {
@@ -24,6 +26,8 @@ export interface ICSSocketState {
 
     /// socket connect / disconnect
     isSocketConnected?: boolean;
+
+    socketMeetingRoomStatus: MeetingRoomStatus | null;
 
     socketJoinRoomStatus?: IJoinMeetingRoomResponse | null;
 
@@ -46,6 +50,9 @@ export interface ICSSocketState {
 const DEFAULT_STATE: ICSSocketState = {
     socketError: null,
     isSocketConnected: false,
+
+    socketMeetingRoomStatus: MeetingRoomStatus.MEETING_NOT_STARTED,
+
     socketJoinRoomStatus: null,
 
     socketSendCommandMessage: null,
@@ -70,6 +77,14 @@ ReducerRegistry.register<ICSSocketState>(
                     isSocketConnected,
                 };
                 break;
+
+            case APP_SOCKET_MEETING_ROOM_STATUS:
+                const { socketMeetingRoomStatus } = action;
+                return {
+                    ...state,
+                    socketMeetingRoomStatus,
+                };
+                break;    
 
             case APP_SOCKET_JOIN_ROOM:
                 const { socketJoinRoomStatus } = action;

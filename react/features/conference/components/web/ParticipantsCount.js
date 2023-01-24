@@ -89,7 +89,7 @@ class ParticipantsCount extends PureComponent<Props> {
         }
 
         return (
-            _attendeeInfo.userType !== UserType.Viewer && (
+            _attendeeInfo?.userType !== UserType.Viewer && (
                 <Label
                     color={COLORS.white}
                     icon={IconUserGroups}

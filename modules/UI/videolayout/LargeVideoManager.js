@@ -431,7 +431,7 @@ export default class LargeVideoManager {
             // Get user's display name
             const displayName
                 = getParticipantDisplayName(state, id);
-                const [userName, userType] = displayName.split('|');
+                const [userName, userType] = displayName?.split('|');
 
             this._setRemoteConnectionMessage(
                 messageKey,

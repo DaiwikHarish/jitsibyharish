@@ -210,7 +210,7 @@ interface IDialogProps {
     titleKey?: string;
 }
 
-const Dialog = ({
+const Dialogpoll = ({
     back = { hidden: true },
     cancel = { translationKey: 'dialog.Cancel' },
     children,
@@ -240,6 +240,10 @@ const Dialog = ({
         dispatch(hideDialog());
         onSubmit?.();
     }, [ onSubmit ]);
+
+  
+
+    
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape') {
@@ -287,29 +291,29 @@ const Dialog = ({
                         )}
                     </div>
                     <div className = { classes.content }>{children}</div>
-                    <div className = { classes.footer }>
-                        {!back.hidden && <Button
+                    {/* <div className = { classes.footer }>
+                        {back.hidden && <Button
                             accessibilityLabel = { t(back.translationKey ?? '') }
                             labelKey = { back.translationKey }
                             // eslint-disable-next-line react/jsx-handler-names
                             onClick = { back.onClick }
                             type = 'secondary' />}
-                        {!cancel.hidden && <Button
-                            accessibilityLabel = { t(cancel.translationKey ?? '') }
-                            labelKey = { cancel.translationKey }
-                            onClick = { onClose }
-                            type = 'tertiary' />}
-                        {!ok.hidden && <Button
+                       <Button
+                            accessibilityLabel = "Create Poll"
+                            labelKey = "Create Poll"
+                            onClick = { CreatePoll }
+                            />
+                       <Button
                             accessibilityLabel = { t(ok.translationKey ?? '') }
                             disabled = { ok.disabled }
                             id = 'modal-dialog-ok-button'
                             labelKey = { ok.translationKey }
-                            onClick = { submit } />}
-                    </div>
+                            onClick = { submit } />
+                    </div> */}
                 </div>
             </FocusLock>
         </div>
     );
 };
 
-export default Dialog;
+export default Dialogpoll;

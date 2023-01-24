@@ -22,7 +22,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
      */
     render() {
         const { message, t, knocking } = this.props;
-        const [userName, userType] = message.displayName.split('|');
+        const [userName, userType] = message?.displayName.split('|');
 
         return (
             <div
