@@ -6,7 +6,6 @@ import { FadeLoader } from "react-spinners";
 
 import UserType, { IAttendeeInfo } from "../../base/app/types";
 import "../chat-dialog.css";
-import { hideDialog } from "../../base/dialog";
 import { ApiConstants } from "../../../../ApiConstants";
 import { ApplicationConstants } from "../../../../ApplicationConstants";
 import {
@@ -29,10 +28,7 @@ import {
 } from "../actions";
 import { _loadAttendees } from "../functions";
 import { IChatDto } from "../../base/cs-socket/types";
-
-interface IProps {
-    _attendeeList: IAttendeeInfo[] | undefined;
-}
+import { hideDialog } from '../../base/dialog';
 
 const boldStyles = css({
     backgroundColor: "white",
@@ -44,17 +40,12 @@ const boldStyles = css({
 //     _attendeeList: IAttendeeInfo | undefined;
 // };
 
-const _hideDialog = (dispatch: any) => {
-    console.log("alam _hideDialog");
-    dispatch(hideDialog(ChatDialog));
-};
-
 const TIMESTAMP_FORMAT = "H:mm";
 
-const ChatDialog = ({ _attendeeList }: IProps) => {
-    const [message, setMessage] = useState<string>("");
+const ChatDialog = () => {
+    const [message, setMessage] = useState("");
     const [searchInput, setSearchInput] = useState("");
-    const [selected, setSelected] = useState<string | undefined>();
+    const [selected, setSelected] = useState();
 
     const list: IAttendeeInfo[] | undefined = useSelector(
         (state: IReduxState) => state["features/cs-chat-admin"].attendees
@@ -83,10 +74,6 @@ const ChatDialog = ({ _attendeeList }: IProps) => {
         dispatch(hideDialog(ChatDialog));
     }
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
     useEffect(() => {
         dispatch(loadAttendees());
     }, []);
@@ -99,7 +86,6 @@ const ChatDialog = ({ _attendeeList }: IProps) => {
             css={boldStyles}
             isChromeless={true}
             scrollBehavior="inside"
-            onClose={_hideDialog}
         >
             <FadeLoader
                 cssOverride={{
@@ -177,7 +163,7 @@ const ChatDialog = ({ _attendeeList }: IProps) => {
                                         return user;
                                     } else if (
                                         user
-                                            ?.userName!.toLowerCase()
+                                            ?.userName.toLowerCase()
                                             .includes(searchInput.toLowerCase())
                                     ) {
                                         return user;
@@ -206,7 +192,7 @@ const ChatDialog = ({ _attendeeList }: IProps) => {
                                         <div className="Participant-list-left">
                                             <div className="Name-avatar">
                                                 {user
-                                                    .userName!.split(" ")
+                                                    .userName.split(" ")
                                                     .reduce(
                                                         (acc, subname) =>
                                                             acc + subname[0],
@@ -416,12 +402,6 @@ const ChatDialog = ({ _attendeeList }: IProps) => {
     );
 };
 
-function _mapStateToProps(state: IReduxState) {
-    const _attendeeList = state["features/cs-chat-admin"].attendees;
-    return {
-        _attendeeList: state["features/cs-chat-admin"].attendees,
-    };
-}
 
-export default connect(_mapStateToProps)(ChatDialog);
+export default ChatDialog;
 // export default ChatDialog;
