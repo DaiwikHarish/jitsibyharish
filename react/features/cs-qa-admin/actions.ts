@@ -8,7 +8,9 @@ import {
     _deleteQuestion,
     _loadQuestionAnswer,
     _postAnswer,
+    _selectedEndDate,
     _selectedQuestion,
+    _selectedStartDate,
 } from './functions';
 
 /***
@@ -31,17 +33,34 @@ export function selectedQuestion(questionId: number | null | undefined) {
     };
 }
 
-export function postAnswer(newAnswer: string | undefined, sendType: string) {
+export function postAnswer(newAnswer: string | undefined,selectedQuestionId: number, sendType: string) {
     console.log('alam sendChatMessage Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
-        _postAnswer(dispatch, getState, newAnswer, sendType);
+        _postAnswer(dispatch, getState, newAnswer,selectedQuestionId, sendType);
     };
 }
 
-export function deleteQuestion() {
+export function deleteQuestion(qId:number) {
+    console.log('alam deleteQuestion Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
-        _deleteQuestion(dispatch, getState);
+        _deleteQuestion(dispatch, getState,qId);
+    };
+}
+
+export function selectedStartDate(sDate: string | Date) {
+    console.log('alam deleteQuestion Initialized.....');
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        // Step 1: do process
+        _selectedStartDate(dispatch, getState,sDate);
+    };
+}
+
+export function selectedEndDate(eDate : string | Date) {
+    console.log('alam deleteQuestion Initialized.....');
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        // Step 1: do process
+        _selectedEndDate(dispatch, getState,eDate);
     };
 }

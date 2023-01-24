@@ -6,7 +6,9 @@ import { IQuestionAnswer } from '../base/app/types';
 import {
     QA_ADMIN_ISLOADING_STATUS,
     QA_ADMIN_UPDATE_LIST,
+    QA_END_DATE,
     QA_SELECTED_QUESTION,
+    QA_START_DATE,
 } from './actionTypes';
 import { IAPIResponse } from './types';
 
@@ -16,8 +18,8 @@ import { IAPIResponse } from './types';
 export async function _loadQuestionAnswer(
     dispatch: IStore['dispatch'],
     getState: IStore['getState'],
-    startDate?: string,
-    endDate?: string
+    startDate: string | Date,
+    endDate: string | Date
 ) {
     // Step 1: read here from state if required
     const { questionAnswers, selectedQuestionId } =
@@ -55,7 +57,6 @@ export async function _selectedQuestion(
     });
 }
 
-
 /***
  * It is called when user click on the Question in the list item
  */
@@ -63,46 +64,69 @@ export async function _postAnswer(
     dispatch: IStore['dispatch'],
     getState: IStore['getState'],
     ans: string | undefined,
+    selectedQuestionId: number,
     sendType: string
 ) {
-
-    console.log('alam _postAnswer CALLED.....');
-    const { questionAnswers, selectedQuestionId } =
+    const { startDate, endDate } =
         getState()['features/cs-qa-admin'];
 
     // Step 1: set loading
     dispatch(updateIsLoading(true));
 
-    let answerApiResponse = await _postAnswerApi(ans, selectedQuestionId, sendType);
+    let answerApiResponse = await _postAnswerApi(
+        ans,
+        selectedQuestionId,
+        sendType
+    );
     if (answerApiResponse?.status) {
         // reloading
-        await _loadQuestionAnswer(dispatch, getState);
+        await _loadQuestionAnswer(dispatch, getState,startDate,endDate);
     } else {
         dispatch(updateIsLoading(false, 'ERROR', answerApiResponse?.message));
     }
 }
 
-
 export async function _deleteQuestion(
     dispatch: IStore['dispatch'],
     getState: IStore['getState'],
+    qId: number
 ) {
-    const { questionAnswers, selectedQuestionId } =
-        getState()['features/cs-chat-admin'];
-
-    // do some validation
-    let question = questionAnswers?.find((x) => x.id == selectedQuestionId);
-    if (question == null || (question && question.id == null)) return;
-
+    console.log('alam delete questionId CALLED.....', qId);
+    const { startDate, endDate } =
+        getState()['features/cs-qa-admin'];
     // Step 1: set loading
     dispatch(updateIsLoading(true));
 
-    let apiResponse = await _deleteQuestionApi( question.id);
+    let apiResponse = await _deleteQuestionApi(qId);
     if (apiResponse?.status) {
-        _loadQuestionAnswer(dispatch, getState);
+        console.log('alam success apiResponse.....', apiResponse);
+        _loadQuestionAnswer(dispatch, getState,startDate,endDate);
     } else {
+        console.log('alam Error apiResponse.....', apiResponse?.message);
         dispatch(updateIsLoading(false, 'ERROR', apiResponse?.message));
     }
+}
+
+export async function _selectedStartDate(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState'],
+    selectedStartDate: string | Date
+) {
+    dispatch({
+        type: QA_START_DATE,
+        startDate: selectedStartDate,
+    });
+}
+
+export async function _selectedEndDate(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState'],
+    selectedAEndDate: string | Date
+) {
+    dispatch({
+        type: QA_END_DATE,
+        endDate: selectedAEndDate,
+    });
 }
 
 /****
@@ -110,7 +134,10 @@ export async function _deleteQuestion(
  *
  */
 
-async function _fetchQuestionAnswers(startDate: string | undefined, endDate: string | undefined) {
+async function _fetchQuestionAnswers(
+    startDate: string | Date,
+    endDate: string | Date
+) {
     const url =
         ApplicationConstants.API_BASE_URL +
         'question?meetingId=' +
@@ -127,36 +154,36 @@ async function _fetchQuestionAnswers(startDate: string | undefined, endDate: str
         let data = await response.json();
         console.log('alam data', data);
         let qaArray: IQuestionAnswer[] = [];
-                for (let x of data) {
-                    if (x.answers.length == 0) {
-                        let qa: IQuestionAnswer = {};
-                        // question part
-                        qa.id = x.id;
-                        qa.meetingId = x.meetingId;
-                        qa.question = x.question;
-                        qa.fromUserId = x.fromUserId;
-                        qa.fromUserName = x.fromUserName;
-                        qa.createdAt = x.createdAt;
-                        qaArray.push(qa);
-                    } else {
-                        for (let y of x.answers) {
-                            let qa: IQuestionAnswer = {};
-                            // question part
-                            qa.id = x.id;
-                            qa.meetingId = x.meetingId;
-                            qa.question = x.question;
-                            qa.fromUserId = x.fromUserId;
-                            qa.fromUserName = x.fromUserName;
-                            qa.createdAt = x.createdAt;
+        for (let x of data) {
+            if (x.answers.length == 0) {
+                let qa: IQuestionAnswer = {};
+                // question part
+                qa.id = x.id;
+                qa.meetingId = x.meetingId;
+                qa.question = x.question;
+                qa.fromUserId = x.fromUserId;
+                qa.fromUserName = x.fromUserName;
+                qa.createdAt = x.createdAt;
+                qaArray.push(qa);
+            } else {
+                for (let y of x.answers) {
+                    let qa: IQuestionAnswer = {};
+                    // question part
+                    qa.id = x.id;
+                    qa.meetingId = x.meetingId;
+                    qa.question = x.question;
+                    qa.fromUserId = x.fromUserId;
+                    qa.fromUserName = x.fromUserName;
+                    qa.createdAt = x.createdAt;
 
-                            // answer part
-                            qa.answerId = y.id;
-                            qa.answer = y.answer;
-                            qa.sendTo = y.sendTo;
-                            qaArray.push(qa);
-                        }
-                    }
+                    // answer part
+                    qa.answerId = y.id;
+                    qa.answer = y.answer;
+                    qa.sendTo = y.sendTo;
+                    qaArray.push(qa);
                 }
+            }
+        }
         let apiResponse: IAPIResponse = {
             response: qaArray,
             status: true,
@@ -176,7 +203,7 @@ async function _fetchQuestionAnswers(startDate: string | undefined, endDate: str
 async function _postAnswerApi(
     ans: string | null | undefined,
     qId: number | null | undefined,
-    sendType : string
+    sendType: string
 ) {
     console.log('alam _postAnswerApi initialized.....');
     let response = await fetch(ApiConstants.answer, {
@@ -206,9 +233,8 @@ async function _postAnswerApi(
     return apiResponse;
 }
 
-async function _deleteQuestionApi(
-    questionId: number | null | undefined
-) {
+async function _deleteQuestionApi(questionId: number) {
+    console.log('alam _deleteQuestionApi CALLED.....', questionId);
     let response = await fetch(
         ApplicationConstants.API_BASE_URL +
             'question?meetingId=' +

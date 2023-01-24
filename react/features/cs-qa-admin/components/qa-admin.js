@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal, {
     ModalBody,
-    ModalFooter,
-    ModalHeader,
     ModalTitle,
     ModalTransition,
 } from '@atlaskit/modal-dialog';
@@ -11,35 +9,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { css } from '@emotion/react';
 // import 'react-calendar/dist/Calendar.css';
 
-import {
-    IAttendeeInfo,
-    IQuestionAnswer,
-    IQuestion,
-} from '../../base/app/types';
-import { hideDialog } from '../../base/dialog';
-import { ApiConstants } from '../../../../ApiConstants';
-import { ApplicationConstants } from '../../../../ApplicationConstants';
+import { IQuestionAnswer } from '../../base/app/types';
 import '../qa-admin.css';
 import {
     Icon,
     IconClose,
     IconFlag,
     IconParticipants,
-    IconPlusCalendar,
     IconTrash,
     IconUser,
     IconUserGroups,
 } from '../../base/icons';
 // import Datepicker from 'react-datetime-picker';
 import { getLocalizedDateFormatter } from '../../base/i18n';
-import moment from 'moment';
 import {
     deleteQuestion,
     loadQuestionAnswers,
     postAnswer,
+    selectedEndDate,
     selectedQuestion,
+    selectedStartDate,
 } from '../actions';
 import { IReduxState } from '../../app/types';
+import { hideDialog } from '../../base/dialog';
+import { QuestionType } from '../types';
 
 const boldStyles = css({
     backgroundColor: 'rgb(29, 35, 46)',
@@ -51,185 +44,57 @@ const REQUEST_DATETIME_FORMAT = 'YYYY-MM-DDTHH:MM:SS';
 
 const QuestionAnswer = () => {
     const dispatch = useDispatch();
-
-    const [question, setQuestion] = useState();
-    const [questionCount, setQuestionCount] = useState();
-    const [openPicker, setOpenPicker] = useState(false);
     const [selectedQA, setSelectedQA] = useState();
     const [selectedIndex, setSelectedIndex] = useState();
     const [searchInput, setSearchInput] = useState('');
-    const [message, setMessage] = useState();
     const [messageSend, setMessageSend] = useState(false);
+    const [message, setMessage] = useState(selectedQA?.answer);
     const [openModal, setOpenModal] = useState(false);
-    const [radioChecked, setRadioChecked] = useState('Both');
-    const [startDate, setStartDate] = useState(
-        new Date().toLocaleDateString('en-CA')
-    );
-    const [endDate, setEndDate] = useState(
-        new Date().toLocaleDateString('en-CA')
-    );
-    // const [startDate, setStartDate] = useState(new Date());
-    // const [endDate, setEndDate] = useState(new Date());
-    const [answer, setAnswer] = useState();
+    const [radioChecked, setRadioChecked] = useState(QuestionType.Both);
 
     const questionAnswerList: IQuestionAnswer[] | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-qa-admin'].questionAnswers
+        (state: IReduxState) => {
+            if (radioChecked === QuestionType.NotAnswered) {
+                return state['features/cs-qa-admin'].unAnsweredQA;
+            } else if (radioChecked === QuestionType.Answered) {
+                return state['features/cs-qa-admin'].answeredQA;
+            } else {
+                return state['features/cs-qa-admin'].questionAnswers;
+            }
+        }
     );
 
     const selectedQuestionId: number = useSelector(
         (state: IReduxState) => state['features/cs-qa-admin'].selectedQuestionId
     );
-    console.log('alam qaList', questionAnswerList);
+
+    const totalQA: number = useSelector(
+        (state: IReduxState) => state['features/cs-qa-admin'].total
+    );
+
+    const answeredCount: number = useSelector(
+        (state: IReduxState) => state['features/cs-qa-admin'].answeredCount
+    );
+
+    const unAnsweredCount: number = useSelector(
+        (state: IReduxState) => state['features/cs-qa-admin'].unAnsweredCount
+    );
+
+    const updateStartDate: string | Date = useSelector(
+        (state: IReduxState) => state['features/cs-qa-admin'].startDate
+    );
+    const updateEndDate: string | Date = useSelector(
+        (state: IReduxState) => state['features/cs-qa-admin'].endDate
+    );
+    console.log('alam updateStartDate', updateStartDate);
+    console.log('alam unAnswered', updateEndDate);
     function _hideDialog() {
         dispatch(hideDialog(QuestionAnswer));
     }
 
-    const show = () => {
-        setOpenPicker(true);
-    };
-    const onClose = () => {
-        setOpenPicker(false);
-    };
-
-    /**
-     * Fetching Question Answers API.
-     */
-    const FetchQuestionAnswers = async () => {
-        // let url: string;
-
-        if (startDate && endDate && startDate > endDate) {
-            return alert("Start date can't be greater than End date!");
-        }
-
-        // const url =
-        //     ApplicationConstants.API_BASE_URL +
-        //     'question?meetingId=' +
-        //     ApplicationConstants.meetingId;
-        // // +
-        // // `&questionFilterFlag=${radioChecked}`;
-        const url =
-            ApplicationConstants.API_BASE_URL +
-            'question?meetingId=' +
-            ApplicationConstants.meetingId +
-            '&startDateTime=' +
-            moment(startDate).toISOString().split('.')[0] +
-            '&endDateTime=' +
-            moment(`${endDate}T23:59:59`).toISOString().split('.')[0] +
-            `&questionFilterFlag=Both`;
-        // console.log('alam url', url);
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                const questions: IQuestion = data;
-                // console.log('alam questions', questions);
-                let qaArray: IQuestionAnswer[] = [];
-                for (let x of questions) {
-                    if (x.answers.length == 0) {
-                        let qa: IQuestionAnswer = {};
-                        // question part
-                        qa.id = x.id;
-                        qa.meetingId = x.meetingId;
-                        qa.question = x.question;
-                        qa.fromUserId = x.fromUserId;
-                        qa.fromUserName = x.fromUserName;
-                        qa.createdAt = x.createdAt;
-                        qaArray.push(qa);
-                    } else {
-                        for (let y of x.answers) {
-                            let qa: IQuestionAnswer = {};
-                            // question part
-                            qa.id = x.id;
-                            qa.meetingId = x.meetingId;
-                            qa.question = x.question;
-                            qa.fromUserId = x.fromUserId;
-                            qa.fromUserName = x.fromUserName;
-                            qa.createdAt = x.createdAt;
-
-                            // answer part
-                            qa.answerId = y.id;
-                            qa.answer = y.answer;
-                            qa.sendTo = y.sendTo;
-                            qaArray.push(qa);
-                        }
-                    }
-                }
-                setQuestionCount(qaArray);
-                if (radioChecked === 'NotAnswered') {
-                    setQuestion(qaArray.filter((q) => q.answer === undefined));
-                } else if (radioChecked === 'Answered') {
-                    setQuestion(qaArray.filter((q) => q.answer !== undefined));
-                } else {
-                    setQuestion(qaArray);
-                }
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    };
-
-    const onSendMessage = async (msg, qId, sendType) => {
-        if (msg === undefined || msg === '') {
-            return;
-        }
-
-        if (qId === undefined || qId === '') {
-            return;
-        }
-
-        fetch(ApiConstants.answer, {
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            method: 'POST',
-            body: JSON.stringify({
-                meetingId: ApplicationConstants.meetingId,
-                fromUserId: ApplicationConstants.userId,
-                answer: msg,
-                questionId: qId,
-                sendTo: sendType,
-            }),
-        })
-            .then((response) => {
-                response.json();
-            })
-            .then((data) => {
-                FetchQuestionAnswers();
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    };
-
-    const onDeleteQA = (qId) => {
-        fetch(
-            ApplicationConstants.API_BASE_URL +
-                'question?meetingId=' +
-                ApplicationConstants.meetingId +
-                `&questionId=${qId}`,
-            {
-                method: 'DELETE',
-            }
-        )
-            .then((response) => {
-                response.json();
-            })
-            .then((data) => {
-                console.log('Successfully Deleted', qId);
-                FetchQuestionAnswers();
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    };
-
     useEffect(() => {
-        FetchQuestionAnswers();
-        dispatch(loadQuestionAnswers(startDate, endDate));
-    }, [radioChecked, startDate, endDate, messageSend]);
-
-    // console.log('alam startDate', startDate);
-    // console.log('alam endDate', endDate);
+        dispatch(loadQuestionAnswers(updateStartDate, updateEndDate));
+    }, [radioChecked, updateStartDate, updateEndDate, messageSend]);
 
     return (
         <Modal
@@ -253,7 +118,14 @@ const QuestionAnswer = () => {
                 </div>
                 <div className="input-container">
                     <button
-                        onClick={() => FetchQuestionAnswers()}
+                        onClick={() =>
+                            dispatch(
+                                loadQuestionAnswers(
+                                    updateStartDate,
+                                    updateEndDate
+                                )
+                            )
+                        }
                         className="btn-refresh"
                     >
                         Refresh
@@ -271,29 +143,31 @@ const QuestionAnswer = () => {
                     <input
                         type="date"
                         className="q-search"
-                        defaultValue={new Date().toLocaleDateString('en-CA')}
+                        // defaultValue={updateStartDate}
                         maxLength={25}
                         name={'startDate'}
                         onChange={(e) => {
-                            setStartDate(e.target.value);
+                            dispatch(selectedStartDate(e.target.value));
                         }}
                         // onKeyPress = { onKeyPress }
                         placeholder={'StartDate'}
-                        value={startDate}
-                        max={endDate}
+                        value={updateStartDate}
+                        max={updateEndDate}
                     />
 
                     <input
                         type="date"
                         className="q-search"
-                        defaultValue={new Date().toLocaleDateString('en-CA')}
+                        // defaultValue={updateEndDate}
                         maxLength={25}
                         name={'endDate'}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        onChange={(e) =>
+                            dispatch(selectedEndDate(e.target.value))
+                        }
                         // onKeyPress = { onKeyPress }
                         placeholder={'EndDate'}
-                        value={endDate}
-                        min={startDate}
+                        value={updateEndDate}
+                        min={updateStartDate}
                     />
                 </div>
                 <div className="radio-btn-container">
@@ -305,13 +179,7 @@ const QuestionAnswer = () => {
                         onChange={(e) => setRadioChecked(e.target.value)}
                         checked={radioChecked === 'NotAnswered'}
                     />{' '}
-                    Unanswered (
-                    {
-                        // question?.length
-                        questionAnswerList?.filter(
-                            (q) => q.answer === undefined
-                        ).length
-                    }
+                    Unanswered ({unAnsweredCount}
                     )
                     <input
                         className="radio-btn"
@@ -321,13 +189,7 @@ const QuestionAnswer = () => {
                         onChange={(e) => setRadioChecked(e.target.value)}
                         checked={radioChecked === 'Answered'}
                     />{' '}
-                    Answered (
-                    {
-                        // question?.length
-                        questionAnswerList?.filter(
-                            (q) => q.answer !== undefined
-                        ).length
-                    }
+                    Answered ({answeredCount}
                     )
                     <input
                         className="radio-btn"
@@ -337,7 +199,7 @@ const QuestionAnswer = () => {
                         onChange={(e) => setRadioChecked(e.target.value)}
                         checked={radioChecked === 'Both'}
                     />{' '}
-                    All ({questionAnswerList?.length})
+                    All ({totalQA})
                 </div>
                 <div className="qa-table">
                     <table>
@@ -472,12 +334,13 @@ const QuestionAnswer = () => {
                 <div className="footer-a-send-container">
                     <div
                         onClick={() => {
-                            // onSendMessage(
-                            //     message,
-                            //     selectedQA?.id,
-                            //     'Send To User'
-                            // );
-                            dispatch(postAnswer(message, 'Send To User'));
+                            dispatch(
+                                postAnswer(
+                                    message,
+                                    selectedQuestionId,
+                                    'Send To User'
+                                )
+                            );
                             setMessageSend(true);
                             setMessage('');
                             setSelectedQA(undefined);
@@ -489,12 +352,13 @@ const QuestionAnswer = () => {
                     </div>
                     <div
                         onClick={() => {
-                            // onSendMessage(
-                            //     message,
-                            //     selectedQA?.id,
-                            //     'Send To All'
-                            // );
-                            dispatch(postAnswer(message, 'Send To All'));
+                            dispatch(
+                                postAnswer(
+                                    message,
+                                    selectedQuestionId,
+                                    'Send To All'
+                                )
+                            );
                             setMessageSend(true);
                             setMessage('');
                             setSelectedQA(undefined);
@@ -557,7 +421,9 @@ const QuestionAnswer = () => {
                                 appearance="warning"
                                 onClick={() => {
                                     // onDeleteQA(selectedQA?.id);
-                                    dispatch(deleteQuestion());
+                                    dispatch(
+                                        deleteQuestion(selectedQuestionId)
+                                    );
                                     setMessageSend(true);
                                     setOpenModal(false);
                                     setSelectedQA(undefined);

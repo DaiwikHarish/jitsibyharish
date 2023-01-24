@@ -169,7 +169,7 @@ import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
 import QuestionAnswer from '../../../cs-qa-admin/components/qa-admin';
-import QuestionAnswerButton from '../../../cs-qa-admin/components/qa-admin';
+import QuestionAnswerButton from '../../../cs-qa-admin/components/qa-button';
 
 
 
