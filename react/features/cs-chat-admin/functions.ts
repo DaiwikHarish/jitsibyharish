@@ -19,11 +19,10 @@ export async function _loadAttendees(
 ) {
     // Step 1: read here from state if required
     const { attendees, selectedAttendeeId } =
-        getState()['features/base/cs-chat-admin'];
+        getState()['features/cs-chat-admin'];
 
     // Step 1: set loading
     dispatch(updateIsLoading(true));
-
     // Step 2: Call attendee api
     let apiResponse = await _fetchAttendeeApi();
     let attendeeData: IAttendeeInfo[] = [];
@@ -69,7 +68,7 @@ export async function _loadAttendees(
 export async function _selectedAttendee(
     dispatch: IStore['dispatch'],
     getState: IStore['getState'],
-    selectedAttendeeId: string
+    selectedAttendeeId: string | null | undefined
 ) {
     dispatch({
         type: CHAT_ADMIN_SELECTED_ATTENDEE,
@@ -95,10 +94,10 @@ export async function _selectedAttendee(
 export async function _sendChatMessage(
     dispatch: IStore['dispatch'],
     getState: IStore['getState'],
-    newMsg: string
+    newMsg: string | undefined
 ) {
     const { attendees, selectedAttendeeId } =
-        getState()['features/base/cs-chat-admin'];
+        getState()['features/cs-chat-admin'];
 
     // Step 1: set loading
     dispatch(updateIsLoading(true));
@@ -118,24 +117,22 @@ export async function _updateAttendee(
     getState: IStore['getState'],
     isAllow: boolean
 ) {
-const { attendees, selectedAttendeeId } =
-        getState()['features/base/cs-chat-admin'];
+    const { attendees, selectedAttendeeId } =
+        getState()['features/cs-chat-admin'];
 
-    // do some validation 
-    let attendee = attendees?.find(x => x.userId == selectedAttendeeId);
-    if(attendee == null || attendee && attendee.id == null) return ;
+    // do some validation
+    let attendee = attendees?.find((x) => x.userId == selectedAttendeeId);
+    if (attendee == null || (attendee && attendee.id == null)) return;
 
     // Step 1: set loading
     dispatch(updateIsLoading(true));
 
     let apiResponse = await _patchAttendeeApi(isAllow, attendee.id);
     if (apiResponse?.status) {
-            _loadAttendees(dispatch,getState);
+        _loadAttendees(dispatch, getState);
     } else {
         dispatch(updateIsLoading(false, 'ERROR', apiResponse?.message));
     }
-
-
 }
 
 async function _fetchAttendeeApi() {
@@ -144,7 +141,8 @@ async function _fetchAttendeeApi() {
     );
 
     if (response.ok && response.status == 200) {
-        let data = response.json();
+        let data = await response.json();
+        console.log('alam data', data);
         let apiResponse: IAPIResponse = {
             response: data,
             status: true,
@@ -160,7 +158,7 @@ async function _fetchAttendeeApi() {
     }
 }
 
-async function _fetchChatApi(userId: string) {
+async function _fetchChatApi(userId: string | null | undefined) {
     let response = await fetch(
         ApplicationConstants.API_BASE_URL +
             'chat?meetingId=' +
@@ -170,7 +168,7 @@ async function _fetchChatApi(userId: string) {
 
     let apiResponse: IAPIResponse = { status: false };
     if (response.ok && response.status == 200) {
-        let data = response.json();
+        let data = await response.json();
         apiResponse.response = data;
         apiResponse.status = true;
     } else {
@@ -181,7 +179,10 @@ async function _fetchChatApi(userId: string) {
     return apiResponse;
 }
 
-async function _postChatApi(newMesg: string, toUserId: string) {
+async function _postChatApi(
+    newMesg: string | null | undefined,
+    toUserId: string | null | undefined
+) {
     let response = await fetch(ApiConstants.chat, {
         headers: {
             Accept: 'application/json',
@@ -200,7 +201,7 @@ async function _postChatApi(newMesg: string, toUserId: string) {
 
     let apiResponse: IAPIResponse = { status: false };
     if (response.ok && response.status == 201) {
-        let data = response.json();
+        let data = await response.json();
         apiResponse.response = data;
         apiResponse.status = true;
     } else {
@@ -210,7 +211,10 @@ async function _postChatApi(newMesg: string, toUserId: string) {
     return apiResponse;
 }
 
-async function _patchAttendeeApi(isAllow: boolean, attendeeId: string) {
+async function _patchAttendeeApi(
+    isAllow: boolean,
+    attendeeId: string | null | undefined
+) {
     let response = await fetch(ApiConstants.attendee, {
         headers: {
             Accept: 'application/json',
@@ -227,7 +231,7 @@ async function _patchAttendeeApi(isAllow: boolean, attendeeId: string) {
 
     let apiResponse: IAPIResponse = { status: false };
     if (response.ok && response.status == 200) {
-        let data = response.json();
+        let data = await response.json();
         apiResponse.response = data;
         apiResponse.status = true;
     } else {

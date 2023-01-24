@@ -168,7 +168,7 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE } from '../../../base/media';
-import ChatDialog from '../../../chat-admin/components/ChatDialog';
+import ChatDialog from '../../../cs-chat-admin/components/ChatDialog';
 import SettingsDialog from '../../../settings/components/web/SettingsDialog';
 
 
@@ -943,7 +943,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const chat = _attendeeInfo.userType !== UserType.Presenter && {
             key: 'chat',
             Content: ChatButton,
-            handleClick: _attendeeInfo.userType === UserType.Admin? this._openDialog  :  this._onToolbarToggleChat,
+            handleClick: _attendeeInfo.userType !== UserType.Viewer? this._openDialog  :  this._onToolbarToggleChat,
             group: 2
         };
 
