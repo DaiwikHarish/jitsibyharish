@@ -20,6 +20,7 @@ type Props = AbstractButtonProps & {
      * Whether or not the participants pane is open.
      */
     _isOpen: boolean,
+    _qaUnseenCount: number
 };
 
 /**
@@ -47,7 +48,7 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
                 {super.render()}
                 <span className="badge-round">
                     <span id="mainchatcounter">
-                        9+
+                        {this.props._qaUnseenCount}
                     </span>
                 </span>
                 {/* <ChatCounter /> */}
@@ -64,9 +65,11 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
  */
 function mapStateToProps(state) {
     const { isOpen } = state['features/participants-pane'];
+    const { qaUnseenCount } = state['features/cs-qa-admin'].unSeenCount;
 
     return {
         _isOpen: isOpen,
+        _qaUnseenCount:qaUnseenCount
     };
 }
 
