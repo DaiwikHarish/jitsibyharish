@@ -168,6 +168,7 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
 import { MEDIA_TYPE } from '../../../base/media';
+// @ts-ignore
 import ChatDialog from '../../../cs-chat-admin/components/ChatDialog';
 import SettingsDialog from '../../../settings/components/web/SettingsDialog';
 
