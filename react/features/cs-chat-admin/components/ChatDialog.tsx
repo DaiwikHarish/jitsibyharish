@@ -19,7 +19,7 @@ import {
     updateAttendee,
 } from '../actions';
 
-import { _loadAttendees } from '../functions';
+import { uiTimeFormat, _loadAttendees } from '../functions';
 import { IChatDto } from '../../base/cs-socket/types';
 
 //@ts-ignore
@@ -38,7 +38,7 @@ const boldStyles = css({
 //     _attendeeList: IAttendeeInfo | undefined;
 // };
 
-const TIMESTAMP_FORMAT = 'H:mm';
+
 
 const ChatDialog = () => {
     const [message, setMessage] = useState('');
@@ -312,9 +312,7 @@ const ChatDialog = () => {
                                                     'Arial, Helvetica, sans-serif',
                                             }}
                                         >
-                                            {/* {getLocalizedDateFormatter(
-                                                new Date(chat.createdAt)
-                                            ).format(TIMESTAMP_FORMAT)} */}
+                                            {uiTimeFormat(chat.createdAt)}
                                         </div>
                                     </div>
                                 ) : (
@@ -354,9 +352,8 @@ const ChatDialog = () => {
                                                     'Arial, Helvetica, sans-serif',
                                             }}
                                         >
-                                            {/* {getLocalizedDateFormatter(
-                                                new Date(chat.createdAt)
-                                            ).format(TIMESTAMP_FORMAT)} */}
+                                            { uiTimeFormat(chat.createdAt)}
+                                            
                                         </div>
                                     </div>
                                 )

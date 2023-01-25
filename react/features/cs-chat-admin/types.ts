@@ -9,8 +9,8 @@ export interface IChatDto  {
   toUserName?: string;
   toUserType?: string;
   message?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IChatsDto {

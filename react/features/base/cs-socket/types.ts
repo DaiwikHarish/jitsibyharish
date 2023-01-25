@@ -143,8 +143,8 @@ export interface IChatDto {
     toUserName?: string;
     toUserType?: string;
     message?: string;
-    createdAt?: string | Date;
-    updatedAt?: string | Date;
+    createdAt: string ;
+    updatedAt: string ;
 }
 
 export class ChatNotificationDto extends UserDto {

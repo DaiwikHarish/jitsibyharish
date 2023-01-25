@@ -1,7 +1,9 @@
+import moment from 'moment';
 import { ApiConstants } from '../../../ApiConstants';
 import { ApplicationConstants } from '../../../ApplicationConstants';
 import { IStore } from '../app/types';
-import { IAttendeeInfo } from '../base/app/types';
+import { utcToLocal } from '../base/app/functions';
+import { IAttendeeInfo, UI_TIMESTAMP_FORMAT, YYYY_MM_DD_T_HH_MM_SS } from '../base/app/types';
 import {
     CHAT_ADMIN_ISLOADING_STATUS,
     CHAT_ADMIN_SELECTED_ATTENDEE,
@@ -52,13 +54,23 @@ export async function _loadAttendees(
             let data: IChatDto[] = chatApiResponse.response;
             dispatch({
                 type: CHAT_ADMIN_UPDATE_CHAT_HISTORY,
-                chatHistory: data,
+                chatHistory: updateChatAPIResponse(data),
                 isLoading: false,
             });
         } else {
             dispatch(updateIsLoading(false, 'ERROR', chatApiResponse?.message));
         }
     }
+}
+
+function updateChatAPIResponse(data: IChatDto[]):IChatDto[] {
+
+    for(let x of data){
+        x.createdAt = utcToLocal(x.createdAt?x.createdAt:'');
+        x.updatedAt = utcToLocal(x.updatedAt?x.updatedAt:'');
+    }
+
+    return data;
 }
 
 /***
@@ -255,3 +267,7 @@ function updateIsLoading(
 }
 
 
+
+export function uiTimeFormat(dateString: string) {
+    return moment(dateString, YYYY_MM_DD_T_HH_MM_SS).format(UI_TIMESTAMP_FORMAT);
+}
