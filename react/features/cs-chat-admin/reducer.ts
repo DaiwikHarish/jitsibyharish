@@ -1,12 +1,13 @@
-import { IAttendeeInfo } from '../base/app/types';
 import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     CHAT_ADMIN_ISLOADING_STATUS,
     CHAT_ADMIN_SELECTED_ATTENDEE,
     CHAT_ADMIN_UPDATE_ATTENDEES,
     CHAT_ADMIN_UPDATE_CHAT_HISTORY,
+    CHAT_ADMIN_UPDATE_SCREEN_ON_STATUS,
+    CHAT_ADMIN_UPDATE_UNSEEN_COUNT
 } from './actionTypes';
-import { IChatDto } from './types';
+import { IAttendeeUnSeenCount, IChatDto } from './types';
 
 export interface ICSChatAdminState {
     // api call request/response time
@@ -15,11 +16,15 @@ export interface ICSChatAdminState {
     message?: string | null;
 
     // UI to show
-    attendees?: IAttendeeInfo[];
+    attendees: IAttendeeUnSeenCount[];
     onLineCount?: number;
     total?: number;
     selectedAttendeeId?: string | null;
-    chatHistory?: IChatDto[];
+    chatHistory: IChatDto[];
+
+    isScreenON: boolean;
+    // count of all attendee unseencount
+    unSeenCount: number; 
 }
 
 const DEFAULT_STATE: ICSChatAdminState = {
@@ -30,6 +35,8 @@ const DEFAULT_STATE: ICSChatAdminState = {
     attendees: [],
     selectedAttendeeId: null,
     chatHistory: [],
+    isScreenON: false,
+    unSeenCount: 0,
 };
 
 ReducerRegistry.register<ICSChatAdminState>(
@@ -77,7 +84,19 @@ ReducerRegistry.register<ICSChatAdminState>(
                     selectedAttendeeId: action.selectedAttendeeId,
                 };
                 break;
-
+            case CHAT_ADMIN_UPDATE_SCREEN_ON_STATUS:
+                return {
+                    ...state,
+                    isScreenON: action.isScreenON,
+                };
+                break;
+            case CHAT_ADMIN_UPDATE_UNSEEN_COUNT:
+                return {
+                    ...state,
+                    unSeenCount: action.unSeenCount,
+                    attendees: action.attendees,
+                };
+                break;
             default:
                 return state;
         }

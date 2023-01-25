@@ -38,6 +38,9 @@ export enum SocketMessageEventType {
 
     POLL_START_MESSAGE = 'PollStartMessage',
     POLL_END_MESSAGE = 'PollEndMessage',
+
+    // all viewer send to admin after join or leave
+    STATUS_NOTIFICATION = 'StatusNotification',
 }
 
 export class UserDto {

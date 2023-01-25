@@ -17,6 +17,7 @@ import {
     selectedAttendee,
     sendChatMessage,
     updateAttendee,
+    updateChatScreenStatus,
 } from '../actions';
 
 import { uiTimeFormat, _loadAttendees } from '../functions';
@@ -27,6 +28,7 @@ import { hideDialog } from '../../base/dialog';
 
 //@ts-ignore
 import { Icon, IconChatSendBtn, IconClose, IconLock, IconRefresh, IconUnlock } from '../../base/icons';
+import { IAttendeeUnSeenCount } from '../types';
 
 const boldStyles = css({
     backgroundColor: 'white',
@@ -45,7 +47,7 @@ const ChatDialog = () => {
     const [searchInput, setSearchInput] = useState('');
     const [selected, setSelected] = useState<string>('');
 
-    const list: IAttendeeInfo[] | undefined = useSelector(
+    const list: IAttendeeUnSeenCount[] | undefined = useSelector(
         (state: IReduxState) => state['features/cs-chat-admin'].attendees
     );
     const onlineCount: number | undefined = useSelector(
@@ -73,7 +75,13 @@ const ChatDialog = () => {
     }
 
     useEffect(() => {
+
+        dispatch(updateChatScreenStatus(true))
         dispatch(loadAttendees());
+
+        return () => {
+             dispatch(updateChatScreenStatus(false))
+        }
     }, []);
 
     return (
@@ -154,7 +162,7 @@ const ChatDialog = () => {
                     </div>
                     <div className="Participants-list-container">
                         {list &&
-                            list
+                            list?.reverse()
                                 ?.filter((user) => {
                                     if (searchInput === '') {
                                         return user;
@@ -228,6 +236,7 @@ const ChatDialog = () => {
                                                 }
                                             />
                                         </div>
+                                        
                                     </div>
                                 ))}
                     </div>

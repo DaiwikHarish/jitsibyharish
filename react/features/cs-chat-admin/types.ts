@@ -1,3 +1,4 @@
+import { IAttendeeInfo } from "../base/app/types";
 
 export interface IChatDto  {
   id?: string;
@@ -23,4 +24,8 @@ export interface IAPIResponse {
     response?:any;
     status:boolean;
     message?:string;
+}
+
+export interface IAttendeeUnSeenCount extends IAttendeeInfo {
+  unSeenCount:number;
 }
