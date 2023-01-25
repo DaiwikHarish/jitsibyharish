@@ -19,7 +19,9 @@ import {
     deleteQuestion,
     postAnswer,
     qaAction,
+    resetQAUnSeenCount,
     selectedQuestion,
+    updateQAScreenStatus,
 } from "../actions";
 
 import { IReduxState } from "../../app/types";
@@ -101,7 +103,18 @@ const QuestionAnswer = () => {
         // trigger firt time on mount
         let fromDateTime = moment().format("YYYY-MM-DD") + "T00:00:00";
         let toDateTime = moment().format("YYYY-MM-DD") + "T23:59:59";
+        
+        // set isScreenOn = true on mount 
+        dispatch(updateQAScreenStatus(true))
+        
         dispatch(qaAction(fromDateTime, toDateTime));
+
+        // set isScreen = false on unmount 
+        return () => {
+            dispatch(updateQAScreenStatus(false))
+            dispatch(resetQAUnSeenCount())
+        }
+
     }, []);
 
     // this will execute when the state changes

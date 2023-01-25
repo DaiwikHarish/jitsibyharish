@@ -2,6 +2,7 @@ import { io, Socket } from 'socket.io-client';
 import { ApiConstants } from '../../../../ApiConstants';
 import { ApplicationConstants } from '../../../../ApplicationConstants';
 import { IStore } from '../../app/types';
+import { updateQADataFromSocket } from '../../cs-qa-admin/actions';
 import UserType, { IAttendeeInfo } from '../app/types';
 
 import {
@@ -29,6 +30,7 @@ import {
     PermissionType,
     CommandType,
     MeetingRoomStatus,
+    QANotificationDto,
 } from './types';
 
 // global object
@@ -112,6 +114,8 @@ export function _initSocket(
             type: APP_SOCKET_QA_MESSAGE,
             socketQaMessage: msg,
         });
+
+        dispatch(updateQADataFromSocket(msg.data));
     });
 
     // chat notification here
@@ -166,10 +170,10 @@ export function _destroySocket(dispatch: IStore['dispatch']) {
 
 export function _getUserDto(attendee: IAttendeeInfo) {
     let dto: UserDto = {
-        userId: attendee.userId?attendee.userId:'',
-        meetingId: attendee.meetingId?attendee.meetingId:'',
-        userName: attendee.userName?attendee.userName:'',
-        userType: attendee.userType?attendee.userType:'',
+        userId: attendee.userId ? attendee.userId : '',
+        meetingId: attendee.meetingId ? attendee.meetingId : '',
+        userName: attendee.userName ? attendee.userName : '',
+        userType: attendee.userType ? attendee.userType : '',
     };
 
     return dto;

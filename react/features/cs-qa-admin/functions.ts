@@ -8,6 +8,8 @@ import {
     QA_ADMIN_ISLOADING_STATUS,
     QA_SELECTED_QUESTION,
     QA_STATE_UPDATE,
+    QA_UPDATE_QA_DATA,
+    QA_UPDATE_UNSEEN_COUNT,
 } from './actionTypes';
 import { ICSQaAdminState } from './reducer';
 import {
@@ -377,4 +379,52 @@ export function getQuestionTypeCount(
     } else {
         return qaState.qaData.length;
     }
+}
+
+//////// update question object from socket ///////
+
+export async function _updateQADataFromSocket(
+    dispatch: IStore['dispatch'],
+    getState: IStore['getState'],
+    socketQAData: IQuestionAnswerDto
+) {
+    let stateQAData = getState()['features/cs-qa-admin'].qaData;
+    let isScreenON = getState()['features/cs-qa-admin']?.isScreenON;
+    let unSeenCount = getState()['features/cs-qa-admin'].unSeenCount;
+
+    if (isScreenON) {
+        let qaData = _updateQAData(socketQAData, stateQAData);
+        dispatch({
+            type: QA_UPDATE_QA_DATA,
+            qaData: qaData,
+        });
+    } else {
+        dispatch({
+            type: QA_UPDATE_UNSEEN_COUNT,
+            unSeenCount: unSeenCount+1,
+        });
+    }
+
+}
+
+export function _updateQAData(
+    socketQAData: IQuestionAnswerDto,
+    stateQAData: IQuestionAnswer[]
+): IQuestionAnswer[] {
+    // clone it existing
+    let updatedData: IQuestionAnswer[] = [];
+
+    for (let x of stateQAData) {
+        // copy all questions except socket questionId
+        if (x.questionId != socketQAData.id) {
+            let data: IQuestionAnswer = { ...x };
+            updatedData.push(data);
+        }
+    }
+
+    // add socket question  at the end
+    let mergeQAData = _mergeQAData([socketQAData]);
+    updatedData.push(mergeQAData[0]);
+
+    return updatedData;
 }

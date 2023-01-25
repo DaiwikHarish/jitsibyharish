@@ -1,3 +1,5 @@
+import { IAnswerDto } from "../../cs-qa-admin/types";
+
 export interface SocketErrorMessage {
     event: string;
     data: {
@@ -122,7 +124,7 @@ export interface IQuestionDto {
     question?: string;
     createdAt?: string;
     updatedAt?: string;
-    answers?:string;
+    answers?:IAnswerDto;
 }
 
 export class QANotificationDto extends UserDto {
