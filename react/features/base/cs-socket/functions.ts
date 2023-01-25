@@ -2,6 +2,7 @@ import { io, Socket } from 'socket.io-client';
 import { ApiConstants } from '../../../../ApiConstants';
 import { ApplicationConstants } from '../../../../ApplicationConstants';
 import { IStore } from '../../app/types';
+import { updateChatDataFromSocket, updateOnlineAttendeeDataFromSocket } from '../../cs-chat-admin/actions';
 import { updateQADataFromSocket } from '../../cs-qa-admin/actions';
 import UserType, { IAttendeeInfo } from '../app/types';
 
@@ -115,6 +116,7 @@ export function _initSocket(
             socketQaMessage: msg,
         });
 
+        // for admin / presenter qa-admin screen
         dispatch(updateQADataFromSocket(msg.data));
     });
 
@@ -125,6 +127,17 @@ export function _initSocket(
             type: APP_SOCKET_CHAT_MESSAGE,
             socketChatMessage: msg,
         });
+        // for admin / presenter chat-admin screen 
+        dispatch(updateChatDataFromSocket(msg.data));
+       
+    });
+
+        // Attendee Online notification here
+    _csSocket.on(SocketMessageEventType.STATUS_NOTIFICATION, (msg) => {
+        console.log('socket Status message received => ', msg);
+        // for admin / presenter chat-admin screen, for online status  
+        dispatch(updateOnlineAttendeeDataFromSocket(msg.data));
+       
     });
 
     // Meeting room satus here
