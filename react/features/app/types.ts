@@ -29,6 +29,7 @@ import { INoSrcDataState, ITracksState } from '../base/tracks/reducer';
 import { IUserInteractionState } from '../base/user-interaction/reducer';
 import { IBreakoutRoomsState } from '../breakout-rooms/reducer';
 import { ICalendarSyncState } from '../calendar-sync/reducer';
+import { ICSChatAdminState } from '../cs-chat-admin/reducer';
 import { IChatState } from '../chat/reducer';
 
 
@@ -117,7 +118,7 @@ export interface IReduxState {
     'features/calendar-sync': ICalendarSyncState;
     'features/call-integration': ICallIntegrationState;
     'features/chat': IChatState;
-    
+    'features/cs-chat-admin': ICSChatAdminState;
     'features/deep-linking': IDeepLinkingState;
     'features/dropbox': IDropboxState;
     'features/dynamic-branding': IDynamicBrandingState;
