@@ -6,7 +6,7 @@ export const AppName = 'Awesome Review';
 
 export const YYYY_MM_DD_T_HH_MM_SS = 'YYYY-MM-DDTHH:mm:ss';
 export const UI_DATE_FORMAT = "DD/MM/YYYY";
-export const UI_TIMESTAMP_FORMAT = 'H:mm';
+export const UI_TIMESTAMP_FORMAT = 'HH:mm';
 
 export default class UserType {
     public static Admin = 'Admin';
