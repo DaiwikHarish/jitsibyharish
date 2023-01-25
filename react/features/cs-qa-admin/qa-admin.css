@@ -1,0 +1,333 @@
+.Container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 73%;
+    align-items: center;
+    /* justify-content: center; */
+    background-color: rgb(29, 35, 46);
+}
+
+.loading-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 73%;
+  align-items: center;
+  background-color: rgb(29, 35, 46);
+  /* -webkit-filter: blur(1.5px); 
+  -moz-filter: blur(1.5px); 
+  -o-filter: blur(1.5px); 
+  -ms-filter: blur(1.5px); 
+  filter: blur(1.5px); */
+  filter: opacity(0.2);
+  pointer-events: none;
+}
+.header{
+    display: flex;
+    width: 97%;
+    height: 3%;
+    padding: 10px;
+    flex-direction: row;
+    /* align-self: center; */
+    justify-content: space-between;
+    align-items: center;
+    margin-block: 10px;
+    /* background-color: yellow;*/
+}
+.title{
+    font-size: large;
+    font-weight: 700;
+    padding: 3px;
+    color: #fff;
+}
+.btn-close{
+    padding: 3px;
+    border-radius: 5px;
+    /* margin:10px; */
+    cursor: pointer;
+}
+.btn-close:hover{
+   /* padding: 5px; */
+   border-radius: 5px;
+   background-color: #3D3D3D;
+     
+}
+.btn-refresh {
+    width: 9%;
+    /* height: 9%; */
+    /* padding-block: 2px; */
+    padding-inline: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: larger;
+    cursor: pointer;
+}
+.input-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 97%;
+    padding: 7px;
+}
+.q-search{
+    width: 25%;
+    padding: 3px 5px 3px 5px;
+    border: 0.5px solid #c2c2c2;
+    border-radius: 8px;
+    background-color: #eaedef;
+    cursor: pointer;
+}
+
+.mat-form-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 25%;
+    padding: 3px 5px 3px 5px;
+    border: 0.5px solid #c2c2c2;
+    border-radius: 8px;
+    background-color: #eaedef;
+}
+.calendar{
+  background-color: rgb(29, 35, 46);
+  border: none;
+}
+.radio-btn-container{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    font-size: 14.5;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 97%;
+    padding-block: 25px 20px;
+    color: #fff;
+}
+.btn-label{
+    cursor: pointer;
+}
+.radio-btn{
+    width: 25px;
+    height: 25px;
+    margin-left: 25px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+input[type="radio"] {
+    margin-top: -3px;
+    vertical-align: text-bottom;
+    margin-right: 10;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #36383c;
+    opacity: 1; /* Firefox */
+    font-size: 14px;
+}
+.label-date{
+    color: #000;
+    opacity: 1; /* Firefox */
+    font-size: 14px;
+}
+/* .qa-table{
+    width: 97%;
+    background-color: #e4e0e0
+} */
+.qa-table-header {
+    display: flex;
+    width: 97%;
+    /* height: 3%; */
+    padding: 10px;
+    flex-direction: row;
+    /* align-self: center; */
+    justify-content: space-between;
+    align-items: center;
+    margin-block: 10px;
+    /* background-color: yellow;*/
+}
+/* .header-del{
+
+} */
+
+.qa-table {
+    width: 97%;
+    min-height: 9%;
+    max-height: 56%;
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    background-color: #f3f5f7;
+    border-radius: 10px;
+    overflow: auto;
+  }
+    
+  table {
+    border: 0px solid #868e96;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+    
+th {
+    border-bottom: 1px solid #a4b8d1;
+    color: #3d3d3d;
+    padding-block: 10px;
+    top: 0px;
+    position: sticky;
+    background-color: #a4b8d1;
+    font-size: 15px;
+  }
+  tr{
+    padding-block: 5px;
+  }
+tr:hover {
+    background-color: #c1c9ce;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+tr::selection{
+  background-color: #afbac2;
+  border-radius: 10px;
+  color: #fff;}
+tr:active {
+    background-color: #afbac2;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+.selected-row {
+  background-color: #c1c9ce;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+.unselected-row{
+
+}
+.btn-trash{
+  cursor: pointer;
+}   
+td {
+    text-align: center;
+    padding-block: 5px;
+    font-size: 14px;
+    color: #36383c;
+    padding-inline: 10px 5px;
+  }
+.q{
+    font-size: 14.5px;
+    text-align: left;
+    padding-block: 10px;
+  }
+  .footer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    height: 30%;
+    /* margin-block: 5px; */
+    background-color: rgb(29, 35, 46);
+    padding-bottom: 10px;
+  }
+  .loading-footer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    height: 30%;
+    /* margin-block: 5px; */
+    background-color: rgb(29, 35, 46);
+    padding-bottom: 10px;
+    /* -webkit-filter: blur(1.5px); 
+    -moz-filter: blur(1.5px); 
+    -o-filter: blur(1.5px); 
+    -ms-filter: blur(1.5px);*/
+    /* filter: blur(1.5px);  */
+    filter: opacity(0.2);
+    pointer-events: none;
+  }
+  .footer-q{
+    width: 97%;
+    height: 30%;
+    padding: 10px 0px;
+    background-color: #868e96;
+    border-radius: 8px;
+    color: #fff;
+  }
+  .footer-a-input{
+    width: 97%;
+    height: -webkit-fill-available;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: sans-serif;
+    margin-block: 2px;
+    padding: 8px;
+    background-color: #f3f5f7;
+  }
+  .footer-a-send-container{
+    display: flex;
+    flex-direction: row;
+    width: 97%;
+    padding: 14px 0px;
+    background-color: #868e96;
+    border-radius: 8px;
+    color: #fff;
+  }
+.send-type{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-inline: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+p{
+    padding-inline: 8px;
+    font-size: larger;
+}
+.warning-modal-header{
+  display: flex;
+    padding: 24px 24px 22px;
+    position: relative;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    color: #fff;
+    /* justify-content: space-between; */
+}
+.warning-modal-body{
+  font-size: 14px;
+  color: #fff;
+}
+.span-qus{
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.warning-modal-footer{
+  display: flex;
+  padding: 22px 24px 24px;
+  position: relative;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.svg{
+  margin-right: 8px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url(https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png) no-repeat;
+  width: 20px;
+  height: 25px;
+  border: none;
+}

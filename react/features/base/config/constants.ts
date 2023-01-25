@@ -16,6 +16,7 @@ export const _CONFIG_STORE_PREFIX = 'config.js';
 export const TOOLBAR_BUTTONS = [
     'camera',
     'chat',
+    'QA',
     'closedcaptions',
     'desktop',
     'adminPoll',

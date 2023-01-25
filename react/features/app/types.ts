@@ -31,6 +31,7 @@ import { IBreakoutRoomsState } from '../breakout-rooms/reducer';
 import { ICalendarSyncState } from '../calendar-sync/reducer';
 import { ICSChatAdminState } from '../cs-chat-admin/reducer';
 import { IChatState } from '../chat/reducer';
+import { ICSQaAdminState } from '../cs-qa-admin/reducer';
 
 
 import { IDeepLinkingState } from '../deep-linking/reducer';
@@ -118,6 +119,7 @@ export interface IReduxState {
     'features/calendar-sync': ICalendarSyncState;
     'features/call-integration': ICallIntegrationState;
     'features/chat': IChatState;
+    'features/cs-qa-admin': ICSQaAdminState;
     'features/cs-chat-admin': ICSChatAdminState;
     'features/deep-linking': IDeepLinkingState;
     'features/dropbox': IDropboxState;

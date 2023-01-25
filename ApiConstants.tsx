@@ -19,6 +19,8 @@ export class ApiConstants {
     public static meeting                        = ApplicationConstants.API_BASE_URL + "meeting?meetingId="+ApplicationConstants?.meetingId;
     public static pollGroupbyMeeting                        = ApplicationConstants.API_BASE_URL + "poll-group?meetingId="+ApplicationConstants?.meetingId;
  
+    public static answer                         = ApplicationConstants.API_BASE_URL+ 'answer'
+    
     public static pollGroup                        = ApplicationConstants.API_BASE_URL + "poll-group";
  
   

@@ -1,35 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
+// @ts-ignore
 import Modal from '@atlaskit/modal-dialog';
+
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { css } from '@emotion/react';
 import { FadeLoader } from 'react-spinners';
 
 import UserType, { IAttendeeInfo } from '../../base/app/types';
 import '../chat-dialog.css';
-import { ApiConstants } from '../../../../ApiConstants';
+
 import { ApplicationConstants } from '../../../../ApplicationConstants';
-import {
-    Icon,
-    IconChatSendBtn,
-    IconClose,
-    IconLock,
-    IconRefresh,
-    IconUnlock,
-} from '../../base/icons';
-import { getLocalizedDateFormatter } from '../../base/i18n';
 import { IReduxState } from '../../app/types';
-// import { connect } from '../../base/redux/functions';
-import { fontSize } from '@atlaskit/theme';
+
 import {
     loadAttendees,
     selectedAttendee,
     sendChatMessage,
     updateAttendee,
 } from '../actions';
+
 import { _loadAttendees } from '../functions';
 import { IChatDto } from '../../base/cs-socket/types';
+
+//@ts-ignore
 import { hideDialog } from '../../base/dialog';
-import { color } from '@mui/system';
+
+//@ts-ignore
+import { Icon, IconChatSendBtn, IconClose, IconLock, IconRefresh, IconUnlock } from '../../base/icons';
 
 const boldStyles = css({
     backgroundColor: 'white',
@@ -46,7 +43,7 @@ const TIMESTAMP_FORMAT = 'H:mm';
 const ChatDialog = () => {
     const [message, setMessage] = useState('');
     const [searchInput, setSearchInput] = useState('');
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState<string>('');
 
     const list: IAttendeeInfo[] | undefined = useSelector(
         (state: IReduxState) => state['features/cs-chat-admin'].attendees
@@ -69,7 +66,7 @@ const ChatDialog = () => {
     const { innerWidth: width, innerHeight: height } = window;
 
     const dispatch = useDispatch();
-    const messagesEndRef = (useRef < null) | (HTMLDivElement > null);
+    // const messagesEndRef = (useRef < null) | (HTMLDivElement > null);
     function _hideDialog() {
         console.log('alam _hideDialog');
         dispatch(hideDialog(ChatDialog));
@@ -315,9 +312,9 @@ const ChatDialog = () => {
                                                     'Arial, Helvetica, sans-serif',
                                             }}
                                         >
-                                            {getLocalizedDateFormatter(
+                                            {/* {getLocalizedDateFormatter(
                                                 new Date(chat.createdAt)
-                                            ).format(TIMESTAMP_FORMAT)}
+                                            ).format(TIMESTAMP_FORMAT)} */}
                                         </div>
                                     </div>
                                 ) : (
@@ -357,9 +354,9 @@ const ChatDialog = () => {
                                                     'Arial, Helvetica, sans-serif',
                                             }}
                                         >
-                                            {getLocalizedDateFormatter(
+                                            {/* {getLocalizedDateFormatter(
                                                 new Date(chat.createdAt)
-                                            ).format(TIMESTAMP_FORMAT)}
+                                            ).format(TIMESTAMP_FORMAT)} */}
                                         </div>
                                     </div>
                                 )

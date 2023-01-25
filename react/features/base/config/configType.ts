@@ -1,5 +1,6 @@
 type ToolbarButtons = 'camera' |
     'chat' |
+    'QA' |
     'closedcaptions' |
     'desktop' |
     'adminPoll'|
@@ -36,6 +37,7 @@ type ToolbarButtons = 'camera' |
 
 type ButtonsWithNotifyClick = 'camera' |
     'chat' |
+    'QA' |
     'closedcaptions' |
     'desktop' |
     'adminPoll'|

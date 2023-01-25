@@ -291,7 +291,7 @@ export const getGlobalStyles = (theme: Theme) => {
             // override dialog background
             '& > div': {
                 background: theme.palette.ui02,
-                color: theme.palette.text01
+                color: '#131519'
             }
         }
     };
