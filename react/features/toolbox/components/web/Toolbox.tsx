@@ -973,22 +973,17 @@ class Toolbox extends Component<IProps, AppState> {
             group: 2
         };
 
-        // const chat = _attendeeInfo.userType !== UserType.Presenter && {
-        //     key: 'chat',
-        //     Content: ChatButton,
-        //     handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
-        //     group: 2
-        // };
-        const questionAnswer = _attendeeInfo.userType !== UserType.Presenter && {
+        const chat = _attendeeInfo.userType === UserType.Viewer && {
+            key: 'chat',
+            Content: ChatButton,
+            handleClick: this._onToolbarToggleChat,
+            group: 2
+        };
+        const questionAnswer = _attendeeInfo.userType !== UserType.Viewer && {
             key: 'QA',
             Content: QuestionAnswerButton,
-            handleClick: _attendeeInfo.userType !== UserType.Viewer ? this._openDialog : this._onToolbarToggleChat,
+            handleClick: this._openDialog ,
             group: 0
-        // const chat = _attendeeInfo?.userType === UserType.Viewer && {
-        //     key: 'chat',
-        //     Content: ChatButton,
-        //     handleClick: this._onToolbarToggleChat,
-        //     group: 2
         };
 
         const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
@@ -1177,7 +1172,7 @@ class Toolbox extends Component<IProps, AppState> {
             camera,
             // profile,
             desktop,
-            // chat,
+            chat,
             questionAnswer,
             raisehand,
             participants,

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { dumpLog } from '../app/functions.any';
 import ReducerRegistry from '../base/redux/ReducerRegistry';
 import {
     QA_ADMIN_ISLOADING_STATUS,
@@ -76,7 +77,7 @@ ReducerRegistry.register<ICSQaAdminState>(
                     startDateTime:action.startDateTime,
                     endDateTime:action.endDateTime,
                     searchText:action.searchText,
-                    isLoading:action.isloading
+                    isLoading:action.isLoading
                 };
                 break;
             case QA_SELECTED_QUESTION:
