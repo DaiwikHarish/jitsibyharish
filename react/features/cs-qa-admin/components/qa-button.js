@@ -7,13 +7,15 @@ import { IconQuestion } from '../../base/icons';
 
 import { connect } from '../../base/redux';
 
-import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
+import {
+    AbstractButton,
+    type AbstractButtonProps,
+} from '../../base/toolbox/components';
 
 /**
  * The type of the React {@code Component} props of {@link ParticipantsPaneButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether or not the participants pane is open.
      */
@@ -39,6 +41,19 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
     // _isToggled() {
     //     return this.props._isOpen;
     // }
+    render(): React$Node {
+        return (
+            <div className="toolbar-button-with-badge" key="chatcontainer">
+                {super.render()}
+                <span className="badge-round">
+                    <span id="mainchatcounter">
+                        9+
+                    </span>
+                </span>
+                {/* <ChatCounter /> */}
+            </div>
+        );
+    }
 }
 
 /**
@@ -51,7 +66,7 @@ function mapStateToProps(state) {
     const { isOpen } = state['features/participants-pane'];
 
     return {
-        _isOpen: isOpen
+        _isOpen: isOpen,
     };
 }
 
