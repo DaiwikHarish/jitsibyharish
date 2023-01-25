@@ -22,6 +22,7 @@ export { default as IconCameraRefresh } from './camera-refresh.svg';
 export { default as IconCancelSelection } from './cancel.svg';
 export { default as IconCar } from './car.svg';
 export { default as IconChat } from './chat.svg';
+export { default as IconChatSendBtn } from './chat_send_btn.svg';
 export { default as IconChatSend } from './send.svg';
 export { default as IconChatUnread } from './chat-unread.svg';
 export { default as adminpoll } from './adminpoll.svg';
@@ -128,6 +129,9 @@ export { default as IconShareAudio } from './share-audio.svg';
 export { default as IconShareDesktop } from './share-desktop.svg';
 export { default as IconShareDesktopDisable } from './share-desktop-disable.svg';
 export { default as Iconraisehanddisable } from './raisehanddisable.svg';
+export { default as IconUnlock } from './unlock.svg';
+export { default as IconLock } from './lock.svg';
+export { default as IconRefresh } from './refresh.svg';
 
 
 export { default as IconShareDoc } from './share-doc.svg';
