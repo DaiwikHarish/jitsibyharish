@@ -34,9 +34,11 @@ import { IQuestionAnswer, QuestionType } from "../types";
 import { ICSQaAdminState } from "../reducer";
 import moment from "moment";
 import { getQaData, getQuestionTypeCount } from "../functions";
+import { FadeLoader } from "react-spinners";
+import { dumpLog } from "../../app/functions.any";
 
 const boldStyles = css({
-    backgroundColor: "rgb(29, 35, 46)",
+    backgroundColor: "white",
     display: "flex",
 });
 
@@ -47,9 +49,13 @@ const QuestionAnswer = () => {
 
     const [messageSend, setMessageSend] = useState(false);
 
-    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<string>();
 
     const [openModal, setOpenModal] = useState(false);
+
+    const loading: boolean = useSelector(
+        (state: IReduxState) => state["features/cs-qa-admin"]?.isLoading
+    );
 
     const csQaAdminState: ICSQaAdminState = useSelector(
         (state: IReduxState) => {
@@ -109,8 +115,9 @@ const QuestionAnswer = () => {
     //     )
     // );
 
-    console.log("alam updateStartDate", startDateTime);
-    console.log("alam unAnswered", endDateTime);
+    // console.log("alam updateStartDate", startDateTime);
+    // console.log("alam unAnswered", endDateTime);
+    dumpLog("alam loading", loading);
     function _hideDialog() {
         dispatch(hideDialog(QuestionAnswer));
     }
@@ -160,7 +167,22 @@ const QuestionAnswer = () => {
             isChromeless={true}
             scrollBehavior="inside"
         >
-            <div className="Container">
+            <FadeLoader
+                cssOverride={{
+                    display: "flex",
+                    position: "relative",
+                    fontSize: "0px",
+                    height: "0px",
+                    width: "0px",
+                    top: "50%",
+                    left: "20px",
+                    margin: "auto",
+                }}
+                color={"white"}
+                loading={loading}
+            />
+            <div className={loading ? "loading-container" : "Container"}>
+                {/* <div className="Container"> */}
                 <div className="header">
                     <div className="title">Questions</div>{" "}
                     <Icon
@@ -190,7 +212,7 @@ const QuestionAnswer = () => {
                                     undefined,
                                     undefined,
                                     undefined,
-                                    e.target.value?e.target.value:'CS_EMPTY'
+                                    e.target.value ? e.target.value : "CS_EMPTY"
                                 )
                             )
                         }
@@ -232,6 +254,7 @@ const QuestionAnswer = () => {
                     <input
                         className="radio-btn"
                         type="radio"
+                        id="NotAnswered"
                         value="NotAnswered"
                         name="QA"
                         onChange={(e) => {
@@ -239,27 +262,29 @@ const QuestionAnswer = () => {
                         }}
                         checked={questionType === QuestionType.NotAnswered}
                     />{" "}
-                    Unanswered ({unAnsweredCount}
-                    )
+                    <label className='btn-label' htmlFor="NotAnswered">
+                        Unanswered ({unAnsweredCount})
+                    </label>
                     <input
                         className="radio-btn"
                         type="radio"
+                        id="Answered"
                         value="Answered"
                         name="QA"
                         onChange={(e) => updateQuestionType(e.target.value)}
                         checked={questionType === QuestionType.Answered}
                     />{" "}
-                    Answered ({answeredCount}
-                    )
+                    <label className='btn-label' htmlFor="Answered">Answered ({answeredCount})</label>
                     <input
                         className="radio-btn"
                         type="radio"
+                        id="Both"
                         value="Both"
                         name="QA"
                         onChange={(e) => updateQuestionType(e.target.value)}
                         checked={questionType === QuestionType.Both}
                     />{" "}
-                    All ({totalQA})
+                    <label className='btn-label' htmlFor="Both">All ({totalQA})</label>
                 </div>
                 <div className="qa-table">
                     <table>
@@ -325,7 +350,7 @@ const QuestionAnswer = () => {
                                         <td>
                                             <Icon
                                                 color={
-                                                    qa.answer !== undefined
+                                                    qa.answeredFlag == true
                                                         ? "#079223"
                                                         : "red"
                                                 }
@@ -342,7 +367,8 @@ const QuestionAnswer = () => {
                     </table>
                 </div>
             </div>
-            <div className="footer">
+            <div className={loading ? "loading-footer" : "footer"}>
+                {/* <div className="footer"> */}
                 <div className="footer-q">
                     {" "}
                     {selectedQA === undefined && <p> Select a question...</p>}
@@ -374,7 +400,7 @@ const QuestionAnswer = () => {
                         className="send-type"
                     >
                         <Icon color="#fff" src={IconParticipants} />
-                        <label>Send Privately</label>
+                        <label className='btn-label'>Send Privately</label>
                     </div>
                     <div
                         onClick={() => {
@@ -392,7 +418,7 @@ const QuestionAnswer = () => {
                         className="send-type"
                     >
                         <Icon src={IconUserGroups} />
-                        <label>Send To All</label>
+                        <label className='btn-label'>Send To All</label>
                     </div>
                 </div>
             </div>

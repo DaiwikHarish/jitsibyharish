@@ -1,7 +1,10 @@
 import { IStateful } from '../base/app/types';
 import { MEDIA_TYPE } from '../base/media/constants';
 import { toState } from '../base/redux/functions';
-import { isLocalCameraTrackMuted, isLocalTrackMuted } from '../base/tracks/functions';
+import {
+    isLocalCameraTrackMuted,
+    isLocalTrackMuted,
+} from '../base/tracks/functions';
 import { addHashParamsToURL } from '../base/util/uri';
 
 /**
@@ -17,9 +20,13 @@ export function addTrackStateToURL(url: string, stateful: IStateful) {
     const isVideoMuted = isLocalCameraTrackMuted(tracks);
     const isAudioMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.AUDIO);
 
-    return addHashParamsToURL(new URL(url), { // use new URL object in order to not pollute the passed parameter.
+    return addHashParamsToURL(new URL(url), {
+        // use new URL object in order to not pollute the passed parameter.
         'config.startWithAudioMuted': isAudioMuted,
-        'config.startWithVideoMuted': isVideoMuted
+        'config.startWithVideoMuted': isVideoMuted,
     });
-
 }
+
+export const dumpLog = (key: string, value: any) => {
+   return console.log(key, value);
+};

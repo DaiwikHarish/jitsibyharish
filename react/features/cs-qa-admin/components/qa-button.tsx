@@ -31,9 +31,9 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
      * @protected
      * @returns {boolean}
      */
-    _isToggled() {
-        return this.props._isOpen;
-    }
+    // _isToggled() {
+    //     return this.props._isOpen;
+    // }
 }
 
 /**

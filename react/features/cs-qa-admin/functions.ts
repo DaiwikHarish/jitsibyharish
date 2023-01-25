@@ -44,7 +44,7 @@ export async function _qaAction(
     let xEndDateTime = inputEndDateTime ? inputEndDateTime : endDateTime;
     let xQuestionType = inputQuestionType ? inputQuestionType : questionType;
     let xSearchText = inputSearchText ? inputSearchText : searchText;
-    if(xSearchText == 'CS_EMPTY') {
+    if (xSearchText == 'CS_EMPTY') {
         xSearchText = '';
     }
     let xQAData: IQuestionAnswer[] = qaData;
@@ -103,7 +103,9 @@ export async function _postAnswer(
     const { startDateTime, endDateTime } = getState()['features/cs-qa-admin'];
     // Step 1: set loading
     dispatch(updateIsLoading(true));
-
+    if (ans === null || ans === undefined || ans === '') {
+        return dispatch(updateIsLoading(false));
+    }
     let answerApiResponse = await _postAnswerApi(
         ans,
         selectedQuestionId,
@@ -122,7 +124,7 @@ export async function _deleteQuestion(
     getState: IStore['getState'],
     qId: string | null
 ) {
-     const { startDateTime, endDateTime } = getState()['features/cs-qa-admin'];
+    const { startDateTime, endDateTime } = getState()['features/cs-qa-admin'];
     console.log('alam delete questionId CALLED.....', qId);
     // Step 1: set loading
     dispatch(updateIsLoading(true));
@@ -358,8 +360,8 @@ export function getQaData(qaState: ICSQaAdminState) {
     }
 
     let data = applySearchFilter(afterFilterqaData, qaState.searchText);
-    console.log("TRIGGER qaData", data)
-    return data
+    console.log('TRIGGER qaData', data);
+    return data;
 }
 
 export function getQuestionTypeCount(
