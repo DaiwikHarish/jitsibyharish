@@ -1,4 +1,4 @@
-.Container{
+.qa-container{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -8,7 +8,7 @@
     background-color: rgb(29, 35, 46);
 }
 
-.loading-container{
+.qa-loading-container{
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -23,7 +23,7 @@
   filter: opacity(0.2);
   pointer-events: none;
 }
-.header{
+.qa-header{
     display: flex;
     width: 97%;
     height: 3%;
@@ -35,25 +35,25 @@
     margin-block: 10px;
     /* background-color: yellow;*/
 }
-.title{
+.qa-title{
     font-size: large;
     font-weight: 700;
     padding: 3px;
     color: #fff;
 }
-.btn-close{
+.qa-btn-close{
     padding: 3px;
     border-radius: 5px;
     /* margin:10px; */
     cursor: pointer;
 }
-.btn-close:hover{
+.qa-btn-close:hover{
    /* padding: 5px; */
    border-radius: 5px;
    background-color: #3D3D3D;
      
 }
-.btn-refresh {
+.qa-btn-refresh {
     width: 9%;
     /* height: 9%; */
     /* padding-block: 2px; */
@@ -63,14 +63,14 @@
     font-size: larger;
     cursor: pointer;
 }
-.input-container{
+.qa-input-container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 97%;
     padding: 7px;
 }
-.q-search{
+.qa-q-search{
     width: 25%;
     padding: 3px 5px 3px 5px;
     border: 0.5px solid #c2c2c2;
@@ -79,7 +79,7 @@
     cursor: pointer;
 }
 
-.mat-form-field {
+.qa-mat-form-field {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -90,11 +90,11 @@
     border-radius: 8px;
     background-color: #eaedef;
 }
-.calendar{
+.qa-calendar{
   background-color: rgb(29, 35, 46);
   border: none;
 }
-.radio-btn-container{
+.qa-radio-btn-container{
     display: flex;
     flex-direction: row;
     /* justify-content: space-between; */
@@ -104,10 +104,10 @@
     padding-block: 25px 20px;
     color: #fff;
 }
-.btn-label{
+.qa-btn-label{
     cursor: pointer;
 }
-.radio-btn{
+.qa-radio-btn{
     width: 25px;
     height: 25px;
     margin-left: 25px;
@@ -125,7 +125,7 @@ input[type="radio"] {
     opacity: 1; /* Firefox */
     font-size: 14px;
 }
-.label-date{
+.qa-label-date{
     color: #000;
     opacity: 1; /* Firefox */
     font-size: 14px;
@@ -198,7 +198,7 @@ tr:active {
     color: #fff;
     cursor: pointer;
 }
-.selected-row {
+.qa-selected-row {
   background-color: #c1c9ce;
   border-radius: 10px;
   color: #fff;
@@ -207,7 +207,7 @@ tr:active {
 .unselected-row{
 
 }
-.btn-trash{
+.qa-btn-trash{
   cursor: pointer;
 }   
 td {
@@ -222,7 +222,7 @@ td {
     text-align: left;
     padding-block: 10px;
   }
-  .footer{
+.qa-footer{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -232,7 +232,7 @@ td {
     background-color: rgb(29, 35, 46);
     padding-bottom: 10px;
   }
-  .loading-footer{
+  .qa-loading-footer{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -249,7 +249,7 @@ td {
     filter: opacity(0.2);
     pointer-events: none;
   }
-  .footer-q{
+  .qa-footer-q{
     width: 97%;
     height: 30%;
     padding: 10px 0px;
@@ -257,7 +257,7 @@ td {
     border-radius: 8px;
     color: #fff;
   }
-  .footer-a-input{
+  .qa-footer-a-input{
     width: 97%;
     height: -webkit-fill-available;
     border-radius: 8px;
@@ -267,7 +267,7 @@ td {
     padding: 8px;
     background-color: #f3f5f7;
   }
-  .footer-a-send-container{
+  .qa-footer-a-send-container{
     display: flex;
     flex-direction: row;
     width: 97%;
@@ -276,7 +276,7 @@ td {
     border-radius: 8px;
     color: #fff;
   }
-.send-type{
+.qa-send-type{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -289,7 +289,7 @@ p{
     padding-inline: 8px;
     font-size: larger;
 }
-.warning-modal-header{
+.qa-warning-modal-header{
   display: flex;
     padding: 24px 24px 22px;
     position: relative;
@@ -299,16 +299,16 @@ p{
     color: #fff;
     /* justify-content: space-between; */
 }
-.warning-modal-body{
+.qa-warning-modal-body{
   font-size: 14px;
   color: #fff;
 }
-.span-qus{
+.qa-span-qus{
   font-size: 15px;
   font-weight: 700;
   color: #fff;
 }
-.warning-modal-footer{
+.qa-warning-modal-footer{
   display: flex;
   padding: 22px 24px 24px;
   position: relative;
@@ -318,7 +318,7 @@ p{
   justify-content: flex-end;
   gap: 8px;
 }
-.svg{
+.qa-svg{
   margin-right: 8px;
 }
 
