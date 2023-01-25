@@ -166,10 +166,10 @@ export function _destroySocket(dispatch: IStore['dispatch']) {
 
 export function _getUserDto(attendee: IAttendeeInfo) {
     let dto: UserDto = {
-        userId: attendee.userId,
-        meetingId: attendee.meetingId,
-        userName: attendee.userName,
-        userType: attendee.userType,
+        userId: attendee.userId?attendee.userId:'',
+        meetingId: attendee.meetingId?attendee.meetingId:'',
+        userName: attendee.userName?attendee.userName:'',
+        userType: attendee.userType?attendee.userType:'',
     };
 
     return dto;
