@@ -4,7 +4,7 @@ import React from 'react';
 import { dumpLog } from '../../app/functions.any';
 import { translate } from '../../base/i18n';
 
-import { IconQuestion } from '../../base/icons';
+import { IconChat, IconQuestion } from '../../base/icons';
 import { IReduxState } from '../../app/types';
 import { connect } from '../../base/redux';
 
@@ -23,14 +23,14 @@ type Props = AbstractButtonProps & {
 /**
  * Implementation of a button for accessing participants pane.
  */
-class QuestionAnswerButton extends AbstractButton<Props, *> {
+class ChatAdminButton extends AbstractButton<Props, *> {
     constructor(props: Props) {
         super(props);
     }
     accessibilityLabel = 'toolbar.accessibilityLabel.participants';
-    icon = IconQuestion;
-    label = 'Questions & Answers';
-    tooltip = 'Questions & Answers';
+    icon = IconChat;
+    label = 'Chat';
+    tooltip = 'Chat';
 
     /**
      * Indicates whether this button is in toggled state or not.
@@ -49,9 +49,7 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
                 {super.render()}
                 <span className="badge-round">
                     <span id="mainchatcounter">
-                        {this.props._qaUnseenCount != 0
-                            ? this.props._qaUnseenCount
-                            : ''}
+                        9+
                     </span>
                 </span>
                 {/* <ChatCounter /> */}
@@ -74,4 +72,4 @@ function mapStateToProps(state: IReduxState) {
     };
 }
 
-export default translate(connect(mapStateToProps)(QuestionAnswerButton));
+export default translate(connect(mapStateToProps)(ChatAdminButton));

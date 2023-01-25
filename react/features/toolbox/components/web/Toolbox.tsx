@@ -186,6 +186,7 @@ import QuestionAnswer from "../../../cs-qa-admin/components/qa-admin";
 import QuestionAnswerButton from "../../../cs-qa-admin/components/qa-button";
 // @ts-ignore
 import ChatDialog from "../../../cs-chat-admin/components/ChatDialog";
+import ChatAdminButton from "../../../cs-chat-admin/components/chat-admin-button";
 import SettingsDialog from "../../../settings/components/web/SettingsDialog";
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted, setVideoMuted } from "../../../base/media";
@@ -1001,15 +1002,19 @@ class Toolbox extends Component<IProps, AppState> {
                 group: 2,
             };
 
-        const chat = _attendeeInfo.userType !== UserType.Presenter && {
+        const chat = {
             key: "chat",
-            Content: ChatButton,
-            handleClick:
-                _attendeeInfo.userType !== UserType.Viewer
-                    ? this._openDialog
-                    : this._onToolbarToggleChat,
+            Content: _attendeeInfo.userType === UserType.Admin? ChatAdminButton : ChatButton,
+            handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
             group: 2,
         };
+
+        // const adminChat = _attendeeInfo.userType === UserType.Admin &&  {
+        //     key: "chat",
+        //     Content: ChatAdminButton,
+        //     handleClick:this._openDialog,
+        //     group: 2,
+        // };
 
         const questionAnswer = _attendeeInfo.userType !== UserType.Viewer && {
             key: "QA",
@@ -1222,6 +1227,7 @@ class Toolbox extends Component<IProps, AppState> {
             // profile,
             desktop,
             chat,
+            // adminChat,
             questionAnswer,
             raisehand,
             participants,
