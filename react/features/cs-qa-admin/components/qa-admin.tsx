@@ -169,29 +169,28 @@ const QuestionAnswer = () => {
                 color={"white"}
                 loading={loading}
             />
-            <div className={loading ? "loading-container" : "Container"}>
-                {/* <div className="Container"> */}
-                <div className="header">
-                    <div className="title">Questions</div>{" "}
+            <div className={loading ? "qa-loading-container" : "qa-container"}>
+                <div className="qa-header">
+                    <div className="qa-title">Questions</div>{" "}
                     <Icon
-                        className="btn-close"
+                        className="qa-btn-close"
                         onClick={_hideDialog}
                         size={24}
                         src={IconClose}
                     />{" "}
                 </div>
-                <div className="input-container">
+                <div className="qa-input-container">
                     <button
                         onClick={() =>
                             dispatch(qaAction(startDateTime, endDateTime))
                         }
-                        className="btn-refresh"
+                        className="qa-btn-refresh"
                     >
                         Refresh
                     </button>
                     <input
                         type="text"
-                        className="q-search"
+                        className="qa-q-search"
                         maxLength={25}
                         name={"searchInput"}
                         onChange={(e) =>
@@ -210,7 +209,7 @@ const QuestionAnswer = () => {
                     />
                     <input
                         type="date"
-                        className="q-search"
+                        className="qa-q-search"
                         // defaultValue={updateStartDate}
                         maxLength={25}
                         name={"startDate"}
@@ -225,7 +224,7 @@ const QuestionAnswer = () => {
 
                     <input
                         type="date"
-                        className="q-search"
+                        className="qa-q-search"
                         // defaultValue={updateEndDate}
                         maxLength={25}
                         name={"endDate"}
@@ -238,9 +237,9 @@ const QuestionAnswer = () => {
                         min={startDateTime?.split("T")[0]}
                     />
                 </div>
-                <div className="radio-btn-container">
+                <div className="qa-radio-btn-container">
                     <input
-                        className="radio-btn"
+                        className="qa-radio-btn"
                         type="radio"
                         id="NotAnswered"
                         value="NotAnswered"
@@ -250,11 +249,11 @@ const QuestionAnswer = () => {
                         }}
                         checked={questionType === QuestionType.NotAnswered}
                     />{" "}
-                    <label className='btn-label' htmlFor="NotAnswered">
+                    <label className='qa-btn-label' htmlFor="NotAnswered">
                         Unanswered ({unAnsweredCount})
                     </label>
                     <input
-                        className="radio-btn"
+                        className="qa-radio-btn"
                         type="radio"
                         id="Answered"
                         value="Answered"
@@ -262,9 +261,9 @@ const QuestionAnswer = () => {
                         onChange={(e) => updateQuestionType(e.target.value)}
                         checked={questionType === QuestionType.Answered}
                     />{" "}
-                    <label className='btn-label' htmlFor="Answered">Answered ({answeredCount})</label>
+                    <label className='qa-btn-label' htmlFor="Answered">Answered ({answeredCount})</label>
                     <input
-                        className="radio-btn"
+                        className="qa-radio-btn"
                         type="radio"
                         id="Both"
                         value="Both"
@@ -272,7 +271,7 @@ const QuestionAnswer = () => {
                         onChange={(e) => updateQuestionType(e.target.value)}
                         checked={questionType === QuestionType.Both}
                     />{" "}
-                    <label className='btn-label' htmlFor="Both">All ({totalQA})</label>
+                    <label className='qa-btn-label' htmlFor="Both">All ({totalQA})</label>
                 </div>
                 <div className="qa-table">
                     <table>
@@ -314,13 +313,13 @@ const QuestionAnswer = () => {
                                         }}
                                         className={
                                             selectedIndex === index
-                                                ? "selected-row"
+                                                ? "qa-selected-row"
                                                 : ""
                                         }
                                     >
                                         <td>
                                             <Icon
-                                                className="btn-trash"
+                                                className="qa-btn-trash"
                                                 onClick={() =>
                                                     setOpenModal(true)
                                                 }
@@ -355,9 +354,8 @@ const QuestionAnswer = () => {
                     </table>
                 </div>
             </div>
-            <div className={loading ? "loading-footer" : "footer"}>
-                {/* <div className="footer"> */}
-                <div className="footer-q">
+            <div className={loading ? "qa-loading-footer" : "qa-footer"}>
+                <div className="qa-footer-q">
                     {" "}
                     {selectedQA === undefined && <p> Select a question...</p>}
                     <p>{selectedQA?.question}</p>
@@ -366,12 +364,12 @@ const QuestionAnswer = () => {
                     rows={3}
                     // type="textarea"
                     placeholder="Enter the answer...."
-                    className="footer-a-input"
+                    className="qa-footer-a-input"
                     name="message"
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}
                 />
-                <div className="footer-a-send-container">
+                <div className="qa-footer-a-send-container">
                     <div
                         onClick={() => {
                             dispatch(
@@ -385,10 +383,10 @@ const QuestionAnswer = () => {
                             setMessage("");
                             setSelectedQA(undefined);
                         }}
-                        className="send-type"
+                        className="qa-send-type"
                     >
                         <Icon color="#fff" src={IconParticipants} />
-                        <label className='btn-label'>Send Privately</label>
+                        <label className='qa-btn-label'>Send Privately</label>
                     </div>
                     <div
                         onClick={() => {
@@ -403,10 +401,10 @@ const QuestionAnswer = () => {
                             setMessage("");
                             setSelectedQA(undefined);
                         }}
-                        className="send-type"
+                        className="qa-send-type"
                     >
                         <Icon src={IconUserGroups} />
-                        <label className='btn-label'>Send To All</label>
+                        <label className='qa-btn-label'>Send To All</label>
                     </div>
                 </div>
             </div>
@@ -417,14 +415,14 @@ const QuestionAnswer = () => {
             >
                 {openModal && (
                     <Modal onClose={() => setOpenModal(false)}>
-                        <div className="warning-modal-header">
+                        <div className="qa-warning-modal-header">
                             <svg
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
                                 role="presentation"
                                 color="yellow"
-                                className="svg"
+                                className="qa-svg"
                             >
                                 <g fillRule="evenodd">
                                     <path
@@ -444,13 +442,13 @@ const QuestionAnswer = () => {
                                 Delete
                             </ModalTitle>
                         </div>
-                        <ModalBody className="warning-modal-body">
+                        <ModalBody className="qa-warning-modal-body">
                             Are you sure you want to delete{" "}
-                            <span className="span-qus">
+                            <span className="qa-span-qus">
                                 {selectedQA?.question} {"?"}
                             </span>
                         </ModalBody>
-                        <div className="warning-modal-footer">
+                        <div className="qa-warning-modal-footer">
                             <Button
                                 onClick={() => setOpenModal(false)}
                                 appearance="subtle"
