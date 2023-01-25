@@ -39,7 +39,7 @@ class MuteEveryoneElseButton extends AbstractMuteEveryoneElseButton {
 
         return (
 
-            _attendeeInfo.userType !== UserType.Viewer &&
+            _attendeeInfo?.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.muteEveryoneElse') }
                 icon = { IconMuteEveryoneElse }

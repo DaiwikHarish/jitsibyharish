@@ -6,16 +6,20 @@ export class ApiConstants {
 
     public static latestPoll                        = ApplicationConstants.API_BASE_URL + "poll-group/latest?meetingId="+ApplicationConstants.meetingId;
      
+
+    
     public static chat                        = ApplicationConstants.API_BASE_URL + "chat?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId;
     public static poll                        = ApplicationConstants.API_BASE_URL + "poll";
-    public static pollbyUser                        = ApplicationConstants.API_BASE_URL + "poll?userId="+ApplicationConstants.userId;
-    public static question                        = ApplicationConstants.API_BASE_URL + "question?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId;
+       public static question                        = ApplicationConstants.API_BASE_URL + "question?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId;
     
     public static attendee                        = ApplicationConstants.API_BASE_URL + "attendee"
 
 
 
-    public static meeting                        = ApplicationConstants.API_BASE_URL + "meeting?meetingId="+ApplicationConstants.meetingId;
+    public static meeting                        = ApplicationConstants.API_BASE_URL + "meeting?meetingId="+ApplicationConstants?.meetingId;
+    public static pollGroupbyMeeting                        = ApplicationConstants.API_BASE_URL + "poll-group?meetingId="+ApplicationConstants?.meetingId;
  
-    
+    public static pollGroup                        = ApplicationConstants.API_BASE_URL + "poll-group";
+ 
+  
 }

@@ -42,7 +42,7 @@ class ShareButtonDisable  extends React.Component{
         const { participantID, t, _attendeeInfo } = this.props;
 
         return (
-            _attendeeInfo.userType === UserType.Admin &&
+            _attendeeInfo?.userType === UserType.Admin &&
             <ContextMenuItem
             accessibilityLabel = "Disable ScreenShare"
             className = 'kicklink'

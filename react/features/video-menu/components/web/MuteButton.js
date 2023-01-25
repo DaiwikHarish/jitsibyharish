@@ -4,7 +4,7 @@ import React from 'react';
 import UserType from '../../../base/app/types';
 
 import { translate } from '../../../base/i18n';
-import { IconMicrophoneEmptySlash } from '../../../base/icons';
+import { IconMicrophoneEmptySlash,IconMicrophoneEmpty } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
 import AbstractMuteButton, {
@@ -33,6 +33,8 @@ class MuteButton extends AbstractMuteButton {
         super(props);
 
         this._handleClick = this._handleClick.bind(this);
+        this._handleClickUnmute = this._handleClickUnmute.bind(this);
+        
     }
 
     /**
@@ -45,11 +47,17 @@ class MuteButton extends AbstractMuteButton {
         const { _audioTrackMuted, t, _attendeeInfo } = this.props;
 
         if (_audioTrackMuted) {
-            return null;
+            return ( <ContextMenuItem
+                accessibilityLabel = { t('dialog.muteParticipantButton') }
+            className = 'mutelink'
+            icon = { IconMicrophoneEmpty }
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick = { this._handleClickUnmute }
+            text = "UnMute" />)
         }
 
         return (
-            _attendeeInfo.userType !== UserType.Viewer &&
+            // _attendeeInfo.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('dialog.muteParticipantButton') }
                 className = 'mutelink'
@@ -61,6 +69,9 @@ class MuteButton extends AbstractMuteButton {
     }
 
     _handleClick: () => void;
+
+
+    _handleClickUnmute: () => void;
 }
 
 export default translate(connect(_mapStateToProps)(MuteButton));

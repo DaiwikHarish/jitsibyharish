@@ -44,7 +44,7 @@ class KickButton extends AbstractKickButton {
         const { participantID, t, _attendeeInfo } = this.props;
 
         return (
-            _attendeeInfo.userType !== UserType.Viewer &&
+            _attendeeInfo?.userType !== UserType.Viewer &&
             <ContextMenuItem
                 accessibilityLabel = { t('videothumbnail.kick') }
                 className = 'kicklink'
@@ -52,7 +52,7 @@ class KickButton extends AbstractKickButton {
                 id = { `ejectlink_${participantID}` }
                 // eslint-disable-next-line react/jsx-handler-names
                 onClick = { this._handleClick }
-                text = { t('videothumbnail.kick') } />
+                text = {'Dismiss' } />
         );
     }
 

@@ -44,7 +44,7 @@ class GrantModeratorButton extends AbstractGrantModeratorButton {
         }
 
         return (
-            _attendeeInfo.userType !== UserType.Viewer  &&
+            _attendeeInfo?.userType !== UserType.Viewer  &&
             <ContextMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.grantModerator') }
                 className = 'grantmoderatorlink'

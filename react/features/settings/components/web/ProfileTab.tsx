@@ -128,7 +128,7 @@ class ProfileTab extends AbstractDialogTab<Props> {
             // @ts-ignore,
         } = this.props;
 
-        const [userName, userType] = displayName.split('|');
+        const [userName, userType] = displayName?.split('|');
 
         return (
             <div>

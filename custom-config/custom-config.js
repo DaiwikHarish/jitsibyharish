@@ -32,3 +32,11 @@ config.buttonsWithNotifyClick = [
 //    hideMuteAllButton: true
 //}
 
+config.startWithVideoMuted = true;
+config.startWithAudioMuted = true;
+
+//Note: jibri can not pass this meetingId and UserId in url , so we have to use some dummay meetingId and User for this 
+  config.recordingUserId='3';
+  config.recordingMeetingId='14';
+
+config.localRecording.disable = true;

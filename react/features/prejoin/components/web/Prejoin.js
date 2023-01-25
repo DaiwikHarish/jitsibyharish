@@ -32,7 +32,7 @@ import DropdownButton from './DropdownButton';
 import JoinByPhoneDialog from './dialogs/JoinByPhoneDialog';
 import PostWelcome from '../../../base/post-welcome-page/PostWelcome';
 import { OptionType } from '../../../base/app/reducer';
-import {IAttendeeInfo,IUrlInfo,IMeetingInfo} from '../../../base/app/types'
+import UserType, {IAttendeeInfo,IUrlInfo,IMeetingInfo} from '../../../base/app/types'
 import { appAttendeeInfo, appClientType, appMeetingInfo} from '../../../base/app/actions';
 import { muteAllParticipants } from '../../../video-menu/actions.any';
 import { MEDIA_TYPE } from '../../../base/media/constants';
@@ -146,7 +146,6 @@ type Props = {
 };
 
 type State = {
-
     /**
      * Flag controlling the visibility of the error label.
      */
@@ -194,7 +193,6 @@ class Prejoin extends Component<Props, State> {
 
     clickHandler() {
         this.setState({clickStartBtn:true });
-
     };
     /**
      * Handler for the join button.
@@ -369,7 +367,6 @@ class Prejoin extends Component<Props, State> {
      * Fetching attendee API.
      */
     _fetchAttendees = async (meetingId, userId) => {
-        
         if (
             meetingId === null ||
             meetingId === undefined ||
@@ -384,7 +381,6 @@ class Prejoin extends Component<Props, State> {
         }
 
         this.setState({loading:true});
-    
         fetch(
             ApiConstants.attendee+"?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId     )
             .then((response) => response.json())
@@ -404,12 +400,10 @@ class Prejoin extends Component<Props, State> {
                 console.log(err.message);
             })
         };
-    
     /**
      * Fetching meeting API.
      */
     _fetchMeetings = async  (meetingId) =>{
-
         if(
             meetingId === null || 
             meetingId === undefined || 
@@ -421,9 +415,7 @@ class Prejoin extends Component<Props, State> {
         this.setState({loading:true});
             fetch(
                 //'https://dev.awesomereviewstream.com/svr/api' + '/' +`meeting?meetingId=${meetingId}&includeAttendee=false`
-           
-                ApiConstants.meeting+'&userId=includeAttendee=false'
-           
+                ApiConstants.meeting+'&includeAttendee=false'
                 )
                 .then((response) => response.json())
                 .then((data) => {
@@ -440,7 +432,6 @@ class Prejoin extends Component<Props, State> {
      * Calling attendee and meeting api on first rendering of this component.
      */
     componentDidMount() {
-
         const meetingId = this.props._urlInfo.meetingId;
         const userId = this.props._urlInfo.userId;
 
@@ -451,7 +442,6 @@ class Prejoin extends Component<Props, State> {
         if(this.props._storeAttendeeInfo === undefined ){
             this._fetchMeetings(meetingId)
         }
-
     }
 
     /**
@@ -473,13 +463,10 @@ class Prejoin extends Component<Props, State> {
             showCameraPreview,
             showDialog,
             t,
-            
             videoTrack,
             _attendeeInfo,
             _clientType
         } = this.props;
-
-
 
         const { _closeDialog, _onDropdownClose, _onJoinButtonClick, _onJoinKeyPress,
             _onOptionsClick, _setName } = this;
@@ -501,12 +488,17 @@ class Prejoin extends Component<Props, State> {
                 title = { t('prejoin.joinMeeting') }
                 videoMuted = { _clientType === OptionType.ENABLE_ALL? false : true }
                 videoTrack = { _clientType === OptionType.ENABLE_ALL? videoTrack : {} }
-                clickStartBtn={this.state.clickStartBtn}
+                clickStartBtn={
+                    _attendeeInfo?.userType === UserType.Presenter
+                        ? true
+                        : this.state.clickStartBtn
+                }
                 loading={this.state.loading}
-                >
-                {this.state.clickStartBtn == false ? (
-                    <PostWelcome onStart={this.clickHandler}/> 
-                    ) : (  
+            >
+                {this.state.clickStartBtn == false &&
+                _attendeeInfo?.userType !== UserType.Presenter ? (
+                    <PostWelcome onStart={this.clickHandler} />
+                ) : (
                     <div
                         className = 'prejoin-input-area'
                         data-testid = 'prejoin.screen'>
@@ -611,7 +603,6 @@ const mapDispatchToProps = {
     updateSettings,
     storeAttendeeInfo,
     storeMeetingInfo,
-    
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate(Prejoin));

@@ -10,7 +10,7 @@ import PollCreate from './PollCreate';
 // @ts-ignore
 import PollsList from './PollsList';
 import { ApiConstants } from '../../../../../ApiConstants';
-
+import { ApplicationConstants } from '../../../../../ApplicationConstants';
 import {clearPolls, receivePoll } from '../../actions';
 import { IReduxState } from '../../../app/types';
 
@@ -19,7 +19,7 @@ const PollsPane = (props: AbstractProps) => {
    // const polls = useSelector(state => state['features/polls'].polls);
     const polls= useSelector((state: IReduxState) => state['features/polls'].polls);
    
-     
+    Object.assign(polls, [])
     const { createMode, onCreate, setCreateMode, t } = props;
     const [loadApi, setLoadApi] = useState(0);
     const [allPollsdata, setallPolls] = useState([]);
@@ -28,8 +28,8 @@ const PollsPane = (props: AbstractProps) => {
 
     useEffect(() => {
         dispatch(clearPolls());
-      
         
+        Object.assign(polls, [])
         fetch(
             ApiConstants.latestPoll
         )
@@ -40,117 +40,84 @@ const PollsPane = (props: AbstractProps) => {
                 setGroupname(data.data[0].groupName)
              
                 
-               let pollNo=0;
-               
-               let allPolls = data.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
-        {
-
-         
-
-            
-            
-            pollNo=pollNo++;
-    
-            let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
-                    {
-           
-                        return({"name": ans.answerLabel+" : "+ans.answerOption,
-                       "id":ans.id,
-                       'pollStatistics':ans.pollStatistics,
-            'pollPercentage':ans.pollPercentage,
-                        "voters": []})
-                    })
-               
-                 
-                   let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
-                    {
-                      // return option.isSelected;
-                      return false;
-                    })
-                  //  "lastVote": lastVote,
-    
-        return(
-        {
-            
-                "changingVote": pollAPI.isAnswerTypeSingle,
-                "senderId": pollAPI.id,
-                "showResults": data.status=='Ended'?true:false,
-                "seleted":false,
-               "lastVote":lastVote,
-                "question": pollAPI.question,
-                "answers": ans,
-            "quetionId":pollAPI.id,
-            'groupname':pollAPI.groupName,
-            
-        }
-        
-        
-        
-        
-        )
-
-    
-
-   })
+       
    
   
-        try{
+
                 fetch(
-                 ApiConstants.pollbyUser
-                )
+                 ApiConstants.poll+"?groupId="+data.data[0].groupId+"&includeStatistic=true&userId="+ApplicationConstants.userId)
                     .then((response) => response.json())
                     .then((selected) => {
                        
-                    let allPollsSel=allPolls.map((allPolls: {lastVote:any, changingVote:any; senderId:any; showResults: any; answers: any; groupname: any;quetionId: any; question: any;id: any; }) =>  
-                           {     let check=false;
-                        selected.data.map((sel:{id:any})=>{
-                       
-                            if(allPolls.quetionId==sel.id)
-                            {
-                                check=true;
-                            }
-                        })
-
-
-                        if(check)
-                        {
-                            return(
+                        let pollNo=0;
+               
+                        let allPolls = selected.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
+                 {
+         
+                  
+         
+                     
+                     
+                     pollNo=pollNo++;
+             
+                     let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; answerOption:any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
+                             {
+                    
+                                 return({"name": ans.answerLabel+" : "+ans.answerOption,
+                                "id":ans.id,
+                                'pollStatistics':ans.pollStatistics,
+                     'pollPercentage':ans.pollPercentage,
+                                 "voters": []})
+                             })
+                        
+                          let seleted=false;
+                             let  lastVote=pollAPI.answerOptions.map((option: { isSelected: any; }) =>  
+                             {
+                                if(option.isSelected=="true")
                                 {
-                                    
-                                        "changingVote": allPolls.changingVote,
-                                        "senderId": allPolls.senderId,
-                                        "showResults": allPolls.showResults,
-                                        "seleted":true,
-                                        "lastVote":allPolls.lastVote,
-                                        "question": allPolls.question,
-                                        "answers": allPolls.answers,
-                                    "quetionId":allPolls.quetionId,
-                                    'groupname':allPolls.groupname,
-                                    
-                                })
-                        }else{
+                                    seleted=true
+                                    return true;
+                                }else{
+                                    return false;
+                                }
+                            
 
-                            return(
-                                {
-                                    
-                                    "changingVote": allPolls.changingVote,
-                                    "senderId": allPolls.senderId,
-                                    "showResults": allPolls.showResults,
-                                    "seleted":false,
-                                    "lastVote":allPolls.lastVote,
-                                    "question": allPolls.question,
-                                    "answers": allPolls.answers,
-                                "quetionId":allPolls.quetionId,
-                                'groupname':allPolls.groupname,
-                                })
-                        }
+                             })
+                           //  "lastVote": lastVote,
+             
+                 return(
+                 {
+                     
+                         "changingVote": pollAPI.isAnswerTypeSingle,
+                         "senderId": pollAPI.id,
+                         "showResults": data.status=='Ended'?true:false,
+                         "seleted":seleted,
+                        "lastVote":lastVote,
+                         "question": pollAPI.question,
+                         "answers": ans,
+                     "quetionId":pollAPI.id,
+                     'groupname':pollAPI.groupName,
+                     
+                 }
+                 
+                 
+                 
+                 
+                 )
+         
+             
+         
+            })
+            const groupname = document.getElementById('groupname');
 
-                    })
+            if(groupname!=null && groupname!=undefined)
+            {
+            groupname.innerHTML =allPolls[0].groupname
 
-
-setallPolls(allPollsSel)
-Object.assign(polls, allPollsSel)
-console.log(allPollsSel)
+            }
+setallPolls(allPolls)
+Object.assign(polls, allPolls)
+console.log(allPolls)
 setLoadApi(1)
 
 
@@ -163,27 +130,24 @@ setLoadApi(1)
 
 
   })
-        }
-        catch{
-            
-        }
+      
 
 })
   },[])
 
   useEffect(() => {
-
+   // document.getElementById("groupname").innerHTML =allPollsdata[0].groupname
     Object.assign(polls, allPollsdata)
   },[loadApi])
 
     
     return(
     <div className = 'polls-pane-content'>
-    <div style={{textAlign:'center', fontWeight:'bold', fontSize:18, textTransform:'uppercase', padding:3,}}>
-<span id='groupname'>{groupname}</span>
+    <div style={{textAlign:'center', fontWeight:'bold', marginTop:5, fontSize:18, textTransform:'uppercase', padding:3,}}>
+<div style={{height:25}} id='groupname'>{groupname}</div>
 </div>
   <div className = { 'poll-container' } >
-      <PollsList />
+     {loadApi==1? <PollsList  />:null}
   </div>
 
 </div>

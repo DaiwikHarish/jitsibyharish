@@ -127,8 +127,9 @@ class Notification extends AbstractNotification<Props> {
 
             if (!hideErrorSupportLink && interfaceConfig.SUPPORT_URL) {
                 buttons.push({
-                    content: this.props.t('dialog.contactSupport'),
-                    onClick: this._onOpenSupportLink
+                    content: 'Contact Campion Software'
+                    // content: this.props.t('dialog.contactSupport'),
+                    // onClick: this._onOpenSupportLink
                 });
             }
 

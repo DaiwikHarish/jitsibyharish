@@ -79,20 +79,38 @@ export type AbstractProps = {
 
 
 
-        let ansCount=0;
+          //  var convertAns_filter=""
+          //  const pollidsdiv = document.getElementById("pollids"+poll.senderId) as HTMLInputElement
 
-let convertAns=checkBoxStates.map((selected)=>
+//                 var ele = document.getElementsByTagName(poll.senderId) 
+//                 console.log(ele)
+//                 for(let i = 0; i < ele.length; i++) {
+                      
+//                     console.log(ele[i])
+//                     console.log(ele[i].checked)
+//                         if(ele[i].checked)
+//                           {
+//                             convertAns_filter=poll.answers[i].id;
+                    
+//                 }
+//             }
+
+
+// console.log(convertAns_filter)
+
+let convertAns=checkBoxStates.map((selected,index)=>
     {
      
 
-        
+        var ele =document.getElementById(poll.answers[index].id) as HTMLInputElement
 
-        if(selected==true)
+        if(ele.checked)
         { 
-            return        poll.answers[ansCount].id;
+           
+            return        poll.answers[index].id;
             
         }
-        ansCount++;
+      
     }
 
 
@@ -140,8 +158,24 @@ poll.answers.map((answers)=>
 {
    
     const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
-    answersidsdiv.disabled=true
+    let type = answersidsdiv.getAttribute("type");
 
+  
+    if(type=="radio")
+    {
+        answersidsdiv.disabled=true
+        checkBoxStates.map((selected,index)=>
+        { 
+    if(convertAns_filter[index]==answers.id)
+    {
+     answersidsdiv.disabled=false
+ 
+    }
+        })
+    }
+    else{
+        answersidsdiv.disabled=true
+    }
 
 }
 

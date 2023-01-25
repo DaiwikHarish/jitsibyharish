@@ -2,6 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback } from 'react';
 import { socketSendCommandMessage } from "../../../base/cs-socket/actions";
+
 import { CommandMessageDto, CommandType, PermissionType } from "../../../base/cs-socket/types";
 import { IconMicrophone } from '../../../base/icons';
 import ContextMenuItem from '../../../base/ui/components/web/ContextMenuItem';
@@ -30,23 +31,24 @@ type Props = {
     participantIDbyjitsi:string
 }
 
-const MuteNewButton = ({ className, noIcon = false, onClick,participantIDbyjitsi, participantID }: Props) => {
+const MuteNewButton = ({ className, noIcon = false, mute, onClick,participantIDbyjitsi, participantID }: Props) => {
 
   const dispatch = useDispatch();
-  
-
-//alert(participantIDbyjitsi)
 
   let node = document.getElementById(participantIDbyjitsi);
-  let mute=true;
+ // let mute=true;
+
+  console.log(participantIDbyjitsi)
 if(node!=undefined && node!=null)
 {
-   mute = node.getAttribute("data-mute");
+  // mute = node.getAttribute("data-mute");
 
 }
-  
+console.log(mute)
+
+
 let text="UnMute"
-mute=="false"?text="UnMute":text="Mute"
+mute==false?text="UnMute":text="Mute"
     return (
         <ContextMenuItem
           
@@ -55,7 +57,7 @@ mute=="false"?text="UnMute":text="Mute"
             onClick={() => {
               console.log(participantID)
              // alert(mute=="false")
-                if(mute=="false")
+                if(mute==false)
                 {
                 
 
@@ -74,7 +76,7 @@ mute=="false"?text="UnMute":text="Mute"
 
                 document.getElementById('MuteEnbled').innerHTML='Mute'
                 text='Mute'
-                mute='true'
+               // mute='true'
                 }else{
                   if(node!=undefined && node!=null)
 {
@@ -90,7 +92,7 @@ mute=="false"?text="UnMute":text="Mute"
           
                 document.getElementById('MuteEnbled').innerHTML='UnMute'
                 text='UnMute'
-                mute='false'
+                //mute='false'
                 }
                 
               }}

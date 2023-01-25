@@ -16,7 +16,7 @@ import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } fr
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
 import { OptionType } from '../../../base/app/reducer';
-import UserType, { IAttendeeInfo} from '../../../base/app/types';
+import UserType, { IAttendeeInfo } from '../../../base/app/types';
 
 import {
     getMultipleVideoSendingSupportFeatureFlag,
@@ -112,6 +112,8 @@ import {
 // @ts-ignore
 import { VideoQualityButton, VideoQualityDialog } from '../../../video-quality/components';
 // @ts-ignore
+import { PollButton, PollDialog } from '../../../polls-admin';
+// @ts-ignore
 import { VideoBackgroundButton } from '../../../virtual-background';
 import WhiteboardButton from '../../../whiteboard/components/web/WhiteboardButton';
 import { isWhiteboardButtonVisible } from '../../../whiteboard/functions';
@@ -159,6 +161,8 @@ import UndockIframeButton from './UndockIframeButton';
 // @ts-ignore
 import VideoSettingsButton from './VideoSettingsButton';
 // @ts-ignore
+import VideoSettingsDisableButton from './VideoSettingsDisableButton';
+// @ts-ignore
 import ShareDesktopButtonDisable from './ShareDesktopButtonDisable';
 // @ts-ignore
 import MIcrophoneButtonDisable from './MIcrophoneButtonDisable';
@@ -167,10 +171,10 @@ import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 // @ts-ignore
 import { muteLocal } from '../../../video-menu/actions.any';
 // @ts-ignore
-import { MEDIA_TYPE } from '../../../base/media';
-// @ts-ignore
 import ChatDialog from '../../../cs-chat-admin/components/ChatDialog';
 import SettingsDialog from '../../../settings/components/web/SettingsDialog';
+// @ts-ignore
+import { MEDIA_TYPE, setAudioMuted, setVideoMuted } from '../../../base/media';
 
 
 
@@ -179,12 +183,12 @@ import SettingsDialog from '../../../settings/components/web/SettingsDialog';
  */
 interface IProps extends WithTranslation {
 
-    _clientType:string;
+    _clientType: string;
 
     /**
      * Type of attendee details
      */
-    _attendeeInfo:IAttendeeInfo;
+    _attendeeInfo: IAttendeeInfo;
 
     /**
      * String showing if the virtual background type is desktop-share.
@@ -243,7 +247,7 @@ interface IProps extends WithTranslation {
      * Whether or not call feedback can be sent.
      */
     _feedbackConfigured: boolean;
-    _socketReceivedCommandMessage:any;
+    _socketReceivedCommandMessage: any;
     /**
      * Whether or not the app is currently in full screen.
      */
@@ -282,12 +286,12 @@ interface IProps extends WithTranslation {
     /**
      * Whether or not speaker stats is disable.
      */
-     _isSpeakerStatsDisabled: boolean;
+    _isSpeakerStatsDisabled: boolean;
 
 
-     /**
-     * Whether or not the current meeting belongs to a JaaS user.
-     */
+    /**
+    * Whether or not the current meeting belongs to a JaaS user.
+    */
     _isVpaasMeeting: boolean;
 
     /**
@@ -387,9 +391,10 @@ interface IProps extends WithTranslation {
 }
 interface AppState {
     enableDesktop: any;
-    enableRaiseHand:any;
-    enableMike:any;
- }
+    enableRaiseHand: any;
+    enableMike: any;
+    enableCamera:any;
+}
 const styles = () => {
     return {
         contextMenu: {
@@ -418,7 +423,7 @@ const styles = () => {
  *
  * @augments Component
  */
-class Toolbox extends Component<IProps ,AppState> {
+class Toolbox extends Component<IProps, AppState> {
     /**
      * Initializes a new {@code Toolbox} instance.
      *
@@ -427,11 +432,12 @@ class Toolbox extends Component<IProps ,AppState> {
      */
     constructor(props: IProps) {
         super(props);
-this.state={
-    enableDesktop:false,
-    enableRaiseHand:false,
-    enableMike:false
-}
+        this.state = {
+            enableDesktop: false,
+            enableRaiseHand: false,
+            enableMike: false,
+            enableCamera :false
+        }
         // Bind event handlers so they are only bound once per instance.
         this._onMouseOut = this._onMouseOut.bind(this);
         this._onMouseOver = this._onMouseOver.bind(this);
@@ -452,9 +458,11 @@ this.state={
         this._onToolbarToggleRaiseHand = this._onToolbarToggleRaiseHand.bind(this);
         this._onToolbarToggleScreenshare = this._onToolbarToggleScreenshare.bind(this);
         this._onToolbarToggleScreenshareAdmin = this._onToolbarToggleScreenshareAdmin.bind(this);
-        
+
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this._onShortcutSpeakerStats = this._onShortcutSpeakerStats.bind(this);
+        this._doOpenHostPoll = this._doOpenHostPoll.bind(this);
+
         this._onEscKey = this._onEscKey.bind(this);
         this._openDialog = this._openDialog.bind(this)
     }
@@ -467,66 +475,60 @@ this.state={
      */
     componentDidMount() {
   
+        if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+            return
+        }
+
        
+
+
         fetch(
-            ApiConstants.attendee+"?meetingId="+ApplicationConstants.meetingId+"&userId="+ApplicationConstants.userId
+            ApiConstants.attendee + "?meetingId=" + ApplicationConstants.meetingId + "&userId=" + ApplicationConstants.userId
         )
             .then((response) => response.json())
             .then((data) => {
 
-               
 
-                if(data[0].isScreenShare==false)
-                {
-this.setState({enableDesktop:false})
+
+                if (data[0].isScreenShare == false) {
+                    this.setState({ enableDesktop: false })
                 }
 
 
-                if(data[0].isScreenShare==true)
-                {
-this.setState({enableDesktop:true})
+                if (data[0].isScreenShare == true) {
+                    this.setState({ enableDesktop: true })
                 }
-//Mute will take care internally
+                //Mute will take care internally
 
-// if(data[0].isMute==false)
-//                 {
-// this.setState({enableMike:true})
-//                 }
-
-                
-//                 if(data[0].isMute==true)
-//                 {
-// this.setState({enableMike:false})
-//                 }
+                this.props.dispatch(setVideoMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
 
 
 
-                
 
 
-                
+
                 fetch(
                     ApiConstants.meeting
                 )
                     .then((response) => response.json())
                     .then((dataRaiseHand) => {
 
-                        if(dataRaiseHand[0].isHandRaise==false)
-                        {
-        this.setState({enableRaiseHand:false})
+                        if (dataRaiseHand[0].isHandRaise == false) {
+                            this.setState({ enableRaiseHand: false })
+
                         }
-        
-                        
-                        if(dataRaiseHand[0].isHandRaise==true)
-                        {
-        this.setState({enableRaiseHand:true})
+
+
+                        if (dataRaiseHand[0].isHandRaise == true) {
+                            this.setState({ enableRaiseHand: true })
                         }
-                        
+
 
                     })
 
 
-                })
+            })
 
 
         const { _toolbarButtons, t, dispatch, _reactionsEnabled, _gifsEnabled, _isSpeakerStatsDisabled } = this.props;
@@ -644,61 +646,82 @@ this.setState({enableDesktop:true})
     componentDidUpdate(prevProps: IProps) {
 
 
-        if( this.props._socketReceivedCommandMessage!=null && this.props._socketReceivedCommandMessage!=undefined)
-        { 
+        if (this.props._socketReceivedCommandMessage != null && this.props._socketReceivedCommandMessage != undefined) {
 
-         let hasNewMessages = this.props._socketReceivedCommandMessage !== prevProps._socketReceivedCommandMessage;
+            let hasNewMessages = this.props._socketReceivedCommandMessage !== prevProps._socketReceivedCommandMessage;
 
-         if (hasNewMessages) {
-
-
-
-if(this.props._socketReceivedCommandMessage.permissionType=="ENABLE_SCREEN_SHARE")
-
-{
-    this.setState({enableDesktop:true})
-}
-if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_SCREEN_SHARE")
-
-{
-
-    this.props._screenSharing? this._onToolbarToggleScreenshare():null
-
-
-    this.setState({enableDesktop:false})
-}
-
-
-if(this.props._socketReceivedCommandMessage.permissionType=="ENABLE_RAISE_HAND")
-
-{
-    this.setState({enableRaiseHand:true})
-}
-if(this.props._socketReceivedCommandMessage.permissionType=="DISABLE_RAISE_HAND")
-
-{
-    this.setState({enableRaiseHand:false})
-}
-
-if(this.props._socketReceivedCommandMessage.permissionType=="MUTE_MIC")
-
-{
-    this.setState({enableMike:false})
-    this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
-}
-  
-
-if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
-
-{
-    this.setState({enableMike:true})
-    this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
-}
+            if (hasNewMessages) {
 
 
 
+                if (this.props._socketReceivedCommandMessage.permissionType == "ENABLE_SCREEN_SHARE") {
+                    this.setState({ enableDesktop: true })
+                }
+                if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_SCREEN_SHARE") {
+                 
 
-         }
+                    this.props._screenSharing ? this._onToolbarToggleScreenshare() : null
+                    this.props._screenSharing ? this._onToolbarToggleScreenshareAdmin() : null
+
+                    this.setState({ enableDesktop: false })
+                }
+
+
+                if (this.props._socketReceivedCommandMessage.permissionType == "ENABLE_RAISE_HAND") {
+                    this.setState({ enableRaiseHand: true })
+
+
+                }
+                if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_RAISE_HAND") {
+
+                   
+                    this.props.dispatch(raiseHand(false));
+                    this.setState({ enableRaiseHand: false })
+                }
+
+                if (this.props._socketReceivedCommandMessage.permissionType == "MUTE_MIC") {
+
+
+                    this.props.dispatch(setAudioMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
+
+                    this.setState({ enableMike: false })
+
+                }
+
+                if (this.props._socketReceivedCommandMessage.permissionType == "DISABLE_CAMERA") {
+
+
+                    this.props.dispatch(setVideoMuted(true));
+                    this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
+
+                    this.setState({ enableCamera: false })
+
+                }
+                if (this.props._socketReceivedCommandMessage.permissionType == "ENABLE_CAMERA") {
+
+
+                    this.props.dispatch(setVideoMuted(false));
+                    this.props.dispatch(muteLocal(false, MEDIA_TYPE.VIDEO));
+
+                    this.setState({ enableCamera: true })
+
+                }
+
+                if (this.props._socketReceivedCommandMessage.permissionType == "UNMUTE_MIC") {
+
+
+                    this.props.dispatch(setAudioMuted(false));
+
+                    this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
+                    this.setState({ enableMike: true })
+
+                }
+
+
+
+
+            }
         }
 
 
@@ -727,7 +750,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
      * @returns {void}
      */
     componentWillUnmount() {
-        [ 'A', 'C', 'D', 'R', 'S' ].forEach(letter =>
+        ['A', 'C', 'D', 'R', 'S'].forEach(letter =>
             APP.keyboardshortcut.unregisterShortcut(letter));
 
         if (this.props._reactionsEnabled) {
@@ -749,14 +772,13 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         }
 
         const { _chatOpen, _visible, _toolbarButtons } = this.props;
-        const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${
-            _toolbarButtons.length ? '' : 'no-buttons'} ${_chatOpen ? 'shift-right' : ''}`;
+        const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${_toolbarButtons.length ? '' : 'no-buttons'} ${_chatOpen ? 'shift-right' : ''}`;
 
         return (
             <div
-                className = { rootClassNames }
-                id = 'new-toolbox'>
-                { this._renderToolboxContent() }
+                className={rootClassNames}
+                id='new-toolbox'>
+                {this._renderToolboxContent()}
             </div>
         );
     }
@@ -808,7 +830,15 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
     _doOpenVideoQuality() {
         this.props.dispatch(openDialog(VideoQualityDialog));
     }
-
+    /**
+         * Dispatches an action to open the host poll.
+         *
+         * @private
+         * @returns {void}
+         */
+    _doOpenHostPoll() {
+        this.props.dispatch(openDialog(PollDialog));
+    }
     /**
      * Dispatches an action to toggle the display of chat.
      *
@@ -818,7 +848,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
     _doToggleChat() {
         this.props.dispatch(toggleChat());
 
-      
+
     }
 
     /**
@@ -918,23 +948,29 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         // const microphone = _clientType === OptionType.ENABLE_ALL && {
         //     key: 'microphone',
         //      Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButtonAdminDisable,
-          //     group: 0
+        //     group: 0
         // };
-        
+
 
         const microphone = _clientType === OptionType.ENABLE_ALL && {
             key: 'microphone',
-            Content:  _attendeeInfo.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButton,
+            Content:  _attendeeInfo?.userType === UserType.Viewer ? this.state.enableMike?AudioSettingsButton: MIcrophoneButtonDisable: this.state.enableMike?AudioSettingsButton: AudioSettingsButton,
             group: 0
         };
-        
 
-        const camera = _clientType === OptionType.ENABLE_ALL &&{
+
+        const camera = _clientType === OptionType.ENABLE_ALL && {
             key: 'camera',
-            Content: VideoSettingsButton,
+            Content:  _attendeeInfo?.userType === UserType.Viewer ? this.state.enableCamera?VideoSettingsButton: VideoSettingsDisableButton: this.state.enableMike?VideoSettingsButton: VideoSettingsButton,
+         
             group: 0
         };
-
+        const adminPoll = _attendeeInfo?.userType != UserType.Viewer && {
+            key: 'adminPoll',
+            Content: PollButton,
+            handleClick: this._doOpenHostPoll,
+            group: 0
+        };
         const profile = _clientType === OptionType.ENABLE_ALL && this._isProfileVisible() && {
             key: 'profile',
             Content: ProfileButton,
@@ -950,8 +986,8 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
 
         const desktop = _clientType === OptionType.ENABLE_ALL && this._showDesktopSharingButton() && {
             key: 'desktop',
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableDesktop? ShareDesktopButton :ShareDesktopButtonDisable:ShareDesktopButton,
-            handleClick:_attendeeInfo.userType === UserType.Viewer ? this._onToolbarToggleScreenshare:this._onToolbarToggleScreenshareAdmin  ,
+            Content: _attendeeInfo?.userType === UserType.Viewer ? this.state.enableDesktop? ShareDesktopButton :ShareDesktopButtonDisable:ShareDesktopButton,
+            handleClick:_attendeeInfo?.userType === UserType.Viewer ? this._onToolbarToggleScreenshare:this._onToolbarToggleScreenshareAdmin  ,
        
             group: 2
         };
@@ -959,7 +995,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const raisehand = {
             key: 'raisehand',
           
-            Content: _attendeeInfo.userType === UserType.Viewer ? this.state.enableRaiseHand? ReactionsMenuButton :ReactionsMenuButtonDisable:ReactionsMenuButton,
+            Content: _attendeeInfo?.userType === UserType.Viewer ? this.state.enableRaiseHand? ReactionsMenuButton :ReactionsMenuButtonDisable:ReactionsMenuButton,
             
             handleClick: this._onToolbarToggleRaiseHand,
             group: 2
@@ -996,20 +1032,23 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             handleClick: this._onToolbarOpenVideoQuality,
             group: 2
         };
+       
 
-        const fullscreen = _attendeeInfo.userType !== UserType.Viewer && !_isIosMobile && {
+
+
+        const fullscreen = _attendeeInfo?.userType !== UserType.Viewer && !_isIosMobile && {
             key: 'fullscreen',
             Content: FullscreenButton,
             handleClick: this._onToolbarToggleFullScreen,
             group: 2
         };
 
-        const security = _attendeeInfo.userType !== UserType.Viewer && {
-            key: 'security',
-            alias: 'info',
-            Content: SecurityDialogButton,
-            group: 2
-        };
+        // const security = _attendeeInfo?.userType !== UserType.Viewer && {
+        //     key: 'security',
+        //     alias: 'info',
+        //     Content: SecurityDialogButton,
+        //     group: 2
+        // };
 
         const cc = {
             key: 'closedcaptions',
@@ -1017,13 +1056,13 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             group: 2
         };
 
-        const recording = _attendeeInfo.userType !== UserType.Viewer && {
+        const recording = _attendeeInfo?.userType !== UserType.Viewer && {
             key: 'recording',
             Content: RecordButton,
             group: 2
         };
 
-        const livestreaming = _attendeeInfo.userType !== UserType.Viewer && {
+        const livestreaming = _attendeeInfo?.userType !== UserType.Viewer && {
             key: 'livestreaming',
             Content: LiveStreamButton,
             group: 2
@@ -1035,13 +1074,13 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             group: 2
         };
 
-        const shareVideo = _attendeeInfo.userType !== UserType.Viewer  && {
+        const shareVideo = _attendeeInfo?.userType !== UserType.Viewer  && {
             key: 'sharedvideo',
             Content: SharedVideoButton,
             group: 3
         };
 
-        const shareAudio = _attendeeInfo.userType !== UserType.Viewer && this._showAudioSharingButton() && {
+        const shareAudio = _attendeeInfo?.userType !== UserType.Viewer && this._showAudioSharingButton() && {
             key: 'shareaudio',
             Content: ShareAudioButton,
             group: 3
@@ -1054,7 +1093,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         };
 
 
-        const whiteboard = _attendeeInfo.userType !== UserType.Viewer && _whiteboardEnabled && {
+        const whiteboard = _attendeeInfo?.userType !== UserType.Viewer && _whiteboardEnabled && {
             key: 'whiteboard',
             Content: WhiteboardButton,
             group: 3
@@ -1096,7 +1135,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             group: 4
         };
 
-        const shortcuts = _attendeeInfo.userType !== UserType.Viewer  && !_isMobile && keyboardShortcut.getEnabled() && {
+        const shortcuts = _attendeeInfo?.userType !== UserType.Viewer  && !_isMobile && keyboardShortcut.getEnabled() && {
             key: 'shortcuts',
             Content: KeyboardShortcutsButton,
             group: 4
@@ -1108,7 +1147,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         //     group: 4
         // };
 
-        const feedback = _attendeeInfo.userType !== UserType.Viewer && _feedbackConfigured && {
+        const feedback = _attendeeInfo?.userType !== UserType.Viewer && _feedbackConfigured && {
             key: 'feedback',
             Content: FeedbackButton,
             group: 4
@@ -1129,9 +1168,10 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         return {
             microphone,
             camera,
-            profile,
+            // profile,
             desktop,
             chat,
+            adminPoll,
             raisehand,
             participants,
             // invite,
@@ -1139,7 +1179,7 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             toggleCamera,
             videoQuality,
             fullscreen,
-            security,
+            // security,
             cc,
             recording,
             livestreaming,
@@ -1415,11 +1455,11 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
             return;
         }
         sendAnalytics(createShortcutEvent(
-                'toggle.screen.sharing',
-                ACTION_SHORTCUT_TRIGGERED,
-                {
-                    enable: !this.props._screenSharing
-                }));
+            'toggle.screen.sharing',
+            ACTION_SHORTCUT_TRIGGERED,
+            {
+                enable: !this.props._screenSharing
+            }));
 
         this._doToggleScreenshare();
     }
@@ -1520,9 +1560,9 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
     _onToolbarToggleFullScreen() {
         sendAnalytics(createToolbarEvent(
             'toggle.fullscreen',
-                {
-                    enable: !this.props._fullScreen
-                }));
+            {
+                enable: !this.props._fullScreen
+            }));
         this._closeOverflowMenuIfOpen();
         this._doToggleFullScreen();
     }
@@ -1536,16 +1576,26 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
      */
     _onToolbarToggleRaiseHand() {
 
-        
-        if(this.state.enableRaiseHand)
-        {
-        sendAnalytics(createToolbarEvent(
-            'raise.hand',
-            { enable: !this.props._raisedHand }));
 
-        this._doToggleRaiseHand();
-        }else{
+        if (this.state.enableRaiseHand) {
+            sendAnalytics(createToolbarEvent(
+                'raise.hand',
+                { enable: !this.props._raisedHand }));
+
+            this._doToggleRaiseHand();
+        } else {
+
+            if (this.props._attendeeInfo?.userType !== UserType.Viewer) {
+                sendAnalytics(createToolbarEvent(
+                    'raise.hand',
+                    { enable: !this.props._raisedHand }));
+
+                this._doToggleRaiseHand();
+            }
             //alert("Disable by Admin")
+
+
+
         }
     }
 
@@ -1557,33 +1607,32 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
      * @returns {void}
      */
     _onToolbarToggleScreenshare() {
-      
-        if(this.state.enableDesktop)
-        {
-        sendAnalytics(createToolbarEvent(
-            'toggle.screen.sharing',
-            { enable: !this.props._screenSharing }));
 
-        this._closeOverflowMenuIfOpen();
-        this._doToggleScreenshare();
-        }else{
-         
+        if (this.state.enableDesktop) {
+            sendAnalytics(createToolbarEvent(
+                'toggle.screen.sharing',
+                { enable: !this.props._screenSharing }));
 
-            
-        //alert("Disable by Admin")
+            this._closeOverflowMenuIfOpen();
+            this._doToggleScreenshare();
+        } else {
+
+
+
+            //alert("Disable by Admin")
         }
     }
     _onToolbarToggleScreenshareAdmin() {
 
 
-      
+
 
         this._closeOverflowMenuIfOpen();
         this._doToggleScreenshare();
-      
+
     }
 
-    
+
 
     /**
      * Returns true if the audio sharing button should be visible and
@@ -1655,37 +1704,38 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
         const { mainMenuButtons, overflowMenuButtons } = this._getVisibleButtons();
 
         return (
-            <div className = { containerClassName }>
+            <div className={containerClassName}>
                 <div
-                    className = 'toolbox-content-wrapper'
-                    onFocus = { this._onTabIn }
-                    { ...(_isMobile ? {} : {
+                    className='toolbox-content-wrapper'
+                    onFocus={this._onTabIn}
+                    {...(_isMobile ? {} : {
                         onMouseOut: this._onMouseOut,
                         onMouseOver: this._onMouseOver
-                    }) }>
+                    })}>
 
-                    <div className = 'toolbox-content-items'>
+                    <div className='toolbox-content-items'>
                         {mainMenuButtons.map(({ Content, key, ...rest }) => Content !== Separator && (
                             <Content
-                                { ...rest }
-                                buttonKey = { key }
-                                key = { key } />))}
+                                {...rest}
+                                buttonKey={key}
+                                key={key} />))}
 
                         {Boolean(overflowMenuButtons.length) && (
+
                             <OverflowMenuButton
-                                ariaControls = 'overflow-menu'
-                                isOpen = { _overflowMenuVisible }
-                                key = 'overflow-menu'
-                                onVisibilityChange = { this._onSetOverflowVisible }
-                                showMobileReactions = {
-                                    _reactionsEnabled && overflowMenuButtons.find(({ key }) => key === 'raisehand')
+                                ariaControls='overflow-menu'
+                                isOpen={_overflowMenuVisible}
+                                key='overflow-menu'
+                                onVisibilityChange={this._onSetOverflowVisible}
+                                showMobileReactions={
+                                    this.state.enableRaiseHand ? _reactionsEnabled && overflowMenuButtons.find(({ key }) => key === 'raisehand') : null
                                 }>
                                 <ContextMenu
-                                    accessibilityLabel = { t(toolbarAccLabel) }
-                                    className = { classes.contextMenu }
-                                    hidden = { false }
-                                    inDrawer = { _overflowDrawer }
-                                    onKeyDown = { this._onEscKey }>
+                                    accessibilityLabel={t(toolbarAccLabel)}
+                                    className={classes.contextMenu}
+                                    hidden={false}
+                                    inDrawer={_overflowDrawer}
+                                    onKeyDown={this._onEscKey}>
                                     {overflowMenuButtons.reduce((acc, val) => {
                                         if (acc.length) {
                                             const prev = acc[acc.length - 1];
@@ -1694,51 +1744,52 @@ if(this.props._socketReceivedCommandMessage.permissionType=="UNMUTE_MIC")
                                             if (group === val.group) {
                                                 prev.push(val);
                                             } else {
-                                                acc.push([ val ]);
+                                                acc.push([val]);
                                             }
                                         } else {
-                                            acc.push([ val ]);
+                                            acc.push([val]);
                                         }
 
                                         return acc;
                                     }, []).map((buttonGroup: any) => (
-                                        <ContextMenuItemGroup key = { `group-${buttonGroup[0].group}` }>
+                                        <ContextMenuItemGroup key={`group-${buttonGroup[0].group}`}>
                                             {buttonGroup.map(({ key, Content, ...rest }: any) => (
                                                 key !== 'raisehand' || !_reactionsEnabled)
                                                 && <Content
-                                                    { ...rest }
-                                                    buttonKey = { key }
-                                                    contextMenu = { true }
-                                                    key = { key }
-                                                    showLabel = { true } />)}
+                                                    {...rest}
+                                                    buttonKey={key}
+                                                    contextMenu={true}
+                                                    key={key}
+                                                    showLabel={true} />)}
                                         </ContextMenuItemGroup>))}
                                 </ContextMenu>
                             </OverflowMenuButton>
+
                         )}
 
-                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo.userType !== UserType.Viewer && (
+                        {isToolbarButtonEnabled('hangup', _toolbarButtons) && _attendeeInfo?.userType !== UserType.Viewer && (
                             _endConferenceSupported
                                 ? <HangupMenuButton
-                                    ariaControls = 'hangup-menu'
-                                    isOpen = { _hangupMenuVisible }
-                                    key = 'hangup-menu'
-                                    onVisibilityChange = { this._onSetHangupVisible }>
+                                    ariaControls='hangup-menu'
+                                    isOpen={_hangupMenuVisible}
+                                    key='hangup-menu'
+                                    onVisibilityChange={this._onSetHangupVisible}>
                                     <ContextMenu
                                         accessibilityLabel = { t(toolbarAccLabel) }
                                         className = { classes.hangupMenu }
                                         hidden = { false }
                                         inDrawer = { _overflowDrawer }
                                         onKeyDown = { this._onEscKey }>
-                                        {_attendeeInfo.userType !== UserType.Viewer  && <EndConferenceButton />}
+                                        {_attendeeInfo?.userType !== UserType.Viewer  && <EndConferenceButton />}
                                         <LeaveConferenceButton />
                                     </ContextMenu>
                                 </HangupMenuButton>
                                 : <HangupButton
-                                    buttonKey = 'hangup'
-                                    customClass = 'hangup-button'
-                                    key = 'hangup-button'
-                                    notifyMode = { this._getButtonNotifyMode('hangup') }
-                                    visible = { isToolbarButtonEnabled('hangup', _toolbarButtons) } />
+                                    buttonKey='hangup'
+                                    customClass='hangup-button'
+                                    key='hangup-button'
+                                    notifyMode={this._getButtonNotifyMode('hangup')}
+                                    visible={isToolbarButtonEnabled('hangup', _toolbarButtons)} />
                         )}
                     </div>
                 </div>
@@ -1760,7 +1811,7 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
 
 
     const { socketReceivedCommandMessage } = state["features/base/cs-socket"];
-  
+
     const { conference } = state['features/base/conference'];
     const endConferenceSupported = conference?.isEndConferenceSupported();
 
@@ -1804,7 +1855,7 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
         _jwtDisabledButons: getJwtDisabledButtons(state),
         _hasSalesforce: isSalesforceEnabled(state),
         _hangupMenuVisible: hangupMenuVisible,
-        _socketReceivedCommandMessage:socketReceivedCommandMessage,
+        _socketReceivedCommandMessage: socketReceivedCommandMessage,
         _localParticipantID: localParticipant?.id,
         _localVideo: localVideo,
         _multiStreamModeEnabled: getMultipleVideoSendingSupportFeatureFlag(state),

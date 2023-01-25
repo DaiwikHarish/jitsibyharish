@@ -4,12 +4,16 @@ import {
     createRemoteVideoMenuButtonEvent,
     sendAnalytics
 } from '../../analytics';
+import { useDispatch, useSelector } from 'react-redux';
 import { rejectParticipantAudio } from '../../av-moderation/actions';
 import { IconMicDisabled } from '../../base/icons';
 import { MEDIA_TYPE } from '../../base/media';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { isRemoteTrackMuted } from '../../base/tracks';
 import { muteRemote } from '../actions.any';
+import { socketSendCommandMessage } from "../../base/cs-socket/actions";
+
+import { CommandMessageDto, CommandType, PermissionType } from "../../base/cs-socket/types";
 
 export type Props = AbstractButtonProps & {
 
@@ -29,7 +33,7 @@ export type Props = AbstractButtonProps & {
      * mute/unmute.
      */
     participantID: string,
-
+    participantAPIID: string,
     /**
      * The function to be used to translate i18n labels.
      */
@@ -44,6 +48,7 @@ export default class AbstractMuteButton extends AbstractButton<Props, *> {
     icon = IconMicDisabled;
     label = 'videothumbnail.domute';
     toggledLabel = 'videothumbnail.muted';
+    
 
     /**
      * Handles clicking / pressing the button, and mutes the participant.
@@ -52,7 +57,7 @@ export default class AbstractMuteButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, participantID } = this.props;
+        const { dispatch, participantID,participantAPIID } = this.props;
 
         sendAnalytics(createRemoteVideoMenuButtonEvent(
             'mute',
@@ -62,7 +67,26 @@ export default class AbstractMuteButton extends AbstractButton<Props, *> {
 
         dispatch(muteRemote(participantID, MEDIA_TYPE.AUDIO));
         dispatch(rejectParticipantAudio(participantID));
+
+        dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.MUTE_MIC,
+                CommandType.TO_THIS_USER
+            ))
     }
+
+    _handleClickUnmute() {
+        const { dispatch, participantID,participantAPIID } = this.props;
+        dispatch(
+            socketSendCommandMessage(
+                participantAPIID.trim(),
+                PermissionType.UNUTE_MIC,
+                CommandType.TO_THIS_USER
+            ))
+    }
+
+    
 
     /**
      * Renders the item disabled if the participant is muted.
@@ -98,7 +122,7 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
 
     return {
         _audioTrackMuted: isRemoteTrackMuted(
-            tracks, MEDIA_TYPE.AUDIO, ownProps.participantID),
+            tracks, MEDIA_TYPE.AUDIO, ownProps.participantID, ownProps.participantAPIID),
             _attendeeInfo: state["features/base/app"].attendeeInfo
     };
 }

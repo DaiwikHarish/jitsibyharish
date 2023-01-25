@@ -180,21 +180,21 @@ function ParticipantItem({
             // isModerator && !disableModeratorIndicator
             //     && 
             userType === UserType.Admin &&
-                <div className = { styles.moderatorLabel }>
+                <div id={participantID} data-mute="true"  data-screenshare="true" className = { styles.moderatorLabel }>
                 {t('videothumbnail.moderator')}
             </div>}
             { 
             userType === UserType.Presenter &&
-                <div className = { styles.moderatorLabel }>
+                <div id={participantID} data-mute="true" data-screenshare="true" className = { styles.moderatorLabel }>
                 Host
             </div>}
             { 
             userType === UserType.Viewer &&
-                <div id={participantID}   className = { styles.moderatorLabel }  data-screenshare="false" data-raisehand="false" data-mute="false">
+                <div id={participantID}   className = { styles.moderatorLabel }  data-screenshare="false" data-mute="false">
 
 {/* <div id={participantID}  className = { styles.moderatorLabel }> */}
 
-                Participants
+                Participant
             </div>}
         </>
     );

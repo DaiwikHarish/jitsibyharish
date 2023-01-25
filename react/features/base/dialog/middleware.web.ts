@@ -11,6 +11,8 @@ import AddPeopleDialog from '../../invite/components/add-people-dialog/web/AddPe
 import PremiumFeatureDialog from '../../jaas/components/web/PremiumFeatureDialog';
 import KeyboardShortcutsDialog from '../../keyboard-shortcuts/components/web/KeyboardShortcutsDialog';
 // @ts-ignore
+import { PollDialog } from '../../polls-admin';
+// @ts-ignore
 import StartLiveStreamDialog from '../../recording/components/LiveStream/web/StartLiveStreamDialog';
 // @ts-ignore
 import StopLiveStreamDialog from '../../recording/components/LiveStream/web/StopLiveStreamDialog';
@@ -35,6 +37,8 @@ import MuteEveryonesVideoDialog from '../../video-menu/components/web/MuteEveryo
 import MuteRemoteParticipantsVideoDialog from '../../video-menu/components/web/MuteRemoteParticipantsVideoDialog';
 // @ts-ignore
 import VideoQualityDialog from '../../video-quality/components/VideoQualityDialog.web';
+
+
 import VirtualBackgroundDialog from '../../virtual-background/components/VirtualBackgroundDialog';
 import MiddlewareRegistry from '../redux/MiddlewareRegistry';
 
@@ -47,7 +51,7 @@ const NEW_DIALOG_LIST = [ KeyboardShortcutsDialog, ChatPrivacyDialog, DisplayNam
     FeedbackDialog, AddPeopleDialog, PremiumFeatureDialog, StartLiveStreamDialog, StopLiveStreamDialog,
     StartRecordingDialog, StopRecordingDialog, ShareAudioDialog, ShareScreenWarningDialog, SecurityDialog,
     SharedVideoDialog, SpeakerStats, LanguageSelectorDialog, MuteEveryoneDialog, MuteEveryonesVideoDialog,
-    GrantModeratorDialog, KickRemoteParticipantDialog, MuteRemoteParticipantsVideoDialog, VideoQualityDialog,
+    GrantModeratorDialog, KickRemoteParticipantDialog, MuteRemoteParticipantsVideoDialog,PollDialog,VideoQualityDialog,
     VirtualBackgroundDialog, LoginDialog, WaitForOwnerDialog, DesktopPicker, RemoteControlAuthorizationDialog,
     LogoutDialog, SalesforceLinkDialog ];
 

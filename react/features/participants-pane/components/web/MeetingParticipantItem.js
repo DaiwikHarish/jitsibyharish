@@ -213,7 +213,7 @@ function MeetingParticipantItem({
     const [ hasAudioLevels, setHasAudioLevel ] = useState(false);
     const [ registeredEvent, setRegisteredEvent ] = useState(false);
     //console.log('alam item',_displayName)
-    const [userName, userType] = _displayName.split('|');
+    const [userName, userType] = _displayName?.split('|');
 
     const _updateAudioLevel = useCallback(level => {
         const audioLevel = typeof level === 'number' && !isNaN(level)

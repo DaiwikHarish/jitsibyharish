@@ -69,6 +69,12 @@ if(data.length>0)
             setsreenshareEvent(true)
            
           }
+// Only for admin
+
+          if(data[0]?.userType=='Admin' ||data[0]?.userType=='Presenter' )
+          {
+            setsreenshareEvent(true)
+          }
         }
  
             })
@@ -116,7 +122,7 @@ if(data.length>0)
               }
               
             }}
-          text = {sreenshare==false?"Enable Sreen share":"Disable Sreen share"}
+          text = {sreenshare==false?"Enable Screen share":"Disable Screen share"}
           />
   );
           }

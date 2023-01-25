@@ -107,6 +107,14 @@ this.setState({chatCounter:0,chatOpened:true})
     componentDidUpdate(prevProps, prevState) 
     { 
         
+        if(prevProps._isPollsEnabled!=this.props._isPollsEnabled)
+        {
+            if(this.props._isPollsEnabled==true)
+            {
+this.setState({pollCounter:0})
+        }
+    }
+
         if(prevProps._isOpen!=this.props._isOpen)
         {
         if(this.state.allMes.length>0)
@@ -156,6 +164,11 @@ this.setState({chatCounter:0,chatOpened:true})
                counter++
               this.setState({pollCounter:counter})
             }
+            if(this.props._isPollsTabFocused)
+            {
+
+                this.setState({pollCounter:0})
+            }
         }
         }
         if( this.props._socketPollEndMessage!="" && this.props._socketPollEndMessage!=null && this.props._socketPollEndMessage!=undefined)
@@ -167,6 +180,11 @@ this.setState({chatCounter:0,chatOpened:true})
                 let counter=this.state.pollCounter;
                counter++
               this.setState({pollCounter:counter})
+            }
+            if(this.props._isPollsTabFocused)
+            {
+
+                this.setState({pollCounter:0})
             }
         }
         }
@@ -238,6 +256,9 @@ let usertype="local";
 
    getMessage()
    {
+    if(ApplicationConstants.meetingId == undefined || ApplicationConstants.meetingId == null){
+        return
+    }
    
      fetch(
         ApiConstants.chat
@@ -348,6 +369,7 @@ let usertype='local'
             
   
      let chatMessage =this.state.messageInput;
+     this.setState({messageInput:""})
      const trimmed = chatMessage;
      const reqBody = {
         "meetingId": ApplicationConstants.meetingId,
@@ -416,7 +438,12 @@ event.stopPropagation();
     _renderChat() {
         const { _isPollsEnabled, _isPollsTabFocused} = this.props;
        
-    
+        const pollidsdiv = document.getElementById("mainchatcounter")  
+        if(pollidsdiv!=null)
+        {
+        pollidsdiv.innerHTML= "";
+
+        }
         
         if (_isPollsTabFocused) {
             return (
@@ -494,10 +521,11 @@ event.stopPropagation();
                       
                         icon = { IconPlane }
                         onClick={() =>  {
-this.setState({messageInput:""})
+                            if(this.state.messageInput.trim()!=""&&this.state.messageInput.trim()!=null&&this.state.messageInput.trim()!=undefined)
 
+{
                         this._setMessage()
-                    
+}
                     }
                     
                     

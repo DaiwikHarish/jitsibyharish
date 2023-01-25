@@ -790,7 +790,7 @@ function _raiseHandUpdated({ dispatch, getState }: IStore, conference: IJitsiCon
     if (raisedHandTimestamp) {
         let notificationTitle;
         const userName = getParticipantDisplayName(state, participantId);
-        const [participantName, userType] = userName.split('|');
+        const [participantName, userType] = userName?.split('|');
         const { raisedHandsQueue } = state['features/base/participants'];
 
         if (raisedHandsQueue.length > 1) {
