@@ -103,7 +103,10 @@ const QuestionAnswer = () => {
         // trigger firt time on mount
         let fromDateTime = moment().format("YYYY-MM-DD") + "T00:00:00";
         let toDateTime = moment().format("YYYY-MM-DD") + "T23:59:59";
-        
+
+        // reset the count on mount 
+        dispatch(resetQAUnSeenCount())
+
         // set isScreenOn = true on mount 
         dispatch(updateQAScreenStatus(true))
         
@@ -112,7 +115,6 @@ const QuestionAnswer = () => {
         // set isScreen = false on unmount 
         return () => {
             dispatch(updateQAScreenStatus(false))
-            dispatch(resetQAUnSeenCount())
         }
 
     }, []);
