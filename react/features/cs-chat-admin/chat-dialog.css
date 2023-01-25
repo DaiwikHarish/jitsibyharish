@@ -36,11 +36,12 @@
     background-color: rgba(27, 38, 56,0.5);
     align-items: center;
     color: white;
-    -webkit-filter: blur(1.5px); 
+    /* -webkit-filter: blur(1.5px); 
 	-moz-filter: blur(1.5px); 
 	-o-filter: blur(1.5px); 
 	-ms-filter: blur(1.5px); 
-	filter: blur(1.5px);
+	filter: blur(1.5px); */
+    filter: opacity(0.2);
 }
 .Left-box-header {
     display: flex;
@@ -211,11 +212,12 @@
     align-items: center;
     color: white;
     pointer-events: none;
-    -webkit-filter: blur(1.5px); 
+    /* -webkit-filter: blur(1.5px); 
 	-moz-filter: blur(1.5px); 
 	-o-filter: blur(1.5px); 
 	-ms-filter: blur(1.5px); 
-	filter: blur(1.5px);
+	filter: blur(1.5px); */
+    filter: opacity(0.2);
 }
 .Right-box-header {
     display: flex;
