@@ -170,10 +170,10 @@ import MIcrophoneButtonDisable from './MIcrophoneButtonDisable';
 import AudioSettingsButtonAdminDisable from './AudioSettingsButtonAdminDisable';
 // @ts-ignore
 import { muteLocal } from '../../../video-menu/actions.any';
-// @ts-ignore
-import { MEDIA_TYPE, setAudioMuted } from '../../../base/media';
 import QuestionAnswer from '../../../cs-qa-admin/components/qa-admin';
+// @ts-ignore
 import QuestionAnswerButton from '../../../cs-qa-admin/components/qa-button';
+// @ts-ignore
 import { MEDIA_TYPE, setAudioMuted, setVideoMuted } from '../../../base/media';
 
 

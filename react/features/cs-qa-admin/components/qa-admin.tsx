@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from "react";
+
 import Modal, {
     ModalBody,
     ModalTitle,
     ModalTransition,
 } from "@atlaskit/modal-dialog";
+
 import Button from "@atlaskit/button/standard-button";
 import { useDispatch, useSelector } from "react-redux";
 import { css } from "@emotion/react";
-// import 'react-calendar/dist/Calendar.css';
 
 import "../qa-admin.css";
 
-import {
-    Icon,
-    IconClose,
-    IconFlag,
-    IconParticipants,
-    IconTrash,
-    IconUser,
-    IconUserGroups,
-} from "../../base/icons";
+//@ts-ignore
+import { Icon, IconClose,IconFlag,IconParticipants,IconTrash,IconUser,IconUserGroups} from "../../base/icons";
 
 import {
     deleteQuestion,
@@ -29,7 +23,10 @@ import {
 } from "../actions";
 
 import { IReduxState } from "../../app/types";
+
+//@ts-ignore
 import { hideDialog } from "../../base/dialog";
+
 import { IQuestionAnswer, QuestionType } from "../types";
 import { ICSQaAdminState } from "../reducer";
 import moment from "moment";
@@ -49,7 +46,7 @@ const QuestionAnswer = () => {
 
     const [messageSend, setMessageSend] = useState(false);
 
-    const [message, setMessage] = useState<string>();
+    const [message, setMessage] = useState<string>('');
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -88,35 +85,13 @@ const QuestionAnswer = () => {
         IQuestionAnswer[]
     >([]);
 
-    // const questionAnswerList: IQuestionAnswer[] = useSelector(
-    //     (state: IReduxState) => {
-    //         return getQaData(state["features/cs-qa-admin"]);
-    //     }
-    // );
-
     const [totalQA, setTotalQA] = useState<number>(0);
-    // const totalQA: number = useSelector((state: IReduxState) =>
-    //     getQuestionTypeCount(state["features/cs-qa-admin"], QuestionType.Both)
-    // );
 
     const [answeredCount, setAnsweredCount] = useState<number>(0);
-    // const answeredCount: number = useSelector((state: IReduxState) =>
-    //     getQuestionTypeCount(
-    //         state["features/cs-qa-admin"],
-    //         QuestionType.Answered
-    //     )
-    // );
+
     const [unAnsweredCount, setUnAnsweredCount] = useState<number>(0);
 
-    // const unAnsweredCount: number = useSelector((state: IReduxState) =>
-    //     getQuestionTypeCount(
-    //         state["features/cs-qa-admin"],
-    //         QuestionType.NotAnswered
-    //     )
-    // );
 
-    // console.log("alam updateStartDate", startDateTime);
-    // console.log("alam unAnswered", endDateTime);
     dumpLog("alam loading", loading);
     function _hideDialog() {
         dispatch(hideDialog(QuestionAnswer));

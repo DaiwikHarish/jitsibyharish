@@ -1,7 +1,9 @@
 // @flow
-import { translate } from '../../base/i18n';
-import { IconChat, IconQuestion } from '../../base/icons';
+
+import { IconQuestion } from '../../base/icons';
+
 import { connect } from '../../base/redux';
+
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 
 /**
