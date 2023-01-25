@@ -117,10 +117,8 @@ import {
     // @ts-ignore
 } from "../../../video-layout";
 // @ts-ignore
-import {
-    VideoQualityButton,
-    VideoQualityDialog,
-} from "../../../video-quality/components";
+import { VideoQualityButton, VideoQualityDialog} from "../../../video-quality/components";
+
 // @ts-ignore
 import { PollButton, PollDialog } from "../../../polls-admin";
 // @ts-ignore
