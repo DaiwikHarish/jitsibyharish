@@ -180,7 +180,6 @@ export class AbstractWelcomePage<P: Props> extends Component<P, *> {
      */
     _onJoin() {
         const room = this.state.room || this.state.generatedRoomname;
-       // console.log("alam roomName",room)
 
         sendAnalytics(
             createWelcomePageEvent('clicked', 'joinButton', {

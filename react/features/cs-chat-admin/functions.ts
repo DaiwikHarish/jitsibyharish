@@ -107,7 +107,7 @@ export async function _selectedAttendee(
             isLoading: false,
         });
 
-        _resetAttendeeCount(selectedAttendeeId, attendees);
+       dispatch(_resetAttendeeCount(selectedAttendeeId, attendees));
     } else {
         dispatch(updateIsLoading(false, 'ERROR', chatApiResponse?.message));
     }
@@ -164,7 +164,6 @@ async function _fetchAttendeeApi() {
 
     if (response.ok && response.status == 200) {
         let data = await response.json();
-        console.log('alam data', data);
         let apiResponse: IAPIResponse = {
             response: data,
             status: true,

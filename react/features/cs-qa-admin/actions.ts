@@ -55,7 +55,6 @@ export function postAnswer(
     sendType: string
 ) {
     console.log('ACTION TRIGGERED postAnswer');
-    console.log('alam sendChatMessage Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         _postAnswer(
@@ -69,8 +68,6 @@ export function postAnswer(
 }
 
 export function deleteQuestion(qId: string | null) {
-    console.log('ACTION TRIGGERED deleteQuestion');
-    console.log('alam deleteQuestion Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         _deleteQuestion(dispatch, getState, qId);
@@ -85,7 +82,6 @@ export function updateQAScreenStatus(value: boolean) {
 }
 
 export function updateQADataFromSocket(qaData: IQuestionAnswerDto) {
-    console.log('alam updateQADataFromSocket Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
