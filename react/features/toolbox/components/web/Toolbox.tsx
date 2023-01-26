@@ -186,6 +186,7 @@ import QuestionAnswer from "../../../cs-qa-admin/components/qa-admin";
 import QuestionAnswerButton from "../../../cs-qa-admin/components/qa-button";
 // @ts-ignore
 import ChatDialog from "../../../cs-chat-admin/components/ChatDialog";
+// @ts-ignore
 import ChatAdminButton from "../../../cs-chat-admin/components/chat-admin-button";
 import SettingsDialog from "../../../settings/components/web/SettingsDialog";
 // @ts-ignore
