@@ -291,7 +291,8 @@ const ChatDialog = () => {
                         />
                     </div>
                     <div className="Right-box-body">
-                        {chatList &&
+                        {selected &&
+                            chatList &&
                             chatList?.map((chat) =>
                                 chat.fromUserId ===
                                 ApplicationConstants.userId ? (
