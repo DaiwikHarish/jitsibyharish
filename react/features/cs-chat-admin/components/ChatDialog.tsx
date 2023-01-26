@@ -272,7 +272,8 @@ const ChatDialog = () => {
                                             dispatch(updateAttendee(false));
                                         }
                                     }}
-                                    className="btn-danger"
+                                    className={ list.filter((x) => x.id === selected)[0]
+                                        ?.isAllowed ? "btn-danger" : 'btn-safe'}
                                 >
                                     {list.filter((x) => x.id === selected)[0]
                                         ?.isAllowed ? (

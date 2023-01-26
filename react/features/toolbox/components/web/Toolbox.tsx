@@ -1231,6 +1231,7 @@ class Toolbox extends Component<IProps, AppState> {
             // profile,
             desktop,
             chat,
+            adminPoll,
             // adminChat,
             questionAnswer,
             raisehand,
