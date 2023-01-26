@@ -4,7 +4,7 @@ import React from 'react';
 import { dumpLog } from '../../app/functions.any';
 import { translate } from '../../base/i18n';
 
-import { IconQuestion } from '../../base/icons';
+import { IconChat, IconQuestion } from '../../base/icons';
 import { IReduxState } from '../../app/types';
 import { connect } from '../../base/redux';
 
@@ -18,19 +18,19 @@ type Props = AbstractButtonProps & {
      * Whether or not the participants pane is open.
      */
 
-    _qaUnseenCount: number,
+    _chatUnseenCount: number,
 };
 /**
  * Implementation of a button for accessing participants pane.
  */
-class QuestionAnswerButton extends AbstractButton<Props, *> {
+class ChatAdminButton extends AbstractButton<Props, *> {
     constructor(props: Props) {
         super(props);
     }
-    accessibilityLabel = 'toolbar.accessibilityLabel.participants';
-    icon = IconQuestion;
-    label = 'Questions & Answers';
-    tooltip = 'Questions & Answers';
+    accessibilityLabel = 'toolbar.accessibilityLabel.chat';
+    icon = IconChat;
+    label = 'Chat';
+    tooltip = 'Chat';
 
     /**
      * Indicates whether this button is in toggled state or not.
@@ -43,14 +43,13 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
     //     return this.props._isOpen;
     // }
     render(): React$Node {
-        // dumpLog('alam qaCount', this.props._qaUnseenCount);
         return (
             <div className="toolbar-button-with-badge">
                 {super.render()}
                 <span className="badge-round">
                     <span id="mainchatcounter">
-                        {this.props._qaUnseenCount != 0
-                            ? this.props._qaUnseenCount
+                    {this.props._chatUnseenCount != 0
+                            ? this.props._chatUnseenCount
                             : ''}
                     </span>
                 </span>
@@ -67,11 +66,11 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
  * @returns {Props}
  */
 function mapStateToProps(state: IReduxState) {
-    const qaUnseenCount = state['features/cs-qa-admin'].unSeenCount;
-    // dumpLog('alam qaUnseenCount', qaUnseenCount);
+    const chatUnseenCount = state['features/cs-chat-admin'].unSeenCount;
+    dumpLog('alam chatUnseenCount', chatUnseenCount);
     return {
-        _qaUnseenCount: qaUnseenCount,
+        _chatUnseenCount: chatUnseenCount,
     };
 }
 
-export default translate(connect(mapStateToProps)(QuestionAnswerButton));
+export default translate(connect(mapStateToProps)(ChatAdminButton));

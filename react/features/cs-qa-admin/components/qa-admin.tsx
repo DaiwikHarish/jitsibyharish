@@ -46,8 +46,6 @@ const QuestionAnswer = () => {
     const [selectedQA, setSelectedQA] = useState<IQuestionAnswer>();
     const [selectedIndex, setSelectedIndex] = useState<number>();
 
-    const [messageSend, setMessageSend] = useState(false);
-
     const [message, setMessage] = useState<string>('');
 
     const [openModal, setOpenModal] = useState(false);
@@ -381,7 +379,6 @@ const QuestionAnswer = () => {
                                     "Send To User"
                                 )
                             );
-                            setMessageSend(true);
                             setMessage("");
                             setSelectedQA(undefined);
                         }}
@@ -399,7 +396,6 @@ const QuestionAnswer = () => {
                                     "Send To All"
                                 )
                             );
-                            setMessageSend(true);
                             setMessage("");
                             setSelectedQA(undefined);
                         }}
@@ -464,7 +460,6 @@ const QuestionAnswer = () => {
                                     dispatch(
                                         deleteQuestion(selectedQuestionId)
                                     );
-                                    setMessageSend(true);
                                     setOpenModal(false);
                                     setSelectedQA(undefined);
                                 }}
