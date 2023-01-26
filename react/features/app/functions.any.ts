@@ -28,5 +28,5 @@ export function addTrackStateToURL(url: string, stateful: IStateful) {
 }
 
 export const dumpLog = (key: string, value: any) => {
-   return console.log(key, value);
+//    return console.log(key, value);
 };

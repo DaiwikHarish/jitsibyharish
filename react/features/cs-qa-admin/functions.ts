@@ -127,16 +127,13 @@ export async function _deleteQuestion(
     qId: string | null
 ) {
     const { startDateTime, endDateTime } = getState()['features/cs-qa-admin'];
-    console.log('alam delete questionId CALLED.....', qId);
     // Step 1: set loading
     dispatch(updateIsLoading(true));
 
     let apiResponse = await _deleteQuestionApi(qId);
     if (apiResponse?.status) {
-        console.log('alam success apiResponse.....', apiResponse);
         _qaAction(dispatch, getState, startDateTime, endDateTime);
     } else {
-        console.log('alam Error apiResponse.....', apiResponse?.message);
         dispatch(updateIsLoading(false, 'ERROR', apiResponse?.message));
     }
 }
@@ -186,7 +183,6 @@ async function _postAnswerApi(
     qId: string | null,
     sendType: string
 ) {
-    console.log('alam _postAnswerApi initialized.....');
     let response = await fetch(ApiConstants.answer, {
         headers: {
             Accept: 'application/json',
@@ -215,7 +211,6 @@ async function _postAnswerApi(
 }
 
 async function _deleteQuestionApi(questionId: string | null) {
-    console.log('alam _deleteQuestionApi CALLED.....', questionId);
     let response = await fetch(
         ApplicationConstants.API_BASE_URL +
             'question?meetingId=' +

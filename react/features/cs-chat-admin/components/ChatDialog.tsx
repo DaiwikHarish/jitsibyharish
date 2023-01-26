@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from "react";
 // @ts-ignore
-import Modal from '@atlaskit/modal-dialog';
+import Modal from "@atlaskit/modal-dialog";
 
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { css } from '@emotion/react';
-import { FadeLoader } from 'react-spinners';
+import { useDispatch, useSelector } from "react-redux";
+import { css } from "@emotion/react";
+import { FadeLoader } from "react-spinners";
 
-import UserType, { IAttendeeInfo } from '../../base/app/types';
-import '../chat-dialog.css';
+import UserType from "../../base/app/types";
+import "../chat-dialog.css";
 
-import { ApplicationConstants } from '../../../../ApplicationConstants';
-import { IReduxState } from '../../app/types';
+import { ApplicationConstants } from "../../../../ApplicationConstants";
+import { IReduxState } from "../../app/types";
 
 import {
     loadAttendees,
@@ -18,70 +18,70 @@ import {
     sendChatMessage,
     updateAttendee,
     updateChatScreenStatus,
-} from '../actions';
+} from "../actions";
 
-import { uiTimeFormat, _loadAttendees } from '../functions';
-import { IChatDto } from '../../base/cs-socket/types';
-
-//@ts-ignore
-import { hideDialog } from '../../base/dialog';
+import { uiTimeFormat, _loadAttendees } from "../functions";
+import { IChatDto } from "../../base/cs-socket/types";
 
 //@ts-ignore
-import { Icon, IconChatSendBtn, IconClose, IconLock, IconRefresh, IconUnlock } from '../../base/icons';
-import { IAttendeeUnSeenCount } from '../types';
+import { hideDialog } from "../../base/dialog";
+
+//@ts-ignore
+import {
+    Icon,
+    IconChatSendBtn,
+    IconClose,
+    IconLock,
+    IconRefresh,
+    IconUnlock,
+} from "../../base/icons";
+import { IAttendeeUnSeenCount } from "../types";
+import { dumpLog } from "../../app/functions.any";
 
 const boldStyles = css({
-    backgroundColor: 'white',
-    display: 'flex',
-    borderRadius: '5px',
+    backgroundColor: "white",
+    display: "flex",
+    borderRadius: "5px",
 });
 
-// type Props = {
-//     _attendeeList: IAttendeeInfo | undefined;
-// };
-
-
-
 const ChatDialog = () => {
-    const [message, setMessage] = useState('');
-    const [searchInput, setSearchInput] = useState('');
-    const [selected, setSelected] = useState<string>('');
+    const [message, setMessage] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const [selected, setSelected] = useState<string>("");
 
     const list: IAttendeeUnSeenCount[] | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-chat-admin'].attendees
+        (state: IReduxState) => state["features/cs-chat-admin"].attendees
     );
     const onlineCount: number | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-chat-admin'].onLineCount
+        (state: IReduxState) => state["features/cs-chat-admin"].onLineCount
     );
     const totalAttendees: number | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-chat-admin'].total
+        (state: IReduxState) => state["features/cs-chat-admin"].total
     );
-    const chatLst: IChatDto[] | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-chat-admin'].chatHistory
+    const chatList: IChatDto[] | undefined = useSelector(
+        (state: IReduxState) => state["features/cs-chat-admin"].chatHistory
     );
 
     const loading: boolean | undefined = useSelector(
-        (state: IReduxState) => state['features/cs-chat-admin'].isLoading
+        (state: IReduxState) => state["features/cs-chat-admin"].isLoading
     );
-    console.log('alam list', list);
 
     const { innerWidth: width, innerHeight: height } = window;
 
     const dispatch = useDispatch();
-    // const messagesEndRef = (useRef < null) | (HTMLDivElement > null);
     function _hideDialog() {
-        console.log('alam _hideDialog');
         dispatch(hideDialog(ChatDialog));
     }
 
-    useEffect(() => {
+    dumpLog("alam list", list);
 
-        dispatch(updateChatScreenStatus(true))
+    useEffect(() => {
+        dispatch(updateChatScreenStatus(true));
         dispatch(loadAttendees());
 
         return () => {
-             dispatch(updateChatScreenStatus(false))
-        }
+            dispatch(updateChatScreenStatus(false));
+        };
     }, []);
 
     return (
@@ -95,45 +95,45 @@ const ChatDialog = () => {
         >
             <FadeLoader
                 cssOverride={{
-                    display: 'flex',
-                    position: 'relative',
-                    fontSize: '0px',
-                    top: '50%',
-                    left: '20px',
-                    margin: 'auto',
+                    display: "flex",
+                    position: "relative",
+                    fontSize: "0px",
+                    top: "50%",
+                    left: "20px",
+                    margin: "auto",
                 }}
-                color={'white'}
+                color={"white"}
                 loading={loading}
             />
-            <div className={'container'}>
-                <div className={loading ? 'loading-left-box' : 'Left-box'}>
+            <div className={"container"}>
+                <div className={loading ? "loading-left-box" : "Left-box"}>
                     <div className="Participants-online">
                         <div className="Active-count">
                             <div
                                 style={{
-                                    fontSize: '15px',
-                                    fontFamily: 'Arial, Helvetica, sans-serif',
-                                    paddingInline: '5px',
+                                    fontSize: "15px",
+                                    fontFamily: "Arial, Helvetica, sans-serif",
+                                    paddingInline: "5px",
                                 }}
                             >
-                                Online :{' '}
+                                Online :{" "}
                             </div>
                             <div
                                 style={{
-                                    fontSize: '14.5px',
-                                    fontWeight: '700',
-                                    fontFamily: 'Arial, Helvetica, sans-serif',
-                                    paddingRight: '5px',
-                                    color: 'white',
+                                    fontSize: "14.5px",
+                                    fontWeight: "700",
+                                    fontFamily: "Arial, Helvetica, sans-serif",
+                                    paddingRight: "5px",
+                                    color: "white",
                                 }}
                             >
                                 {onlineCount && onlineCount - 1}
                             </div>
                             <div
                                 style={{
-                                    fontSize: '14px',
-                                    fontFamily: 'Arial, Helvetica, sans-serif',
-                                    color: '#858585',
+                                    fontSize: "14px",
+                                    fontFamily: "Arial, Helvetica, sans-serif",
+                                    color: "#858585",
                                 }}
                             >
                                 ({totalAttendees && totalAttendees - 1})
@@ -149,22 +149,21 @@ const ChatDialog = () => {
                     <div className="Search-input-container">
                         <input
                             type="text"
-                            // aria-label = { accessibilityLabel }
-                            // autoFocus = { true }
                             className="Search-input"
                             maxLength={25}
-                            name={'searchInput'}
+                            name={"searchInput"}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            // onKeyPress = { onKeyPress }
-                            placeholder={'Search users'}
+                            placeholder={"Search users"}
                             value={searchInput}
                         />
                     </div>
                     <div className="Participants-list-container">
                         {list &&
-                            list?.reverse()
+                            list
+                                ?.slice(0)
+                                .reverse()
                                 ?.filter((user) => {
-                                    if (searchInput === '') {
+                                    if (searchInput === "") {
                                         return user;
                                     } else if (
                                         user?.userName
@@ -183,8 +182,8 @@ const ChatDialog = () => {
                                     <div
                                         className={
                                             selected === user.id
-                                                ? 'Participants-list-selected'
-                                                : 'Participants-list'
+                                                ? "Participants-list-selected"
+                                                : "Participants-list"
                                         }
                                         key={user.userId}
                                         onClick={() => {
@@ -196,13 +195,23 @@ const ChatDialog = () => {
                                     >
                                         <div className="Participant-list-left">
                                             <div className="Name-avatar">
-                                                {user.userName
-                                                    .split(' ')
-                                                    .reduce(
-                                                        (acc, subname) =>
-                                                            acc + subname[0],
-                                                        ''
-                                                    )}
+                                                <div className="chat-avatar">
+                                                    {user.userName
+                                                        .split(" ")
+                                                        .reduce(
+                                                            (acc, subname) =>
+                                                                acc +
+                                                                subname[0],
+                                                            ""
+                                                        )}
+                                                </div>
+                                                <span className="chat-count">
+                                                    {user.unSeenCount
+                                                        ? user.unSeenCount > 9
+                                                            ? "9+"
+                                                            : user.unSeenCount
+                                                        : ""}
+                                                </span>
                                             </div>
                                             <div className="User-name-container">
                                                 <div className="User-name">
@@ -236,12 +245,11 @@ const ChatDialog = () => {
                                                 }
                                             />
                                         </div>
-                                        
                                     </div>
                                 ))}
                     </div>
                 </div>
-                <div className={loading ? 'loading-right-box' : 'Right-box'}>
+                <div className={loading ? "loading-right-box" : "Right-box"}>
                     <div className="Right-box-header">
                         <div className="Right-box-header-left">
                             {list && selected && (
@@ -249,8 +257,8 @@ const ChatDialog = () => {
                                     {
                                         list.filter((x) => x.id === selected)[0]
                                             .emailId
-                                    }{' '}
-                                    |{' '}
+                                    }{" "}
+                                    |{" "}
                                     {
                                         list.filter((x) => x.id === selected)[0]
                                             .mobileNr
@@ -289,17 +297,17 @@ const ChatDialog = () => {
                         />
                     </div>
                     <div className="Right-box-body">
-                        {chatLst &&
-                            chatLst?.map((chat) =>
+                        {chatList &&
+                            chatList?.map((chat) =>
                                 chat.fromUserId ===
                                 ApplicationConstants.userId ? (
                                     <div
                                         key={chat.id}
                                         style={{
-                                            flexWrap: 'wrap',
-                                            alignSelf: 'flex-end',
-                                            maxWidth: '90%',
-                                            paddingBlock: '5px',
+                                            flexWrap: "wrap",
+                                            alignSelf: "flex-end",
+                                            maxWidth: "90%",
+                                            paddingBlock: "5px",
                                         }}
                                     >
                                         <div
@@ -312,13 +320,13 @@ const ChatDialog = () => {
                                         </div>
                                         <div
                                             style={{
-                                                display: 'flex',
-                                                alignItems: 'flex-end',
-                                                justifyContent: 'flex-end',
-                                                color: '#aaa',
-                                                fontSize: '12px',
+                                                display: "flex",
+                                                alignItems: "flex-end",
+                                                justifyContent: "flex-end",
+                                                color: "#aaa",
+                                                fontSize: "12px",
                                                 fontFamily:
-                                                    'Arial, Helvetica, sans-serif',
+                                                    "Arial, Helvetica, sans-serif",
                                             }}
                                         >
                                             {uiTimeFormat(chat.createdAt)}
@@ -328,10 +336,10 @@ const ChatDialog = () => {
                                     <div
                                         key={chat.id}
                                         style={{
-                                            alignSelf: 'flex-start',
-                                            flexWrap: 'wrap',
-                                            maxWidth: '95%',
-                                            paddingBlock: '5px',
+                                            alignSelf: "flex-start",
+                                            flexWrap: "wrap",
+                                            maxWidth: "95%",
+                                            paddingBlock: "5px",
                                         }}
                                     >
                                         <div
@@ -343,10 +351,9 @@ const ChatDialog = () => {
                                             </div>
                                             <div
                                                 style={{
-                                                    marginLeft: '7px',
-                                                    // overflow: 'hidden',
-                                                    wordWrap: 'break-word',
-                                                    textOverflow: 'ellipsis',
+                                                    marginLeft: "7px",
+                                                    wordWrap: "break-word",
+                                                    textOverflow: "ellipsis",
                                                 }}
                                                 className="message"
                                             >
@@ -355,42 +362,36 @@ const ChatDialog = () => {
                                         </div>
                                         <div
                                             style={{
-                                                color: '#aaa',
-                                                fontSize: '12px',
+                                                color: "#aaa",
+                                                fontSize: "12px",
                                                 fontFamily:
-                                                    'Arial, Helvetica, sans-serif',
+                                                    "Arial, Helvetica, sans-serif",
                                             }}
                                         >
-                                            { uiTimeFormat(chat.createdAt)}
-                                            
+                                            {uiTimeFormat(chat.createdAt)}
                                         </div>
                                     </div>
                                 )
                             )}
-                        {/* <div ref={messagesEndRef} /> */}
                     </div>
 
                     <div className="Right-box-footer">
                         <div className="Send-msg-container">
                             <input
-                                // aria-label = { accessibilityLabel }
                                 autoFocus={true}
                                 className="Send-msg-input"
-                                // maxLength={25}
-                                name={'message'}
+                                name={"message"}
                                 onChange={(e) => setMessage(e.target.value)}
-                                // onKeyPress = { onKeyPress }
-                                placeholder={'Send message...'}
+                                placeholder={"Send message..."}
                                 value={message}
                             />
                             <button
                                 disabled={
-                                    message === undefined || message === ''
+                                    message === undefined || message === ""
                                 }
                                 onClick={() => {
                                     dispatch(sendChatMessage(message));
-                                    setMessage('');
-                                    // scrollToBottom();
+                                    setMessage("");
                                 }}
                                 className="Send-msg-button"
                             >
@@ -400,10 +401,8 @@ const ChatDialog = () => {
                     </div>
                 </div>
             </div>
-            {/* )} */}
         </Modal>
     );
 };
 
 export default ChatDialog;
-// export default ChatDialog;

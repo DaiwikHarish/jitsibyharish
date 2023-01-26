@@ -43,7 +43,7 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
     //     return this.props._isOpen;
     // }
     render(): React$Node {
-        dumpLog('alam qaCount', this.props._qaUnseenCount);
+        // dumpLog('alam qaCount', this.props._qaUnseenCount);
         return (
             <div className="toolbar-button-with-badge">
                 {super.render()}
@@ -68,7 +68,7 @@ class QuestionAnswerButton extends AbstractButton<Props, *> {
  */
 function mapStateToProps(state: IReduxState) {
     const qaUnseenCount = state['features/cs-qa-admin'].unSeenCount;
-    dumpLog('alam qaUnseenCount', qaUnseenCount);
+    // dumpLog('alam qaUnseenCount', qaUnseenCount);
     return {
         _qaUnseenCount: qaUnseenCount,
     };

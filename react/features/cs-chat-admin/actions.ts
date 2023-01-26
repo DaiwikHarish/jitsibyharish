@@ -20,9 +20,7 @@ import { IChatDto } from './types';
  * It is called when user click on refersh button , and on mount of the chat admin page
  */
 export function loadAttendees() {
-    console.log('alam loadAttendees Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
-        console.log('alam loadAttendees CALLED.....');
         // Step 1: do process
         _loadAttendees(dispatch, getState);
     };
@@ -62,7 +60,6 @@ export function updateChatScreenStatus(value: boolean) {
 
 
 export function updateChatDataFromSocket(chatData: IChatDto) {
-    console.log('alam updateChatDataFromSocket Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
@@ -77,7 +74,6 @@ export function updateChatDataFromSocket(chatData: IChatDto) {
 }
 
 export function updateOnlineAttendeeDataFromSocket(attendeeData: IAttendeeInfo) {
-    console.log('alam updateOnlineAttendeeDataFromSocket Initialized.....');
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         let attendeeInfo = getState()['features/base/app']?.attendeeInfo;

@@ -1004,7 +1004,10 @@ class Toolbox extends Component<IProps, AppState> {
 
         const chat = {
             key: "chat",
+            // Content: ChatButton,
+            // handleClick: this._onToolbarToggleChat,
             Content: _attendeeInfo.userType === UserType.Admin? ChatAdminButton : ChatButton,
+            
             handleClick: _attendeeInfo.userType === UserType.Admin ? this._openDialog : this._onToolbarToggleChat,
             group: 2,
         };
