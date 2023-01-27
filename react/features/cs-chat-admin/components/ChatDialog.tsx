@@ -272,7 +272,8 @@ const ChatDialog = () => {
                                             dispatch(updateAttendee(false));
                                         }
                                     }}
-                                    className="btn-danger"
+                                    className={ list.filter((x) => x.id === selected)[0]
+                                        ?.isAllowed ? "btn-danger" : 'btn-safe'}
                                 >
                                     {list.filter((x) => x.id === selected)[0]
                                         ?.isAllowed ? (
@@ -291,7 +292,8 @@ const ChatDialog = () => {
                         />
                     </div>
                     <div className="Right-box-body">
-                        {chatList &&
+                        {selected &&
+                            chatList &&
                             chatList?.map((chat) =>
                                 chat.fromUserId ===
                                 ApplicationConstants.userId ? (

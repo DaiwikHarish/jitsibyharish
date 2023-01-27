@@ -41,3 +41,5 @@ config.startWithAudioMuted = true;
   config.recordingMeetingId='14';
 
 config.localRecording.disable = true;
+
+config.p2p.enabled = false;

@@ -351,6 +351,15 @@
     padding-inline: 10px;
     border-width: 0;
 }
+.btn-safe{
+    background-color: #0d8303;
+    color: white;
+    margin-left: 10px;
+    border-radius:25px;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-width: 0;
+}
 .Send-msg-button{
     min-width:10%;
     min-height:8% ;
