@@ -31,9 +31,6 @@ export function maybeShowSuboptimalExperienceNotification(dispatch, t) {
 }
 
 export function _onKickedOut(id){
-    //let url = 'https://dev.awesomereviewstream.com/svr/api/attendee'
-
-
     fetch(ApiConstants.attendee,{
         headers: {
           Accept: "application/json",

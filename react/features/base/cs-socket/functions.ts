@@ -4,7 +4,7 @@ import { ApplicationConstants } from '../../../../ApplicationConstants';
 import { IStore } from '../../app/types';
 import { updateChatDataFromSocket, updateOnlineAttendeeDataFromSocket } from '../../cs-chat-admin/actions';
 import { updateQADataFromSocket } from '../../cs-qa-admin/actions';
-import UserType, { IAttendeeInfo } from '../app/types';
+import UserType, { DEFAULT_CS_DOMAIN, IAttendeeInfo } from '../app/types';
 
 import {
     socketJoinRoom,
@@ -46,7 +46,7 @@ export function _initSocket(
     console.log('Socket called init', attendeeInfo);
     let appUrl = config.appUrl
         ? config.appUrl
-        : 'https://dev.awesomereviewstream.com';
+        : DEFAULT_CS_DOMAIN;
     let one2ManyPath = '/svr/ws/one2many';
 
     _csSocket = io(appUrl, {

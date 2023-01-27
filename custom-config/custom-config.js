@@ -1,5 +1,6 @@
+import { DEFAULT_CS_DOMAIN } from "../react/features/base/app/types";
 
-config.appUrl='https://dev.awesomereviewstream.com';
+config.appUrl=DEFAULT_CS_DOMAIN;
 config.apiUrl=config.appUrl + '/svr/api/';
 config.socketUrl=config.appUrl + '/svr/ws/one2many/';
 

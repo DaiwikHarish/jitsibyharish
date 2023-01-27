@@ -4,6 +4,9 @@ export type IStateful = Function | IStore | IReduxState;
 
 export const AppName = 'Awesome Review';
 
+export const DEFAULT_CS_DOMAIN = 'https://dev.awesomereviewvc.com';
+export const DEFAULT_CS_BASE_API_URL = DEFAULT_CS_DOMAIN + '/svr/api/';
+
 export const YYYY_MM_DD_T_HH_MM_SS = 'YYYY-MM-DDTHH:mm:ss';
 export const UI_DATE_FORMAT = "DD/MM/YYYY";
 export const UI_TIMESTAMP_FORMAT = 'HH:mm';

@@ -1,5 +1,7 @@
 /* eslint-disable comma-dangle, no-unused-vars, no-var, prefer-template, vars-on-top */
 
+import { DEFAULT_CS_BASE_API_URL, DEFAULT_CS_DOMAIN } from "./react/features/base/app/types";
+
 /*
  * NOTE: If you add a new option please remember to document it here:
  * https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-configuration
@@ -30,8 +32,8 @@ var config = {
     recordingMeetingId: '14',
 
     //awesomeReviewBaseUrl
-    apiUrl:'https://dev.awesomereviewstream.com/svr/api/',
-    appUrl:"https://dev.awesomereviewstream.com",
+    apiUrl:DEFAULT_CS_BASE_API_URL,
+    appUrl:DEFAULT_CS_DOMAIN,
     // Connection
     //
     hosts: {
