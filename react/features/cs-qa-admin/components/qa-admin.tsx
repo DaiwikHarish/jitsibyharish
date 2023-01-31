@@ -273,8 +273,8 @@ const QuestionAnswer = () => {
                     />{" "}
                     <label className='qa-btn-label' htmlFor="Both">All ({totalQA})</label>
                 </div>
-                <div className="qa-table">
-                    <table className='q-table'>
+                <div className="qa-table-container">
+                    <table className='qa-table'>
                         <thead>
                             <tr className='qa-tr'>
                                 <th className='qa-th' style={{ width: "5%" }}>
@@ -329,7 +329,7 @@ const QuestionAnswer = () => {
                                             />
                                         </td>
                                         <td>
-                                            <p className="selected-qa">{qa.question}</p>
+                                            <p className="qa-selected-question">{qa.question}</p>
                                         </td>
                                         <td className='qa-td'>{qa.fromUserName}</td>
                                         <td className='qa-td'>{qa.questionCreatedAt}</td>
@@ -346,7 +346,7 @@ const QuestionAnswer = () => {
                                             />
                                         </td>
                                         <td>
-                                            <p className="q">{qa.answer}</p>
+                                            <p className="qa-para">{qa.answer}</p>
                                         </td>
                                     </tr>
                                 </tbody>
