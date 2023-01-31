@@ -150,7 +150,7 @@ input[type="radio"] {
 
 } */
 
-.qa-table {
+.qa-table-container {
     width: 97%;
     min-height: 9%;
     max-height: 56%;
@@ -162,7 +162,7 @@ input[type="radio"] {
     overflow: auto;
   }
     
-  table {
+.qa-table {
     border: 0px solid #868e96;
     width: 100%;
     height: 100%;
@@ -170,7 +170,7 @@ input[type="radio"] {
     overflow: scroll;
   }
     
-th {
+.qa-th {
     border-bottom: 1px solid #a4b8d1;
     color: #3d3d3d;
     padding-block: 10px;
@@ -179,10 +179,10 @@ th {
     background-color: #a4b8d1;
     font-size: 15px;
   }
-  tr{
+.qa-tr{
     padding-block: 5px;
   }
-tr:hover {
+.qa-tr:hover {
     background-color: #c1c9ce;
     border-radius: 10px;
     color: #fff;
@@ -192,7 +192,7 @@ tr::selection{
   background-color: #afbac2;
   border-radius: 10px;
   color: #fff;}
-tr:active {
+.qa-tr:active {
     background-color: #afbac2;
     border-radius: 10px;
     color: #fff;
@@ -207,18 +207,31 @@ tr:active {
 .qa-btn-trash{
   cursor: pointer;
 }   
-td {
+.qa-td {
     text-align: center;
     padding-block: 5px;
     font-size: 14px;
     color: #36383c;
     padding-inline: 10px 5px;
   }
-.q{
+.qa-para{
     font-size: 14.5px;
     text-align: left;
-    padding-block: 10px;
+    padding: 10px;
+    color: #36383C;
   }
+.qa-selected-question{
+  font-size: 14.5px;
+    text-align: left;
+    padding: 10px;
+    color: #36383c;
+}
+.selected-footer-qa{
+  font-size: 14.5px;
+  text-align: left;
+  padding-left: 10px;
+  color: #fff;
+}
 .qa-footer{
     display: flex;
     flex-direction: column;
@@ -282,7 +295,7 @@ td {
     cursor: pointer;
     font-size: 14px;
 }
-p{
+.qa-p{
     padding-inline: 8px;
     font-size: larger;
 }
