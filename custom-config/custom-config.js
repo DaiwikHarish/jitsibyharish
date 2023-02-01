@@ -1,6 +1,5 @@
-import { DEFAULT_CS_DOMAIN } from "../react/features/base/app/types";
 
-config.appUrl=DEFAULT_CS_DOMAIN;
+config.appUrl='use correct doamin name here ';
 config.apiUrl=config.appUrl + '/svr/api/';
 config.socketUrl=config.appUrl + '/svr/ws/one2many/';
 
