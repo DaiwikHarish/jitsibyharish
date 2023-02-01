@@ -52,6 +52,8 @@ export function updateAttendee(isAllow: boolean) {
 
 
 export function updateChatScreenStatus(value: boolean) {
+
+    console.log('called updateChatScreenStatus', value)
     return {
         type: CHAT_ADMIN_UPDATE_SCREEN_ON_STATUS,
         isScreenON: value,
@@ -63,11 +65,14 @@ export function updateChatDataFromSocket(chatData: IChatDto) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
         // Step 1: do process
         let attendeeInfo = getState()['features/base/app']?.attendeeInfo;
+
+        console.log('called updateChatDataFromSocket', attendeeInfo)
         if (
             attendeeInfo &&
             (attendeeInfo.userType == UserType.Presenter ||
                 attendeeInfo.userType == UserType.Admin)
         ) {
+            console.log('called updateChatDataFromSocket', attendeeInfo)
             _updateChatDataFromSocket(dispatch, getState, chatData);
         }
     };

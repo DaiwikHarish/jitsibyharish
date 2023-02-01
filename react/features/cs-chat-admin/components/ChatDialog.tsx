@@ -27,10 +27,18 @@ import { IChatDto } from "../../base/cs-socket/types";
 import { hideDialog } from "../../base/dialog";
 
 //@ts-ignore
-import { Icon, IconChatSendBtn,  IconClose, IconLock, IconRefresh, IconUnlock} from "../../base/icons";
+import {
+    Icon,
+    IconChatSendBtn,
+    IconClose,
+    IconLock,
+    IconRefresh,
+    IconUnlock,
+} from "../../base/icons";
 
 import { IAttendeeUnSeenCount } from "../types";
 import { dumpLog } from "../../app/functions.any";
+import { CHAT_ADMIN_SELECTED_ATTENDEE } from "../actionTypes";
 
 const boldStyles = css({
     backgroundColor: "white",
@@ -72,9 +80,14 @@ const ChatDialog = () => {
     useEffect(() => {
         dispatch(updateChatScreenStatus(true));
         dispatch(loadAttendees());
-
+        console.log("Mount ");
         return () => {
+            console.log("Chat admin Unmount ");
             dispatch(updateChatScreenStatus(false));
+            dispatch({
+                type: CHAT_ADMIN_SELECTED_ATTENDEE,
+                selectedAttendeeId: "",
+            });
         };
     }, []);
 
@@ -100,7 +113,9 @@ const ChatDialog = () => {
                 loading={loading}
             />
             <div className={"ca-container"}>
-                <div className={loading ? "ca-loading-left-box" : "ca-left-box"}>
+                <div
+                    className={loading ? "ca-loading-left-box" : "ca-left-box"}
+                >
                     <div className="ca-participants-online">
                         <div className="ca-active-count">
                             <div
@@ -243,7 +258,11 @@ const ChatDialog = () => {
                                 ))}
                     </div>
                 </div>
-                <div className={loading ? "ca-loading-right-box" : "ca-right-box"}>
+                <div
+                    className={
+                        loading ? "ca-loading-right-box" : "ca-right-box"
+                    }
+                >
                     <div className="ca-right-box-header">
                         <div className="ca-right-box-header-left">
                             {list && selected && (
@@ -272,8 +291,12 @@ const ChatDialog = () => {
                                             dispatch(updateAttendee(false));
                                         }
                                     }}
-                                    className={ list.filter((x) => x.id === selected)[0]
-                                        ?.isAllowed ? "ca-btn-danger" : 'ca-btn-safe'}
+                                    className={
+                                        list.filter((x) => x.id === selected)[0]
+                                            ?.isAllowed
+                                            ? "ca-btn-danger"
+                                            : "ca-btn-safe"
+                                    }
                                 >
                                     {list.filter((x) => x.id === selected)[0]
                                         ?.isAllowed ? (
