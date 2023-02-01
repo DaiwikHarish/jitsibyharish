@@ -19,6 +19,7 @@ import {
     SocketErrorMessage,
     PollQuestionDto,
     MeetingRoomStatus,
+    PollQuestionsDto,
 } from './types';
 
 export interface ICSSocketState {
@@ -43,8 +44,8 @@ export interface ICSSocketState {
     // socket qa message
     socketQaMessage?: QANotificationDto | null;
 
-    socketPollStartMessage?: PollQuestionDto | null;
-    socketPollEndMessage?: PollQuestionDto | null;
+    socketPollStartMessage?: PollQuestionsDto | null;
+    socketPollEndMessage?: PollQuestionsDto | null;
 }
 
 const DEFAULT_STATE: ICSSocketState = {

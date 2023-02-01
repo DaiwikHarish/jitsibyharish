@@ -173,7 +173,17 @@ export class PollAnswerOptionDto {
     pollStatistics?: string;
     pollPercentage?: null;
 }
-
+export class PollGroupDto {
+  name: string;
+  meetingId: string;
+  startDateTime?: Date;
+  endDateTime?: Date;
+  isLaunched?: boolean;
+  status?: string;
+  duration: number;
+  createdUserId: string;
+  updatedUserId?: string;
+}
 export class PollQuestionDto {
     id: number;
     question: string;
@@ -193,6 +203,7 @@ export class PollQuestionDto {
 }
 
 export class PollQuestionsDto {
+    pollGroup?: PollGroupDto;
     data: PollQuestionDto[];
     total: number;
 }
