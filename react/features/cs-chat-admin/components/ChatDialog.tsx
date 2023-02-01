@@ -27,14 +27,7 @@ import { IChatDto } from "../../base/cs-socket/types";
 import { hideDialog } from "../../base/dialog";
 
 //@ts-ignore
-import {
-    Icon,
-    IconChatSendBtn,
-    IconClose,
-    IconLock,
-    IconRefresh,
-    IconUnlock,
-} from "../../base/icons";
+import {  Icon, IconChatSendBtn, IconClose,  IconLock,  IconRefresh,  IconUnlock} from "../../base/icons";
 
 import { IAttendeeUnSeenCount } from "../types";
 import { dumpLog } from "../../app/functions.any";
