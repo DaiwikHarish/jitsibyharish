@@ -307,8 +307,8 @@ const ChatDialog = () => {
                             src={IconClose}
                         />
                     </div>
-                    <div className="ca-right-box-body">
-                        {selected &&
+                    {selected ?<div className="ca-right-box-body">
+                        {
                             chatList &&
                             chatList?.map((chat) =>
                                 chat.fromUserId ===
@@ -385,9 +385,9 @@ const ChatDialog = () => {
                                     </div>
                                 )
                             )}
-                    </div>
+                    </div> : <div className='ca-empty-chat-body'>No attendee selected</div> }
 
-                    <div className="ca-right-box-footer">
+                    { selected && <div className="ca-right-box-footer">
                         <div className="ca-send-msg-container">
                             <input
                                 autoFocus={true}
@@ -410,7 +410,7 @@ const ChatDialog = () => {
                                 <Icon size={26} src={IconChatSendBtn} />
                             </button>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </Modal>
