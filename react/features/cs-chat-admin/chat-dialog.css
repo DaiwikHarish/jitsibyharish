@@ -398,3 +398,17 @@
     align-self: center;
     margin-left: 17px;
 }
+
+.ca-empty-chat-body{
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    color: #616161;
+    scrollbar-width: none;
+    padding-inline: 30px;
+    padding-bottom: 25px;
+    align-self: center;
+    text-align: center;
+    font-size: x-large;
+    justify-content: center;
+}
