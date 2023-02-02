@@ -178,9 +178,9 @@ export default class AbstractChat<P: Props> extends Component<P> {
  */
 export function _mapStateToProps(state: Object) {
     const { isOpen,isPollsTabFocused, messages,message, nbUnreadMessages } = state['features/chat'];
-    const { nbUnreadPolls } = state['features/polls'];
+    const { nbUnreadPolls,polls } = state['features/polls'];
     const { socketChatMessage,socketQaMessage,socketPollStartMessage,socketPollEndMessage } = state["features/base/cs-socket"];
-  
+    
     const _localParticipant = getLocalParticipant(state);
     const { disablePolls } = state['features/base/config'];
 

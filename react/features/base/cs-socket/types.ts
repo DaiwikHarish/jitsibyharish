@@ -190,6 +190,7 @@ export class PollQuestionDto {
     updatedAt: string;
     totalUsersAnswered?: string;
     usersAnsweredPercentage?: number;
+    data: any;
 }
 
 export class PollQuestionsDto {

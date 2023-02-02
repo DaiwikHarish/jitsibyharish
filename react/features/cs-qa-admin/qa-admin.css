@@ -207,11 +207,15 @@ tr:active {
 .qa-btn-trash{
   cursor: pointer;
 }   
+
+
+/* don't apply this style affect in all table to alam*/
+
 td {
     text-align: center;
     padding-block: 5px;
     font-size: 14px;
-    color: #36383c;
+    color: #36383c;   
     padding-inline: 10px 5px;
   }
 .q{

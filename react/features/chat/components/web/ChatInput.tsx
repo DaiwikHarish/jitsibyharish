@@ -1,24 +1,23 @@
-import React, { Component, RefObject } from 'react';
-import { WithTranslation } from 'react-i18next';
+import React, { Component, RefObject } from "react";
+import { WithTranslation } from "react-i18next";
 
-import { IReduxState, IStore } from '../../../app/types';
-import { isMobileBrowser } from '../../../base/environment/utils';
-import { translate } from '../../../base/i18n/functions';
-import { IconPlane, IconSmile } from '../../../base/icons/svg';
-import { connect } from '../../../base/redux/functions';
-import Button from '../../../base/ui/components/web/Button';
-import Input from '../../../base/ui/components/web/Input';
-import { areSmileysDisabled } from '../../functions';
-import {IUrlInfo} from '../../../base/app/types'
+import { IReduxState, IStore } from "../../../app/types";
+import { isMobileBrowser } from "../../../base/environment/utils";
+import { translate } from "../../../base/i18n/functions";
+import { IconPlane, IconSmile } from "../../../base/icons/svg";
+import { connect } from "../../../base/redux/functions";
+import Button from "../../../base/ui/components/web/Button";
+import Input from "../../../base/ui/components/web/Input";
+import { areSmileysDisabled } from "../../functions";
+import { IUrlInfo } from "../../../base/app/types";
 
 // @ts-ignore
-import SmileysPanel from './SmileysPanel';
+import SmileysPanel from "./SmileysPanel";
 
 /**
  * The type of the React {@code Component} props of {@link ChatInput}.
  */
 interface IProps extends WithTranslation {
-
     /**
      * Whether chat emoticons are disabled.
      */
@@ -27,22 +26,20 @@ interface IProps extends WithTranslation {
     /**
      * Invoked to send chat messages.
      */
-    dispatch: IStore['dispatch'];
+    dispatch: IStore["dispatch"];
 
     /**
      * Callback to invoke on message send.
      */
     onSend: Function;
 
-    _urlInfo:IUrlInfo;
-
+    _urlInfo: IUrlInfo;
 }
 
 /**
  * The type of the React {@code Component} state of {@link ChatInput}.
  */
 interface IState {
-
     /**
      * User provided nickname when the input text is provided in the view.
      */
@@ -63,8 +60,8 @@ class ChatInput extends Component<IProps, IState> {
     _textArea?: RefObject<HTMLTextAreaElement>;
 
     state = {
-        message: '',
-        showSmileysPanel: false
+        message: "",
+        showSmileysPanel: false,
     };
 
     /**
@@ -106,39 +103,40 @@ class ChatInput extends Component<IProps, IState> {
      */
     render() {
         return (
-          
-                <div id = 'chat-input' >
-                    {!this.props._areSmileysDisabled && this.state.showSmileysPanel && (
-                        <div
-                            className = 'smiley-input'>
-                            <div
-                                className = 'smileys-panel' >
+            <div id="chat-input">
+                {!this.props._areSmileysDisabled &&
+                    this.state.showSmileysPanel && (
+                        <div className="smiley-input">
+                            <div className="smileys-panel">
                                 <SmileysPanel
-                                    onSmileySelect = { this._onSmileySelect } />
+                                    onSmileySelect={this._onSmileySelect}
+                                />
                             </div>
                         </div>
                     )}
-                    <Input
-                        autoFocus = { true }
-                        className = 'chat-input'
-                        id="chatMessage"
-                        icon = { this.props._areSmileysDisabled ? undefined : IconSmile }
-                        iconClick = { this._toggleSmileysPanel }
-                        maxRows = { 5 }
-                        onChange = { this._onMessageChange }
-                        onKeyPress = { this._onDetectSubmit }
-                        placeholder = { this.props.t('chat.messagebox') }
-                        ref = { this._textArea }
-                        textarea = { true }
-                        value = { this.state.message } />
-                    {/* <Button
+                <Input
+                    autoFocus={true}
+                    className="chat-input"
+                    id="chatMessage"
+                    icon={
+                        this.props._areSmileysDisabled ? undefined : IconSmile
+                    }
+                    iconClick={this._toggleSmileysPanel}
+                    maxRows={5}
+                    onChange={this._onMessageChange}
+                    onKeyPress={this._onDetectSubmit}
+                    placeholder={this.props.t("chat.messagebox")}
+                    ref={this._textArea}
+                    textarea={true}
+                    value={this.state.message}
+                />
+                {/* <Button
                         accessibilityLabel = { this.props.t('chat.sendButton') }
                         disabled = { !this.state.message.trim() }
                         icon = { IconPlane }
                         onClick = { this._onSubmitMessage }
                         size = { isMobileBrowser() ? 'large' : 'medium' } /> */}
-                </div>
-         
+            </div>
         );
     }
 
@@ -158,22 +156,18 @@ class ChatInput extends Component<IProps, IState> {
      * @returns {void}
      */
     _onSubmitMessage() {
-        
         const trimmed = this.state.message.trim();
 
         if (trimmed) {
-            
             this.props.onSend(trimmed);
 
-//post message by API (Harish)
+            //post message by API (Harish)
 
-
-            this.setState({ message: '' });
+            this.setState({ message: "" });
 
             // Keep the textarea in focus when sending messages via submit button.
             this._focus();
         }
-
     }
 
     /**
@@ -197,9 +191,11 @@ class ChatInput extends Component<IProps, IState> {
             return;
         }
 
-        if (event.key === 'Enter'
-            && event.shiftKey === false
-            && event.ctrlKey === false) {
+        if (
+            event.key === "Enter" &&
+            event.shiftKey === false &&
+            event.ctrlKey === false
+        ) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -216,7 +212,6 @@ class ChatInput extends Component<IProps, IState> {
      */
     _onMessageChange(value: string) {
         this.setState({ message: value });
-
     }
 
     /**
@@ -231,11 +226,11 @@ class ChatInput extends Component<IProps, IState> {
         if (smileyText) {
             this.setState({
                 message: `${this.state.message} ${smileyText}`,
-                showSmileysPanel: false
+                showSmileysPanel: false,
             });
         } else {
             this.setState({
-                showSmileysPanel: false
+                showSmileysPanel: false,
             });
         }
 
