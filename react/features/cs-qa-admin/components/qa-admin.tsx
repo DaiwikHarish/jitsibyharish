@@ -273,29 +273,29 @@ const QuestionAnswer = () => {
                     />{" "}
                     <label className='qa-btn-label' htmlFor="Both">All ({totalQA})</label>
                 </div>
-                <div className="qa-table">
-                    <table>
+                <div className="qa-table-container">
+                    <table className='qa-table'>
                         <thead>
-                            <tr>
-                                <th style={{ width: "5%" }}>
+                            <tr className='qa-tr'>
+                                <th className='qa-th' style={{ width: "5%" }}>
                                     <Icon
                                         color="#000"
                                         size={18}
                                         src={IconClose}
                                     />
                                 </th>
-                                <th style={{ width: "30%" }}>Question</th>
-                                <th style={{ width: "15%" }}>Asker</th>
-                                <th style={{ width: "13%" }}>Rec'd</th>
-                                <th style={{ width: "12%" }}>Send To</th>
-                                <th style={{ width: "5%" }}>
+                                <th className='qa-th' style={{ width: "30%" }}>Question</th>
+                                <th className='qa-th' style={{ width: "15%" }}>Asker</th>
+                                <th className='qa-th' style={{ width: "13%" }}>Rec'd</th>
+                                <th className='qa-th' style={{ width: "12%" }}>Send To</th>
+                                <th className='qa-th' style={{ width: "5%" }}>
                                     <Icon
                                         color="#079223"
                                         size={18}
                                         src={IconFlag}
                                     />
                                 </th>
-                                <th style={{ width: "30%" }}>Answer</th>
+                                <th className='qa-th' style={{ width: "30%" }}>Answer</th>
                             </tr>
                         </thead>
                         {questionAnswerList
@@ -314,10 +314,10 @@ const QuestionAnswer = () => {
                                         className={
                                             selectedIndex === index
                                                 ? "qa-selected-row"
-                                                : ""
+                                                : 'qa-tr'
                                         }
                                     >
-                                        <td>
+                                        <td className='qa-td'>
                                             <Icon
                                                 className="qa-btn-trash"
                                                 onClick={() =>
@@ -329,12 +329,12 @@ const QuestionAnswer = () => {
                                             />
                                         </td>
                                         <td>
-                                            <p className="q">{qa.question}</p>
+                                            <p className="qa-selected-question">{qa.question}</p>
                                         </td>
-                                        <td>{qa.fromUserName}</td>
-                                        <td>{qa.questionCreatedAt}</td>
-                                        <td>{qa.sendTo}</td>
-                                        <td>
+                                        <td className='qa-td'>{qa.fromUserName}</td>
+                                        <td className='qa-td'>{qa.questionCreatedAt}</td>
+                                        <td className='qa-td'>{qa.sendTo}</td>
+                                        <td className='qa-td'>
                                             <Icon
                                                 color={
                                                     qa.answeredFlag == true
@@ -346,7 +346,7 @@ const QuestionAnswer = () => {
                                             />
                                         </td>
                                         <td>
-                                            <p className="q">{qa.answer}</p>
+                                            <p className="qa-para">{qa.answer}</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -357,8 +357,8 @@ const QuestionAnswer = () => {
             <div className={loading ? "qa-loading-footer" : "qa-footer"}>
                 <div className="qa-footer-q">
                     {" "}
-                    {selectedQA === undefined && <p> Select a question...</p>}
-                    <p>{selectedQA?.question}</p>
+                    {selectedQA === undefined && <p className='selected-footer-qa'> Select a question...</p>}
+                    <p className='selected-footer-qa'>{selectedQA?.question}</p>
                 </div>
                 <textarea
                     rows={3}

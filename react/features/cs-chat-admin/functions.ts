@@ -359,6 +359,8 @@ export async function _updateChatDataFromSocket(
     }
 }
 
+
+
 function _updateChatDataBySocketChatDto(
     socketChatData: IChatDto,
     stateChatData: IChatDto[]
