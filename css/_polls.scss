@@ -345,6 +345,25 @@ height: 100%;
         height: 100%;
     }
 }
+@media (max-width: 964px) {
+.extralarge
+{
+    width: 98vw;
+}
+.pollDialog
+{
+    width: 98vw;
+}
+}
+@media (min-width: 965px) {
+    .extralarge
+    {
+        width: 964px;
+    }.pollDialog
+    {
+        width: 964px;
+    }
+    }
 // .poll-container {
 //     font-size: 14px;
 //     font-weight: 600;
@@ -577,10 +596,11 @@ background-color: #246FE5;
     display: grid;
     place-content: center;
 }
-.pollDialog
-{
-    width: 600px;
-}
+// .pollDialog
+// {
+//     width: 98vw;
+// }
+
 .inputBox
 {
 background: rgb(61, 61, 61);

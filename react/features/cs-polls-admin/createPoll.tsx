@@ -695,7 +695,7 @@ function createPoll() {
                                                                                     height: "52px",
                                                                                     boxSizing:
                                                                                         "border-box",
-                                                                                    width: "85%",
+                                                                                    width: "84%",
                                                                                     marginLeft:
                                                                                         "2%",
                                                                                 }}
@@ -792,7 +792,7 @@ function createPoll() {
                                                     <div
                                                         className="second-division"
                                                         style={{
-                                                            marginLeft: 700,
+                                                            marginLeft: '65%',
                                                         }}
                                                     >
                                                         {PollQtnList.length !==
@@ -888,7 +888,7 @@ function createPoll() {
                                 style={{
                                     display: "flex",
                                     bottom: "5%",
-                                    marginLeft: 700,
+                                    marginLeft: '65%',
                                     justifyContent: "flex-end",
                                     position: "absolute",
                                 }}
