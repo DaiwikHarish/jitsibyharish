@@ -6,7 +6,7 @@ import { Icon, IconTrash } from "../base/icons";
 import { ApiConstants } from "../../../ApiConstants";
 import { ApplicationConstants } from "../../../ApplicationConstants";
 import Poll from "./poll";
-import Button from "../base/ui/components/web/Button";
+import { Button } from "@mui/material";
 import { RingLoader } from "react-spinners";
 
 interface IpollProps {
@@ -789,7 +789,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                                                         height: "52px",
                                                                                         boxSizing:
                                                                                             "border-box",
-                                                                                        width: "85%",
+                                                                                        width: "84%",
                                                                                         marginLeft:
                                                                                             "2%",
                                                                                     }}
@@ -926,7 +926,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                     <div
                                                         className="second-division"
                                                         style={{
-                                                            marginLeft: 700,
+                                                            marginLeft: '65%',
                                                         }}
                                                     >
                                                         {PollQtnList.length !==
@@ -1045,7 +1045,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                 style={{
                                     display: "flex",
                                     bottom: "5%",
-                                    marginLeft: 700,
+                                    marginLeft: '65%',
                                     justifyContent: "flex-end",
                                     position: "absolute",
                                 }}

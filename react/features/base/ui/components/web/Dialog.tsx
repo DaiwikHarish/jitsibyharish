@@ -87,7 +87,7 @@ const useStyles = makeStyles()((theme: Theme) => {
                 width: '664px'
             },
             '&.extralarge': {
-                width: '964px',
+   
                 minHeight:'90vh'
             },
 

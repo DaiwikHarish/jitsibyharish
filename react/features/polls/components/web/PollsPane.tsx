@@ -14,13 +14,7 @@ import { ApplicationConstants } from "../../../../../ApplicationConstants";
 import { clearPollsall, setPollsall } from "../../actions";
 import { IReduxState } from "../../../app/types";
 
-// @ts-ignore
-// import {
-  
-//     IconTimerRed,
-  
-// } from "../../../base/icons";
-// @ts-ignore
+
 import { useDispatch, useSelector } from "react-redux";
 import { browser } from "../../../base/lib-jitsi-meet";
 const PollsPane = (props: AbstractProps) => {
@@ -31,7 +25,7 @@ const PollsPane = (props: AbstractProps) => {
     const socketPollEndMessage= useSelector((state: IReduxState) =>  state["features/base/cs-socket"].socketPollEndMessage);
     const socketPollStartMessage= useSelector((state: IReduxState) => state["features/base/cs-socket"].socketPollStartMessage);
    
- //    Object.assign(polls, pollsAPI)
+
     
      const pollListEndRef = useRef(null);
  
@@ -183,7 +177,7 @@ deadline.setSeconds(
     }, [pollcounttime]);
 
     useEffect(() => {
-       
+        dispatch(clearPollsall());
         fetch(
             ApiConstants.latestPoll
         )
@@ -204,6 +198,7 @@ deadline.setSeconds(
                     .then((selected) => {
             
                 setApitoPoll(selected)
+               
             });
         });
     }, []);
@@ -211,7 +206,9 @@ deadline.setSeconds(
 
     const setApitoPoll = (selected:any) => {
         dispatch(clearPollsall());
-       
+     
+
+
     setGroupname(selected.data[0].groupName);
           
                 let pollNo = 0;
@@ -282,36 +279,18 @@ deadline.setSeconds(
                 if (groupname != null && groupname != undefined) {
                     groupname.innerHTML = allPolls[0].groupname;
                 }
-
+//alert(allPolls[0].showResults)
 
                 if (!allPolls[0].showResults) {
+
+
+
                     setpollResult(false)
 
 
                     let newDate = new Date();
                     let oldDate = new Date(allPolls[0].startDateTime);
-
-
-
-
-
                     newDate.setTime(+newDate - +oldDate);
-
-
-                    let durations= Number(
-                        (+new Date(newDate.getTime()) / 1000)
-                            .toString()
-                            .split(".")[0]
-                    )
-
-                  
-                   setPollcounttime(parseInt(allPolls[0].duration)-durations); 
-
-
-
-
-
-
                     setSeconds(
                         Number(
                             (+new Date(newDate.getTime()) / 1000)
@@ -319,25 +298,45 @@ deadline.setSeconds(
                                 .split(".")[0]
                         )
                     );
+
+                    let durations= Number(
+                        (+new Date(newDate.getTime()) / 1000)
+                            .toString()
+                            .split(".")[0]
+                    )
+
+                    console.log(allPolls[0].duration)
+                  if(allPolls[0].duration==0)
+                  {
+                    setPollcounttime(0)
+                    
+                  }else{
+                   setPollcounttime(parseInt(allPolls[0].duration)-durations); 
+                  }
+
+
+
+
+
+
+                   
                 }else{
                     setpollResult(true)
                     setTimer("00:00:00");
                     setTimerCount("00:00:00");
                 }
                 setallPolls(allPolls);
-               // Object.assign(polls, allPolls);
+               
                dispatch(setPollsall(allPolls));
                 
                 setLoadApi(1);
             }
 
 
-    useEffect(() => {
-     
-        Object.assign(polls, allPollsdata);
-    }, [loadApi]);
 
     return (
+        <>
+        {loadApi == 1 ? 
         <div className="polls-pane-content">
             <div
                 style={{
@@ -396,7 +395,7 @@ deadline.setSeconds(
                 </div>
             </div>
             <div className={"poll-container"}>
-                {loadApi == 1 ? 
+               
                 
                 <>
                 {listPolls.length === 0
@@ -415,9 +414,9 @@ deadline.setSeconds(
                             ref = { listPolls.length - 1 === index ? pollListEndRef : null } />
                     ))}
             </>
-                : null}
+                
             </div>
-        </div>
+        </div>: null}</>
     );
 
     
