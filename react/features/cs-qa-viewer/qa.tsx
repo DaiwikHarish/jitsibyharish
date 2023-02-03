@@ -229,12 +229,15 @@ const MessageContainerQA = () => {
            
         });
 
-        
+        if(allQa[allQa.length-1]!="" && allQa[allQa.length-1]!=null)
+        {
+           
      if(allQa[allQa.length-1].answers!=[])
      {
         allQa[allQa.length-1]=socktedata
 
      }
+    }
         let qaDiv: any = allQa.map(
             (item: { fromUserName: any; answers: any; question: any }) => (
                 <div className="qa-message-group local">
