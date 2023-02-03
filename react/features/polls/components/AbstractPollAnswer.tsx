@@ -58,12 +58,28 @@ export type AbstractProps = {
 
     const participantName = useBoundSelector(getParticipantDisplayName, poll.senderId);
 
-    const setCheckbox = useCallback((index, state) => {
-        const newCheckBoxStates = [ ...checkBoxStates ];
+    const setCheckbox = useCallback((index, statecheck, single, selected) => {
+   
+     
+        if(!selected)
+        {
+      let  state= statecheck?false:true
 
+        const newCheckBoxStates = [ ...checkBoxStates ];
+        if(single)
+        {
+            newCheckBoxStates.map((listQtn: any, indexinside: any) => {
+                newCheckBoxStates[indexinside]= false;
+            });
+        }
         newCheckBoxStates[index] = state;
+
+        
         setCheckBoxState(newCheckBoxStates);
         sendAnalytics(createPollEvent('vote.checked'));
+
+    }
+
     }, [ checkBoxStates ]);
 
     const dispatch = useDispatch();
@@ -157,25 +173,32 @@ pollidsdiv.style.display = "none";
 poll.answers.map((answers)=>
 {
    
-    const answersidsdiv = document.getElementById(answers.id) as HTMLInputElement
-    let type = answersidsdiv.getAttribute("type");
+    const answersidsdiv = document.getElementById("check"+answers.id) as HTMLInputElement
+    
+       // answersidsdiv.innerHTML=''
 
-  
-    if(type=="radio")
-    {
-        answersidsdiv.disabled=true
+       checkBoxStates.map((selected,index)=>
+       { 
+
+         
+        answersidsdiv.innerHTML=''
+ 
+       })
         checkBoxStates.map((selected,index)=>
         { 
+
+          
+            
     if(convertAns_filter[index]==answers.id)
     {
-     answersidsdiv.disabled=false
+        const answersidsdivcheckDisplay = document.getElementById("checkDisplay"+answers.id) as HTMLInputElement
+        
+        answersidsdivcheckDisplay.style.display='block'
  
-    }
+    } 
         })
-    }
-    else{
-        answersidsdiv.disabled=true
-    }
+    
+   
 
 }
 

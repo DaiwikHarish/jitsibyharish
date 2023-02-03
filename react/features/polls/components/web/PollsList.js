@@ -40,9 +40,11 @@ const PollsList = () => {
         Object.assign(polls, [])
    let pollNo=0;
    
-   let allPolls = socketPollStartMessage.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
+   let allPolls = socketPollStartMessage.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
 {
 pollNo=pollNo++;
+
+
 
 let ans=pollAPI.answerOptions.map((ans: { answerLabel: any; id: any; pollStatistics:any; pollPercentage:any; }) =>  
         {
@@ -74,6 +76,8 @@ return(
     "changingVote": pollAPI.isAnswerTypeSingle,
     "senderId": pollAPI.id,
     "showResults": false,
+    "duration":socketPollStartMessage.pollGroup.duration,
+    "startDateTime":socketPollStartMessage.pollGroup.startDateTime,
     "seleted":seleted,
     "lastVote": lastVote,
     "question": pollAPI.question,
@@ -89,6 +93,8 @@ return(
 )
 })
 document.getElementById("groupname").innerHTML =allPolls[0].groupname
+
+
 
 Object.assign(polls, allPolls)
     }
@@ -106,7 +112,7 @@ Object.assign(polls, allPolls)
                 {
                let pollNo=0;
                
-               let allPolls = socketPollEndMessage.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
+               let allPolls = socketPollEndMessage.data.map((pollAPI: { groupName:any; totalUsersAnswered:any; answerOptions: any[]; isAnswerTypeSingle: any; id: any; question: any; }) =>  
         {
             pollNo=pollNo++;
     
@@ -133,6 +139,7 @@ Object.assign(polls, allPolls)
                 "changingVote": pollAPI.isAnswerTypeSingle,
                 "senderId": pollAPI.id,
                 "showResults": true,
+                "duration":pollAPI.duration,
                 "lastVote": lastVote,
                 "question": pollAPI.question,
                 "answers": ans,

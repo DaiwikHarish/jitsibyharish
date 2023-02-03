@@ -26,7 +26,8 @@ export default class PollDialog extends Component {
                 disableEnter={true}
                 className="pollDialog"
                 size='extralarge'
-                titleKey = 'Poll'>
+                
+                titleKey = 'Admin Poll'>
                 <Poll showAddmessage={false}/>
             </Dialogpoll>
         );
