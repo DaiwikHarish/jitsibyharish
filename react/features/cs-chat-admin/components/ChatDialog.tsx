@@ -27,10 +27,11 @@ import { IChatDto } from "../../base/cs-socket/types";
 import { hideDialog } from "../../base/dialog";
 
 //@ts-ignore
-import { Icon, IconChatSendBtn,  IconClose, IconLock, IconRefresh, IconUnlock} from "../../base/icons";
+import {  Icon, IconChatSendBtn, IconClose,  IconLock,  IconRefresh,  IconUnlock} from "../../base/icons";
 
 import { IAttendeeUnSeenCount } from "../types";
 import { dumpLog } from "../../app/functions.any";
+import { CHAT_ADMIN_SELECTED_ATTENDEE } from "../actionTypes";
 
 const boldStyles = css({
     backgroundColor: "white",
@@ -72,9 +73,14 @@ const ChatDialog = () => {
     useEffect(() => {
         dispatch(updateChatScreenStatus(true));
         dispatch(loadAttendees());
-
+        console.log("Mount ");
         return () => {
+            console.log("Chat admin Unmount ");
             dispatch(updateChatScreenStatus(false));
+            dispatch({
+                type: CHAT_ADMIN_SELECTED_ATTENDEE,
+                selectedAttendeeId: "",
+            });
         };
     }, []);
 
@@ -99,10 +105,12 @@ const ChatDialog = () => {
                 color={"white"}
                 loading={loading}
             />
-            <div className={"container"}>
-                <div className={loading ? "loading-left-box" : "Left-box"}>
-                    <div className="Participants-online">
-                        <div className="Active-count">
+            <div className={"ca-container"}>
+                <div
+                    className={loading ? "ca-loading-left-box" : "ca-left-box"}
+                >
+                    <div className="ca-participants-online">
+                        <div className="ca-active-count">
                             <div
                                 style={{
                                     fontSize: "15px",
@@ -134,16 +142,16 @@ const ChatDialog = () => {
                             </div>
                         </div>
                         <Icon
-                            className="Refresh-btn"
+                            className="ca-refresh-btn"
                             onClick={() => dispatch(loadAttendees())}
                             size={26}
                             src={IconRefresh}
                         />
                     </div>
-                    <div className="Search-input-container">
+                    <div className="ca-search-input-container">
                         <input
                             type="text"
-                            className="Search-input"
+                            className="ca-search-input"
                             maxLength={25}
                             name={"searchInput"}
                             onChange={(e) => setSearchInput(e.target.value)}
@@ -151,7 +159,7 @@ const ChatDialog = () => {
                             value={searchInput}
                         />
                     </div>
-                    <div className="Participants-list-container">
+                    <div className="ca-participants-list-container">
                         {list &&
                             list
                                 ?.slice(0)
@@ -176,8 +184,8 @@ const ChatDialog = () => {
                                     <div
                                         className={
                                             selected === user.id
-                                                ? "Participants-list-selected"
-                                                : "Participants-list"
+                                                ? "ca-participants-list-selected"
+                                                : "ca-participants-list"
                                         }
                                         key={user.userId}
                                         onClick={() => {
@@ -187,9 +195,9 @@ const ChatDialog = () => {
                                             setSelected(user.id);
                                         }}
                                     >
-                                        <div className="Participant-list-left">
-                                            <div className="Name-avatar">
-                                                <div className="chat-avatar">
+                                        <div className="ca-participant-list-left">
+                                            <div className="ca-name-avatar">
+                                                <div className="ca-chat-avatar">
                                                     {user.userName
                                                         .split(" ")
                                                         .reduce(
@@ -199,7 +207,7 @@ const ChatDialog = () => {
                                                             ""
                                                         )}
                                                 </div>
-                                                <span className="chat-count">
+                                                <span className="ca-chat-count">
                                                     {user.unSeenCount
                                                         ? user.unSeenCount > 9
                                                             ? "9+"
@@ -207,8 +215,8 @@ const ChatDialog = () => {
                                                         : ""}
                                                 </span>
                                             </div>
-                                            <div className="User-name-container">
-                                                <div className="User-name">
+                                            <div className="ca-user-name-container">
+                                                <div className="ca-user-name">
                                                     {user.userName}
                                                 </div>
                                                 {user.userType ===
@@ -225,12 +233,12 @@ const ChatDialog = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="Participant-list-right">
+                                        <div className="ca-participant-list-right">
                                             {user.isOnline && (
-                                                <div className="Online" />
+                                                <div className="ca-online" />
                                             )}
                                             <Icon
-                                                className="icon-isAllowed"
+                                                className="ca-icon-is-allowed"
                                                 size={16}
                                                 src={
                                                     user.isAllowed
@@ -243,11 +251,15 @@ const ChatDialog = () => {
                                 ))}
                     </div>
                 </div>
-                <div className={loading ? "loading-right-box" : "Right-box"}>
-                    <div className="Right-box-header">
-                        <div className="Right-box-header-left">
+                <div
+                    className={
+                        loading ? "ca-loading-right-box" : "ca-right-box"
+                    }
+                >
+                    <div className="ca-right-box-header">
+                        <div className="ca-right-box-header-left">
                             {list && selected && (
-                                <h5 className="Right-box-header-text">
+                                <h5 className="ca-right-box-header-text">
                                     {
                                         list.filter((x) => x.id === selected)[0]
                                             .emailId
@@ -272,8 +284,12 @@ const ChatDialog = () => {
                                             dispatch(updateAttendee(false));
                                         }
                                     }}
-                                    className={ list.filter((x) => x.id === selected)[0]
-                                        ?.isAllowed ? "btn-danger" : 'btn-safe'}
+                                    className={
+                                        list.filter((x) => x.id === selected)[0]
+                                            ?.isAllowed
+                                            ? "ca-btn-danger"
+                                            : "ca-btn-safe"
+                                    }
                                 >
                                     {list.filter((x) => x.id === selected)[0]
                                         ?.isAllowed ? (
@@ -285,14 +301,14 @@ const ChatDialog = () => {
                             )}
                         </div>
                         <Icon
-                            className="btn-close"
+                            className="ca-btn-close"
                             onClick={_hideDialog}
                             size={26}
                             src={IconClose}
                         />
                     </div>
-                    <div className="Right-box-body">
-                        {selected &&
+                    {selected ?<div className="ca-right-box-body">
+                        {
                             chatList &&
                             chatList?.map((chat) =>
                                 chat.fromUserId ===
@@ -308,9 +324,9 @@ const ChatDialog = () => {
                                     >
                                         <div
                                             key={chat.id}
-                                            className="Right-message"
+                                            className="ca-right-message"
                                         >
-                                            <div className="message">
+                                            <div className="ca-message">
                                                 {chat.message}
                                             </div>
                                         </div>
@@ -340,9 +356,9 @@ const ChatDialog = () => {
                                     >
                                         <div
                                             key={chat.id}
-                                            className="Left-message"
+                                            className="ca-left-message"
                                         >
-                                            <div className="chat-username">
+                                            <div className="ca-chat-username">
                                                 {chat.fromUserName}
                                             </div>
                                             <div
@@ -351,7 +367,7 @@ const ChatDialog = () => {
                                                     wordWrap: "break-word",
                                                     textOverflow: "ellipsis",
                                                 }}
-                                                className="message"
+                                                className="ca-message"
                                             >
                                                 {chat.message}
                                             </div>
@@ -369,13 +385,13 @@ const ChatDialog = () => {
                                     </div>
                                 )
                             )}
-                    </div>
+                    </div> : <div className='ca-empty-chat-body'>No attendee selected</div> }
 
-                    <div className="Right-box-footer">
-                        <div className="Send-msg-container">
+                    { selected && <div className="ca-right-box-footer">
+                        <div className="ca-send-msg-container">
                             <input
                                 autoFocus={true}
-                                className="Send-msg-input"
+                                className="ca-send-msg-input"
                                 name={"message"}
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder={"Send message..."}
@@ -389,12 +405,12 @@ const ChatDialog = () => {
                                     dispatch(sendChatMessage(message));
                                     setMessage("");
                                 }}
-                                className="Send-msg-button"
+                                className="ca-send-msg-button"
                             >
                                 <Icon size={26} src={IconChatSendBtn} />
                             </button>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </Modal>
