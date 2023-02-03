@@ -10,6 +10,9 @@
  */
 export const CHANGE_VOTE = 'CHANGE_VOTE';
 
+export const SET_POLLS_ALL = 'SET_POLLS_ALL';
+
+
 /**
  * The type of the action which signals that we need to clear all polls from the state.
  * For example we are moving to another conference.
@@ -19,7 +22,7 @@ export const CHANGE_VOTE = 'CHANGE_VOTE';
  * }
  */
 export const CLEAR_POLLS = 'CLEAR_POLLS';
-
+export const CLEAR_POLLS_ALL = 'CLEAR_POLLS_ALL';
 /**
  * The type of the action which signals that a new Poll was received.
  *

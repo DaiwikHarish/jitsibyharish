@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-
+// @ts-ignore
 import { PollAnswer, PollResults } from '..';
 import { shouldShowResults } from '../../functions';
 
