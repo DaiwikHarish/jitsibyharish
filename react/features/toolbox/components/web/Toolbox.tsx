@@ -120,7 +120,7 @@ import {
 import { VideoQualityButton, VideoQualityDialog} from "../../../video-quality/components";
 
 // @ts-ignore
-import { PollButton, PollDialog } from "../../../polls-admin";
+import { PollButton, PollDialog } from "../../../cs-polls-admin";
 // @ts-ignore
 import { VideoBackgroundButton } from "../../../virtual-background";
 import WhiteboardButton from "../../../whiteboard/components/web/WhiteboardButton";

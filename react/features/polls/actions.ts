@@ -5,7 +5,9 @@ import {
     RECEIVE_POLL,
     REGISTER_VOTE,
     RESET_NB_UNREAD_POLLS,
-    RETRACT_VOTE
+    RETRACT_VOTE,
+    CLEAR_POLLS_ALL,
+    SET_POLLS_ALL
 } from './actionTypes';
 import { IAnswer, IPoll } from './types';
 
@@ -19,7 +21,9 @@ import { IAnswer, IPoll } from './types';
 export const clearPolls = () => {
     return { type: CLEAR_POLLS };
 };
-
+export const clearPollsall = () => {
+    return { type: CLEAR_POLLS_ALL };
+};
 /**
  * Action to signal that a poll's vote will be changed.
  *
@@ -39,7 +43,13 @@ export const setVoteChanging = (pollId: string, value: boolean) => {
         value
     };
 };
-
+export const setPollsall = (polls:any) => {
+    return { type: SET_POLLS_ALL,
+    polls
+    
+    
+    };
+};
 /**
  * Action to signal that a new poll was received.
  *

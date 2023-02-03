@@ -7,7 +7,9 @@ import {
     RECEIVE_POLL,
     REGISTER_VOTE,
     RESET_NB_UNREAD_POLLS,
-    RETRACT_VOTE
+    RETRACT_VOTE,
+    CLEAR_POLLS_ALL,
+    SET_POLLS_ALL
 } from './actionTypes';
 import { IAnswer, IPoll } from './types';
 
@@ -44,13 +46,29 @@ ReducerRegistry.register<IPollsState>('features/polls', (state = INITIAL_STATE, 
         };
     }
 
+    case SET_POLLS_ALL: {
+        const { polls } = action;
+
+        return {
+            ...state,
+            polls: polls
+            }
+        
+    }
+    
+
     case CLEAR_POLLS: {
         return {
             ...state,
             ...INITIAL_STATE
         };
     }
-
+    case CLEAR_POLLS_ALL: {
+        return {
+          polls:{},
+          nbUnreadPolls:0
+        };
+    }
     // Reducer triggered when a poll is received
     case RECEIVE_POLL: {
         const newState = {

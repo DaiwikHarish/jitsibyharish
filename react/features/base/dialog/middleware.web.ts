@@ -11,7 +11,7 @@ import AddPeopleDialog from '../../invite/components/add-people-dialog/web/AddPe
 import PremiumFeatureDialog from '../../jaas/components/web/PremiumFeatureDialog';
 import KeyboardShortcutsDialog from '../../keyboard-shortcuts/components/web/KeyboardShortcutsDialog';
 // @ts-ignore
-import { PollDialog } from '../../polls-admin';
+import { PollDialog } from '../../cs-polls-admin';
 // @ts-ignore
 import StartLiveStreamDialog from '../../recording/components/LiveStream/web/StartLiveStreamDialog';
 // @ts-ignore
