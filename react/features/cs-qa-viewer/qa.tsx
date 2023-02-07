@@ -14,7 +14,7 @@ const MessageContainerQA = () => {
 
     const inputReferenceinpute = useRef(document.createElement("textarea"));
     const [qa, setqa] = useState("");
-    const [allQa, setAllQa] = useState([]as any);
+    const [allQa, setAllQa] = useState([] as any);
     const [allQaDiv, setAllQaDiv] = useState([]);
 
     //on load first time
@@ -222,22 +222,17 @@ const MessageContainerQA = () => {
         let socktedata: IQuestionDto;
         socktedata = socketQaMessage != null ? socketQaMessage.data : {};
 
-        console.log(socktedata)
-//alert(socktedata)
+        console.log(socktedata);
+        //alert(socktedata)
         allQa.map(function (obj: { id: any; answers: any }) {
-            obj.id === socktedata.id && (obj.answers = socktedata.answers)
-           
+            obj.id === socktedata.id && (obj.answers = socktedata.answers);
         });
 
-        if(allQa[allQa.length-1]!="" && allQa[allQa.length-1]!=null)
-        {
-           
-     if(allQa[allQa.length-1].answers!=[])
-     {
-        allQa[allQa.length-1]=socktedata
-
-     }
-    }
+        if (allQa[allQa.length - 1] != "" && allQa[allQa.length - 1] != null) {
+            if (allQa[allQa.length - 1].answers != []) {
+                allQa[allQa.length - 1] = socktedata;
+            }
+        }
         let qaDiv: any = allQa.map(
             (item: { fromUserName: any; answers: any; question: any }) => (
                 <div className="qa-message-group local">

@@ -48,9 +48,20 @@ function createPoll() {
         const { name, value } = e.target;
         const list: any = [...PollQtnList];
         list[index][name] = value;
+        list[index]["questionNull"] = false;
         setPollQtnList(list);
     };
-
+    const checkpollTitle = (val:any) => {
+   
+   
+        const pollTitleinput = document.getElementById(
+            "pollTitle"
+        ) as HTMLElement;
+        pollTitleinput.style.border = "2px solid #ccc"; 
+        
+    
+        setpollTitle(val)
+        }
     const handlePollAnsChange = (e: any, index: any, indexAns: any) => {
         e.preventDefault();
         const { name, value } = e.target;
@@ -60,7 +71,13 @@ function createPoll() {
         const PollAnslist = [...list[index]["answerOptions"]];
 
         PollAnslist[indexAns]["answerOption"] = value;
-
+        if (
+            PollAnslist[indexAns]["answerNull"].trim() == "" ||
+            PollAnslist[indexAns]["answerNull"]== null
+        ) {
+        PollAnslist[indexAns]["answerNull"] = false;
+        }
+    
         list[index]["answerOptions"] = PollAnslist;
 
         setPollQtnList(list);
@@ -431,11 +448,12 @@ function createPoll() {
                                 type="text"
                                 textarea={true}
                                 value={pollTitle}
-                                onChange={(val) => setpollTitle(val)}
+                                onChange={(val) => checkpollTitle(val)}
                                 id="pollTitle"
                                 name="pollTitle"
                                 className="inputBox"
                                 placeholder="Enter Poll Title"
+                            
                             />
                             {PollQtnList.map(
                                 (singlePollQtn: any, index: any) => (
@@ -613,13 +631,18 @@ function createPoll() {
                                                                                     height="18"
                                                                                     width="18"
                                                                                     viewBox="0 0 18 18"
+                                                                                    preserveAspectRatio="xMidYMid meet"
                                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                                 >
-                                                                                    <path
+                                                       { singlePollQtn.isAnswerTypeSingle ?<circle cx="4" cy="7" r="5" fill="white"></circle>          :               <path
                                                                                         d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
                                                                                         fill="currentColor"
                                                                                         stroke="currentColor"
                                                                                     ></path>
+                                                                            }
+
+
+
                                                                                 </svg>
                                                                             </div>
                                                                         </div>

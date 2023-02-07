@@ -84,7 +84,9 @@ function VoterContainer(props) {
                 </span>
                 <div className="poll-answer-vote-count-container">
                     <span className="poll-answer-vote-count">
-                        ({props.voterCount}) {parseInt(props.pollPercentage)}%
+                        {/* ({props.voterCount})  */}
+                        
+                        {parseInt(props.pollPercentage)}%
                     </span>
                 </div>
             </div>

@@ -32,7 +32,7 @@ const useStyles = makeStyles()((theme: Theme) => {
             background: 'none',
             border: 0,
             appearance: 'none',
-            borderBottom: `2px solid ${theme.palette.ui05}`,
+            borderBottom: `2px solid ${theme.palette.action01}`,
             transition: 'color, border-color 0.2s',
             display: 'flex',
             alignItems: 'center',
@@ -46,14 +46,17 @@ const useStyles = makeStyles()((theme: Theme) => {
 
             '&:focus': {
                 outline: 0,
-                boxShadow: `0px 0px 0px 2px ${theme.palette.focus01}`,
+               // boxShadow: `0px 0px 0px 2px ${theme.palette.focus01}`,
                 border: 0,
                 color: theme.palette.text01
             },
 
             '&.selected': {
                 color: theme.palette.text01,
-                borderColor: theme.palette.action01
+                border:" 2px solid #246FE5",
+                borderBottomWidth:0,
+                borderColor: theme.palette.action01,
+       
             },
 
             '&:disabled': {
