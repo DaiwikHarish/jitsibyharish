@@ -5,6 +5,7 @@ import CreatePoll from "./createPoll";
 
 // @ts-ignore
 import EditPoll from "./editPoll";
+// @ts-ignore
 import Button from "../base/ui/components/web/Button";
 import Input from "../base/ui/components/web/Input";
 import { ApiConstants } from "../../../ApiConstants";

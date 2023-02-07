@@ -72,8 +72,8 @@ function createPoll() {
 
         PollAnslist[indexAns]["answerOption"] = value;
         if (
-            PollAnslist[indexAns]["answerNull"].trim() == "" ||
-            PollAnslist[indexAns]["answerNull"]== null
+            PollAnslist[indexAns].answerOption.trim() == "" ||
+            PollAnslist[indexAns].answerOption == null
         ) {
         PollAnslist[indexAns]["answerNull"] = false;
         }

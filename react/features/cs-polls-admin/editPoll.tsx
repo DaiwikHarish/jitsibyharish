@@ -36,6 +36,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                 {
                     answerLabel: "1",
                     answerOption: "",
+                    answerNull: false,
                     displaySeqNr: 1,
                     operation: "Update",
                     createdUserId: ApplicationConstants.userId,
@@ -129,13 +130,15 @@ const editPoll = ({ showpollid }: IpollProps) => {
         const PollAnslist = [...list[index]["answerOptions"]];
        
         PollAnslist[indexAns]["answerOption"] = value;
+
         if (
-            PollAnslist[indexAns]["answerNull"].trim() == "" ||
-            PollAnslist[indexAns]["answerNull"] == null
+            PollAnslist[indexAns].answerOption.trim() == "" ||
+            PollAnslist[indexAns].answerOption == null
         ) {
         PollAnslist[indexAns]["answerNull"] = false;
         }
-        
+
+
         list[index]["answerOptions"] = PollAnslist;
 
         setPollQtnList(list);
@@ -231,6 +234,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                         answerOption: "",
                         displaySeqNr: 1,
                         operation: "Add",
+                        answerNull: false,
                         createdUserId: ApplicationConstants.userId,
                         updatedUserId: ApplicationConstants.userId,
                         isCorrect: false,
