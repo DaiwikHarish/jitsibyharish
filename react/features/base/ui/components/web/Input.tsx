@@ -59,7 +59,7 @@ const useStyles = makeStyles()((theme: Theme) => {
             height: '40px',
             boxSizing: 'border-box',
             width: '100%',
-
+maxHeight:60,
             '&::placeholder': {
                 color: theme.palette.text02
             },
