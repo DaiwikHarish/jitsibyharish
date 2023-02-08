@@ -51,7 +51,7 @@ function Header({ onCancel, className, isPollsEnabled, t }: Props) {
             role = 'heading'>
 
                 <div style={{width:'100%',marginTop:20, textAlign:'center'}}>
-            { t(isPollsEnabled ? 'chat.titleWithPolls' : 'chat.title') }</div>
+                Chat and Polls</div>
 
 
             <Icon

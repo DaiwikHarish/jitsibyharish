@@ -104,7 +104,7 @@ class ChatInput extends Component<IProps, IState> {
     render() {
         return (
             <div id="chat-input">
-                {!this.props._areSmileysDisabled &&
+                {/* {!this.props._areSmileysDisabled &&
                     this.state.showSmileysPanel && (
                         <div className="smiley-input">
                             <div className="smileys-panel">
@@ -113,7 +113,7 @@ class ChatInput extends Component<IProps, IState> {
                                 />
                             </div>
                         </div>
-                    )}
+                    )} */}
                 <Input
                     autoFocus={true}
                     className="chat-input"

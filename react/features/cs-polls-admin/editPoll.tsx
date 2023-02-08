@@ -132,8 +132,8 @@ const editPoll = ({ showpollid }: IpollProps) => {
         PollAnslist[indexAns]["answerOption"] = value;
 
         if (
-            PollAnslist[indexAns].answerOption.trim() == "" ||
-            PollAnslist[indexAns].answerOption == null
+            PollAnslist[indexAns].answerOption.trim() != "" ||
+            PollAnslist[indexAns].answerOption != null
         ) {
         PollAnslist[indexAns]["answerNull"] = false;
         }
@@ -946,10 +946,8 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                 </ol>
                                                 <div className="poll-footer poll-answer-footer">
                                                     <div
-                                                        className="second-division"
-                                                        style={{
-                                                            marginLeft: '65%',
-                                                        }}
+                                                        className="second-division leftspace"
+                                                      
                                                     >
                                                         {PollQtnList.length !==
                                                             1 && (
@@ -1064,10 +1062,11 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                 <span>+ Add Question </span>
                             </Button>
                             <div
+                            className="leftspace"
                                 style={{
                                     display: "flex",
                                     bottom: "5%",
-                                    marginLeft: '65%',
+                                 
                                     justifyContent: "flex-end",
                                     position: "absolute",
                                 }}

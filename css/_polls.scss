@@ -45,6 +45,9 @@
     }
 }
 
+
+
+
 .poll-answer-field-list, .poll-answer-list, .poll-result-list {
     list-style-type: none;
     padding: 0;
@@ -354,6 +357,10 @@ height: 100%;
 {
     width: 98vw;
 }
+.leftspace{
+
+    margin-left: 65%,
+}
 }
 @media (min-width: 965px) {
     .extralarge
@@ -362,6 +369,10 @@ height: 100%;
     }.pollDialog
     {
         width: 964px;
+    }
+    .leftspace{
+
+        margin-left: 700px,
     }
     }
 // .poll-container {
