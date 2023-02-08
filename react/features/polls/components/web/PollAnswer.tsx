@@ -89,12 +89,17 @@ const PollAnswer = ({
                                     width="20"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"
+                                    preserveAspectRatio="xMidYMid meet"
                                 >
+
+{ poll.changingVote          ?                                    
+
+<circle cx="11" cy="9" r="5" fill="white"></circle>:
                                     <path
                                         d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
                                         fill="currentColor"
                                         stroke="currentColor"
-                                    ></path>
+                                    ></path>}
                                 </svg>
                             </div>
                             <div
@@ -111,12 +116,16 @@ const PollAnswer = ({
                                     width="20"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"
+                                    preserveAspectRatio="xMidYMid meet"
                                 >
+                                { poll.changingVote          ?                                    
+                                
+                                <circle cx="11" cy="9" r="5" fill="white"></circle>:
                                     <path
                                         d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
                                         fill="currentColor"
                                         stroke="currentColor"
-                                    ></path>
+                                    ></path>}
                                 </svg>
                             </div>
 

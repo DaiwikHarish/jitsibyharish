@@ -5,6 +5,7 @@ import CreatePoll from "./createPoll";
 
 // @ts-ignore
 import EditPoll from "./editPoll";
+// @ts-ignore
 import Button from "../base/ui/components/web/Button";
 import Input from "../base/ui/components/web/Input";
 import { ApiConstants } from "../../../ApiConstants";
@@ -365,7 +366,7 @@ const poll = ({ showAddmessage }: IpollProps) => {
 
         let ansDiv = allPolls.map((item: any) =>
             !item.showResults ? (
-                <div className="poll-answer" style={{ margin: "36px 1px" }}>
+                <div className="poll-answer" style={{ margin: "36px 1px", paddingBottom:50, }}>
                     <div className="poll-header">
                         <div className="poll-question" style={{ fontSize: 18 }}>
                             <span>{item.question}</span>
@@ -409,7 +410,7 @@ const poll = ({ showAddmessage }: IpollProps) => {
                 </div>
             ) : (
                 <div>
-                    <div className="poll-results">
+                    <div className="poll-results" style={{paddingBottom:50,}}>
                         <div className="poll-header">
                             <div
                                 className="poll-question"
@@ -419,8 +420,8 @@ const poll = ({ showAddmessage }: IpollProps) => {
                             </div>
                         </div>
                         <div style={{ paddingBottom: 10, color: "#246fe5" }}>
-                            {item.totalUsersAnswered} (
-                            {parseInt(item.usersAnsweredPercentage)}%) answered
+                            {/* {item.totalUsersAnswered}  */}
+                            {parseInt(item.usersAnsweredPercentage)}% answered
                         </div>
                         <ol className="poll-result-list">
                             {item.answers.map((ans: any) => (
@@ -444,7 +445,7 @@ const poll = ({ showAddmessage }: IpollProps) => {
                                         <div className="poll-answer-vote-count-container">
                                             <span className="poll-answer-vote-count">
                                                 {" "}
-                                                {ans.pollStatistics}{" "}
+                                                {/* {ans.pollStatistics}{" "} */}
                                                 {parseInt(ans.pollPercentage) +
                                                     "%"}
                                             </span>
@@ -692,41 +693,25 @@ const poll = ({ showAddmessage }: IpollProps) => {
                         }}
                     >
 
-<Button
-                                    type="button"
-                                    onClick={() => {
-                                        seterror(false)
-                                        setLoading(false);
-                                    }}
-                                    className="add-btn"
-                                    style={{
-                                        color: "#040404",
-                                        borderRadius: "6px",
-                                        padding: "5px 10px",
-                                        display: "flex",
-                                        WebkitAlignItems: "center",
-                                        WebkitBoxAlign: "center",
-
-                                        alignItems: "center",
-                                        WebkitBoxPack: "center",
-
-                                        WebkitJustifyContent: "center",
-                                        justifyContent: "center",
-                                        border: "0",
-                                        fontSize: "14px",
-                                        lineHeight: "20px",
-                                        fontWeight: "600",
-                                        letterSpacing: "0",
-                                        WebkitTransition: "background .2s",
-                                        transition: "background .2s",
-                                        cursor: "pointer",
-                                        backgroundColor: "#E0E0E0",
-                                    }}
-                                >
-                                    <span>OK </span>
-                                </Button>
                    
-                    
+                                <button
+                                                            aria-label="Launch the poll"
+                                                            onClick={() => {
+                                                                seterror(false)
+                                                                setLoading(false);
+                                                            }}
+                                                            className="pollbtn"
+                                                            style={{
+                                                                width: "50%",
+                                                                fontWeight:
+                                                                    "bold",
+                                                                fontSize: 18,
+                                                            }}
+                                                            title="Launch the poll"
+                                                            type="button"
+                                                        >
+                                                            OK
+                                                        </button>
                     </div>
                 </div>
 </>:

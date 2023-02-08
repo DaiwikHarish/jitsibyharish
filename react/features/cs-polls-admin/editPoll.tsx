@@ -21,7 +21,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
     const [error, seterror] = useState(false);
     const [errormsg, setErrormsg] = useState(false);
 
-
+ 
     const [PollQtnList, setPollQtnList] = useState([
         {
             question: "",
@@ -36,6 +36,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                 {
                     answerLabel: "1",
                     answerOption: "",
+                    answerNull: false,
                     displaySeqNr: 1,
                     operation: "Update",
                     createdUserId: ApplicationConstants.userId,
@@ -105,10 +106,17 @@ const editPoll = ({ showpollid }: IpollProps) => {
             });
     }
     const handlePollQtnChange = (e: any, index: any) => {
+  
+       
+
         e.preventDefault();
+
+     
+
+        
         const { name, value } = e.target;
         const list: any = [...PollQtnList];
-
+        list[index]["questionNull"] = false;
         list[index][name] = value;
         setPollQtnList(list);
     };
@@ -116,13 +124,21 @@ const editPoll = ({ showpollid }: IpollProps) => {
     const handlePollAnsChange = (e: any, index: any, indexAns: any) => {
         e.preventDefault();
         const { name, value } = e.target;
-
+ 
         const list = [...PollQtnList];
-
+        
         const PollAnslist = [...list[index]["answerOptions"]];
-        console.log(indexAns);
+       
         PollAnslist[indexAns]["answerOption"] = value;
-        console.log(PollAnslist[indexAns]["answerOption"]);
+
+        if (
+            PollAnslist[indexAns].answerOption.trim() == "" ||
+            PollAnslist[indexAns].answerOption == null
+        ) {
+        PollAnslist[indexAns]["answerNull"] = false;
+        }
+
+
         list[index]["answerOptions"] = PollAnslist;
 
         setPollQtnList(list);
@@ -218,6 +234,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                         answerOption: "",
                         displaySeqNr: 1,
                         operation: "Add",
+                        answerNull: false,
                         createdUserId: ApplicationConstants.userId,
                         updatedUserId: ApplicationConstants.userId,
                         isCorrect: false,
@@ -255,19 +272,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
             if (valid == 0) {
                 setLoading(true);
 
-                //   const PATCHGroupMethod = {
-                //     method: 'PATCH', // Method itself
-                //     headers: {
-                //         'Content-type': 'application/json; charset=UTF-8', // Indicates the content
-                //     },
-                //     body: JSON.stringify({  id:showpollid, name: pollTitle, meetingId:  ApplicationConstants.meetingId, updatedUserId:  ApplicationConstants.userId}),
-                // };
-
-                //   fetch(ApiConstants.pollGroup+"/id="+  showpollid, PATCHGroupMethod)
-                //   .then((response) => response.json())
-                //   .then((data) => {
-
-                //  // setgroupId(data.id)
+     
 
                 const list: any = [...PollQtnList];
 
@@ -341,7 +346,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                 setPollQtnList(list);
             }
         } else {
-            var pollTitleinput = document.getElementById(
+            const pollTitleinput = document.getElementById(
                 "pollTitle"
             ) as HTMLElement;
             pollTitleinput.style.border = "2px solid red";
@@ -409,7 +414,17 @@ const editPoll = ({ showpollid }: IpollProps) => {
         );
         setPollQtnList(list);
     };
+    const checkpollTitle = (val:any) => {
+   
+   
+    const pollTitleinput = document.getElementById(
+        "pollTitle"
+    ) as HTMLElement;
+    pollTitleinput.style.border = "2px solid #ccc"; 
+    
 
+    setpollTitle(val)
+    }
     return (
         <>
             {" "}
@@ -519,8 +534,9 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                 type="text"
                                 textarea={true}
                                 value={pollTitle}
-                                onChange={(val) => setpollTitle(val)}
+                                onChange={(val) => checkpollTitle(val)}
                                 name="pollTitle"
+                                id="pollTitle"
                                 className="inputBox"
                                 placeholder="Enter Poll Title"
                             />
@@ -575,7 +591,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                                         "6px",
                                                                     border: singlePollQtn.questionNull
                                                                         ? "1px solid red"
-                                                                        : "1px solid rgb(204, 204, 204)",
+                                                                        : "1px solid #cccccc",
 
                                                                     height: "65px",
                                                                     boxSizing:
@@ -612,7 +628,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                                         "10px 16px",
                                                                     borderRadius:
                                                                         "6px",
-                                                                    border: "1px solid rgb(204, 204, 204)",
+                                                                    border: "1px solid #cccccc",
                                                                     height: "50px",
                                                                     boxSizing:
                                                                         "border-box",
@@ -707,13 +723,19 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                                                         height="18"
                                                                                         width="18"
                                                                                         viewBox="0 0 18 18"
-                                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                                    >
+                                                                                        preserveAspectRatio="xMidYMid meet"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                    {singlePollQtn.isAnswerTypeSingle           ?                                    
+  <g transform="translate(9, 9)">
+
+<circle cx="0" cy="0" r="5" fill="white"></circle>
+</g>
+:
                                                                                         <path
                                                                                             d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
                                                                                             fill="currentColor"
                                                                                             stroke="currentColor"
-                                                                                        ></path>
+                                                                                        ></path>}
                                                                                     </svg>
                                                                                 </div>
                                                                             </div>
@@ -784,7 +806,7 @@ const editPoll = ({ showpollid }: IpollProps) => {
                                                                                             "6px",
                                                                                         border: answerOptions.answerNull
                                                                                             ? "1px solid red"
-                                                                                            : "1px solid rgb(204, 204, 204)",
+                                                                                            : "1px solid #cccccc",
 
                                                                                         height: "52px",
                                                                                         boxSizing:
