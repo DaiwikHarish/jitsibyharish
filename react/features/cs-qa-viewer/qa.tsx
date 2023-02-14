@@ -133,6 +133,21 @@ const MessageContainerQA = () => {
         fetch(ApiConstants.question)
             .then((response) => response.json())
             .then((data) => {
+
+              
+                data=    data.sort((a:any, b:any) => {
+                    const aUpdated = a.answers[0] ? a.answers[0].updatedAt : a.updatedAt;
+                    const bUpdated = b.answers[0] ? b.answers[0].updatedAt : b.updatedAt;
+                    return +new Date(aUpdated) - +new Date(bUpdated);
+                  });
+
+                //   data=    data.sort((a, b) => {
+                //     const aUpdated = a[0] ? a[0].updatedAt : a.updatedAt;
+                //     const bUpdated = b[0] ? b[0].updatedAt : b.updatedAt;
+                //     return new Date(bUpdated) - new Date(aUpdated);
+                //   });
+                 
+                 
                 let qaDiv = data.map(
                     (item: {
                         fromUserName: any;
