@@ -222,17 +222,20 @@ const MessageContainerQA = () => {
         let socktedata: IQuestionDto;
         socktedata = socketQaMessage != null ? socketQaMessage.data : {};
 
-        console.log(socktedata);
-        //alert(socktedata)
-        allQa.map(function (obj: { id: any; answers: any }) {
-            obj.id === socktedata.id && (obj.answers = socktedata.answers);
+        // allQa.map(function (obj: { id: any; answers: any }) {
+        //     obj.id === socktedata.id && (obj.answers = socktedata.answers);
+        // });
+        allQa.map(function (obj: { id: any; answers: any },i:any) {
+            if(obj.id === socktedata.id) {allQa.splice(i,1)}
         });
+        allQa[allQa.length]=socktedata
 
-        if (allQa[allQa.length - 1] != "" && allQa[allQa.length - 1] != null) {
-            if (allQa[allQa.length - 1].answers != []) {
-                allQa[allQa.length - 1] = socktedata;
-            }
-        }
+        // if (allQa[allQa.length - 1] != "" && allQa[allQa.length - 1] != null) {
+        //     if (allQa[allQa.length - 1].answers != []) {
+        //         allQa[allQa.length - 1] = socktedata;
+        //     }
+        // }
+        setAllQa(allQa);
         let qaDiv: any = allQa.map(
             (item: { fromUserName: any; answers: any; question: any }) => (
                 <div className="qa-message-group local">

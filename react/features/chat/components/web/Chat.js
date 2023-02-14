@@ -381,8 +381,16 @@ class Chat extends AbstractChat<Props> {
         if (
             event.key === 'Enter' &&
             event.shiftKey === false &&
-            event.ctrlKey === false
-        ) {
+            event.ctrlKey === false &&
+            this.state.messageInput.trim() != '' &&
+            this.state.messageInput.trim() !=
+                null &&
+            this.state.messageInput.trim() !=
+                undefined
+        ) 
+        
+        
+        {
             this.setState({ messageInput: '' });
             this._setMessage();
             event.preventDefault();
@@ -466,12 +474,8 @@ class Chat extends AbstractChat<Props> {
                                 autoFocus={true}
                                 className="chat-input"
                                 id="chatMessage"
-                                icon={
-                                    this.props._areSmileysDisabled
-                                        ? undefined
-                                        : IconSmile
-                                }
-                                iconClick={this._toggleSmileysPanel}
+                              
+                               
                                 maxRows={5}
                                 onChange={(e) => {
                                     this._onMessageChange(e);

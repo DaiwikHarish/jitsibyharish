@@ -698,48 +698,61 @@ class Toolbox extends Component<IProps, AppState> {
                 if (
                     this.props._socketReceivedCommandMessage.permissionType ==
                     "DISABLE_RAISE_HAND"
-                ) {
+                ) { if(this.props._clientType === OptionType.ENABLE_ALL)
+                    {
                     this.props.dispatch(raiseHand(false));
                     this.setState({ enableRaiseHand: false });
+                    }
                 }
 
                 if (
                     this.props._socketReceivedCommandMessage.permissionType ==
                     "MUTE_MIC"
                 ) {
+                   if(this.props._clientType === OptionType.ENABLE_ALL)
+                   {
                     this.props.dispatch(setAudioMuted(true));
                     this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
 
                     this.setState({ enableMike: false });
+                   }
                 }
 
                 if (
                     this.props._socketReceivedCommandMessage.permissionType ==
                     "DISABLE_CAMERA"
                 ) {
+                    if(this.props._clientType === OptionType.ENABLE_ALL)
+                    {
                     this.props.dispatch(setVideoMuted(true));
                     this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
 
-                    this.setState({ enableCamera: false });
+                    this.setState({ enableCamera: false });}
                 }
                 if (
                     this.props._socketReceivedCommandMessage.permissionType ==
                     "ENABLE_CAMERA"
                 ) {
+                    if(this.props._clientType === OptionType.ENABLE_ALL)
+                    {
                     this.props.dispatch(setVideoMuted(false));
                     this.props.dispatch(muteLocal(false, MEDIA_TYPE.VIDEO));
 
                     this.setState({ enableCamera: true });
+                    }
                 }
 
                 if (
                     this.props._socketReceivedCommandMessage.permissionType ==
                     "UNMUTE_MIC"
                 ) {
+                    if(this.props._clientType === OptionType.ENABLE_ALL)
+                    {
                     this.props.dispatch(setAudioMuted(false));
 
                     this.props.dispatch(muteLocal(false, MEDIA_TYPE.AUDIO));
                     this.setState({ enableMike: true });
+                    }
                 }
             }
         }
