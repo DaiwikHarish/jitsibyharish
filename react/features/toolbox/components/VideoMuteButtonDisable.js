@@ -45,9 +45,9 @@ type Props = AbstractButtonProps & {
  * @augments AbstractVideoMuteButton
  */
 class VideoMuteButtonDisable extends AbstractVideoMuteButton<Props, *> {
-    accessibilityLabel = 'Disable by Admin';
-    label = 'Disable by Admin';
-    tooltip = 'Disable by Admin';
+    accessibilityLabel = 'Disabled by Admin';
+    label = 'Disabled by Admin';
+    tooltip = 'Disabled by Admin';
 
     /**
      * Initializes a new {@code VideoMuteButton} instance.

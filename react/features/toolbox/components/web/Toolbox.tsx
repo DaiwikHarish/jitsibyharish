@@ -1687,7 +1687,7 @@ class Toolbox extends Component<IProps, AppState> {
 
                 this._doToggleRaiseHand();
             }
-            //alert("Disable by Admin")
+            //alert("Disabled by Admin")
         }
     }
 
@@ -1709,7 +1709,7 @@ class Toolbox extends Component<IProps, AppState> {
             this._closeOverflowMenuIfOpen();
             this._doToggleScreenshare();
         } else {
-            //alert("Disable by Admin")
+            //alert("Disabled by Admin")
         }
     }
     _onToolbarToggleScreenshareAdmin() {
