@@ -191,23 +191,7 @@ const ParticipantContextMenu = ({
 
     if ((_attendeeInfo?.userType != UserType.Viewer && !showVolumeSlider) && !showVolumeSlider) {
         if (isModerationSupported) {
-            // buttons.push(<AskToUnmuteButton
-            //     isAudioForceMuted = { _isAudioForceMuted }
-            //     isVideoForceMuted = { _isVideoForceMuted }
-            //     key = 'ask-unmute'
-            //     participantID = { _getCurrentParticipantId() } />
-            // );
-
-
-            // if (!showVolumeSlider && disableRemoteMute) {
-
-            //     buttons2.push(<MuteNewButton key="MuteNewButton"
-            //     mute={false}
-            //     participantIDbyjitsi = {participant!.id}
-            //     participantID = {participant!=undefined? participant!.name!.split('|')[2]:null}/>);
-
-
-            // }
+         
             buttons.push(
                 <MuteButton
                     key='mute'
@@ -244,14 +228,7 @@ const ParticipantContextMenu = ({
                 );
             }
 
-            // if (!disableGrantModerator && !isBreakoutRoom) {
-            //     buttons2.push(
-            //         <GrantModeratorButton
-            //             key = 'grant-moderator'
-            //             participantID = { _getCurrentParticipantId() } />
-            //     );
-            // }
-
+          
             if (!disableKick) {
                 buttons2.push(
                     <KickButton
@@ -267,29 +244,19 @@ const ParticipantContextMenu = ({
 
                 
             }
-            // if (!showVolumeSlider) {
-
-            //     buttons2.push(<RaisedHandEnbled key="RaisedHandEnbled"
-            //     participantIDbyjitsi = {participant.id}
-            //     participantID = { participant!.name!.replace("Viewer","").replace("Viewer","").split('|')[0].replace("|","").trim()}/>);
-            // }
+          
 
         }
 
     }
 
-    // if (stageFilmstrip) {
+
     buttons2.push(<TogglePinToStageButton
         key='pinToStage'
         participantID={_getCurrentParticipantId()} />);
-    // }
+  
 
-    // if (!disablePrivateChat) {
-    //     buttons2.push(<PrivateMessageMenuButton
-    //         key = 'privateMessage'
-    //         participantID = { _getCurrentParticipantId() } />
-    //     );
-    // }
+ 
 
     if (thumbnailMenu && isMobileBrowser()) {
         buttons2.push(

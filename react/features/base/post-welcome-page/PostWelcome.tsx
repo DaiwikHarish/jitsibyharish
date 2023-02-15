@@ -37,7 +37,11 @@ export class PostWelcome extends Component<Props> {
 
     onValueChange(event: any) {
         //@ts-ignore
+
+       
         this.props.updateClientType(event.target.value);
+
+        
     }
 
     componentDidMount() {

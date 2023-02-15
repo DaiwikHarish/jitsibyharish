@@ -176,9 +176,13 @@ const ContextMenu = ({
             const outerHeight = getComputedOuterHeight(container);
             const height = Math.min(MAX_HEIGHT, outerHeight);
 
+            // container.style.top = offsetTop + height > offsetHeight + scrollTop
+            //     ? `${offsetTop - outerHeight}`
+            //     : `${offsetTop}`;
+
             container.style.top = offsetTop + height > offsetHeight + scrollTop
-                ? `${offsetTop - outerHeight}`
-                : `${offsetTop}`;
+            ? `${offsetTop}`
+            : `${offsetTop}`;
 
             setIsHidden(false);
         } else {

@@ -187,14 +187,20 @@ poll.answers.map((answers)=>
         checkBoxStates.map((selected,index)=>
         { 
 
-          
+            const answersidcheck = document.getElementById(answers.id) as HTMLInputElement
+       
+            answersidcheck.disabled=true;
             
     if(convertAns_filter[index]==answers.id)
     {
         const answersidsdivcheckDisplay = document.getElementById("checkDisplay"+answers.id) as HTMLInputElement
         
         answersidsdivcheckDisplay.style.display='block'
- 
+
+        // answersidcheck.setAttribute("onclick","his.checked = false;");
+
+
+       
     } 
         })
     

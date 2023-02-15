@@ -541,6 +541,16 @@ class Toolbox extends Component<IProps, AppState> {
                             this.setState({ enableRaiseHand: true });
                         }
                     });
+
+                    if(this.props._clientType === OptionType.ENABLE_ALL)
+                    {
+                        this.props.dispatch(setAudioMuted(true));
+                        this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
+                        this.props.dispatch(setVideoMuted(true));
+                        this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
+                    }
+
+
             });
 
         const {

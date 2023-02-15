@@ -578,7 +578,7 @@ background-color: #246FE5;
     transition: .2s;
 }
 .pollcheckbox{
-    appearance: none;
+   
     background-color: transparent;
     margin: 0;
     font: inherit;
@@ -592,9 +592,22 @@ background-color: #246FE5;
     place-content: center;
 }
 
-
+.radio[disabled] {
+    background-color: blue;
+}
+input[type="radio"][disabled] 
+{
+    background-color: blue;
+}
+input[type="checkbox"][disabled] 
+{
+    background-color: blue;
+}
+.disabled[disabled] {
+    background-color: blue;
+}
 .pollRadio{
-    appearance: none;
+ 
     background-color: transparent;
     margin: 0;
     font: inherit;
