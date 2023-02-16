@@ -81,26 +81,14 @@ const PollAnswer = ({
                                 style={{
                                     opacity:poll.seleted ? poll.lastVote[index]?1:0: checkBoxStates[index] ? 1 : 0,
                                 }}
-                                className="jitsi-icon pollActiveAreacheckmark"
+                               
+                                className={
+                                    poll.changingVote
+                                        ? "jitsi-icon pollActiveAreaRadio"
+                                        : "jitsi-icon pollActiveAreacheckmark"
+                                }
                             >
-                                {/* <svg
-                                    fill="none"
-                                    height="20"
-                                    width="20"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    preserveAspectRatio="xMidYMid meet"
-                                > */}
-
-{/* { poll.changingVote          ?                                    
-
-<circle cx="11" cy="9" r="5" fill="white"></circle>:
-                                    <path
-                                        d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                    ></path>} */}
-                                {/* </svg> */}
+                            
                             </div>
                             <div
                                id = {"checkDisplay"+answer.id }
@@ -108,25 +96,32 @@ const PollAnswer = ({
                                    display:'none',
                                    opacity:1
                                 }}
-                                className="jitsi-icon pollActiveAreacheckmark"
+                                className={
+                                    poll.changingVote
+                                        ? "jitsi-icon pollActiveAreaRadio"
+                                        : "jitsi-icon pollActiveAreacheckmark"
+                                }
                             >
-                                {/* <svg
+                                <svg
                                     fill="none"
-                                    height="20"
-                                    width="20"
-                                    viewBox="0 0 20 20"
+                                    height="18"
+                                    width="18"
+                                    viewBox="0 0 18 18"
                                     xmlns="http://www.w3.org/2000/svg"
                                     preserveAspectRatio="xMidYMid meet"
                                 >
                                 { poll.changingVote          ?                                    
                                 
-                                <circle cx="11" cy="9" r="5" fill="white"></circle>:
+                                <circle cx="11" cy="9" r="5" fill="#246FE5"></circle>:
                                     <path
                                         d="M4.948 9.047a.524.524 0 0 0-.785 0 .643.643 0 0 0 0 .855l2.683 2.92c.217.238.57.237.787 0l6.205-6.79a.643.643 0 0 0-.002-.856.524.524 0 0 0-.785.002L7.238 11.54l-2.29-2.492Z"
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                    ></path>}
-                                </svg> */}
+                                        fill="white"
+                                        stroke="white"
+                                    ></path>
+                                    
+                                    
+                                    }
+                                </svg>
                             </div>
 
 

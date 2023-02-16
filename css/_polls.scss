@@ -82,7 +82,7 @@ ol.poll-result-list {
     margin-bottom: 4;
 }
 
-// Needed to override atlaskit default blue color
+// Needed to override atlaskit default #246FE5 color
 .poll-create-container .jsYMHu {
     background: #292929;
     border-color: #808090;
@@ -576,6 +576,17 @@ background-color: #246FE5;
     opacity: 0;
     -webkit-transition: .2s;
     transition: .2s;
+    background-color: #246FE5;
+}
+.pollActiveAreaRadio
+{
+    position: absolute;
+    left: 1px;
+    top: 3px;
+    opacity: 0;
+    -webkit-transition: .2s;
+    transition: .2s;
+   
 }
 .pollcheckbox{
    
@@ -593,19 +604,9 @@ background-color: #246FE5;
 }
 
 .radio[disabled] {
-    background-color: blue;
+    background-color: #246FE5;
 }
-input[type="radio"][disabled] 
-{
-    background-color: blue;
-}
-input[type="checkbox"][disabled] 
-{
-    background-color: blue;
-}
-.disabled[disabled] {
-    background-color: blue;
-}
+
 .pollRadio{
  
     background-color: transparent;

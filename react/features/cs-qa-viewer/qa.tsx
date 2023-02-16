@@ -5,6 +5,11 @@ import { IReduxState } from "../app/types";
 import { IQuestionDto, QANotificationDto } from "../base/cs-socket/types";
 import { ApiConstants } from "../../../ApiConstants";
 import { ApplicationConstants } from "../../../ApplicationConstants";
+import Button from "../base/ui/components/web/Button";
+// @ts-ignore
+import { IconPlane } from "../base/icons";
+// @ts-ignore
+import { isMobileBrowser } from "../base/environment/utils";
 
 const MessageContainerQA = () => {
     const inputReference = useRef(document.createElement("div"));
@@ -69,11 +74,12 @@ const MessageContainerQA = () => {
                                 }}
                                 className="css-qa-input icon-input"
                                 placeholder="Your Question here"
-                                style={{ height: 40 }}
+                                style={{ height: 40,width: '95%',
+                                    marginLeft: "3%" }}
                             ></textarea>
                         </div>
                     </div>
-                    <button
+                    {/* <button
                         aria-label="Send"
                         onClick={() => qaSend(qa)}
                         className="iconButton qabackbtn"
@@ -96,6 +102,30 @@ const MessageContainerQA = () => {
                             </svg>
                         </div>
                     </button>
+                */}
+               
+               <Button
+                            
+                            disabled={  qa.trim() != '' &&
+                                qa.trim() !=
+                                    null &&
+                                qa.trim() !=
+                                    undefined
+                           ?false:true}
+                                icon={IconPlane}
+                                onClick={() => {
+                                    if (
+                                        qa.trim() != '' &&
+                                        qa.trim() !=
+                                            null &&
+                                        qa.trim() !=
+                                            undefined
+                                    ) {
+                                        qaSend(qa)
+                                    }
+                                }}
+                                size={isMobileBrowser() ? 'large' : 'medium'}
+                            />
                 </div>
             </div>{" "}
         </div>

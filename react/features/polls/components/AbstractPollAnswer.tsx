@@ -190,6 +190,8 @@ poll.answers.map((answers)=>
             const answersidcheck = document.getElementById(answers.id) as HTMLInputElement
        
             answersidcheck.disabled=true;
+
+           
             
     if(convertAns_filter[index]==answers.id)
     {
@@ -197,7 +199,7 @@ poll.answers.map((answers)=>
         
         answersidsdivcheckDisplay.style.display='block'
 
-        // answersidcheck.setAttribute("onclick","his.checked = false;");
+       
 
 
        

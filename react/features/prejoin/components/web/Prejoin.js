@@ -358,7 +358,7 @@ class Prejoin extends Component<Props, State> {
         };
 
         return {
-            noAudio,
+           // noAudio,
             byPhone
         };
     }

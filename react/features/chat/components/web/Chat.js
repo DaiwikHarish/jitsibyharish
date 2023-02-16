@@ -474,11 +474,14 @@ class Chat extends AbstractChat<Props> {
                                 autoFocus={true}
                                 className="chat-input"
                                 id="chatMessage"
-                              
+                              style={{width: "95%",
+                                marginLeft: "3%"}}
                                
                                 maxRows={5}
                                 onChange={(e) => {
                                     this._onMessageChange(e);
+                                   
+
                                 }}
                                 onKeyPress={(e) => {
                                     this._onDetectSubmit(e);
@@ -490,6 +493,13 @@ class Chat extends AbstractChat<Props> {
                             />
 
                             <Button
+                            
+                            disabled={  this.state.messageInput.trim() != '' &&
+                                this.state.messageInput.trim() !=
+                                    null &&
+                                this.state.messageInput.trim() !=
+                                    undefined
+                           ?false:true}
                                 icon={IconPlane}
                                 onClick={() => {
                                     if (
