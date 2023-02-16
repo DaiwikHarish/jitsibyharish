@@ -542,7 +542,7 @@ class Toolbox extends Component<IProps, AppState> {
                         }
                     });
 
-                    if(this.props._clientType === OptionType.ENABLE_ALL)
+                    if(this.props._clientType === OptionType.ENABLE_CHAT_POLL)
                     {
                         this.props.dispatch(setAudioMuted(true));
                         this.props.dispatch(muteLocal(true, MEDIA_TYPE.AUDIO));
