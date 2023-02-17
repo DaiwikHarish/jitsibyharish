@@ -199,7 +199,7 @@ poll.answers.map((answers)=>
         
         answersidsdivcheckDisplay.style.display='block'
 
-       
+       // answersidcheck.style.display='none' 
 
 
        
