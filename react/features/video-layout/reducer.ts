@@ -28,7 +28,7 @@ const DEFAULT_STATE = {
      * @public
      * @type {boolean}
      */
-    tileViewEnabled: undefined
+    tileViewEnabled: false
 };
 
 export interface IVideoLayoutState {

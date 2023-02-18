@@ -191,6 +191,7 @@ import ChatAdminButton from "../../../cs-chat-admin/components/chat-admin-button
 import SettingsDialog from "../../../settings/components/web/SettingsDialog";
 // @ts-ignore
 import { MEDIA_TYPE, setAudioMuted, setVideoMuted } from "../../../base/media";
+import { setTileView } from "../../../video-layout/actions.any";
 
 /**IconShareDesktopDisable
  * The type of the React {@code Component} props of {@link Toolbox}.
@@ -502,6 +503,9 @@ class Toolbox extends Component<IProps, AppState> {
      * @returns {void}
      */
     componentDidMount() {
+        if(  this.props._attendeeInfo.userType == UserType.Viewer)
+        {    this.props.dispatch(setTileView(false));
+        }
         if (
             ApplicationConstants.meetingId == undefined ||
             ApplicationConstants.meetingId == null
@@ -549,6 +553,7 @@ class Toolbox extends Component<IProps, AppState> {
                         this.props.dispatch(setVideoMuted(true));
                         this.props.dispatch(muteLocal(true, MEDIA_TYPE.VIDEO));
                     }
+                   
 
 
             });
@@ -1094,7 +1099,7 @@ class Toolbox extends Component<IProps, AppState> {
         //     group: 2
         // };
 
-        const tileview = {
+        const tileview =  _attendeeInfo?.userType !== UserType.Viewer && {
             key: "tileview",
             Content: TileViewButton,
             group: 2,
@@ -1277,7 +1282,7 @@ class Toolbox extends Component<IProps, AppState> {
             virtualBackground,
             dockIframe,
             undockIframe,
-            speakerStats,
+          //  speakerStats,
             settings,
             shortcuts,
             // embed,
